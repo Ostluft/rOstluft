@@ -1,0 +1,82 @@
+#' Reads an AIRMO Export in DAT Format
+#'
+#' Reads the data from a AIRMO DAT file and returns it as a data frame in rOstluft long format
+#'
+#' @param fn DAT file name, can be relative to current directory or absolut
+#' @param encoding DAT file encoding. Default "latin1"
+#' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
+#' @param time_shift a lubridate period to add to the time. Default NULL
+#'
+#' @return data frame in rOstluft long format
+#'
+#' @seealso [lubridate::period()] - Create or parse period objects
+#' @seealso [base::timezones] - Information about time zones in R
+#'
+#' @export
+#' @md
+read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL) {
+  locale <- readr::locale(encoding = encoding)
+  data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
+                            locale = locale, trim_ws = TRUE, progress = FALSE)
+  header <- data[c(1, 2, 4, 5), -1]
+  data <- utils::tail(data, -6)
+  airmo_wide_to_long(header, data, tz, time_shift)
+}
+
+
+
+
+#' Reads an AIRMO Export in CSV Format
+#'
+#' Reads the data from a AIRMO CSV file and returns it as a data frame in rOstluft long format
+#'
+#' @param fn CSV file name, can be relative to current directory or absolut
+#' @param encoding CSV file encoding. Default "latin1"
+#' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
+#' @param time_shift a lubridate period to add to the time. Default NULL
+#'
+#' @return data frame in rOstluft long format
+#'
+#' @seealso [lubridate::period()] - Create or parse period objects
+#' @seealso [base::timezones] - Information about time zones in R
+#'
+#' @export
+read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL) {
+  locale <- readr::locale(encoding = encoding)
+  data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
+                            locale = locale, trim_ws = TRUE, progress = FALSE)
+  header <- data[c(1, 5, 9, 8), -1]
+  data <- utils::tail(data, -10)
+  airmo_wide_to_long(header, data, tz, time_shift)
+}
+
+
+
+#' Converts the wide format from the files to the long format
+#'
+#' @param header data frame containing airmo_kurzname, parameter, zeitfenster and einheit
+#' @param data data frame only containing the data from the file
+#' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
+#' @param time_shift a lubridate period to add to the time. Default NULL
+#'
+#' @return data frame in rOstluft long format
+#'
+#' @seealso [lubridate::period()] - Create or parse period objects
+#' @seealso [base::timezones] - Information about time zones in R
+#'
+#' @keywords internal
+airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL) {
+  colnames(data)[1] <- "startzeit"
+
+  header_names <- lapply(header, paste, collapse = "&")
+  colnames(data)[-1] <- header_names
+
+  data[["startzeit"]] <- lubridate::parse_date_time(data[["startzeit"]], c("dmYHMS", "dmYHM", "dmY"), tz = tz)
+  if (lubridate::is.period(time_shift)) {
+    data[["startzeit"]] <- data[["startzeit"]] + time_shift
+  }
+  data_long <- tidyr::gather(data, "key", "wert", -"startzeit", na.rm = TRUE)
+  data_long[["wert"]] <- as.numeric(data_long[["wert"]])
+  data_long <- tidyr::separate(data_long, "key", c("station", "parameter", "intervall", "einheit"), sep = "&")
+  dplyr::mutate_if(data_long, is.character, as.factor)
+}

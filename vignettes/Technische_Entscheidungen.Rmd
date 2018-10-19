@@ -1,0 +1,236 @@
+---
+title: "[GER] Technische Entscheidungen"
+author: "Thomas von Allmen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Technische Entscheidungen}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Übersicht
+
+In diesem Dokument werden die Gründe für technische Entscheide festgehalten. Viele Probleme sind bereits von klugen 
+Köpfen gelöst worden. Wo immer möglich sollten Packages von Drittpersonen genützt werden. Dabei ist aber zu beachten 
+das eine umfassende Dokumenation, gute Test Coverage und eine breite Nutzung des Packages vorhanden ist.
+
+
+# Verwendete gesprochene Sprachen
+
+Code, Datenfelder Bezeichnung, Kommentare im Code und somit die automatische generierte API Dokumentation werden in 
+(gebrochenem) Englisch geschrieben. Längere Texte und begleitende Dokumentationen in Deutsch. 
+
+
+# Style Guide
+
+Für eine konsistente und kohärente Code Basis ist die Einhaltung eines Code Style Guide unverzichtbar. Zudem erlaubt 
+dies den Einsatz von einem Code Linter zur automatischen Qualitätskontrolle. Für dieses Projekt wird der 
+[tidyverse styleguide](http://style.tidyverse.org/) verwendet. [Styler](http://styler.r-lib.org/) und 
+[lintr](https://github.com/jimhester/lintr)[^1] können zur Unterstützund des Anwender installiert werden.
+
+
+# Versionskontrolle und Distribution
+
+Für die Versionkontrolle wird Git verwendet. RStudio hat eingebauten Support. Das Package wird auf github unter 
+[Ostluft/rOstluft](https://github.com/Ostluft/rOstluft) gehostet. Daten für Tests und Beispiele sind in unter 
+[Ostluft/rOstluft.data](https://github.com/Ostluft/rOstluft.data) zu finden. Dies erlaubt die Distribution mit 
+Hilfe der devtools:
+
+```{r eval=FALSE}
+#install.packages("devtools")
+devtools::install_github("Ostluft/rOstluft")
+```
+
+Das Package auf CRAN zu veröffentlichen ist ein relativ aufwendiger 
+[Prozess](http://kbroman.org/pkg_primer/pages/cran.html), und wird aufs Erste verzichtet. 
+
+
+# Encoding
+
+Alle Daten werden als UTF-8 abgelegt. Dies wird in Zukunft viel Ärger und Frustrationen ersparen. 
+
+
+# Importieren von strukturierten Daten
+
+Eine der Herausforderung beim importieren von Textdateien ist die Verwendung der korrekten Codierung. Die Input Dateien 
+werden meistens nicht in utf-8 vorliegen sondern vermutlich in einer [ISO 8859](https://en.wikipedia.org/wiki/ISO/IEC_8859) 
+oder in einer [Windows Code Page](https://en.wikipedia.org/wiki/Windows_code_page) Variante. Folglich muss eine Konversion 
+nach utf-8 erfolgen.
+
+Die Funktion [fread](https://www.rdocumentation.org/packages/data.table/versions/1.11.8/topics/fread) des Packages
+[data.table](https://www.rdocumentation.org/packages/data.table) ist die schnellste Funktione (ca. 2x schneller als die readr 
+Funktionen und ca. 20x schneller als die R base Funktionen[^2]) konvertiert aber den Input nicht nach utf-8:
+
+> encoding: default is "unknown". Other possible options are "UTF-8" and "Latin-1". Note: it is not used to re-encode 
+> the input, rather enables handling of encoded strings in their native encoding.
+
+Das gleiche gilt für die Funktion [read.table](https://www.rdocumentation.org/packages/utils/versions/3.5.1/topics/read.table) 
+im Basis Package utils:
+
+> There are two approaches for reading input that is not in the local encoding. If the input is known to be UTF-8 or Latin1, 
+> use the encoding argument to declare that. If the input is in some other encoding, then it may be translated on input. The 
+> fileEncoding argument achieves this by setting up a connection to do the re-encoding into the current locale. Note that on 
+> Windows or other systems not running in a UTF-8 locale, this may not be possible.
+
+Das Package [readr](https://readr.tidyverse.org/index.html) unterstützt via dem [locale](https://readr.tidyverse.org/articles/locales.html) 
+Argument hingegen die automatische Konvertierung nach utf-8:
+
+> All readr functions yield strings encoded in UTF-8.
+
+Aus diesem Grund werden für alle read Operationen von Textdateien die entsprechenden Funktionen aus dem readr Package verwendet.
+
+
+# OOP 
+
+Aus historischen Gründen gibt es in R mehrere Klassentypen (S3, S4, RC, R6)[^3][^4]. Für unsere Zwecke eignet sich die 
+[R6](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html) Implementation. Dies erlaubt uns die für eine 
+Ablage notwendigen Konfigurationen und Funktionen in einem Objekt zu vereinigen. 
+Alternativ kann ein reiner Prozeduraler Stil genutzt werden, in dem die notwendigen Angaben für einen store (Pfad, Zugangsdaten, etc) 
+in einem Objekt gehalten werden und dieses Objekt immer als Argument einer Funktion übergeben wird.
+
+Vorteile OOP:
+
+* Erlaubt Referenzierung Semantik (kann auch ein Nachteil sein)
+* Nur eine Überprüfung des store Arguments notwendig beim Instanzieren der Klasse, bei Prozeduralen Stil muss dies bei jedem 
+  Methodenaufruf erfolgen
+* Bessere strukturierung und abstraktion des Codes, einfachere Wartbarkeit.
+* Konstruktor und vorallem Dekonstruktor Funktionen. Dies erlaubt eine saubere Initialisierung und Freigabe von Ressourcen 
+
+Nachteile OOP:
+
+* Schlechterer Support in der IDE und Tools:
+  - Autovervollständigung für Klassenmethoden nur wenn eine Klasseninstanz mit dem Namen der Variablen im Globalen Environment ist
+  - [Debugging von R6 Methoden](https://r6.r-lib.org/articles/Debugging.html) ist aufwendiger, da RStudio keine Haltepunkte innerhalb 
+    der Methode zulässt.
+  - Erstellung von [Roxygen Dokumentationen für R6 Klassen](https://github.com/r-lib/R6/issues/3) ist hart.
+
+
+# Dokumentation
+
+[Roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) erlaubt das Erzeugen von Dokumentation 
+aus Inline Kommentars im Quellcode. Diese werden direkt in RStudio eingebunden, bzw. in das R Hilfesystem. 
+Mit Hilfe von [Vignetten](http://r-pkgs.had.co.nz/vignettes.html) können Tutorials, Beispiele oder weitergehende Erläuterungen 
+dem Package hinzugefügt werden.
+Werden diese zwei Werkzeuge benützt kann relativ einfach mit [pkgdown](http://pkgdown.r-lib.org/articles/pkgdown.html) eine 
+statische Webseite generiert werden.
+
+
+# tidyverse
+
+> The tidyverse is an opinionated collection of R packages designed for data science. 
+> All packages share an underlying design philosophy, grammar, and data structures. 
+
+Grundsätzlich sollten die Packages aus der tidyverse Sammlung benützt werden. Die Packages sind in der Regel gut 
+dokumentiert, bzw. man findet Hilfe im Internet auf [StackOverflow](https://stackoverflow.com/questions/tagged/tidyverse) 
+oder dem Forum der [RStudio Community](https://community.rstudio.com/).
+Die [RStudio Cheat Sheets](https://www.rstudio.com/resources/cheatsheets/) bieten einen guten Überblick der Funktionalitäten 
+der einzelnen Packages. 
+Des weiteren entsprechen die Interfaces der Funktionen modernen Programmierstandards und abstrahieren einige R Eigenheiten.
+
+
+# Zugriffe auf das Dateisystem
+
+Arbeiten mit dem Dateisystem erfolgt mit dem Package [fs](https://fs.r-lib.org/index.html). Hauptgrund ist wieder die 
+saubere Konvertierung von und nach utf-8 von allen Inputs und Ausgaben. Die R Base Funktionenen benützen das Systemencoding.
+
+
+# Inspirationen / RPackages die nützlich sein könnten
+
+Hier eine Sammlung von Links die bei der Implementation als Inspiration dienen können, bzw. interessante Standpunkte 
+vertreten:
+
+## storr
+
+Das Package [storr](http://richfitz.github.io/storr/) ist ein einfacher Objekt Cache implementiert als Key-Value Store. 
+Leider eignet er sich nicht direkt als Basis für unser Vorhaben, aber hier kann man sicher das eine oder andere Konzept 
+übernehmen oder in später für die [Memoisation](http://richfitz.github.io/storr/articles/external.html#memoisation) von 
+grösseren Abfragen nutzen. Oder bei der Verarbeitung der Input Daten könnte er als einfacher Speicher für ein Job Result
+Log verwendet werden. 
+
+
+## drake
+
+Mit [drake](https://ropensci.github.io/drake/) lassen sich Abläufe planen. Der Clou dabei ist, dass Zwischenresultate 
+memosiert werden und Prozesse parallisiert werden können. Dies ist zwar für die Erstellung und Pflege des Datensatz 
+nur bedingt interessant, für spätere automatisierte Auswertungen es nützlich werden.
+
+
+## data.table vs dplyr
+
+Der Hauptunterschied zwischen [data.table](https://github.com/Rdatatable/data.table/wiki) und 
+[dplyr](https://dplyr.tidyverse.org/) ist, dass data.table Updates per Reference erlaubt, während bei dplyr der Input immer 
+als [Immutable Object](https://en.wikipedia.org/wiki/Immutable_object) behandelt wird. Dies ermöglicht data.table gewisse 
+Aufgaben massiv schneller zu verarbeiten. Allerdings ist für unsere Datengrösse Performance nicht die grösste Sorge. Der Syntax 
+von dplyr ist mehr expressiv und somit verständlicher. Auf Stackoverflow hat es eine Interessante 
+[Diskussion](https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly?rq=1) 
+zu dem Thema mit Beiträgen von beiden Authoren der jeweiligen Packages.
+
+
+##  Dokumentieren der R6 Klassen
+
+Ein Nachteil von der Nutzung von R6 Klassen ist, dass die Dokumentierung mit Roxygen nicht gerade unkompliziert ist. Einige Links zu 
+Beispielen findet man in diesem Github Issue: [Documenting R6 classes with and without roxygen2](https://github.com/r-lib/R6/issues/3)
+
+
+## Logging
+
+Für automatisierte Prozesse ist auf eine Form von Logging nicht zu verzichten. Im [ReadMe des Package loggit](https://github.com/ryapric/loggit) 
+findet man eine gute Einführung zum Thema loggen unter R. Unter anderem auch Links zu anderen R Packages.
+
+
+## tsibble, zoo, xts
+
+Das Arbeiten mit Zeitreihen ist nichts neues und es existieren einige Packages die sich diesen Aspekten beschäftigen:
+
+* [Tsibble](https://github.com/tidyverts/tsibble) 
+* [zoo](https://www.rdocumentation.org/packages/zoo/versions/1.8-3)
+* [xts](https://github.com/joshuaulrich/xts)
+
+
+## openair
+
+Die Daten sollten sich nahtlos in das Package [openair](https://github.com/davidcarslaw/openair) überführen lassen. Dieses Package ist auf 
+Luftqualität Auswertungen spezialisiert und enthält viele nützliche Funktionen.
+
+
+## Programming with dplyr
+
+Vignette über die Parametrisierung von [dplyr Funktionen](https://cran.r-project.org/web/packages/dplyr/vignettes/programming.html):
+
+> Most dplyr functions use non-standard evaluation (NSE). This is a catch-all term that means they don’t follow the usual R rules 
+> of evaluation. Instead, they capture the expression that you typed and evaluate it in a custom way.
+> [...]
+> Unfortunately these benefits do not come for free. There are two main drawbacks:
+> 
+> * Most dplyr arguments are not referentially transparent. That means you can’t replace a value with a seemingly 
+>   equivalent object that you’ve defined elsewhere.
+> * dplyr code is ambiguous. Depending on what variables are defined where.
+> 
+> Fortunately, dplyr provides tools to overcome these challenges. They require a little more typing, but a small amount of 
+> upfront work is worth it because they help you save time in the long run.
+
+
+
+
+
+[^1]: Aktuell muss die Dev Version von Github installiert werden, damit das RStudio Addin funktioniert.
+
+[^2]: https://github.com/tidyverse/readr/blob/master/README.md#alternatives
+
+[^3]: [OO field guide](http://adv-r.had.co.nz/OO-essentials.html)
+
+[^4]: [Creating Classes in R: S3, S4, R5 (RC), or R6? [closed](https://stackoverflow.com/a/27219203)
+
+
+
+
+

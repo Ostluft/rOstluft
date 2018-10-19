@@ -1,0 +1,49 @@
+Package: rOstluft
+Title: Tools for handling air quality data by Ostluft
+Version: 0.0.0.9000
+Authors@R: c(
+  person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
+  person("Jörg", "Sintermann",role = c("aut")),
+  person("Noël", "Rederlechner",role = c("aut")),
+  person("Ostluft", role = c("cph")))
+Description: This package provides function to quickly load 
+    data and merge data from mulitple sources. 
+Depends: R (>= 3.4.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+    tidyr,
+    utils,
+    lubridate,
+    R6,
+    rappdirs,
+    tibble,
+    base64url,
+    forcats,
+    fs,
+    purrr,
+    readr,
+    stringr,
+    openair,
+    rlang (>= 0.1.2),
+    magrittr,
+    rOstluft.data
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    pkgdown,
+    lintr,
+    styler,
+    roxygen2
+Remotes:
+    jimhester/lintr,
+    r-lib/styler,
+    Ostluft/rOstluft.data
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0
+URL: https://github.com/Ostluft/rOstluft
+BugReports: https://github.com/Ostluft/rOstluft/issues

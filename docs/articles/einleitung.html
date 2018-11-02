@@ -86,7 +86,7 @@
       <h1>[GER] Einleitung rOstluft</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2018-10-19</h4>
+            <h4 class="date">2018-11-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/einleitung.Rmd"><code>vignettes/einleitung.Rmd</code></a></small>
       <div class="hidden name"><code>einleitung.Rmd</code></div>
@@ -115,20 +115,20 @@
 <p>Dieses Format erlaubt es die Daten einfach aufzuteilen und wieder zusammenzufügen. Zusätzlich ist es mit geringen Aufwand möglich das Format mit weiteren Feldern zu ergänzen, sollte der Bedarf bestehen. Eine Umwandlung in ein openair kompatibles Wide Format ist mit einem Informationsverlust (intervall, einheit) möglich.</p>
 <p>Hier ein Bespiel des Formats:</p>
 <pre><code>#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1219644 obs. of  6 variables:
-#&gt;  $ startzeit: POSIXct, format: "2010-01-01 00:00:00" "2010-01-01 00:00:00" ...
-#&gt;  $ station  : Factor w/ 1 level "Zch_Stampfenbachstrasse": 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ starttime: POSIXct, format: "2010-01-01 00:00:00" "2010-01-01 00:00:00" ...
+#&gt;  $ site     : Factor w/ 1 level "Zch_Stampfenbachstrasse": 1 1 1 1 1 1 1 1 1 1 ...
 #&gt;  $ parameter: Factor w/ 14 levels "CO","Hr","NO",..: 1 3 4 5 6 8 10 2 7 9 ...
-#&gt;  $ intervall: Factor w/ 1 level "min30": 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ einheit  : Factor w/ 10 levels "%Hr","°","°C",..: 7 4 4 9 4 4 4 1 5 8 ...
-#&gt;  $ wert     : num  0.513 9.496 36.976 26.949 11.812 ...</code></pre>
+#&gt;  $ interval : Factor w/ 1 level "min30": 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ unit     : Factor w/ 10 levels "%Hr","°","°C",..: 7 4 4 9 4 4 4 1 5 8 ...
+#&gt;  $ value    : num  0.513 9.496 36.976 26.949 11.812 ...</code></pre>
 <table class="table">
 <thead><tr class="header">
-<th align="left">startzeit</th>
-<th align="left">station</th>
+<th align="left">starttime</th>
+<th align="left">site</th>
 <th align="left">parameter</th>
-<th align="left">intervall</th>
-<th align="left">einheit</th>
-<th align="right">wert</th>
+<th align="left">interval</th>
+<th align="left">unit</th>
+<th align="right">value</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -183,12 +183,12 @@
 </table>
 <table class="table">
 <thead><tr class="header">
-<th align="left">startzeit</th>
-<th align="left">station</th>
+<th align="left">starttime</th>
+<th align="left">site</th>
 <th align="left">parameter</th>
-<th align="left">intervall</th>
-<th align="left">einheit</th>
-<th align="right">wert</th>
+<th align="left">interval</th>
+<th align="left">unit</th>
+<th align="right">value</th>
 </tr></thead>
 <tbody>
 <tr class="odd">

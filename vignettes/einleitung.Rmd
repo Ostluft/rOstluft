@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ```{r include=FALSE}
 fn <- system.file("extdata", "Zch_Stampfenbachstrasse_2010-2014.csv", package = "rOstluft.data", mustWork = TRUE)
 df <- rOstluft::read_airmo_csv(fn)
-df <- dplyr::arrange(df, startzeit)
+df <- dplyr::arrange(df, starttime)
 ```
 
 

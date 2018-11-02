@@ -22,8 +22,8 @@ Lade Beispiel Daten
 library(magrittr)
 fn <- system.file("extdata", "Zch_Stampfenbachstrasse_2010-2014.csv", package = "rOstluft.data", mustWork = TRUE)
 data <- rOstluft::read_airmo_csv(fn)
-data <- dplyr::filter(data, lubridate::year(startzeit) == 2011)
-data <- dplyr::arrange(data, startzeit)
+data <- dplyr::filter(data, lubridate::year(starttime) == 2011)
+data <- dplyr::arrange(data, starttime)
 data
 ```
 

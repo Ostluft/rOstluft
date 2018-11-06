@@ -86,7 +86,7 @@
       <h1>[GER] Resampling data</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2018-10-19</h4>
+            <h4 class="date">2018-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/resample.Rmd"><code>vignettes/resample.Rmd</code></a></small>
       <div class="hidden name"><code>resample.Rmd</code></div>
@@ -99,55 +99,55 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
 fn &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"Zch_Stampfenbachstrasse_2010-2014.csv"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>, <span class="dt">mustWork =</span> <span class="ot">TRUE</span>)
 data &lt;-<span class="st"> </span>rOstluft<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rOstluft/topics/read_airmo_csv">read_airmo_csv</a></span>(fn)
-data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data, lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(startzeit) <span class="op">==</span><span class="st"> </span><span class="dv">2011</span>)
-data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(data, startzeit)
+data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data, lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(starttime) <span class="op">==</span><span class="st"> </span><span class="dv">2011</span>)
+data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(data, starttime)
 data
 <span class="co">#&gt; # A tibble: 243,381 x 6</span>
-<span class="co">#&gt;    startzeit           station         parameter intervall einheit    wert</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenba~ CO        min30     mg/m3     0.611</span>
-<span class="co">#&gt;  2 2011-01-01 00:00:00 Zch_Stampfenba~ NO        min30     µg/m3    26.2  </span>
-<span class="co">#&gt;  3 2011-01-01 00:00:00 Zch_Stampfenba~ NO2       min30     µg/m3    42.1  </span>
-<span class="co">#&gt;  4 2011-01-01 00:00:00 Zch_Stampfenba~ NOx       min30     ppb      43.0  </span>
-<span class="co">#&gt;  5 2011-01-01 00:00:00 Zch_Stampfenba~ O3        min30     µg/m3     2.19 </span>
-<span class="co">#&gt;  6 2011-01-01 00:00:00 Zch_Stampfenba~ PM10      min30     µg/m3    84.0  </span>
-<span class="co">#&gt;  7 2011-01-01 00:00:00 Zch_Stampfenba~ SO2       min30     µg/m3     5.07 </span>
-<span class="co">#&gt;  8 2011-01-01 00:00:00 Zch_Stampfenba~ Hr        min30     %Hr      91.9  </span>
-<span class="co">#&gt;  9 2011-01-01 00:00:00 Zch_Stampfenba~ p         min30     hPa     971.   </span>
-<span class="co">#&gt; 10 2011-01-01 00:00:00 Zch_Stampfenba~ RainDur   min30     min       0    </span>
+<span class="co">#&gt;    starttime           site               parameter interval unit    value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbachs~ CO        min30    mg/m3   0.611</span>
+<span class="co">#&gt;  2 2011-01-01 00:00:00 Zch_Stampfenbachs~ NO        min30    µg/m3  26.2  </span>
+<span class="co">#&gt;  3 2011-01-01 00:00:00 Zch_Stampfenbachs~ NO2       min30    µg/m3  42.1  </span>
+<span class="co">#&gt;  4 2011-01-01 00:00:00 Zch_Stampfenbachs~ NOx       min30    ppb    43.0  </span>
+<span class="co">#&gt;  5 2011-01-01 00:00:00 Zch_Stampfenbachs~ O3        min30    µg/m3   2.19 </span>
+<span class="co">#&gt;  6 2011-01-01 00:00:00 Zch_Stampfenbachs~ PM10      min30    µg/m3  84.0  </span>
+<span class="co">#&gt;  7 2011-01-01 00:00:00 Zch_Stampfenbachs~ SO2       min30    µg/m3   5.07 </span>
+<span class="co">#&gt;  8 2011-01-01 00:00:00 Zch_Stampfenbachs~ Hr        min30    %Hr    91.9  </span>
+<span class="co">#&gt;  9 2011-01-01 00:00:00 Zch_Stampfenbachs~ p         min30    hPa   971.   </span>
+<span class="co">#&gt; 10 2011-01-01 00:00:00 Zch_Stampfenbachs~ RainDur   min30    min     0    </span>
 <span class="co">#&gt; # ... with 243,371 more rows</span></code></pre></div>
 <p>Berechne Tagesmittelwerte:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rOstluft<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rOstluft/topics/resample">resample</a></span>(data, <span class="st">"d1"</span>)
 <span class="co">#&gt; # A tibble: 5,110 x 6</span>
-<span class="co">#&gt;    startzeit           station           parameter intervall einheit  wert</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;             &lt;fct&gt;     &lt;chr&gt;     &lt;fct&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.437</span>
-<span class="co">#&gt;  2 2011-01-02 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.448</span>
-<span class="co">#&gt;  3 2011-01-03 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.607</span>
-<span class="co">#&gt;  4 2011-01-04 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.650</span>
-<span class="co">#&gt;  5 2011-01-05 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.612</span>
-<span class="co">#&gt;  6 2011-01-06 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.410</span>
-<span class="co">#&gt;  7 2011-01-07 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.603</span>
-<span class="co">#&gt;  8 2011-01-08 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.575</span>
-<span class="co">#&gt;  9 2011-01-09 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.428</span>
-<span class="co">#&gt; 10 2011-01-10 00:00:00 Zch_Stampfenbach~ CO        d1        mg/m3   0.412</span>
+<span class="co">#&gt;    starttime           site                 parameter interval unit  value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;chr&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.437</span>
+<span class="co">#&gt;  2 2011-01-02 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.448</span>
+<span class="co">#&gt;  3 2011-01-03 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.607</span>
+<span class="co">#&gt;  4 2011-01-04 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.650</span>
+<span class="co">#&gt;  5 2011-01-05 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.612</span>
+<span class="co">#&gt;  6 2011-01-06 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.410</span>
+<span class="co">#&gt;  7 2011-01-07 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.603</span>
+<span class="co">#&gt;  8 2011-01-08 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.575</span>
+<span class="co">#&gt;  9 2011-01-09 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.428</span>
+<span class="co">#&gt; 10 2011-01-10 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3 0.412</span>
 <span class="co">#&gt; # ... with 5,100 more rows</span></code></pre></div>
 <p>Ups RainDur muss summiert werden:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.d1 &lt;-<span class="st"> </span>rOstluft<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rOstluft/topics/resample">resample</a></span>(data, <span class="st">"d1"</span>, <span class="dt">statistic =</span> <span class="kw">list</span>(<span class="dt">RainDur=</span><span class="st">"sum"</span>))
 dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data.d1, parameter <span class="op">==</span><span class="st"> "RainDur"</span>)
 <span class="co">#&gt; # A tibble: 365 x 6</span>
-<span class="co">#&gt;    startzeit           station          parameter intervall einheit   wert</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;            &lt;fct&gt;     &lt;chr&gt;     &lt;fct&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbac~ RainDur   d1        min      17.2 </span>
-<span class="co">#&gt;  2 2011-01-02 00:00:00 Zch_Stampfenbac~ RainDur   d1        min       1.13</span>
-<span class="co">#&gt;  3 2011-01-03 00:00:00 Zch_Stampfenbac~ RainDur   d1        min       0   </span>
-<span class="co">#&gt;  4 2011-01-04 00:00:00 Zch_Stampfenbac~ RainDur   d1        min       0   </span>
-<span class="co">#&gt;  5 2011-01-05 00:00:00 Zch_Stampfenbac~ RainDur   d1        min       0   </span>
-<span class="co">#&gt;  6 2011-01-06 00:00:00 Zch_Stampfenbac~ RainDur   d1        min     244.  </span>
-<span class="co">#&gt;  7 2011-01-07 00:00:00 Zch_Stampfenbac~ RainDur   d1        min     172.  </span>
-<span class="co">#&gt;  8 2011-01-08 00:00:00 Zch_Stampfenbac~ RainDur   d1        min     160.  </span>
-<span class="co">#&gt;  9 2011-01-09 00:00:00 Zch_Stampfenbac~ RainDur   d1        min     333.  </span>
-<span class="co">#&gt; 10 2011-01-10 00:00:00 Zch_Stampfenbac~ RainDur   d1        min     224.  </span>
+<span class="co">#&gt;    starttime           site                parameter interval unit   value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;     &lt;chr&gt;    &lt;fct&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min    17.2 </span>
+<span class="co">#&gt;  2 2011-01-02 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min     1.13</span>
+<span class="co">#&gt;  3 2011-01-03 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min     0   </span>
+<span class="co">#&gt;  4 2011-01-04 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min     0   </span>
+<span class="co">#&gt;  5 2011-01-05 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min     0   </span>
+<span class="co">#&gt;  6 2011-01-06 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min   244.  </span>
+<span class="co">#&gt;  7 2011-01-07 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min   172.  </span>
+<span class="co">#&gt;  8 2011-01-08 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min   160.  </span>
+<span class="co">#&gt;  9 2011-01-09 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min   333.  </span>
+<span class="co">#&gt; 10 2011-01-10 00:00:00 Zch_Stampfenbachst~ RainDur   d1       min   224.  </span>
 <span class="co">#&gt; # ... with 355 more rows</span></code></pre></div>
   </div>
 

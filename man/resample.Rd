@@ -5,18 +5,18 @@
 \alias{resample_series}
 \title{Resampling data}
 \usage{
-resample(data, new_intervall, statistic = "mean", data.thresh = NULL,
+resample(data, new_interval, statistic = "mean", data.thresh = NULL,
   start.date = NULL, end.date = NULL, drop.last = FALSE,
   percentile = 95)
 
-resample_series(serie, new_intervall, statistic = "mean",
+resample_series(serie, new_interval, statistic = "mean",
   data.thresh = NULL, start.date = NULL, end.date = NULL,
   drop.last = FALSE, percentile = 95)
 }
 \arguments{
 \item{data}{A tibble in rOstluft long format}
 
-\item{new_intervall}{New Intervall. Must be longer than actual Intervall (not checked)}
+\item{new_interval}{New interval. Must be longer than actual interval (not checked)}
 
 \item{statistic}{Statistical method to apply when aggregating the data; default is the mean.
 Can be one of “mean”, “max”, “min”, “median”, “frequency”, “sd”, “percentile”. Note that “sd”
@@ -28,9 +28,9 @@ Or a list with parameter as name and the statistical method as value (function o
 
 \item{data.thresh}{minimum data capture threshold in \% to use}
 
-\item{start.date}{optional start date for padding. Default min date in series floored to the new intervall}
+\item{start.date}{optional start date for padding. Default min date in series floored to the new interval}
 
-\item{end.date}{optional end date for padding. Default max date in series ceiled to the new intervall}
+\item{end.date}{optional end date for padding. Default max date in series ceiled to the new interval}
 
 \item{drop.last}{optional drop the last added time point by padding. Default False, true if no end.date
 provided and max date != ceiled max date.}
@@ -48,7 +48,7 @@ Aggregate data by different time periods. Following this simple steps:
 \item split data in series
 \itemize{
 \item pad data serie (needed for calculation of capture threshold)
-\item group serie by new intervall with \code{\link[lubridate:floor_date]{lubridate::floor_date()}}
+\item group serie by new interval with \code{\link[lubridate:floor_date]{lubridate::floor_date()}}
 \item apply statistical method or user provides function (user can provide list per parameter)
 }
 \item combine resampled series

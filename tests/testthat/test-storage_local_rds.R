@@ -1,4 +1,4 @@
-context("driver_rds_local")
+context("storage_local_rds")
 
 #TODO smaller test files
 
@@ -18,7 +18,7 @@ teardown({
 })
 
 test_that("creating store", {
-  expect_message(store <- driver_rds_local("testthat", read.only = FALSE))
+  expect_message(store <- storage_local_rds("testthat",  r6_format_rolf$new(), read.only = F))
 })
 
 test_that("put into store", {
@@ -31,15 +31,16 @@ test_that("put into store", {
   df <- read_airmo_csv(staba)
   expect_equal(nrow(df), n_staba)
 
-  store_ro <- driver_rds_local("testthat")
+  rolf <- r6_format_rolf$new()
+  store_ro <- storage_local_rds("testthat", format = rolf)
   expect_error(store_ro$put(df), class = "ReadOnlyStore")
 
-  store_rw <- driver_rds_local("testthat", read.only = FALSE)
+  store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
   res <- store_rw$put(df)
   expect_equal(sum(res$n), n_staba)
 
-  chunks <- store_rw$get_list_of_chunks()
-  expect_equal(length(chunks$chunk), jahre_staba)
+  chunks <- store_rw$list_chunks()
+  expect_equal(nrow(chunks), jahre_staba)
 
   df <- read_airmo_csv(ros)
   expect_equal(nrow(df), n_ros)
@@ -47,7 +48,7 @@ test_that("put into store", {
   res <- store_rw$put(df)
   expect_equal(sum(res$n), n_ros)
 
-  chunks <- store_rw$get_list_of_chunks()
+  chunks <- store_rw$list_chunks()
   expect_equal(nrow(chunks), jahre_staba + jahre_ros)
 
   content <- store_rw$get_content()
@@ -55,22 +56,24 @@ test_that("put into store", {
 })
 
 test_that("get from store", {
-  store <- driver_rds_local("testthat")
-  co <- store$get("Zch_Stampfenbachstrasse", "min30", 2010:2018, "CO")
+  rolf <- r6_format_rolf$new()
+  store <-  storage_local_rds("testthat", format = rolf)
+  co <- store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2010:2018, filter = parameter == "CO")
   expect_equal(nrow(co), 87139)
 
-  staba_2010 <- store$get("Zch_Stampfenbachstrasse", "min30", 2010)
+  staba_2010 <- store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2010)
   expect_equal(nrow(staba_2010), 242962)
 
-  nox_staba_ros_2014 <- store$get(c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"),
-                                  "min30", 2014, c("NOx", "NO", "NO2"))
+  nox_staba_ros_2014 <- store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"),
+                                  interval = "min30", year = 2014, filter = parameter %in% c("NOx", "NO", "NO2"))
   expect_equal(nrow(nox_staba_ros_2014), 52302 + 52245)
 })
 
 
 test_that("destroying store", {
-  store_ro <- driver_rds_local("testthat")
-  store_rw <- driver_rds_local("testthat", read.only = FALSE)
+  rolf <- r6_format_rolf$new()
+  store_ro <- storage_local_rds("testthat", format = rolf)
+  store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
   expect_warning(store_ro$destroy("DELETE"))
   expect_warning(store_rw$destroy())
   expect_message(store_rw$destroy("DELETE"))

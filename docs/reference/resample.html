@@ -35,7 +35,7 @@
 <meta property="og:description" content="Aggregate data by different time periods. Following this simple steps:
 split data in series
 pad data serie (needed for calculation of capture threshold)
-group serie by new intervall with lubridate::floor_date()
+group serie by new interval with lubridate::floor_date()
 apply statistical method or user provides function (user can provide list per parameter)
 
 combine resampled series
@@ -134,7 +134,7 @@ combine resampled series
     <p>Aggregate data by different time periods. Following this simple steps:</p><ul>
 <li><p>split data in series</p><ul>
 <li><p>pad data serie (needed for calculation of capture threshold)</p></li>
-<li><p>group serie by new intervall with <code><a href='http://lubridate.tidyverse.org/reference/round_date.html'>lubridate::floor_date()</a></code></p></li>
+<li><p>group serie by new interval with <code><a href='http://lubridate.tidyverse.org/reference/round_date.html'>lubridate::floor_date()</a></code></p></li>
 <li><p>apply statistical method or user provides function (user can provide list per parameter)</p></li>
 </ul></li>
 <li><p>combine resampled series</p></li>
@@ -142,11 +142,11 @@ combine resampled series
     
     </div>
 
-    <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='no'>new_intervall</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='no'>new_interval</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>95</span>)
 
-<span class='fu'>resample_series</span>(<span class='no'>serie</span>, <span class='no'>new_intervall</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+<span class='fu'>resample_series</span>(<span class='no'>serie</span>, <span class='no'>new_interval</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
   <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>95</span>)</pre>
     
@@ -158,8 +158,8 @@ combine resampled series
       <td><p>A tibble in rOstluft long format</p></td>
     </tr>
     <tr>
-      <th>new_intervall</th>
-      <td><p>New Intervall. Must be longer than actual Intervall (not checked)</p></td>
+      <th>new_interval</th>
+      <td><p>New interval. Must be longer than actual interval (not checked)</p></td>
     </tr>
     <tr>
       <th>statistic</th>
@@ -177,11 +177,11 @@ Or a list with parameter as name and the statistical method as value (function o
     </tr>
     <tr>
       <th>start.date</th>
-      <td><p>optional start date for padding. Default min date in series floored to the new intervall</p></td>
+      <td><p>optional start date for padding. Default min date in series floored to the new interval</p></td>
     </tr>
     <tr>
       <th>end.date</th>
-      <td><p>optional end date for padding. Default max date in series ceiled to the new intervall</p></td>
+      <td><p>optional end date for padding. Default max date in series ceiled to the new interval</p></td>
     </tr>
     <tr>
       <th>drop.last</th>

@@ -1,4 +1,4 @@
-context("storage_rds_local")
+context("storage_local_rds")
 
 #TODO smaller test files
 
@@ -18,21 +18,8 @@ teardown({
 })
 
 test_that("creating store", {
-  expect_message(store <- r6_storage_local_rds$new("testthat",  r6_format_rolf$new(), read.only = F))
+  expect_message(store <- storage_local_rds("testthat",  r6_format_rolf$new(), read.only = F))
 })
-
-
-test_local <- function(data) {
-  staba <- system.file("extdata", "Zch_Stampfenbachstrasse_2010-2014.csv", package = "rOstluft.data", mustWork = TRUE)
-  df <- read_airmo_csv(staba)
-  rolf <- r6_format_rolf$new()
-  rds_local <- r6_storage_local_rds$new("testing", rolf, read.only = F)
-  rds_local$put(df)
-
-  #rds_local$get(interval = "min30", site="Zch_Stampfenbachstrasse", year=2012, filter = parameter %in% c("CO", "O3" ) & value > 15 )
-  rds_local$get_content()
-}
-
 
 test_that("put into store", {
   n_staba <- 1219644  # Anzahl Datenunkte in der Datei Zch_Stampfenbachstrasse_2010-2014.csv
@@ -45,10 +32,10 @@ test_that("put into store", {
   expect_equal(nrow(df), n_staba)
 
   rolf <- r6_format_rolf$new()
-  store_ro <- r6_storage_local_rds$new("testthat", format = rolf)
+  store_ro <- storage_local_rds("testthat", format = rolf)
   expect_error(store_ro$put(df), class = "ReadOnlyStore")
 
-  store_rw <- r6_storage_local_rds$new("testthat", format = rolf, read.only = FALSE)
+  store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
   res <- store_rw$put(df)
   expect_equal(sum(res$n), n_staba)
 
@@ -70,7 +57,7 @@ test_that("put into store", {
 
 test_that("get from store", {
   rolf <- r6_format_rolf$new()
-  store <-  r6_storage_local_rds$new("testthat", format = rolf)
+  store <-  storage_local_rds("testthat", format = rolf)
   co <- store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2010:2018, filter = parameter == "CO")
   expect_equal(nrow(co), 87139)
 
@@ -85,8 +72,8 @@ test_that("get from store", {
 
 test_that("destroying store", {
   rolf <- r6_format_rolf$new()
-  store_ro <- r6_storage_local_rds$new("testthat", format = rolf)
-  store_rw <- r6_storage_local_rds$new("testthat", format = rolf, read.only = FALSE)
+  store_ro <- storage_local_rds("testthat", format = rolf)
+  store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
   expect_warning(store_ro$destroy("DELETE"))
   expect_warning(store_rw$destroy())
   expect_message(store_rw$destroy("DELETE"))

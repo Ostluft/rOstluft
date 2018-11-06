@@ -1,13 +1,17 @@
-#' @title Local rds storage
+#' @title Local storage
 #'
-#' @description A local storage with the file format rds. The format defines the data chunks per file.
+#' @description A local storage with flexible file format (default rds). The data format defines the data chunks
+#' per file.
 #'
 #' @field name name of the store
 #' @field format data format of the store
 #' @field path root of the store
-#' @field rds_path root of all chunks
-#' @field rds_content path to the rds file containing statistics of store content
-#' @field read.only flag for read.only usage of store
+#' @field data_path root of all chunks
+#' @field content_path path to the rds file containing statistics of store content
+#' @field read.only flag for read.only usage of store. Default TRUE
+#' @field ext file extension for chunks. Default "rds"
+#' @field read_function function(file) for reading chunks from disk. Default [base::readRDS()]
+#' @field write_function function(object, file) for writing chunks to disk. Default [base::saveRDS()]
 #'
 #' @section Methods:
 #'
@@ -58,7 +62,7 @@
 #' ## destroy store (careful removes all files on the disk)
 #' store$destroy("DELETE")
 #'
-#' @name storage_local_rds
+#' @name r6_storage_local
 #' @docType class
 NULL
 
@@ -69,23 +73,54 @@ NULL
 #'   Defaults to [rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")][rappdirs::user_data_dir()]
 #' @param read.only read only store. disable put, if false and the store doesn't exist, the store will be initiated
 #'
-#' @return R6 class object of r6_storage_local_rds
+#' @return R6 class object of r6_storage_local
 #' @export
+#' @name r6_storage_local
 storage_local_rds <- function(name, format, path = NULL, read.only = TRUE) {
-  r6_storage_local_rds$new(name, format, path, read.only)
+  r6_storage_local$new(name, format, path, read.only)
 }
 
-r6_storage_local_rds <- R6::R6Class(
-  'storage_local_rds',
+#' @param name name of the store
+#' @param format data format of the store
+#' @param path optional path to create the store under.
+#'   Defaults to [rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")][rappdirs::user_data_dir()]
+#' @param read.only read only store. disable put, if false and the store doesn't exist, the store will be initiated
+#' @param tz time zone for POSIXct's columns. Data is stored in UTC. Converted while reading. It is important, that
+#' the input data has the same time zone. Default "Etc/GMT-1"
+#'
+#' @return R6 class object of r6_storage_local
+#' @export
+#' @name r6_storage_local
+storage_local_tsv <- function(name, format, path = NULL, read.only = TRUE, tz = "Etc/GMT-1") {
+  tsv_locale <- readr::locale(date_format = "%Y-%m-%dT%H:%M%z",  encoding = "UTF-8", tz = tz)
+
+  read_function <- function(file)  {
+    readr::read_tsv(file, col_types = readr::cols(), locale = tsv_locale)
+  }
+
+  write_function <- function(object, file) {
+    readr::write_tsv(object, file)
+  }
+
+  r6_storage_local$new(name, format, path, read.only, "tsv", read_function, write_function)
+}
+
+#' @export
+r6_storage_local <- R6::R6Class(
+  'storage_local',
   public = list(
     format = NULL,
     name = NULL,
     path = NULL,
-    rds_path = NULL,
-    rds_content = NULL,
+    data_path = NULL,
+    content_path = NULL,
     read.only = TRUE,
+    ext = NULL,
+    read_function = NULL,
+    write_function = NULL,
 
-    initialize = function(name, format, path = NULL, read.only = TRUE) {
+    initialize = function(name, format, path = NULL, read.only = TRUE,
+                          ext = "rds", read_function = readRDS, write_function = saveRDS) {
       if (is.null(path)) {
         path <- rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")
       } else {
@@ -95,8 +130,11 @@ r6_storage_local_rds <- R6::R6Class(
       self$name <- name
       self$format <- format
       self$path <- path
-      self$rds_path <- fs::path(path, "rds")
-      self$rds_content <- fs::path(self$path, "content.rds")
+      self$ext <- ext
+      self$read_function = read_function
+      self$write_function = write_function
+      self$data_path <- fs::path(path, "data")
+      self$content_path <- fs::path(self$path, "content", ext = ext)
       self$read.only <- read.only
 
       is_new <- !fs::dir_exists(self$path)
@@ -106,12 +144,12 @@ r6_storage_local_rds <- R6::R6Class(
       }
 
       if (is_new) {
-        fs::dir_create(self$rds_path, recursive = TRUE)
+        fs::dir_create(self$data_path, recursive = TRUE)
         fs::dir_create(fs::path(self$path, "input"), recursive = TRUE)
         fs::dir_create(fs::path(self$path, "tmp"), recursive = TRUE)
         fs::dir_create(fs::path(self$path, "log_storr"), recursive = TRUE)
 
-        message(sprintf("Local rds store %s initialized under '%s'", self$name, self$path))
+        message(sprintf("Local store %s initialized under '%s'", self$name, self$path))
       }
       invisible(self)
     },
@@ -135,14 +173,14 @@ r6_storage_local_rds <- R6::R6Class(
       purrr::invoke(bind_rows_with_factor_columns, .x=chunks)
     },
     get_chunk_path = function(chunk_name) {
-      fs::path(self$rds_path, chunk_name, ext="rds")
+      fs::path(self$data_path, chunk_name, ext=self$ext)
     },
     merge_chunk = function(chunk_data) {
       # this function must be public for calls from storage_chunk_grouping
       chunk_name <- self$format$chunk_name(chunk_data)
       chunk_path <- self$get_chunk_path(chunk_name)
       if (fs::file_exists(chunk_path)) {
-        dfo <- readRDS(chunk_path)
+        dfo <- self$read_function(chunk_path)
         dfn <- self$format$merge(chunk_data, dfo)
       } else {
         fs::dir_create(fs::path_dir(chunk_path))
@@ -150,20 +188,20 @@ r6_storage_local_rds <- R6::R6Class(
       }
       dfn <- droplevels(dfn)
       dfn <- self$format$sort(dfn)
-      saveRDS(dfn, chunk_path)
+      self$write_function(dfn, chunk_path)
       dplyr::count(dfn, .dots=self$format$serie_columns)
     },
     list_chunks = function() {
-      chunk_paths <- fs::dir_ls(self$rds_path, recursive = TRUE, type = "file")
-      chunk_names <- fs::path_rel(chunk_paths, self$rds_path)
+      chunk_paths <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
+      chunk_names <- fs::path_rel(chunk_paths, self$data_path)
       chunk_names <- fs::path_ext_remove(chunk_names)
       chunks <- tibble::tibble(chunk_path = chunk_paths, chunk_name = chunk_names)
       chunks <- dplyr::mutate(chunks, chunk_name = purrr::map(.data$chunk_name, self$format$decode_chunk_name))
       tidyr::unnest(chunks)
     },
     get_content = function() {
-      if (fs::file_exists(self$rds_content)) {
-        content <- readRDS(self$rds_content)
+      if (fs::file_exists(self$content_path)) {
+        content <- self$read_function(self$content_path)
       } else {
         content <- NULL
         warning(paste0("Empty Store ", self$name))
@@ -181,19 +219,19 @@ r6_storage_local_rds <- R6::R6Class(
   ),
   private = list(
     read_chunk = function(chunk_path, filter) {
-      chunk <- readRDS(chunk_path)
+      chunk <- self$read_function(chunk_path)
       if (!rlang::quo_is_null(filter)) {
         chunk <-  dplyr::filter(chunk, !!!filter)
       }
       chunk
     },
     merge_content = function(new_content) {
-      if (fs::file_exists(self$rds_content)) {
-        old_content <- readRDS(self$rds_content)
+      if (fs::file_exists(self$content_path)) {
+        old_content <- self$read_function(self$content_path)
         str(self$format$conent_columns)
         new_content <- format_merge(old_content, new_content, self$format$content_columns)
       }
-      saveRDS(new_content, self$rds_content)
+      self$write_function(new_content, self$content_path)
       new_content
     }
   )

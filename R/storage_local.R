@@ -95,7 +95,8 @@ storage_local_tsv <- function(name, format, path = NULL, read.only = TRUE, tz = 
   tsv_locale <- readr::locale(date_format = "%Y-%m-%dT%H:%M%z",  encoding = "UTF-8", tz = tz)
 
   read_function <- function(file)  {
-    readr::read_tsv(file, col_types = readr::cols(), locale = tsv_locale)
+    data <- readr::read_tsv(file, col_types = readr::cols(), locale = tsv_locale)
+    dplyr::mutate_if(data, is.character, as.factor)
   }
 
   write_function <- function(object, file) {
@@ -186,9 +187,8 @@ r6_storage_local <- R6::R6Class(
         fs::dir_create(fs::path_dir(chunk_path))
         dfn <- chunk_data
       }
-      dfn <- droplevels(dfn)
       dfn <- self$format$sort(dfn)
-      self$write_function(dfn, chunk_path)
+      self$write_function(droplevels(dfn), chunk_path)
       dplyr::count(dfn, .dots=self$format$serie_columns)
     },
     list_chunks = function() {
@@ -228,7 +228,6 @@ r6_storage_local <- R6::R6Class(
     merge_content = function(new_content) {
       if (fs::file_exists(self$content_path)) {
         old_content <- self$read_function(self$content_path)
-        str(self$format$conent_columns)
         new_content <- format_merge(old_content, new_content, self$format$content_columns)
       }
       self$write_function(new_content, self$content_path)

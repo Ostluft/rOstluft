@@ -57,6 +57,13 @@ Ein paar kurze Code Bespiele
   Funktionen bestimmen 
 * Umbennung der Datenfelder
 * Schreiben eines kleines Scriptes zur Unterstützung von neuen Package Releases
-
+* Funktionen um mit AWS S3 datastore zu kommunizieren/interagieren
+* Parameter-Umbenennung lookup tabel etc
+* Metadaten-Tabellen aus OL MetaDB und von weiteren Datenquellen
+* Mitteln aller Datensätze auf diverse Mittelungsintervalle
+* Tests ob Struktur der Daten stimmt & sicherstellen, dass keine Duplikate in datensatz sind (mittels distinct() ?)
+* Zusammenführen des kompletten Datastore auf AWS S3
+* Dokumentation: Anwendungsbeispiele
+* ausführliche Vignette inkl. Auswertungs-Beispielen
 
 

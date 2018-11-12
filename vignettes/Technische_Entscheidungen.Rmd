@@ -51,7 +51,7 @@ devtools::install_github("Ostluft/rOstluft")
 ```
 
 Das Package auf CRAN zu veröffentlichen ist ein relativ aufwendiger 
-[Prozess](http://kbroman.org/pkg_primer/pages/cran.html), und wird aufs Erste verzichtet. 
+[Prozess](http://kbroman.org/pkg_primer/pages/cran.html), und darauf wird aufs Erste verzichtet. 
 
 
 # Encoding

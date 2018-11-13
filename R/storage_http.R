@@ -1,33 +1,38 @@
-r6_storage_http_rds <- R6::R6Class(
-  'storage_http_rds',
+r6_storage_http <- R6::R6Class(
+  "storage_http",
   public = list(
     format = NULL,
     name = NULL,
     url = NULL,
     path = NULL,
-    rds_path = NULL,
-    rds_content_path = NULL,
-    rds_content_url = NULL,
+    data_path = NULL,
+    content_path = NULL,
     read.only = TRUE,
+    ext = NULL,
+    read_function = NULL,
+    write_function = NULL,
 
-    initialize = function(name, format, url, path = NULL) {
+    initialize = function(name, format, url, path = NULL, read.only = TRUE,
+                          ext = "rds", read_function = readRDS, write_function = saveRDS) {
       if (is.null(path)) {
         path <- rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")
       } else {
         path <- fs::path_abs(path)
       }
 
-      self$format <- format
       self$name <- name
+      self$format <- format
       self$url <- url
       self$path <- path
-      self$rds_path <- fs::path(path, "rds")
-      self$rds_content_path <- fs::path(path, "content.rds")
-      self$rds_content_url <- fs::path(url, "content.rds")
+      self$ext <- ext
+      self$read_function <- read_function
+      self$write_function <- write_function
+      self$data_path <- fs::path(path, "data")
+      self$content_path <- fs::path(self$path, "content", ext = ext)
+      self$read.only <- read.only
 
-
-      if (!fs::dir_exists(self$rds_path)) {
-        fs::dir_create(self$rds_path, recursive = TRUE)
+      if (!fs::dir_exists(self$data_path)) {
+        fs::dir_create(self$data_path, recursive = TRUE)
         message(sprintf("Cache for http rds store %s initialized under '%s'", self$name, self$path))
       }
       invisible(self)
@@ -54,7 +59,7 @@ r6_storage_http_rds <- R6::R6Class(
       files <- dplyr::filter(files, .data$exists == TRUE)
 
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      purrr::invoke(bind_rows_with_factor_columns, .x=chunks)
+      purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
     },
     download_chunk = function(chunk_name) {
       chunk_url <- self$get_chunk_url(chunk_name)
@@ -65,10 +70,10 @@ r6_storage_http_rds <- R6::R6Class(
       }
     },
     get_chunk_path = function(chunk_name) {
-      fs::path(self$rds_path, chunk_name, ext="rds")
+      fs::path(self$data_path, chunk_name, ext = self$ext)
     },
     get_chunk_url = function(chunk_name) {
-      fs::path(self$url, chunk_name, ext="rds")
+      fs::path(self$url, chunk_name, ext = self$ext)
     },
     merge_chunk = function(chunk_data) {
       stop(ReadOnlyStore(self$name))
@@ -106,11 +111,3 @@ r6_storage_http_rds <- R6::R6Class(
     }
   )
 )
-
-
-test <- function(data) {
-  rolf <- r6_format_rolf$new()
-  rds_http <- r6_storage_http_rds$new("zueriluft", rolf, "https://zueriluft.ch/tools/rds/")
-  #rds_http$get(interval = "min30", site="Zch_Stampfenbachstrasse", year=2012:2018, filter = parameter %in% c("CO", "O3" ) & value > 15 )
-  rds_http$get_content()
-}

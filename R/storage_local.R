@@ -29,8 +29,8 @@
 #'
 #' @examples
 #' ## init store, creates directory if necessary
-#' rolf <- rOstluft::format_rolf()
-#' store <- rOstluft::storage_local_rds("example_rOstluft", rolf, read.only = FALSE)
+#' format <- rOstluft::format_rolf()
+#' store <- rOstluft::storage_local_rds("example_rOstluft", format, read.only = FALSE)
 #'
 #' ## read data from airmo export und put into the store
 #' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_2010-2014.csv",
@@ -44,10 +44,11 @@
 #' store$put(df)
 #'
 #' ## get all data min30 for 2011 and 2012
-#' store$get(site="Zch_Stampfenbachstrasse", interval="min30", year=2011:2012)
+#' store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
 #'
 #' ## get only data for O3
-#' store$get(year=2011:2012, site="Zch_Stampfenbachstrasse", interval="min30", filter = parameter == "O3")
+#' store$get(year = 2011:2012, site = "Zch_Stampfenbachstrasse", interval = "min30",
+#'           filter = parameter == "O3")
 #'
 #' ## get NOx data from multiple stations
 #' store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30",
@@ -67,6 +68,7 @@
 NULL
 
 
+
 #' @param name name of the store
 #' @param format data format of the store
 #' @param path optional path to create the store under.
@@ -80,23 +82,39 @@ storage_local_rds <- function(name, format, path = NULL, read.only = TRUE) {
   r6_storage_local$new(name, format, path, read.only)
 }
 
-#' @param name name of the store
-#' @param format data format of the store
-#' @param path optional path to create the store under.
-#'   Defaults to [rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")][rappdirs::user_data_dir()]
-#' @param read.only read only store. disable put, if false and the store doesn't exist, the store will be initiated
 #' @param tz time zone for POSIXct's columns. Data is stored in UTC. Converted while reading. It is important, that
 #' the input data has the same time zone. Default "Etc/GMT-1"
+#'
+#' @section storage_local_tsv:
+#'
+#' This Storage is mainly for debugging purpose or sharing data with another scripting/programming language.
+#' _Warning_: Slow and doesn't support logical data type.
 #'
 #' @return R6 class object of r6_storage_local
 #' @export
 #' @name r6_storage_local
 storage_local_tsv <- function(name, format, path = NULL, read.only = TRUE, tz = "Etc/GMT-1") {
+
+    do_parse <- function(column, guessed, locale) {
+    if (guessed %in% c("double", "integer", "number")) {
+      readr::parse_number(column, locale = locale)
+    } else if (guessed == "datetime") {
+      readr::parse_datetime(column, locale = locale)
+    } else if (guessed == "date") {
+      readr::parse_date(column, locale = locale)
+    } else if (guessed == "time") {
+      readr::parse_time(column, locale = locale)
+    } else {
+      as.factor(column)
+    }
+  }
+
   tsv_locale <- readr::locale(date_format = "%Y-%m-%dT%H:%M%z",  encoding = "UTF-8", tz = tz)
 
   read_function <- function(file)  {
-    data <- readr::read_tsv(file, col_types = readr::cols(), locale = tsv_locale)
-    dplyr::mutate_if(data, is.character, as.factor)
+    data <- readr::read_tsv(file, col_types = readr::cols(.default = readr::col_character()), locale = tsv_locale)
+    spec <- dplyr::summarise_all(data, readr::guess_parser)
+    purrr::map2_df(data, spec, do_parse, locale = tsv_locale)
   }
 
   write_function <- function(object, file) {
@@ -106,9 +124,10 @@ storage_local_tsv <- function(name, format, path = NULL, read.only = TRUE, tz = 
   r6_storage_local$new(name, format, path, read.only, "tsv", read_function, write_function)
 }
 
+
 #' @export
 r6_storage_local <- R6::R6Class(
-  'storage_local',
+  "storage_local",
   public = list(
     format = NULL,
     name = NULL,
@@ -132,8 +151,8 @@ r6_storage_local <- R6::R6Class(
       self$format <- format
       self$path <- path
       self$ext <- ext
-      self$read_function = read_function
-      self$write_function = write_function
+      self$read_function <- read_function
+      self$write_function <- write_function
       self$data_path <- fs::path(path, "data")
       self$content_path <- fs::path(self$path, "content", ext = ext)
       self$read.only <- read.only
@@ -141,7 +160,7 @@ r6_storage_local <- R6::R6Class(
       is_new <- !fs::dir_exists(self$path)
 
       if (read.only && is_new) {
-        stop(RdsLocalNotFound(name, self$path))
+        stop(LocalNotFound(name, self$path))
       }
 
       if (is_new) {
@@ -159,10 +178,9 @@ r6_storage_local <- R6::R6Class(
         stop(ReadOnlyStore(self$name))
       }
 
-      res <- storage_chunk_nest(data, self)
-      res <- dplyr::ungroup(res)
-      private$merge_content(res)
-      res
+      data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+      res <- dplyr::do(data, private$merge_chunk(.data))
+      dplyr::ungroup(res)
     },
     get = function(filter=NULL, ...) {
       filter <- enquo(filter)
@@ -171,25 +189,10 @@ r6_storage_local <- R6::R6Class(
       files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))
       files <- dplyr::filter(files, .data$exists == TRUE)
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      purrr::invoke(bind_rows_with_factor_columns, .x=chunks)
+      purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
     },
     get_chunk_path = function(chunk_name) {
-      fs::path(self$data_path, chunk_name, ext=self$ext)
-    },
-    merge_chunk = function(chunk_data) {
-      # this function must be public for calls from storage_chunk_grouping
-      chunk_name <- self$format$chunk_name(chunk_data)
-      chunk_path <- self$get_chunk_path(chunk_name)
-      if (fs::file_exists(chunk_path)) {
-        dfo <- self$read_function(chunk_path)
-        dfn <- self$format$merge(chunk_data, dfo)
-      } else {
-        fs::dir_create(fs::path_dir(chunk_path))
-        dfn <- chunk_data
-      }
-      dfn <- self$format$sort(dfn)
-      self$write_function(droplevels(dfn), chunk_path)
-      dplyr::count(dfn, .dots=self$format$serie_columns)
+      fs::path(self$data_path, chunk_name, ext = self$ext)
     },
     list_chunks = function() {
       chunk_paths <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
@@ -228,10 +231,30 @@ r6_storage_local <- R6::R6Class(
     merge_content = function(new_content) {
       if (fs::file_exists(self$content_path)) {
         old_content <- self$read_function(self$content_path)
-        new_content <- format_merge(old_content, new_content, self$format$content_columns)
+        new_content <- format_merge(new_content, old_content, self$format$content_columns)
       }
       self$write_function(new_content, self$content_path)
       new_content
+    },
+    merge_chunk = function(data) {
+      # remove calculated columns
+      new_data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
+      chunk_name <- self$format$chunk_name(new_data)
+      chunk_path <- self$get_chunk_path(chunk_name)
+
+      if (fs::file_exists(chunk_path)) {
+        chunk_data <- self$read_function(chunk_path)
+        chunk_data <- self$format$merge(new_data, chunk_data)
+      } else {
+        fs::dir_create(fs::path_dir(chunk_path))
+        chunk_data <- new_data
+      }
+      chunk_data <- self$format$sort(chunk_data)
+      self$write_function(droplevels(chunk_data), chunk_path)
+      chunk_content <- dplyr::count(chunk_data, .dots = c(self$format$chunk_calc, self$format$serie_columns))
+      private$merge_content(chunk_content)
+
+      dplyr::count(data, .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
     }
   )
 )

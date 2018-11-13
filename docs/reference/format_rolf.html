@@ -32,8 +32,8 @@
 
 <meta property="og:title" content="rOstluft long format (rolf) — format_rolf" />
 
-<meta property="og:description" content="Data format for storing air quality data. A Serie is the combination of measurement site, interval, parameter
-and unit.
+<meta property="og:description" content="Data format for storing air quality data. A Serie is the combination of measurement site, interval,
+parameter and unit.
 The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters" />
 
 <meta property="og:image" content="/logo.png" />
@@ -65,7 +65,7 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9002</span>
       </span>
     </div>
 
@@ -126,14 +126,23 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
 
     <div class="ref-description">
     
-    <p>Data format for storing air quality data. A Serie is the combination of measurement site, interval, parameter
-and unit.</p>
+    <p>Data format for storing air quality data. A Serie is the combination of measurement site, interval,
+parameter and unit.</p>
 <p>The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>format_rolf</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>format_rolf</span>(<span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>tz</th>
+      <td><p>time zone used for chunking.  Default Etc/GMT-1</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>R6 class object of format_rolf</p>
@@ -148,13 +157,15 @@ and unit.</p>
     <dt><code>chunk_calc</code></dt><dd><p>formulas for calculating new columns for chunking</p></dd>
     <dt><code>unique_columns</code></dt><dd><p>= index + serie_columns</p></dd>
     <dt><code>content_columns</code></dt><dd><p>= serie_columns + names(chunk_calc)</p></dd>
+    <dt><code>tz</code></dt><dd><p>time zone used for chunking. Same time different chunk:
+2018-01-01T00:00:00+0100 = 2018, 2017-12-31T23:00:00+0000 = 2017</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <p><code>$sort(data)</code></p>
-<p><code>$merge(old_data, new_data)</code></p>
+<p><code>$merge(new_data, old_data)</code></p>
 <p><code>$chunk_name(chunk_data)</code> returns the chunkname based on the first row of the supplied data</p>
 <p><code>$get_chunk_names(interval, site, year)</code> returns encoded chunknames for all combinations of the supplied vectors</p>
 <p><code>$encode_chunk_name(interval, site, year)</code> returns encoded chunkname</p>
@@ -167,6 +178,7 @@ confirmation</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 

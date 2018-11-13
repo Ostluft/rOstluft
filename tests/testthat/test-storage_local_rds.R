@@ -18,7 +18,8 @@ teardown({
 })
 
 test_that("creating store", {
-  expect_message(store <- storage_local_rds("testthat",  r6_format_rolf$new(), read.only = F))
+  expect_error(storage_local_rds("testthat",  format_rolf()), class = "LocalNotFound")
+  expect_message(store <- storage_local_rds("testthat",  format_rolf(), read.only = F))
 })
 
 test_that("put into store", {
@@ -31,7 +32,7 @@ test_that("put into store", {
   df <- read_airmo_csv(staba)
   expect_equal(nrow(df), n_staba)
 
-  rolf <- r6_format_rolf$new()
+  rolf <- format_rolf()
   store_ro <- storage_local_rds("testthat", format = rolf)
   expect_error(store_ro$put(df), class = "ReadOnlyStore")
 
@@ -56,7 +57,7 @@ test_that("put into store", {
 })
 
 test_that("get from store", {
-  rolf <- r6_format_rolf$new()
+  rolf <- format_rolf()
   store <-  storage_local_rds("testthat", format = rolf)
   co <- store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2010:2018, filter = parameter == "CO")
   expect_equal(nrow(co), 87139)
@@ -71,7 +72,7 @@ test_that("get from store", {
 
 
 test_that("destroying store", {
-  rolf <- r6_format_rolf$new()
+  rolf <- format_rolf()
   store_ro <- storage_local_rds("testthat", format = rolf)
   store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
   expect_warning(store_ro$destroy("DELETE"))

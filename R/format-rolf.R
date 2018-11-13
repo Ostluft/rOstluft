@@ -1,7 +1,7 @@
 #' @title rOstluft long format (rolf)
 #'
-#' @description Data format for storing air quality data. A Serie is the combination of measurement site, interval, parameter
-#' and unit.
+#' @description Data format for storing air quality data. A Serie is the combination of measurement site, interval,
+#' parameter and unit.
 #'
 #' The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters
 #'
@@ -11,12 +11,14 @@
 #' @field chunk_calc formulas for calculating new columns for chunking
 #' @field unique_columns = index + serie_columns
 #' @field content_columns = serie_columns + names(chunk_calc)
+#' @field tz time zone used for chunking. Same time different chunk:
+#'  2018-01-01T00:00:00+0100 = 2018, 2017-12-31T23:00:00+0000 = 2017
 #'
 #' @section Methods:
 #'
 #' `$sort(data)`
 #'
-#' `$merge(old_data, new_data)`
+#' `$merge(new_data, old_data)`
 #'
 #' `$chunk_name(chunk_data)` returns the chunkname based on the first row of the supplied data
 #'
@@ -33,56 +35,63 @@
 #' @docType class
 NULL
 
+#' @param tz time zone used for chunking.  Default Etc/GMT-1
+#'
 #' @return R6 class object of format_rolf
 #' @export
-format_rolf <- function() {
-  r6_format_rolf$new()
+format_rolf <- function(tz = "Etc/GMT-1") {
+  r6_format_rolf$new(tz = tz)
 }
 
 
 r6_format_rolf <- R6::R6Class(
-  'format_rolf',
+  "format_rolf",
   public = list(
     index = "starttime",
     value_column = "value",
     serie_columns = c("interval", "site", "parameter", "unit"),
     chunk_columns = c("interval", "site"),
-    chunk_calc = list("year" = ~lubridate::year(starttime)),
+    chunk_calc = NULL,
     unique_columns = NULL,
     content_columns = NULL,
-    initialize = function() {
+    tz = NULL,
+    initialize = function(tz = "Etc/GMT-1") {
+      self$tz <- tz
+      year_expr <- rlang::parse_expr(sprintf("lubridate::year(lubridate::with_tz(starttime, '%s'))", tz))
+      self$chunk_calc <- list(year = year_expr)
       self$unique_columns <- c(self$index, self$serie_columns)
       self$content_columns <- c(self$serie_columns, names(self$chunk_calc))
     },
     sort = function(data) {
       dplyr::arrange(data, .data$starttime)
     },
-    merge = function(old_data, new_data) {
-      format_merge(old_data, new_data, self$unique_columns)
+    merge = function(new_data, old_data) {
+      format_merge(new_data, old_data, self$unique_columns)
     },
     chunk_name = function(chunk_data) {
       # better way to do it?
       row <- dplyr::slice(chunk_data, 1)
-      self$encode_chunk_name(row$interval, row$site, lubridate::year(row$starttime))
+      year <- lubridate::year(lubridate::with_tz(row$starttime, self$tz))
+      self$encode_chunk_name(row$interval, row$site, year)
     },
     get_chunk_names = function(interval, site, year) {
       chunk_names <- tidyr::expand(tibble::tibble(), interval, site, year)
       dplyr::transmute(chunk_names, chunk_name = purrr::pmap(chunk_names, self$encode_chunk_name))
     },
     encode_chunk_name = function(interval, site, year) {
-      fn <- base64url::base64_urlencode(paste(paste(interval, site, year, sep = "»"), sep = "»"))
+      fn <- base64url::base64_urlencode(paste(paste(interval, site, year, sep = "\u00bb"), sep = "\u00bb"))
       fs::path_join(c(as.character(interval), fn))
     },
     decode_chunk_name = function(chunk_name) {
       fn <- tibble::tibble(chunk_name = chunk_name)
       fn <- dplyr::mutate(fn, chunk_part =  fs::path_file(.data$chunk_name))
       fn <- dplyr::mutate(fn, chunk_part =  base64url::base64_urldecode(.data$chunk_part))
-      tidyr::separate(fn, "chunk_part", c("interval", "site", "year"), sep = "»")
+      tidyr::separate(fn, "chunk_part", c("interval", "site", "year"), sep = "\u00bb")
     }
   )
 )
 
-format_merge <- function(old_data, new_data, unique_columns) {
+format_merge <- function(new_data, old_data, unique_columns) {
   xy <- bind_rows_with_factor_columns(new_data, old_data)
   dplyr::distinct(xy, !!!rlang::syms(unique_columns), .keep_all = TRUE)
 }

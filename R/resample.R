@@ -67,7 +67,7 @@ resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
 
 # resample_wind <- function(data, new_interval, ...) {
 #
-#   data.grouped <- dplyr::group_by(dfs, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
+#   data.grouped <- dplyr::group_by(data, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
 #   data.grouped <- tidyr::nest(data.grouped)
 #
 #   data.grouped <- tibble::deframe(data.grouped)
@@ -77,9 +77,9 @@ resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
 #
 # }
 #
-# wind_vectoring <- function(data) {
+# wind_vectoring <- function(data, new_interval, ...) {
 #   data
-#}
+# }
 
 
 #' @title resampling a serie

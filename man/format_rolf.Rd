@@ -5,14 +5,17 @@
 \alias{format_rolf}
 \title{rOstluft long format (rolf)}
 \usage{
-format_rolf()
+format_rolf(tz = "Etc/GMT-1")
+}
+\arguments{
+\item{tz}{time zone used for chunking.  Default Etc/GMT-1}
 }
 \value{
 R6 class object of format_rolf
 }
 \description{
-Data format for storing air quality data. A Serie is the combination of measurement site, interval, parameter
-and unit.
+Data format for storing air quality data. A Serie is the combination of measurement site, interval,
+parameter and unit.
 
 The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters
 }
@@ -30,6 +33,9 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
 \item{\code{unique_columns}}{= index + serie_columns}
 
 \item{\code{content_columns}}{= serie_columns + names(chunk_calc)}
+
+\item{\code{tz}}{time zone used for chunking. Same time different chunk:
+2018-01-01T00:00:00+0100 = 2018, 2017-12-31T23:00:00+0000 = 2017}
 }}
 
 \section{Methods}{
@@ -37,7 +43,7 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
 
 \code{$sort(data)}
 
-\code{$merge(old_data, new_data)}
+\code{$merge(new_data, old_data)}
 
 \code{$chunk_name(chunk_data)} returns the chunkname based on the first row of the supplied data
 

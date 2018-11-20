@@ -16,3 +16,134 @@ s3_bucket_content <- function() {
 s3_bucket_content_datastore <- function() {
   aws.s3::get_bucket("rostluft", region="eu-central-1", prefix = "datastore")
 }
+
+
+r6_storage_s3 <- R6::R6Class(
+  "storage_s3",
+  public = list(
+    format = NULL,
+    name = NULL,
+    bucket = NULL,
+    prefix = NULL,
+    region = NULL,
+    path = NULL,
+    data_path = NULL,
+    data_s3 = NULL,
+    meta_path = NULL,
+    meta_s3 = NULL,
+    content_path = NULL,
+    content_s3 = NULL,
+    read.only = TRUE,
+    ext = NULL,
+    read_function = NULL,
+    write_function = NULL,
+
+    initialize = function(name, format, bucket, prefix, region = NULL, path = NULL, read.only = TRUE,
+                          ext = "rds", read_function = readRDS, write_function = saveRDS) {
+      if (is.null(path)) {
+        path <- rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")
+      } else {
+        path <- fs::path_abs(path)
+      }
+
+      self$name <- name
+      self$format <- format
+      self$bucket <- bucket
+      self$prefix <- prefix
+      self$region <- region
+      self$path <- path
+      self$ext <- ext
+      self$read_function <- read_function
+      self$write_function <- write_function
+      self$data_path <- fs::path(path, "data")
+      self$data_s3 <- fs::path(prefix, "data")
+      self$content_path <- fs::path(path, "content", ext = ext)
+      self$content_s3 <- fs::path(prefix, "content", ext = ext)
+      self$meta_path <- fs::path(path, "meta")
+      self$meta_s3 <- fs::path(prefix, "meta")
+      self$read.only <- read.only
+
+      if (!fs::dir_exists(self$data_path)) {
+        fs::dir_create(self$data_path, recursive = TRUE)
+        fs::dir_create(self$meta_path, recursive = TRUE)
+        message(sprintf("store %s initialized under '%s'", self$name, self$path))
+      }
+
+      invisible(self)
+    },
+    put = function(data) {
+      stop(ReadOnlyStore(self$name))
+    },
+    get = function(filter = NULL, overwrite_cache = FALSE, ...) {
+      filter <- enquo(filter)
+      files <- self$format$get_chunk_names(...)
+      files <- dplyr::mutate(files, chunk_path = self$get_chunk_path(.data$chunk_name))
+
+      files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))
+
+      if (isTRUE(overwrite_cache)) {
+        download <- files
+      } else {
+        download <- dplyr::filter(files, .data$exists == FALSE)
+      }
+
+      purrr::map(download$chunk_name, self$download_chunk)
+
+      files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))
+      files <- dplyr::filter(files, .data$exists == TRUE)
+
+      chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
+      purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
+    },
+    sync = function() {
+
+
+
+    },
+    download_chunk = function(chunk_name) {
+      chunk_url <- self$get_chunk_url(chunk_name)
+      chunk_path <- self$get_chunk_path(chunk_name)
+      if (aws.s3::object_exists(chunk_url, bucket = self$bucket, region = self$region)) {
+        aws.s3::save_object(chunk_url, bucket = self$bucket, file = chunk_path, region = self$region)
+      }
+    },
+    get_chunk_path = function(chunk_name) {
+      fs::path(self$data_path, chunk_name, ext = self$ext)
+    },
+    get_chunk_url = function(chunk_name) {
+      fs::path(self$data_s3, chunk_name, ext = self$ext)
+    },
+    merge_chunk = function(chunk_data) {
+      stop(ReadOnlyStore(self$name))
+    },
+    list_chunks = function() {
+      stop("Not Supported by this storage")
+    },
+    get_content = function() {
+      if (aws.s3::object_exists(self$content_s3, bucket = self$bucket, region = self$region)) {
+        aws.s3::save_object(self$content_s3, bucket = self$bucket, file = self$content_path, region = self$region)
+      } else {
+        content <- NULL
+        warning(paste0("No content file available for ", self$name))
+      }
+      content
+    },
+    destroy = function(confirmation = "NO") {
+      if (confirmation == "DELETE") {
+        fs::dir_delete(self$path)
+        message(sprintf("Cache for Store %s destroyed", self$name))
+      } else {
+        warning("Store still alive: wrong confirmation phrase")
+      }
+    }
+  ),
+  private = list(
+    read_chunk = function(chunk_path, filter) {
+      chunk <- self$read_function(chunk_path)
+      if (!rlang::quo_is_null(filter)) {
+        chunk <-  dplyr::filter(chunk, !!!filter)
+      }
+      chunk
+    }
+  )
+)

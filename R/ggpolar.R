@@ -1,3 +1,4 @@
+
 #' Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar()
 #'
 #' @param y object for cutting to be applied

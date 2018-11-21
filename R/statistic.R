@@ -140,6 +140,6 @@ get_statistic_percentile <- function(percentile) {
     stop("percentile outside 0 - 1.0")
   }
   function(x) {
-    stats::quantile(x, probs = percentile , na.rm = TRUE)
+    stats::quantile(x, probs = percentile, na.rm = TRUE)
   }
 }

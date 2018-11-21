@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
@@ -61,6 +61,6 @@ Remotes:
     Ostluft/rOstluft.data
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 URL: https://github.com/Ostluft/rOstluft
 BugReports: https://github.com/Ostluft/rOstluft/issues

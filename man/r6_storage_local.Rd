@@ -24,15 +24,6 @@ Defaults to \link[rappdirs:user_data_dir]{rappdirs::user_data_dir(appname = name
 
 \item{tz}{time zone for POSIXct's columns. Data is stored in UTC. Converted while reading. It is important, that
 the input data has the same time zone. Default "Etc/GMT-1"}
-
-\item{name}{name of the store}
-
-\item{format}{data format of the store}
-
-\item{path}{optional path to create the store under.
-Defaults to \link[rappdirs:user_data_dir]{rappdirs::user_data_dir(appname = name, appauthor = "rOstluft")}}
-
-\item{read.only}{read only store. disable put, if false and the store doesn't exist, the store will be initiated}
 }
 \value{
 R6 class object of r6_storage_local
@@ -81,10 +72,17 @@ argument is applied to each chunk.
 confirmation
 }
 
+\section{storage_local_tsv}{
+
+
+This Storage is mainly for debugging purpose or sharing data with another scripting/programming language.
+\emph{Warning}: Slow and doesn't support logical data type.
+}
+
 \examples{
 ## init store, creates directory if necessary
-rolf <- rOstluft::format_rolf()
-store <- rOstluft::storage_local_rds("example_rOstluft", rolf, read.only = FALSE)
+format <- rOstluft::format_rolf()
+store <- rOstluft::storage_local_rds("example_rOstluft", format, read.only = FALSE)
 
 ## read data from airmo export und put into the store
 fn <- system.file("extdata", "Zch_Stampfenbachstrasse_2010-2014.csv",
@@ -98,10 +96,11 @@ df <- rOstluft::read_airmo_csv(fn)
 store$put(df)
 
 ## get all data min30 for 2011 and 2012
-store$get(site="Zch_Stampfenbachstrasse", interval="min30", year=2011:2012)
+store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
 
 ## get only data for O3
-store$get(year=2011:2012, site="Zch_Stampfenbachstrasse", interval="min30", filter = parameter == "O3")
+store$get(year = 2011:2012, site = "Zch_Stampfenbachstrasse", interval = "min30",
+          filter = parameter == "O3")
 
 ## get NOx data from multiple stations
 store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30",

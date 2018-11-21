@@ -68,7 +68,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL) {
   colnames(data)[1] <- "starttime"
 
-  header_names <- lapply(header, paste, collapse = "»")
+  header_names <- lapply(header, paste, collapse = "\u00bb")
   colnames(data)[-1] <- header_names
 
   data[["starttime"]] <- lubridate::parse_date_time(data[["starttime"]], c("dmYHMS", "dmYHM", "dmY"), tz = tz)
@@ -77,6 +77,6 @@ airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL
   }
   data_long <- tidyr::gather(data, "key", "value", -"starttime", na.rm = TRUE)
   data_long[["value"]] <- as.numeric(data_long[["value"]])
-  data_long <- tidyr::separate(data_long, "key", c("site", "parameter", "interval", "unit"), sep = "»")
+  data_long <- tidyr::separate(data_long, "key", c("site", "parameter", "interval", "unit"), sep = "\u00bb")
   dplyr::mutate_if(data_long, is.character, as.factor)
 }

@@ -44,7 +44,8 @@ Imports:
     reticulate,
     ncdf4,
     ncdf4.helpers,
-    PCICt
+    PCICt,
+    aws.s3
 Suggests:
     knitr,
     rmarkdown,

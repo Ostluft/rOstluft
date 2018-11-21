@@ -29,7 +29,23 @@ Imports:
     openair,
     rlang (>= 0.1.2),
     magrittr,
-    rOstluft.data
+    rOstluft.data,
+    ggproto,
+    ggplot2,
+    viridis,
+    splitR,
+    xts,
+    MASS,
+    mcr,
+    mapdata,
+    ggrepel,
+    stringi,
+    RColorBrewer,
+    reticulate,
+    ncdf4,
+    ncdf4.helpers,
+    PCICt,
+    aws.s3
 Suggests:
     knitr,
     rmarkdown,
@@ -37,7 +53,8 @@ Suggests:
     pkgdown,
     lintr,
     styler,
-    roxygen2
+    roxygen2,
+    ggedit
 Remotes:
     jimhester/lintr,
     r-lib/styler,

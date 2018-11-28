@@ -37,6 +37,7 @@ r6_storage_s3 <- R6::R6Class(
     ext = NULL,
     read_function = NULL,
     write_function = NULL,
+    verbose = NULL,
 
     initialize = function(name, format, bucket, prefix, region = NULL, path = NULL, read.only = TRUE,
                           ext = "rds", read_function = readRDS, write_function = saveRDS) {
@@ -72,7 +73,7 @@ r6_storage_s3 <- R6::R6Class(
       invisible(self)
     },
     put = function(data) {
-      stop(ReadOnlyStore(self$name))
+      stop("Not yet implemented")
     },
     get = function(filter = NULL, overwrite_cache = FALSE, ...) {
       filter <- enquo(filter)
@@ -95,10 +96,29 @@ r6_storage_s3 <- R6::R6Class(
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
       purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
     },
-    sync = function() {
+    upload = function() {
+      stop("Not yet implemented")
+      chunks <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
+      chunks <- dplyr::select(chunks, "path", "modification_time", "change_time","birth_time", "size")
+      chunks <- dplyr::mutate(chunks, chunk_rel = fs::path_rel(.data$path, self$data_path))
+      chunks <- dplyr::mutate(chunks,
+                              chunk_name = fs::path_ext_remove(chunk_rel),
+                              chunk_s3 = fs::path(self$data_s3, chunk_rel)
+      )
+      chunks <- chunks[21:NROW(chunks), ]
+
+      # chunks_s3 <- aws.s3::get_bucket(self$bucket, prefix = self$data_s3, max = Inf)
+      # chunks_s3 <- purrr::map_dfr(chunks_s3,  `[`, c("Key", "ETag", "LastModified"))
+      # chunks_s3 <- dplyr::bind_rows(purrr::map_dfr(chunks_s3, purrr::flatten))
 
 
+      put_s3 <- function(path, chunk_s3, ...) {
+        aws.s3::put_object(path, chunk_s3, self$bucket, region = self$region, show_progress = TRUE, verbose = TRUE)
+      }
 
+      #purrr::pmap(chunks, put_s3)
+
+      aws.s3::put_object(self$content_path, self$content_s3, self$bucket, region = self$region, show_progress = TRUE, verbose = TRUE)
     },
     download_chunk = function(chunk_name) {
       chunk_url <- self$get_chunk_url(chunk_name)
@@ -107,6 +127,7 @@ r6_storage_s3 <- R6::R6Class(
         aws.s3::save_object(chunk_url, bucket = self$bucket, file = chunk_path, region = self$region)
       }
     },
+
     get_chunk_path = function(chunk_name) {
       fs::path(self$data_path, chunk_name, ext = self$ext)
     },
@@ -114,14 +135,38 @@ r6_storage_s3 <- R6::R6Class(
       fs::path(self$data_s3, chunk_name, ext = self$ext)
     },
     merge_chunk = function(chunk_data) {
-      stop(ReadOnlyStore(self$name))
+      stop("Not yet implemented")
     },
     list_chunks = function() {
-      stop("Not Supported by this storage")
+      chunks_s3 <- aws.s3::get_bucket(self$bucket, prefix = self$data_s3, max = Inf)
+      chunks_s3 <- dplyr::bind_rows(purrr::map_dfr(chunks_s3, purrr::flatten))
+
+      # fix etag surrounded by ""
+      if (stringi::stri_length(chunks_s3$ETag[[1]]) == 34) {
+        chunks_s3 <- dplyr::mutate(chunks_s3, ETag = stringi::stri_sub(.data$ETag, 2, -2))
+      }
+
+      chunks_s3 <- dplyr::rename_all(chunks_s3, .funs = dplyr::funs(paste0("s3.", stringi::stri_trans_tolower(.))))
+      chunks_s3 <- dplyr::mutate(chunks_s3, chunk_name = fs::path_ext_remove(fs::path_rel(.data$s3.key, self$data_s3)),
+                                 s3.size = fs::as_fs_bytes(.data$s3.size))
+      chunks_s3 <- dplyr::select(chunks_s3, .data$chunk_name, dplyr::everything())
+
+      chunks_local <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
+      chunks_local <- dplyr::select(chunks_local, "path", "modification_time", "size")
+      chunks_local <- dplyr::rename_all(chunks_local, .funs = dplyr::funs(paste0("local.",.)))
+      chunks_local <- dplyr::mutate(chunks_local,
+                                    chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
+
+
+      chunks <- dplyr::full_join(chunks_s3, chunks_local, by="chunk_name")
+      chunk_vars <- purrr::map_dfr(chunks$chunk_name, self$format$decode_chunk_name)
+      dplyr::bind_cols(chunk_vars, dplyr::select(chunks, -"chunk_name"))
     },
     get_content = function() {
+      # TODO caching content?
       if (aws.s3::object_exists(self$content_s3, bucket = self$bucket, region = self$region)) {
         aws.s3::save_object(self$content_s3, bucket = self$bucket, file = self$content_path, region = self$region)
+        content <- self$read_function(self$content_path)
       } else {
         content <- NULL
         warning(paste0("No content file available for ", self$name))
@@ -145,5 +190,21 @@ r6_storage_s3 <- R6::R6Class(
       }
       chunk
     }
+
   )
 )
+
+
+
+test <- function() {
+  format <- format_rolf()
+  store <- r6_storage_s3$new("test_import", format, "rostluft", "datastore")
+  store$upload()
+}
+
+get_store <- function() {
+  format <- format_rolf()
+  r6_storage_s3$new("test_s3", format, "rostluft", "datastore")
+}
+
+

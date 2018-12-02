@@ -45,7 +45,8 @@ Imports:
     ncdf4,
     ncdf4.helpers,
     PCICt,
-    aws.s3
+    aws.s3,
+    sp
 Suggests:
     knitr,
     rmarkdown,

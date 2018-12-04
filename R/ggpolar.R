@@ -61,6 +61,44 @@ coord_radar <- function (theta = "x", start = 0, direction = 1, ...) {
 #' @return ggplot2-graph object (=> can be further modified subsequently, e.g. overwriting scale_colour or applying facetting)
 #'
 #' @keywords plotting
+#'
+#' @examples
+#' library(rOstluft)
+#' library(rOstluft.data)
+#' files <- list.files(system.file("extdata", package = "rOstluft.data"))
+#' df <- read_airmo_csv(list.files(system.file("extdata", package = "rOstluft.data"), full.names = TRUE)[files == "Zch_Stampfenbachstrasse_2010-2014.csv"]) %>%
+#'   dplyr::select(-unit, -site, -interval) %>%
+#'   spread(parameter, value) %>%
+#'   dplyr::rename(date = starttime) %>%
+#'   openair::cutData(type = "daylight") %>%
+#'   openair::cutData(type = c("hour", "season"))
+#' str(df)
+#'
+#' #' Varianten von Windverteilungen
+#' ggpolar(df, wd = "WD", y = "WVv", stat = "count", group = NULL, y_cap = 3.5, y_cuts = list(cutwidth = 0.5))
+#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 3.5, y_cuts = list(cutwidth = 0.5)) + scale_fill_brewer(name = "WVv", palette = "RdYlBu", direction = -1)
+#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(nclass = 6), border_bar = NA) + facet_grid(season~daylight, switch = "y")
+#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(cutwidth = 1), border_bar = NA) + facet_wrap(season~., ncol = 2)
+#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(cutwidth = 1), border_bar = NA) + facet_wrap(hour~., ncol = 6) + theme(panel.grid = element_blank())
+#' ggpolar(df, wd = "WD", y = "WVv", stat = "max", fun.args = list(na.rm = TRUE)) + theme_bw()
+#' ggpolar(df, wd = "WD", y = "WVv", stat = "median") + theme(panel.grid = element_blank())
+#' ggpolar(df, wd = "WD", y = "WVv", stat = "median") + theme(panel.grid.major.x = element_line())
+#' ggpolar(df, wd = "WD", y = "WVv", stat = "sd")
+#' ggpolar(df, wd = "WD", y = "WVv", group = "daylight", stat = "quantile", fun.args = list(na.rm = TRUE, probs = 0.9))
+#' ggpolar(df, wd = "WD", y = "WVv", wd_cutwidth = 10, geom = "radar", stat = "mean", group = "daylight")
+#' ggpolar(df, wd = "WD", y = "WVv", wd_cutwidth = 10, geom = "radar", stat = "count", group = NULL, y_cap = 3.5, y_cuts = list(cutwidth = 1), radar_opacity = 0) + theme(panel.grid = element_blank())
+#'
+#' #' Schadstoff-Verteilung anstatt Windstärke
+#' ggpolar(df, wd = "WD", y = "NO2", y_cap = 75, y_cuts = list(cutwidth = 10), border_bar = NA) + theme(panel.grid = element_blank())
+#' ggpolar(df, wd = "WD", y = "NO2", y_cap = 75, y_cuts = list(nclass = 6), border_bar = NA) + facet_grid(season~daylight, switch = "y") + theme(panel.grid = element_blank())
+#'
+#' #' Quellenbezüge werden mit Fracht-Rosen unter Umstaenden besser hervorgehoben
+#' ggpolar(mutate(df, PM10_Fracht = WVv * pmax(0, PM10)), wd = "WD", y = "PM10_Fracht", y_cap = 71, y_cuts = list(cutwidth = 10), border_bar = NA) + theme(panel.grid = element_blank())
+#' ggpolar(mutate(df, PM10_Fracht = WVv * pmax(0, PM10)), wd = "WD", y = "PM10_Fracht", wd_cutwidth = 10, geom = "radar", stat = "quantile", fun.args = list(na.rm = TRUE, probs = 0.75), group = "season", radar_opacity = 0) + theme(axis.text.y = element_text(), axis.ticks.y = element_line()) + scale_color_viridis(discrete = TRUE)
+#'
+#' #' Plotte Windrose auf Kartenausschnitt
+#' #' ...kommt noch
+
 ggpolar <- function(df, wd, y, z = NULL, stat = "count", geom = "bar", group = NULL, wd_cutwidth = 20, y_cuts = list(nclass = 5),
                     y_boundary = 0, y_cap = Inf, dig.lab = 1, border_bar = "white", radar_opacity = 0.2, ...) {
 
@@ -137,49 +175,4 @@ ggpolar <- function(df, wd, y, z = NULL, stat = "count", geom = "bar", group = N
     )
 
 }
-
-
-# Bsp
-#' library(rOstluft)
-#' library(rOstluft.data)
-#' files <- list.files(system.file("extdata", package = "rOstluft.data"))
-#' df <- read_airmo_csv(list.files(system.file("extdata", package = "rOstluft.data"), full.names = TRUE)[files == "Zch_Stampfenbachstrasse_2010-2014.csv"]) %>%
-#'   dplyr::select(-einheit, -station, -intervall) %>%
-#'   spread(parameter, wert) %>%
-#'   dplyr::rename(date = startzeit) %>%
-#'   openair::cutData(type = "daylight") %>%
-#'   openair::cutData(type = c("hour", "season"))
-#' str(df)
-#'
-#' #' Varianten von Windverteilungen
-#' ggpolar(df, wd = "WD", y = "WVv", stat = "count", group = NULL, y_cap = 3.5, y_cuts = list(cutwidth = 0.5))
-#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 3.5, y_cuts = list(cutwidth = 0.5)) + scale_fill_brewer(name = "WVv", palette = "RdYlBu", direction = -1)
-#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(nclass = 6), border_bar = NA) + facet_grid(season~daylight, switch = "y")
-#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(cutwidth = 1), border_bar = NA) + facet_wrap(season~., ncol = 2)
-#' ggpolar(df, wd = "WD", y = "WVv", y_cap = 4.5, y_cuts = list(cutwidth = 1), border_bar = NA) + facet_wrap(hour~., ncol = 6) + theme(panel.grid = element_blank())
-#' ggpolar(df, wd = "WD", y = "WVv", stat = "max", fun.args = list(na.rm = TRUE)) + theme_bw()
-#' ggpolar(df, wd = "WD", y = "WVv", stat = "median") + theme(panel.grid = element_blank())
-#' ggpolar(df, wd = "WD", y = "WVv", stat = "median") + theme(panel.grid.major.x = element_line())
-#' ggpolar(df, wd = "WD", y = "WVv", stat = "sd")
-#' ggpolar(df, wd = "WD", y = "WVv", group = "daylight", stat = "quantile", fun.args = list(na.rm = TRUE, probs = 0.9))
-#' ggpolar(df, wd = "WD", y = "WVv", wd_cutwidth = 10, geom = "radar", stat = "mean", group = "daylight")
-#' ggpolar(df, wd = "WD", y = "WVv", wd_cutwidth = 10, geom = "radar", stat = "count", group = NULL, y_cap = 3.5, y_cuts = list(cutwidth = 1), radar_opacity = 0) + theme(panel.grid = element_blank())
-#'
-#' #' Schadstoff-Verteilung anstatt Windstärke
-#' ggpolar(df, wd = "WD", y = "NO2", y_cap = 75, y_cuts = list(cutwidth = 10), border_bar = NA) + theme(panel.grid = element_blank())
-#' ggpolar(df, wd = "WD", y = "NO2", y_cap = 75, y_cuts = list(nclass = 6), border_bar = NA) + facet_grid(season~daylight, switch = "y") + theme(panel.grid = element_blank())
-#'
-#' #' Quellenbezüge werden mit Fracht-Rosen unter Umstaenden besser hervorgehoben
-#' ggpolar(mutate(df, PM10_Fracht = WVv * pmax(0, PM10)), wd = "WD", y = "PM10_Fracht", y_cap = 71, y_cuts = list(cutwidth = 10), border_bar = NA) + theme(panel.grid = element_blank())
-#' ggpolar(mutate(df, PM10_Fracht = WVv * pmax(0, PM10)), wd = "WD", y = "PM10_Fracht", wd_cutwidth = 10, geom = "radar", stat = "quantile", fun.args = list(na.rm = TRUE, probs = 0.75), group = "season", radar_opacity = 0) + theme(axis.text.y = element_text(), axis.ticks.y = element_line()) + scale_color_viridis(discrete = TRUE)
-#'
-#' #' Plotte Windrose auf Kartenausschnitt
-#' #' ...kommt noch
-
-
-
-
-
-
-
 

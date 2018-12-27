@@ -29,6 +29,8 @@ statistic_fun_factory <- function(statistic, threshold = NULL, percentile = 95) 
                             "min" = statistic_min,
                             "data.cap" = statistic_data.cap,
                             "percentile" = get_statistic_percentile(percentile),
+                            "vector.avg.ws" = statistic_vector_average_ws,
+                            "vector.avg.wd" = statistic_vector_average_wd,
                             NULL
     )
   }
@@ -143,3 +145,21 @@ get_statistic_percentile <- function(percentile) {
     stats::quantile(x, probs = percentile, na.rm = TRUE)
   }
 }
+
+#' @rdname statistic_fun
+#' @keywords internal
+statistic_vector_average_ws <- function(ws, wd) {
+  Uu <- mean(ws * sin(2 * pi * wd / 360), na.rm = TRUE) # borrowed from openair::timeAverage, modified
+  Vv <- mean(ws * cos(2 * pi * wd / 360), na.rm = TRUE)
+  sqrt((Uu^2 + Vv^2))
+}
+
+#' @rdname statistic_fun
+#' @keywords internal
+statistic_vector_average_wd <- function(ws, wd) {
+  Uu <- mean(ws * sin(2 * pi * wd / 360), na.rm = TRUE)   # borrowed from openair::timeAverage, modified
+  Vv <- mean(ws * cos(2 * pi * wd / 360), na.rm = TRUE)
+  (atan2(Uu, Vv) * 360 / 2 / pi) %% 360
+}
+
+

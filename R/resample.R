@@ -7,20 +7,10 @@
 #'   - apply statistical method or user provides function (user can provide list per parameter)
 #' * combine resampled series
 #'
-#' @section TODO Wind :
-#' Need a solution for wind vectoring ... this isn't as simple. probably need group all wind and non
-#' wind parameters. Handle wind like now and do something special with the wind vars. One possible to
-#' group:
-#' ```
-#' dg <- dplyr::group_by(data, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
-#' tidyr::nest()
-#' A tibble: 2 x 2
-#'  isWind data
-#'  <lgl>  <list>
-#'  1 FALSE  <tibble [208,344 x 6]>
-#'  2 TRUE   <tibble [35,037 x 6]>
-#' ```
-#' This was the easy part :P. now join the wind data, calc vector mean and return.
+#' @section TODO Wind:
+#' Code optimieren ?
+#' sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und korrektes bind_rows mit Faktoren
+#' (Deine bind_rows_with... spuckt die Zahl aus, nicht einen Faktor, in meinem Fall)
 #'
 #' @param data A tibble in rOstluft long format
 #' @param new_interval New interval. Must be longer than actual interval (not checked)
@@ -40,7 +30,7 @@
 #'
 #' @return tibble with resampled data
 #' @export
-resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
+resample <- function(data, new_interval, statistic = list("WVv" = "vector.avg.ws", "WVs" = "vector.avg.ws", "WD" = "vector.avg.wd"), data.thresh = NULL,
                      start.date = NULL, end.date = NULL, drop.last = FALSE,
                      percentile = 95) {
 
@@ -56,30 +46,58 @@ resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
     }
   }
 
+  # separate wind data from rest, if (per default) vector averages are required and treat wind data differently (! assumption: WD always in °)
+  if (any(stringr::str_detect(statistic, "vector.avg"))) {
+    data <- split_data(data, parameters = names(statistic[stringr::str_detect(statistic, "vector.avg")]))
+    wind.data <- restructure_wind(data$in.data)
+    wind.data.grouped <- dplyr::group_by(wind.data, .data$site, .data$parameter, .data$interval, .data$unit)
+    wind.data.grouped.ws <- dplyr::do(wind.data.grouped, resample_series(
+      .data, new_interval, get_statistic_for_serie(dplyr::first(.data$parameter)), c("value", "WD"),
+      start.date, end.date, data.thresh, drop.last, percentile
+    ))
+    wind.data.grouped.wd <- dplyr::do(mutate(wind.data.grouped, parameter2 = "WD"), resample_series(
+      .data, new_interval, get_statistic_for_serie(dplyr::first(.data$parameter2)), c("value", "WD"),
+      start.date, end.date, data.thresh, drop.last, percentile
+    )) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        parameter = "WD",
+        unit = "°"
+      )
+    wind.data.grouped <- dplyr::bind_rows(wind.data.grouped.ws, wind.data.grouped.wd)
+    data <- data$out.data
+  } else {
+    wind.data.grouped <- NULL
+  }
+
+  # treat skalar data as intended
   data.grouped <- dplyr::group_by(data, .data$site, .data$parameter, .data$interval, .data$unit)
   data.grouped <- dplyr::do(data.grouped, resample_series(
-    .data, new_interval, get_statistic_for_serie(dplyr::first(.data$parameter)),
+    .data, new_interval, get_statistic_for_serie(dplyr::first(.data$parameter)), "value",
     start.date, end.date, data.thresh, drop.last, percentile
   ))
-  dplyr::ungroup(data.grouped)
+
+  dplyr::ungroup(dplyr::bind_rows(data.grouped, wind.data.grouped))
 }
 
 
-# resample_wind <- function(data, new_interval, ...) {
-#
-#   data.grouped <- dplyr::group_by(data, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
-#   data.grouped <- tidyr::nest(data.grouped)
-#
-#   data.grouped <- tibble::deframe(data.grouped)
-#
-#   wind_vectoring(data.grouped[["TRUE"]], new_interval)
-#
-#
-# }
-#
-# wind_vectoring <- function(data, new_interval, ...) {
-#   data
-# }
+
+split_data <- function(data, parameters = c("WD", "WVv", "WVs")) {
+  data.grouped <- dplyr::group_by(data, isParameter= .data$parameter %in% parameters)
+  data.grouped <- tidyr::nest(data.grouped)
+  data.grouped <- tibble::deframe(data.grouped)
+  return(list(out.data = data.grouped[["FALSE"]], in.data = data.grouped[["TRUE"]]))
+}
+
+
+
+restructure_wind <- function(wind.data, ...) {
+  wind.data <- split_data(wind.data, "WD")
+  wd.data <- tidyr::spread(wind.data[["in.data"]], parameter, value)
+  wd.data <- dplyr::filter(wd.data, unit == "°")
+  wind.data <- left_join(wind.data[["out.data"]], dplyr::select(wd.data, -unit), by = c("starttime", "site", "interval"))
+}
+
 
 
 #' @title resampling a serie
@@ -87,7 +105,7 @@ resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
 #'
 #' @rdname resample
 #' @export
-resample_series <- function(serie, new_interval, statistic = "mean", data.thresh = NULL,
+resample_series <- function(serie, new_interval, statistic = "mean", at = "value", data.thresh = NULL,
                             start.date = NULL, end.date = NULL, drop.last = FALSE,
                             percentile = 95) {
 
@@ -109,11 +127,11 @@ resample_series <- function(serie, new_interval, statistic = "mean", data.thresh
 
 
   serie <- dplyr::group_by(serie,
-                            starttime = lubridate::floor_date(.data$starttime, interval.converted),
-                            .data$site, .data$parameter, .data$interval, .data$unit
+                           starttime = lubridate::floor_date(.data$starttime, interval.converted),
+                           .data$site, .data$parameter, .data$interval, .data$unit
   )
   FUN <- statistic_fun_factory(statistic, data.thresh, percentile)
-  serie <- dplyr::summarise_at(serie, "value", FUN)
+  serie <- dplyr::summarise(serie, value = FUN(!!! syms(at)))
   serie <- dplyr::ungroup(serie) # needed if we called resample_serie with grouped series
   dplyr::mutate(serie, interval = new_interval)
 }

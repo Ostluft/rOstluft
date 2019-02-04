@@ -28,9 +28,11 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
   startdate <- substring(startdate, 23, 32)
   df <-
     readr::read_table2(x, skip = header + 1, col_names = c("time", pars$parameter_original),
-                       na = c("99999.0", "9999.0", "-320"), skip_empty_rows = TRUE, locale = locale(encoding = encoding)) %>%
+                       na = c("99999", "99999.0", "9999.0", "99999.00", "9999.00", "-320", "-320.0", "-320.00"),
+                       skip_empty_rows = TRUE, locale = locale(encoding = encoding)) %>%
     mutate_all(as.numeric) %>%
     mutate(date = startdate) %>%
+    dplyr::filter(time %% 10 == 0) %>%
     gather(parameter_original, val, - date, -time) %>%
     mutate(
       starttime = as.POSIXct(as.Date(date) + as.difftime(time, units = "mins"), tz = timezone),

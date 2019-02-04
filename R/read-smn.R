@@ -4,7 +4,7 @@
 #'
 #' @param file Either a path to a file, a connection, or literal data. see [readr::read_delim()]
 #' @param encoding file encoding. Default "UTF-8"
-#' @param timezone time zone of date fields. Be carefull Etc/GMT + == -. Default "UTC"
+#' @param timezone time zone of date fields. Be carefull Etc/GMT + == -. Default "Etc/GMT"
 #'
 #' @return data frame in rOstluft long format
 #'
@@ -12,7 +12,7 @@
 #' @seealso [base::timezones] - Information about time zones in R
 #'
 #' @export
-read_meteoschweiz_smn <- function(x, timezone = "UTC", encoding = "UTF-8", time_format = "%Y%m%d%H%M") {
+read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", time_format = "%Y%m%d%H%M") {
   lines <- readr::read_lines(x)
   lines <- lines[lines != ""]
   skip <- which(stringr::str_detect(lines, "time"))

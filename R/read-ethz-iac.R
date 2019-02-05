@@ -33,7 +33,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
     mutate_all(as.numeric) %>%
     mutate(date = startdate) %>%
     dplyr::filter(time %% 10 == 0) %>%
-    gather(parameter_original, val, - date, -time) %>%
+    gather(parameter_original, value, - date, -time) %>%
     mutate(
       starttime = as.POSIXct(as.Date(date) + as.difftime(time, units = "mins"), tz = timezone),
       interval = "min10",

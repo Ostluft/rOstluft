@@ -36,7 +36,7 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
                        n_max =  c(skip, Inf)[y + 1] - 2 - skip[y], skip_empty_rows = TRUE) %>%
       dplyr::slice(skip2) %>%
       mutate_at(-id_cols, as.numeric) %>%
-      gather(parameter_original, val, -id_cols) %>%
+      gather(parameter_original, value, -id_cols) %>%
       mutate(
         starttime = fast_strptime(time, format = time_format, lt = FALSE, tz = timezone),
         unit = plyr::revalue(parameter_original, units)

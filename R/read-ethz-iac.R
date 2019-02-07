@@ -40,7 +40,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
       site_short = site,
       unit = plyr::revalue(parameter_original, setNames(pars$unit, pars$parameter_original))
     ) %>%
-    dplyr::select(-date)
+    dplyr::select(-date, -time)
   return(df)
 }
 

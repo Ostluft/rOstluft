@@ -20,13 +20,18 @@ devtools::install_github("Ostluft/rOstluft")
 
 # Einrichten Entwicklungsumgebung
 
-Den Quellcode mit git auschecken:
+Den Quellcode mit [git](https://git-scm.com/) auschecken:
 
 ```{bash eval=FALSE}
 git clone https://github.com/Ostluft/rOstluft.git
 ```
 
-Danach das Projekt in RStudio öffnen und folgende Befehle in der Konsole ausführen:
+Alternativ kann das Projekt über den New Project Wizard im RStudio initialisiert werden:
+
+File > New Project... > Version Control > Git >  Repository URL = https://github.com/Ostluft/rOstluft.git
+
+Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole im Rstudio (wenn das Projekt geöffnet ist):
+
 
 ```{r eval=FALSE, include=TRUE}
 #install.packages("devtools")

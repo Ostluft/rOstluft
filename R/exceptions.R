@@ -21,3 +21,12 @@ FunctionNotSupported <- function(name, path) {
                  call = NULL),
             class = c("FunctionNotSupported", "error", "condition"))
 }
+
+
+MetaKeyNotFound <- function(name, key) {
+  structure(list(name = name,
+                 key = key,
+                 message = sprintf("Key %s not found for store %s", key, name),
+                 call = NULL),
+            class = c("MetaKeyNotFound", "error", "condition"))
+}

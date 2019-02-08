@@ -1,0 +1,139 @@
+---
+title: "[GER] AWS S3"
+author: "Thomas von Allmen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AWS S3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Einleitung
+
+Amazon S3 dient als zentrale Ablage für den Erweiterten Standarddatensatz von Ostluft. Der Zugriff auf die Daten erfolgt 
+über das r Package rOstluft. Mehr Informationen zu Amazon S3 findet man auf der 
+[offizielen Seite](https://aws.amazon.com/s3/). 
+
+Die Daten werden im Bucket _rostluft_ abgelegt. Aus Lizenztechnischen Gründen kann das Bucket nicht öffentlich 
+zugänglich gemacht werden. Die Zugangsdaten werden von Jörg Sintermann vergeben. Die Zugangsdaten werden am einfachsten 
+über eine .Renvirion Datei im Verzeichnis des RStudio Projekts dem Package zugänglich gemacht. Weitere Möglichkeiten 
+sind in der Dokumentation von [aws.signature](https://github.com/cloudyr/aws.signature/) zu finden.
+
+Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden 
+Zugriff wird nur überprüft, ob die Daten noch identisch sind.
+
+# Daten abfragen
+
+Zuerst wird der Storage initialisiert:
+
+```{r}
+store <-  rOstluft::storage_s3_rds("ol_esd", rOstluft::format_rolf(), "rostluft")
+```
+
+Um einen Überblick zu erhalten was alles im Storage enthalten ist, kann die Funktion `$get_content()` verwendet werden. 
+Diese gibt einen Tibble mit den Anzahl Messwerten für jede Station, Parameter, Mittelungszeitraum pro Jahr zurück:
+
+```{r}
+dplyr::sample_n(store$get_content(), 10)
+```
+
+Für den Zugriff auf die Daten wird die Funktion `$get()` verwendet. Die Daten sind nach Station (site), 
+Mittelungszeitraum (interval) und Jahre (year) aufgeteilt. Diese drei Parameter müssen immer als Argument an die 
+Funktion `$get()` übergeben werden. Zusätzlich kann mit dem Argument filter noch ein dplyr::filter Ausdruck übergeben 
+werden.
+
+```{r}
+## Daten für eine Station und ein Jahr
+store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
+
+## Daten für mehrere Stationen und Jahre
+store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
+
+## Argumente als Variablen, nur Stickstoff Parameter
+sites <- c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse")
+years <- 2014:2016
+interval <- "min30"
+store$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
+
+## Nur die Ozon Daten an einer Station und grösser 60
+store$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
+          filter = parameter == "O3" & value > 60)
+
+```
+
+# Lokal arbeiten
+
+Hat man sämtliche Daten bereits von Amazon S3 lokal gecached, kann zur Performance Steigerung oder wenn keine 
+Netzwerkverbindung vorhanden ist, ein lokaler Storage verwendet werden um auf den Cache zuzugreifen:
+
+```{r}
+local <- store$get_local_storage()
+```
+
+Der Zugriff erfolgt identisch über `$get()`:
+
+```{r}
+## Daten für eine Station und ein Jahr
+local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
+
+## Daten für mehrere Stationen und Jahre
+local$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
+
+## Argumente als Variablen, nur Stickstoff Parameter
+local$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
+
+## Nur die Ozon Daten an einer Station und grösser 60
+local$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
+          filter = parameter == "O3" & value > 60)
+
+```
+
+Um die Vorbereitung lokal zu arbeiten zu erleichtern existiert eine `$download(...)` Funktion. Mit Hilfe dieser könnte 
+man den gesamten Storage hinunterladen. Für eine feinere Kontrolle werden die `...` Argumente als Filter auf den Output 
+von `$list_chunks()` angewendet:
+
+```{r}
+store$download(site == "Zch_Rosengartenstrasse", year < 2014, interval == "min30")
+```
+
+Nun sind die Daten für 2013 auch lokal verfügbar
+
+```{r}
+local$get(site = "Zch_Rosengartenstrasse", year = 2013, interval = "min30")
+```
+
+Zusätzlich zu den Daten werden auch sämtliche Metadaten lokal gespeichert durch den Aufruf der `$download(...)` 
+Funktion.
+
+# Metadaten
+
+Die Metadaten werden in einem Key-Value Store abgelegt. Aktuell liegen noch keine Dokumentationen zu den Metadaten vor. 
+Die Funktion `$get_meta()` ermöglicht den Zugriff. Wird ein String als Argument übergeben, wird nur der entsprechende 
+Key zurück gegeben, wenn nicht, werden alle. Das Resultat ist immer eine Named List mit dem Key als Name:
+
+```{r}
+store$get_meta("meta_ostluft")
+
+store$get_meta()
+```
+
+# Administration
+
+Details sind noch zu klären
+
+
+
+
+
+
+
+
+

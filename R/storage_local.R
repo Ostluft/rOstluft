@@ -8,6 +8,7 @@
 #' @field path root of the store
 #' @field data_path root of all chunks
 #' @field content_path path to the rds file containing statistics of store content
+#' @field meta_path root of all meta files
 #' @field read.only flag for read.only usage of store. Default TRUE
 #' @field ext file extension for chunks. Default "rds"
 #' @field read_function function(file) for reading chunks from disk. Default [base::readRDS()]
@@ -23,6 +24,12 @@
 #' `$get_content()` returns a tibble with the amount of data points per chunk per series
 #'
 #' `$list_chunks()` get list of all chunks
+#'
+#' `$get_meta(key=NULL)` get meta data. If key is omitted returns all the content of all files in a named list of
+#' tibbles, with the file name without extension as name. If key is supplied as argument only the list contains only the
+#' specified key.
+#'
+#' `$put_meta(...)` puts meta data into the store. the name of the argument is used as file name and the value as data.
 #'
 #' `$destroy(confirmation)` removes all files under path from the file system if "DELETE" is supplied as
 #' confirmation
@@ -63,11 +70,11 @@
 #' ## destroy store (careful removes all files on the disk)
 #' store$destroy("DELETE")
 #'
+#' ## missing examples for meta functions
+#'
 #' @name r6_storage_local
 #' @docType class
 NULL
-
-
 
 #' @param name name of the store
 #' @param format data format of the store
@@ -134,6 +141,7 @@ r6_storage_local <- R6::R6Class(
     path = NULL,
     data_path = NULL,
     content_path = NULL,
+    meta_path = NULL,
     read.only = TRUE,
     ext = NULL,
     read_function = NULL,
@@ -155,6 +163,7 @@ r6_storage_local <- R6::R6Class(
       self$write_function <- write_function
       self$data_path <- fs::path(path, "data")
       self$content_path <- fs::path(self$path, "content", ext = ext)
+      self$meta_path <- fs::path(path, "meta")
       self$read.only <- read.only
 
       is_new <- !fs::dir_exists(self$path)
@@ -196,11 +205,14 @@ r6_storage_local <- R6::R6Class(
     },
     list_chunks = function() {
       chunk_paths <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
-      chunk_names <- fs::path_rel(chunk_paths, self$data_path)
-      chunk_names <- fs::path_ext_remove(chunk_names)
-      chunks <- tibble::tibble(chunk_path = chunk_paths, chunk_name = chunk_names)
-      chunks <- dplyr::mutate(chunks, chunk_name = purrr::map(.data$chunk_name, self$format$decode_chunk_name))
-      tidyr::unnest(chunks)
+      chunk_names <- fs::path_ext_remove(fs::path_rel(chunk_paths, self$data_path))
+
+      if (NROW(chunk_paths) == 0) {
+        chunk_vars <- self$format$decode_chunk_name(NA)
+      } else {
+        chunk_vars <- purrr::map_df(chunk_names, self$format$decode_chunk_name)
+      }
+      dplyr::bind_cols(chunk_vars, tibble::tibble(chunk_path = chunk_paths))
     },
     get_content = function() {
       if (fs::file_exists(self$content_path)) {
@@ -210,6 +222,39 @@ r6_storage_local <- R6::R6Class(
         warning(paste0("Empty Store ", self$name))
       }
       content
+    },
+    get_meta = function(key = NULL) {
+      if (rlang::is_null(key)) {
+        meta_files <- fs::dir_ls(self$meta_path)
+        if (NROW(meta_files) > 0) {
+          meta_names <- fs::path_ext_remove(fs::path_rel(meta_files, self$meta_path))
+          res <- purrr::map(meta_files, self$read_function)
+          res <- rlang::set_names(res, meta_names)
+        } else {
+          res <- rlang::set_names(list())
+        }
+      } else {
+        local.path <- fs::path(self$meta_path, key, ext = self$ext)
+        if (fs::file_exists(local.path)) {
+          res <- list()
+          res[[key]] <- self$read_function(local.path)
+        } else {
+          stop(MetaKeyNotFound(self$name, key))
+        }
+      }
+      res
+    },
+    put_meta = function(...) {
+      if (self$read.only) {
+        stop(ReadOnlyStore(self$name))
+      }
+
+      args <- rlang::dots_list(...)
+      if (NROW(args) > 0) {
+        args <- tibble::enframe(args)
+        args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = store$ext))
+        purrr::map2(args$value, args$local.path, self$write_function)
+      }
     },
     destroy = function(confirmation = "NO") {
       if (confirmation == "DELETE" && self$read.only == FALSE) {

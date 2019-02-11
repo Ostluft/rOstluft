@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rOstluft</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9002</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9003</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@
     </li>
     <li>
       <a href="articles/resample.html">[GER] Resampling data</a>
+    </li>
+    <li>
+      <a href="articles/s3.html">[GER] AWS S3</a>
     </li>
     <li>
       <a href="articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -103,9 +106,11 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="einrichten-entwicklungsumgebung" class="section level1">
 <h1 class="hasAnchor">
 <a href="#einrichten-entwicklungsumgebung" class="anchor"></a>Einrichten Entwicklungsumgebung</h1>
-<p>Den Quellcode mit git auschecken:</p>
+<p>Den Quellcode mit <a href="https://git-scm.com/">git</a> auschecken:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> clone https://github.com/Ostluft/rOstluft.git</code></pre></div>
-<p>Danach das Projekt in RStudio öffnen und folgende Befehle in der Konsole ausführen:</p>
+<p>Alternativ kann das Projekt über den New Project Wizard im RStudio initialisiert werden:</p>
+<p>File &gt; New Project… &gt; Version Control &gt; Git &gt; Repository URL = <a href="https://github.com/Ostluft/rOstluft.git" class="uri">https://github.com/Ostluft/rOstluft.git</a></p>
+<p>Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole im Rstudio (wenn das Projekt geöffnet ist):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_deps">install_dev_deps</a></span>()</code></pre></div>
 </div>
@@ -134,6 +139,14 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>Reihenfolge der üblichen Argumente (station, intervall, jahr, parameter, etc) in Funktionen bestimmen</li>
 <li>Umbennung der Datenfelder</li>
 <li>Schreiben eines kleines Scriptes zur Unterstützung von neuen Package Releases</li>
+<li>Funktionen um mit AWS S3 datastore zu kommunizieren/interagieren</li>
+<li>Parameter-Umbenennung lookup tabel etc</li>
+<li>Metadaten-Tabellen aus OL MetaDB und von weiteren Datenquellen</li>
+<li>Mitteln aller Datensätze auf diverse Mittelungsintervalle</li>
+<li>Tests ob Struktur der Daten stimmt &amp; sicherstellen, dass keine Duplikate in datensatz sind (mittels distinct() ?)</li>
+<li>Zusammenführen des kompletten Datastore auf AWS S3</li>
+<li>Dokumentation: Anwendungsbeispiele</li>
+<li>ausführliche Vignette inkl. Auswertungs-Beispielen</li>
 </ul>
 </div>
   </div>

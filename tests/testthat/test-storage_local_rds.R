@@ -1,6 +1,7 @@
 context("storage_local_rds")
 
 #TODO smaller test files
+#TODO test meta functions
 
 # just to be sure, there is nothing before and after the tests
 setup({

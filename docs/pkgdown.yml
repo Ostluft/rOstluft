@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   einleitung: einleitung.html
   resample: resample.html
+  s3: s3.html
   Technische_Entscheidungen: Technische_Entscheidungen.html
 

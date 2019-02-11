@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bind rows of data frames with factors — bind_rows_with_factor_columns • rOstluft</title>
+<title>Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar() — cut_fun • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="bind rows of data frames with factors — bind_rows_with_factor_columns" />
+<meta property="og:title" content="Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar() — cut_fun" />
 
-<meta property="og:description" content="dplyr::bind_rows() coerces factors to characters. This function use the forcats::fct_c()
-to combine the factor columns." />
+<meta property="og:description" content="Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar()" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -121,36 +120,45 @@ to combine the factor columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bind rows of data frames with factors</h1>
+    <h1>Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar()</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>bind_rows_with_factor_columns.Rd</code></div>
+    <div class="hidden name"><code>cut_fun.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code><a href='https://dplyr.tidyverse.org/reference/bind.html'>dplyr::bind_rows()</a></code> coerces factors to characters. This function use the <code><a href='https://forcats.tidyverse.org/reference/fct_c.html'>forcats::fct_c()</a></code>
-to combine the factor columns.</p>
+    <p>Wrapper to cut values into classes using ggplot2::cut_interval() or ggplot2::cut_width(); for use with ggpolar()</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>bind_rows_with_factor_columns</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cut_fun</span>(<span class='no'>y</span>, <span class='no'>y_cuts</span>, <span class='kw'>y_boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dig.lab</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>data frames to combine</p></td>
+      <th>y</th>
+      <td><p>object for cutting to be applied</p></td>
+    </tr>
+    <tr>
+      <th>y_cuts</th>
+      <td><p>named list with one of the following items: list(nclass = ..., cutwidth = ...);
+in case nclass is provided, cut_interval(y, n = y_cuts$nclass) is used for cutting, if
+cut_width is provided, cut_width(y, width = y_cuts$cutwidth) is used</p></td>
+    </tr>
+    <tr>
+      <th>y_boundary</th>
+      <td><p>numeric; lower boundary used for cutting</p></td>
+    </tr>
+    <tr>
+      <th>dig.lab</th>
+      <td><p>integer; number of digits for labelling the classes derived from cutting</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>combined data frame</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><em>Important</em>: It is mandatory that all data frames have the same structure</p>
+    <p>factor, of same length as y; classes according to the used cut function</p>
     
 
   </div>
@@ -160,8 +168,6 @@ to combine the factor columns.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

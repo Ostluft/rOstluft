@@ -58,7 +58,8 @@
 #'           filter = parameter == "O3")
 #'
 #' ## get NOx data from multiple stations
-#' store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30",#'           year = 2014, filter = parameter %in% c("NOx", "NO", "NO2"))
+#' store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30",
+#'           year = 2014, filter = parameter %in% c("NOx", "NO", "NO2"))
 #'
 #' ## get n data points grouped by intervall, station, parameter, year in the store
 #' store$get_content()

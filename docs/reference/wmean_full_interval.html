@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bind rows of data frames with factors — bind_rows_with_factor_columns • rOstluft</title>
+<title>calculates weighted arithmetic means for full / even time intervals — wmean_full_interval • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,13 @@
 
 
 
-<meta property="og:title" content="bind rows of data frames with factors — bind_rows_with_factor_columns" />
+<meta property="og:title" content="calculates weighted arithmetic means for full / even time intervals — wmean_full_interval" />
 
-<meta property="og:description" content="dplyr::bind_rows() coerces factors to characters. This function use the forcats::fct_c()
-to combine the factor columns." />
+<meta property="og:description" content="Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time intervals such as
+starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20.02. to 06.03.) with respect to full / even time intervals
+for mean intervals (e.g. 09:00 to 10:00 or 01.02. to 28.02.). To make such time series intercomparable
+and provide a standardized way of dealing with aggregated data, wmean_full_interval() provides a method to average
+a data.frame containing start- and end-time information to full / even time intervals based on stats::weighted.mean()." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -121,36 +124,56 @@ to combine the factor columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bind rows of data frames with factors</h1>
+    <h1>calculates weighted arithmetic means for full / even time intervals</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>bind_rows_with_factor_columns.Rd</code></div>
+    <div class="hidden name"><code>wmean_full_interval.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code><a href='https://dplyr.tidyverse.org/reference/bind.html'>dplyr::bind_rows()</a></code> coerces factors to characters. This function use the <code><a href='https://forcats.tidyverse.org/reference/fct_c.html'>forcats::fct_c()</a></code>
-to combine the factor columns.</p>
+    <p>Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time intervals such as
+starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20.02. to 06.03.) with respect to full / even time intervals
+for mean intervals (e.g. 09:00 to 10:00 or 01.02. to 28.02.). To make such time series intercomparable
+and provide a standardized way of dealing with aggregated data, wmean_full_interval() provides a method to average
+a data.frame containing start- and end-time information to full / even time intervals based on stats::weighted.mean().</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>bind_rows_with_factor_columns</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>wmean_full_interval</span>(<span class='no'>df</span>, <span class='no'>startinterval</span>, <span class='no'>endinterval</span>, <span class='no'>value</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>res</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>hours</a></span>(<span class='fl'>1</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>data frames to combine</p></td>
+      <th>df</th>
+      <td><p>data.frame for averaging; df has to be in long format and contain a start- and end-time column of class POSIXct (arbitrarily named)</p></td>
+    </tr>
+    <tr>
+      <th>startinterval</th>
+      <td><p>string; name of start-time column</p></td>
+    </tr>
+    <tr>
+      <th>endinterval</th>
+      <td><p>string; name of end-time column</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>string; name of column containing values to be averaged</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>string, optional =&gt; can be NULL; name of column containing values for grouping (using group_by()) when calculating weighted means (e.g. for different measurement parameters)</p></td>
+    </tr>
+    <tr>
+      <th>res</th>
+      <td><p>object of class "lubridate::Period" specifying the intervall for averaging (e.g. lubridate::hours(1))</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>combined data frame</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><em>Important</em>: It is mandatory that all data frames have the same structure</p>
+    <p>data.frame with columns for interval start-time ("start"), interval end-time ("end"), "groups" (optional), "mean", "n" (sum of weighted intervals within the averaged time interval)</p>
     
 
   </div>
@@ -160,8 +183,6 @@ to combine the factor columns.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

@@ -18,7 +18,7 @@ pad_serie(serie, start.date = NULL, end.date = NULL,
 \item{end.date}{optional end date for padding. Default max date in series}
 
 \item{drop.last}{optional drop the last added time point by padding. Useful when
-resampling and end.date is the first time point of the new interval#'}
+resampling and end.date is the first time point of the new interval}
 
 \item{serie}{a tibble in rOstluft long format containing exactly one serie}
 }

@@ -3,8 +3,8 @@
 #' This factory adds wrapper around statistical methods to handle na values. Additional it provides a simple
 #' way to apply a minimum required data capture rate to any function.
 #'
-#' @param statistic Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”,
-#'   “frequency”, “sd”, “percentile”. Note that “sd” is the standard deviation, “frequency” is the number
+#' @param statistic Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”, "sum",
+#'   “n”, “sd”, “percentile”. Note that “sd” is the standard deviation, “n” is the number
 #'   (frequency) of valid records in the period and “data.cap” is the percentage data capture. “percentile”
 #'   is the percentile level (\%) between 0-100, which can be set using the “percentile” argument.
 #'   Or a function with one argument expecting a vector.
@@ -23,11 +23,11 @@ statistic_fun_factory <- function(statistic, threshold = NULL, percentile = 95) 
                             "mean" = statistic_mean,
                             "median" = statistic_median,
                             "sd" = statistic_sd,
-                            "frequency" = statistic_frequency,
+                            "n" = statistic_n,
                             "sum" = statistic_sum,
                             "max" = statistic_max,
                             "min" = statistic_min,
-                            "data.cap" = statistic_data.cap,
+                            "coverage" = statistic_coverage,
                             "percentile" = get_statistic_percentile(percentile),
                             "vector.avg.ws" = statistic_vector_average_ws,
                             "vector.avg.wd" = statistic_vector_average_wd,
@@ -90,7 +90,7 @@ statistic_sd <- function(x) {
 
 #' @rdname statistic_fun
 #' @keywords internal
-statistic_frequency <- function(x) {
+statistic_n <- function(x) {
   length(stats::na.omit(x))
 }
 
@@ -126,7 +126,7 @@ statistic_min <- function(x) {
 
 #' @rdname statistic_fun
 #' @keywords internal
-statistic_data.cap <- function(x) {
+statistic_coverage <- function(x) {
   if (all(is.na(x))) {
     res <- 0
   } else {

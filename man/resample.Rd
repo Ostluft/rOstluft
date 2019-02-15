@@ -3,20 +3,23 @@
 \name{resample}
 \alias{resample}
 \alias{resample_series}
+\alias{resample_wind}
 \title{Resampling data}
 \usage{
-resample(data, new_interval, statistic = "mean", data.thresh = NULL,
+resample(data, statistic = "mean", new_interval, data.thresh = NULL,
   start.date = NULL, end.date = NULL, drop.last = FALSE,
+  rename.parameter = FALSE, percentile = 95)
+
+resample_series(serie, statistic = "mean", new_interval = "d1",
+  at = "value", data.thresh = NULL, start.date = NULL,
+  end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
   percentile = 95)
 
-resample_series(serie, new_interval, statistic = "mean",
-  data.thresh = NULL, start.date = NULL, end.date = NULL,
-  drop.last = FALSE, percentile = 95)
+resample_wind(data, statistic, new_interval = "d1", data.thresh = NULL,
+  start.date = NULL, end.date = NULL, drop.last = FALSE)
 }
 \arguments{
 \item{data}{A tibble in rOstluft long format}
-
-\item{new_interval}{New interval. Must be longer than actual interval (not checked)}
 
 \item{statistic}{Statistical method to apply when aggregating the data; default is the mean.
 Can be one of “mean”, “max”, “min”, “median”, “frequency”, “sd”, “percentile”. Note that “sd”
@@ -25,6 +28,8 @@ and “data.cap” is the percentage data capture. “percentile” is the perce
 0-100, which can be set using the “percentile” argument.
 Or a function with one argument expecting a vector.
 Or a list with parameter as name and the statistical method as value (function or name of method)}
+
+\item{new_interval}{New interval. Must be longer than actual interval (not checked)}
 
 \item{data.thresh}{minimum data capture threshold in \% to use}
 
@@ -41,6 +46,10 @@ provided and max date != ceiled max date.}
 }
 \value{
 tibble with resampled data
+
+tibble with resampled series
+
+tibble with resampled wind data
 }
 \description{
 Aggregate data by different time periods. Following this simple steps:
@@ -54,19 +63,11 @@ Aggregate data by different time periods. Following this simple steps:
 \item combine resampled series
 }
 }
-\section{TODO Wind }{
+\section{TODO Wind}{
 
-Need a solution for wind vectoring ... this isn't as simple. probably need group all wind and non
-wind parameters. Handle wind like now and do something special with the wind vars. One possible to
-group:\preformatted{dg <- dplyr::group_by(data, isWind = .data$parameter \%in\% c("WD", "WVv", "WVs"))
-tidyr::nest()
-A tibble: 2 x 2
- isWind data
- <lgl>  <list>
- 1 FALSE  <tibble [208,344 x 6]>
- 2 TRUE   <tibble [35,037 x 6]>
+Code optimieren ?
+sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und korrektes bind_rows mit Faktoren
+(Deine bind_rows_with... spuckt die Zahl aus, nicht einen Faktor, in meinem Fall)
 }
 
-This was the easy part :P. now join the wind data, calc vector mean and return.
-}
-
+\keyword{internal}

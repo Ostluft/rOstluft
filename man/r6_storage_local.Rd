@@ -47,6 +47,8 @@ per file.
 
 \item{\code{content_path}}{path to the rds file containing statistics of store content}
 
+\item{\code{meta_path}}{root of all meta files}
+
 \item{\code{read.only}}{flag for read.only usage of store. Default TRUE}
 
 \item{\code{ext}}{file extension for chunks. Default "rds"}
@@ -67,6 +69,12 @@ argument is applied to each chunk.
 \code{$get_content()} returns a tibble with the amount of data points per chunk per series
 
 \code{$list_chunks()} get list of all chunks
+
+\code{$get_meta(key=NULL)} get meta data. If key is omitted returns all the content of all files in a named list of
+tibbles, with the file name without extension as name. If key is supplied as argument only the list contains only the
+specified key.
+
+\code{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
 
 \code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
@@ -114,5 +122,7 @@ store$list_chunks()
 
 ## destroy store (careful removes all files on the disk)
 store$destroy("DELETE")
+
+## missing examples for meta functions
 
 }

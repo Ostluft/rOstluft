@@ -1,4 +1,17 @@
 
+#' Derive metadata (parameters, units etc) from an IAC/ETHZ meteo station file
+#'
+#' @description Reads metadata from meteo station measurement files (10 minute time resolution) by the institute for atmosphere and climety at ETH Zürich.
+#' Currently, two stations in Zürich are under long-term operation: CHN-Gebäude & Hönggerberg (see http://www.iac.ethz.ch/the-institute/weather-stations.html)
+
+#' @param x Either a path to a file, a connection, or literal data. see [readr::read_delim()]
+#' @param site Character string specifying the site of the meteo station. Needs to be exactly like in file name,
+#' e.g. "-Hberg" for files from Hönggerberg station. For site 'CHN Gebäude' the default of site is NULL (due to respective file naming)
+#'
+#' @return tibble in rOstluft long format structure
+#' @export
+#'
+#' @examples
 read_ethz_iac_min10_parameters <- function(x, site = NULL) {
   lines <- readr::read_lines(x, n_max = 60)
   from <- which(stringr::str_detect(lines, "9999"))[1]
@@ -17,7 +30,21 @@ read_ethz_iac_min10_parameters <- function(x, site = NULL) {
 }
 
 
-### Funktion ETHZ IAC Daten einlesen
+#' Read an IAC/ETHZ meteo station file
+#'
+#' @description Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety at ETH Zürich.
+#' Currently, two stations in Zürich are under long-term operation: CHN-Gebäude & Hönggerberg (see http://www.iac.ethz.ch/the-institute/weather-stations.html)
+#'
+#' @param x Either a path to a file, a connection, or literal data. see [readr::read_delim()]
+#' @param site Character string specifying the site of the meteo station. Needs to be exactly like in file name,
+#' e.g. "-Hberg" for files from Hönggerberg station. For site 'CHN Gebäude' the default of site is NULL (due to respective file naming)
+#'
+#' @return tibble in rOstluft long format structure
+#'
+#' @seealso [rOstluft::read_ethz_iac_min10_parameters]
+#' @export
+#'
+#' @examples
 read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "Etc/GMT") {
   pars <- read_ethz_iac_min10_parameters(x, site)
   if (is.null(site)) {site <- "ETHZ_CHN"}

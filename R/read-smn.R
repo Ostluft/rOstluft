@@ -1,15 +1,15 @@
-#' Reads a Swiss Meteo Network data file
+#' Read a MeteoSchweiz SwissMetNet export file
 #'
-#' Reads the data from a Swiss Meteo Network export and returns it as a data frame in rOstluft long format
+#' @description Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format
 #'
-#' @param file Either a path to a file, a connection, or literal data. see [readr::read_delim()]
-#' @param encoding file encoding. Default "UTF-8"
-#' @param timezone time zone of date fields. Be carefull Etc/GMT + == -. Default "Etc/GMT"
+#' @param x Either a path to a file, a connection, or literal data. see [readr::read_delim()]
+#' @param encoding file encoding. Default: "UTF-8"
+#' @param timezone time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g. 'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"
 #'
-#' @return data frame in rOstluft long format
+#' @return tibble in rOstluft long format structure
 #'
-#' @seealso [lubridate::period()] - Create or parse period objects
 #' @seealso [base::timezones] - Information about time zones in R
+#' @seealso [base::strptime] - Information about time format strings in R
 #'
 #' @export
 read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", time_format = "%Y%m%d%H%M") {

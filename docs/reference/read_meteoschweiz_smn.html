@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>rOstluft long format (rolf) — format_rolf • rOstluft</title>
+<title>Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="rOstluft long format (rolf) — format_rolf" />
+<meta property="og:title" content="Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn" />
 
-<meta property="og:description" content="Data format for storing air quality data. A Serie is the combination of measurement site, interval,
-parameter and unit.
-The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters" />
+<meta property="og:description" content="Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -124,59 +122,50 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>rOstluft long format (rolf)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/format-rolf.R'><code>R/format-rolf.R</code></a></small>
-    <div class="hidden name"><code>format_rolf.Rd</code></div>
+    <h1>Read a MeteoSchweiz SwissMetNet export file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
+    <div class="hidden name"><code>read_meteoschweiz_smn.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Data format for storing air quality data. A Serie is the combination of measurement site, interval,
-parameter and unit.</p>
-<p>The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters</p>
+    <p>Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>format_rolf</span>(<span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>)</pre>
+    <pre class="usage"><span class='fu'>read_meteoschweiz_smn</span>(<span class='no'>x</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
+  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y%m%d%H%M"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tz</th>
-      <td><p>time zone used for chunking.  Default Etc/GMT-1</p></td>
+      <th>x</th>
+      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g.
+'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>file encoding. Default: "UTF-8"</p></td>
+    </tr>
+    <tr>
+      <th>time_format</th>
+      <td><p>of data in file, different for 10min and 1H</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>R6 class object of format_rolf</p>
+    <p>tibble in rOstluft long format structure</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt><code>index</code></dt><dd><p>index for the data (in most cases the time columns)</p></dd>
-    <dt><code>serie_columns</code></dt><dd><p>combination of columns for a serie</p></dd>
-    <dt><code>chunk_columns</code></dt><dd><p>data columns for chunking</p></dd>
-    <dt><code>chunk_calc</code></dt><dd><p>formulas for calculating new columns for chunking</p></dd>
-    <dt><code>unique_columns</code></dt><dd><p>= index + serie_columns</p></dd>
-    <dt><code>content_columns</code></dt><dd><p>= serie_columns + names(chunk_calc)</p></dd>
-    <dt><code>tz</code></dt><dd><p>time zone used for chunking. Same time different chunk:
-2018-01-01T00:00:00+0100 = 2018, 2017-12-31T23:00:00+0000 = 2017</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <p><code>$sort(data)</code></p>
-<p><code>$merge(new_data, old_data)</code></p>
-<p><code>$chunk_name(chunk_data)</code> returns the chunkname based on the first row of the supplied data</p>
-<p><code>$get_chunk_names(interval, site, year)</code> returns encoded chunknames for all combinations of the supplied vectors</p>
-<p><code>$encode_chunk_name(interval, site, year)</code> returns encoded chunkname</p>
-<p><code>$decode_chunk_name(chunk_name)</code> returns decoded chunk_name in tibble as columns (chunk_name, interval, site, year)</p>
-<p><code>$destroy(confirmation)</code> removes all files under path from the file system if "DELETE" is supplied as
-confirmation</p>
+    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p>
+<p><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::strptime</a> - Information about time format strings in R</p></div>
     
 
   </div>
@@ -187,9 +176,7 @@ confirmation</p>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
-
-      <li><a href="#methods">Methods</a></li>
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

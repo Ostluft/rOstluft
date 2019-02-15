@@ -29,12 +29,12 @@ data
 
 Berechne Tagesmittelwerte:
 ```{r}
-rOstluft::resample(data, "d1")
+rOstluft::resample(data, new_interval = "d1")
 ```
 
 Ups RainDur muss summiert werden:
 ```{r}
-data.d1 <- rOstluft::resample(data, "d1", statistic = list(RainDur="sum"))
+data.d1 <- rOstluft::resample(data, statistic = list(RainDur="sum"), "d1")
 dplyr::filter(data.d1, parameter == "RainDur")
 ```
 

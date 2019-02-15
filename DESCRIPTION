@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
@@ -15,20 +15,24 @@ LazyData: true
 Imports:
     dplyr (>= 0.8.0),
     tidyr,
-    tibble,
     lubridate,
     R6 (>= 2.2.2),
     rappdirs,
     tibble (>= 2.0.0),
+    aws.s3 (>= 0.3.20),
     base64url,
     forcats,
     fs,
     purrr,
     readr,
     stringr,
+    plyr,
+    stringi,
+    sp,
     rlang (>= 0.3.0),
     magrittr,
-    rOstluft.data
+    rOstluft.data,
+    RCurl
 Suggests:
     knitr,
     rmarkdown,

@@ -66,9 +66,8 @@ Minimalistischer Ansatz, so wenig Metadaten wie nötig. Diese müssen gepflegt w
 
 * ID 
 * Stationsbezeichnung
-* LV95 Koordinaten x,y 
-* WSG-84 Latitude, Longitude
-* Altitude
+* LV03 Koordinaten x,y
+* Standorthöhe über Meeresniveau
 * Messungsstart
 * Messungsende
 * Stationtyp/Klassifizierung
@@ -80,7 +79,8 @@ Minimalistischer Ansatz, so wenig Metadaten wie nötig. Diese müssen gepflegt w
 * NABEL Immission- und Meteodaten
 * Meteoschweiz Meteodaten
 * ETHZ Meteodaten
-* Hysplit
+* ECMWF ERA/INTERIM Reanalysis Datensatz
+* NOAA Hysplit Trajektorien
 
 
 # Ablageform

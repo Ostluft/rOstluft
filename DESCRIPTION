@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 0.0.0.9002
+Version: 0.0.0.9004
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
@@ -13,41 +13,26 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    dplyr,
-    plyr,
+    dplyr (>= 0.8.0),
     tidyr,
-    utils,
     lubridate,
-    R6,
+    R6 (>= 2.2.2),
     rappdirs,
-    tibble,
+    tibble (>= 2.0.0),
+    aws.s3 (>= 0.3.20),
     base64url,
     forcats,
     fs,
     purrr,
     readr,
     stringr,
-    openair,
-    rlang (>= 0.1.2),
+    plyr,
+    stringi,
+    sp,
+    rlang (>= 0.3.0),
     magrittr,
     rOstluft.data,
-    ggproto,
-    ggplot2,
-    viridis,
-    splitR,
-    xts,
-    MASS,
-    mcr,
-    mapdata,
-    ggrepel,
-    stringi,
-    RColorBrewer,
-    reticulate,
-    ncdf4,
-    ncdf4.helpers,
-    PCICt,
-    aws.s3,
-    sp
+    RCurl
 Suggests:
     knitr,
     rmarkdown,
@@ -56,7 +41,7 @@ Suggests:
     lintr,
     styler,
     roxygen2,
-    ggedit
+    openair
 Remotes:
     jimhester/lintr,
     r-lib/styler,

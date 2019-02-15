@@ -10,8 +10,8 @@ statistic_fun_factory(statistic, threshold = NULL, percentile = 95)
 treshold_wrapper_function(statistic_fun, threshold)
 }
 \arguments{
-\item{statistic}{Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”,
-“frequency”, “sd”, “percentile”. Note that “sd” is the standard deviation, “frequency” is the number
+\item{statistic}{Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”, "sum",
+“n”, “sd”, “percentile”. Note that “sd” is the standard deviation, “n” is the number
 (frequency) of valid records in the period and “data.cap” is the percentage data capture. “percentile”
 is the percentile level (\%) between 0-100, which can be set using the “percentile” argument.
 Or a function with one argument expecting a vector.}

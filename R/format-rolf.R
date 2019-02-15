@@ -83,10 +83,19 @@ r6_format_rolf <- R6::R6Class(
       fs::path_join(c(as.character(interval), fn))
     },
     decode_chunk_name = function(chunk_name) {
-      fn <- tibble::tibble(chunk_name = chunk_name)
-      fn <- dplyr::mutate(fn, chunk_part =  fs::path_file(.data$chunk_name))
-      fn <- dplyr::mutate(fn, chunk_part =  base64url::base64_urldecode(.data$chunk_part))
-      tidyr::separate(fn, "chunk_part", c("interval", "site", "year"), sep = "\u00bb")
+      if (is.na(chunk_name)) {
+        tibble::tibble(
+          chunk_name = character(),
+          interval = character(),
+          site = character(),
+          year = character()
+        )
+      } else {
+        fn <- tibble::tibble(chunk_name = chunk_name)
+        fn <- dplyr::mutate(fn, chunk_part =  fs::path_file(.data$chunk_name))
+        fn <- dplyr::mutate(fn, chunk_part =  base64url::base64_urldecode(.data$chunk_part))
+        tidyr::separate(fn, "chunk_part", c("interval", "site", "year"), sep = "\u00bb")
+      }
     }
   )
 )

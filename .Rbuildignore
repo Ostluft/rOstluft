@@ -2,5 +2,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .lintr
+.renviron
 prepare_release.R
 docs

@@ -4,12 +4,14 @@
 \alias{statistic_mean}
 \alias{statistic_median}
 \alias{statistic_sd}
-\alias{statistic_frequency}
+\alias{statistic_n}
 \alias{statistic_sum}
 \alias{statistic_max}
 \alias{statistic_min}
-\alias{statistic_data.cap}
+\alias{statistic_coverage}
 \alias{get_statistic_percentile}
+\alias{statistic_vector_average_ws}
+\alias{statistic_vector_average_wd}
 \title{statistic functions}
 \usage{
 statistic_mean(x)
@@ -18,7 +20,7 @@ statistic_median(x)
 
 statistic_sd(x)
 
-statistic_frequency(x)
+statistic_n(x)
 
 statistic_sum(x)
 
@@ -26,9 +28,13 @@ statistic_max(x)
 
 statistic_min(x)
 
-statistic_data.cap(x)
+statistic_coverage(x)
 
 get_statistic_percentile(percentile)
+
+statistic_vector_average_ws(ws, wd)
+
+statistic_vector_average_wd(ws, wd)
 }
 \description{
 statistic functions

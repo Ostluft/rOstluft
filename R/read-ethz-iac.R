@@ -62,7 +62,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
     dplyr::filter(time %% 10 == 0) %>%
     gather(parameter_original, value, - date, -time) %>%
     mutate(
-      starttime = as.POSIXct(as.Date(date) + as.difftime(time, units = "mins"), tz = timezone),
+      starttime = as.POSIXct(as.Date(date), tz = timezone) + as.difftime(time, units = "mins"),
       interval = "min10",
       site_short = site,
       unit = plyr::revalue(parameter_original, setNames(pars$unit, pars$parameter_original))

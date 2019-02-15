@@ -40,13 +40,13 @@ coord_radar <- function (theta = "x", start = 0, direction = 1, ...) {
 #' calculates summary statistics and creates polar plots from those; usually such polar plots are used
 #' for data containing wind direction information, e.g. wind-roses, concentration-roses, advection-roses etc
 #'
-#' @param df data.frame including wind data
-#' @param wd string; giving column name for the wind direction (in °)
+#' @param df data.frame including wind data in wide-table format
+#' @param wd string; giving column name for the wind direction (in '°')
 #' @param y string; giving column name for the parameter supplied to the summary statistics (e.g. wind speed, NOx concentration etc)
 #' @param z string, optional => can be NULL; parameter supplied to the summary statistics (e.g. NOx concentration);
-#' only used when geom == "heat" (result will be displayed as color scale)
-#' @param stat string; the summary statistics for use in stat_summary() (e.g. "count", "mean", "sd", "quantile" etc)
-#' @param geom string; the type geom for plotting (one of "bar", "radar", "heat")
+#' only used when geom == 'heat' (result will be displayed as color scale)
+#' @param stat string; the summary statistics for use in stat_summary() (e.g. 'count', 'mean', 'sd', 'quantile' etc)
+#' @param geom string; the type geom for plotting (one of 'bar', 'radar', 'heat')
 #' @param group string, optional => can be NULL; giving column name for a grouping variable
 #' @param wd_cutwidth width of wind direction classes
 #' @param y_cuts named list with one of list(nclass = ..., cutwidth = ...); ... is a single number,
@@ -55,7 +55,7 @@ coord_radar <- function (theta = "x", start = 0, direction = 1, ...) {
 #' @param y_cap numeric, optional => can be Inf; upper limit for cutting
 #' @param dig.lab integer; number of digits for labelling the classes derived from cutting
 #' @param border_bar string; color used for border of geom_bar
-#' @param radar_opacity numeric; opacity for the fill color in geom = "radar"
+#' @param radar_opacity numeric; opacity for the fill color in geom = 'radar'
 #' @param ...; other parameters supplied to stat_summary(), e.g. fun.args = list(na.rm = TRUE)
 #'
 #' @return ggplot2-graph object (=> can be further modified subsequently, e.g. overwriting scale_colour or applying facetting)

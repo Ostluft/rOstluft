@@ -252,7 +252,7 @@ r6_storage_local <- R6::R6Class(
       args <- rlang::dots_list(...)
       if (NROW(args) > 0) {
         args <- tibble::enframe(args)
-        args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = store$ext))
+        args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = self$ext))
         purrr::map2(args$value, args$local.path, self$write_function)
       }
     },

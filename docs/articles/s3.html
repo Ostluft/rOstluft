@@ -117,16 +117,16 @@
 <span class="co">#&gt; # A tibble: 10 x 6</span>
 <span class="co">#&gt;     year interval site                    parameter unit      n</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2012 min30    Arb_Bahnhofstrasse      Hr        %Hr      64</span>
-<span class="co">#&gt;  2  2006 min30    Gra_Marktplatz          O3        ppb   17507</span>
-<span class="co">#&gt;  3  1992 min30    Wad_Spital              T         °C    16049</span>
-<span class="co">#&gt;  4  2015 min30    Zch_Stampfenbachstrasse CO        ppm   17439</span>
-<span class="co">#&gt;  5  2006 min30    StG_Rorschacher Strasse CO        ppm   17510</span>
-<span class="co">#&gt;  6  2014 min30    Vad_Austrasse           T         °C    17389</span>
-<span class="co">#&gt;  7  2003 min30    Arb_Stadthaus           T         °C    17059</span>
-<span class="co">#&gt;  8  2003 min30    Vad_Mühleholz           SO2       ppb       3</span>
-<span class="co">#&gt;  9  2011 min30    Arb_Bahnhofstrasse      RainDur   min   17349</span>
-<span class="co">#&gt; 10  1992 min30    Sir_Elektra             T         °C    15862</span></code></pre></div>
+<span class="co">#&gt;  1  2016 min30    8058_0030               NO2       ppb   17212</span>
+<span class="co">#&gt;  2  2002 min30    Hei_Dunanthaus          O3        ppb   16823</span>
+<span class="co">#&gt;  3  1996 min30    Zch_Stampfenbachstrasse O3        ppb   17424</span>
+<span class="co">#&gt;  4  1996 min30    Zch_Stampfenbachstrasse NO        ppb   17433</span>
+<span class="co">#&gt;  5  2016 min30    StG_Stuelegg            NOx       ppb   17190</span>
+<span class="co">#&gt;  6  1994 min30    Rog_Gries               WD        °     14014</span>
+<span class="co">#&gt;  7  2008 min30    Rap_Tüchelweier         NOx       ppb     325</span>
+<span class="co">#&gt;  8  2008 min30    Hei_Dunanthaus          p         hPa   17343</span>
+<span class="co">#&gt;  9  2010 min30    Zch_Schimmelstrasse     PN        1/cm3 16480</span>
+<span class="co">#&gt; 10  2001 min30    Gra_Marktplatz          WVv       m/s   17465</span></code></pre></div>
 <p>Für den Zugriff auf die Daten wird die Funktion <code>$get()</code> verwendet. Die Daten sind nach Station (site), Mittelungszeitraum (interval) und Jahre (year) aufgeteilt. Diese drei Parameter müssen immer als Argument an die Funktion <code>$get()</code> übergeben werden. Zusätzlich kann mit dem Argument filter noch ein dplyr::filter Ausdruck übergeben werden.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Daten für eine Station und ein Jahr
 store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">year =</span> <span class="dv">2011</span>)

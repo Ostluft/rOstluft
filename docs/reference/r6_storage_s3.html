@@ -229,7 +229,8 @@ AWS_DEFAULT_REGION = "eu-central-1"
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## init store, creates directory if necessary</span>
 <span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/format_rolf'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/r6_storage_s3'>storage_s3_rds</a></span>(<span class='st'>"ol_esd"</span>, <span class='no'>format</span>, <span class='st'>"rostluft"</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>store ol_esd initialized under 'C:\Users\vot\AppData\Local\rOstluft\ol_esd'</span></div><div class='input'>
+<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/r6_storage_s3'>storage_s3_rds</a></span>(<span class='st'>"ol_esd"</span>, <span class='no'>format</span>, <span class='st'>"rostluft"</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
 <span class='co'>## get all data min30 for 2011 and 2012</span>
 <span class='no'>store</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit  value
@@ -293,27 +294,35 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>017 min30    Zch_Stampfenbachstrasse WD        °     </span><span style='text-decoration: underline;'>17</span><span>496
 #&gt; </span><span style='color: #555555;'># ... with 6,160 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks, show only local files</span>
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 11</span><span>
-#&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 458b7b~ 660.24K
-#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 64228e~   1.08M
-#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2011  data/~ 2019-01-08T17:~ 16f26f~   1.07M
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2012  data/~ 2019-01-08T17:~ 7e10dc~   1.08M
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
-#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
-<span class='co'>## download all data for site Zch_Rosengartenstrasse before 2016</span>
-<span class='no'>store</span>$<span class='fu'>download</span>(<span class='no'>site</span> <span class='kw'>==</span> <span class='st'>"Zch_Rosengartenstrasse"</span>, <span class='no'>year</span> <span class='kw'>&lt;</span> <span class='fl'>2016</span>)</div><div class='output co'>#&gt; list()</div><div class='input'>
-<span class='co'>## now there should be 2 more local files</span>
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 11</span><span>
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 9 x 11</span><span>
 #&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2013  data/~ 2019-01-08T17:~ ca49f9~ 166.97K
 #&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 458b7b~ 660.24K
 #&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2015  data/~ 2019-01-08T17:~ f0b1b5~ 778.69K
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 64228e~   1.08M
-#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2011  data/~ 2019-01-08T17:~ 16f26f~   1.07M
-#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2012  data/~ 2019-01-08T17:~ 7e10dc~   1.08M
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2016  data/~ 2019-01-08T17:~ beb0dc~  839.8K
+#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 64228e~   1.08M
+#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2015  data/~ 2019-01-08T17:~ 15aae4~   1.08M
+#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWl~ min30    Zch_~ 2016  data/~ 2019-01-08T17:~ 144468~   1.16M
+#&gt; </span><span style='color: #555555;'>8</span><span> min30/bWl~ min30    Zch_~ 2011  data/~ 2019-01-08T17:~ 16f26f~   1.07M
+#&gt; </span><span style='color: #555555;'>9</span><span> min30/bWl~ min30    Zch_~ 2012  data/~ 2019-01-08T17:~ 7e10dc~   1.08M
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
+#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
+<span class='co'>## download all data for site Zch_Rosengartenstrasse before 2016</span>
+<span class='no'>store</span>$<span class='fu'>download</span>(<span class='no'>site</span> <span class='kw'>==</span> <span class='st'>"Zch_Rosengartenstrasse"</span>, <span class='no'>year</span> <span class='kw'>&lt;</span> <span class='fl'>2016</span>)</div><div class='output co'>#&gt; list()</div><div class='input'>
+<span class='co'>## now there should be 2 more local files</span>
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 9 x 11</span><span>
+#&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2013  data/~ 2019-01-08T17:~ ca49f9~ 166.97K
+#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 458b7b~ 660.24K
+#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2015  data/~ 2019-01-08T17:~ f0b1b5~ 778.69K
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2016  data/~ 2019-01-08T17:~ beb0dc~  839.8K
+#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2014  data/~ 2019-01-08T17:~ 64228e~   1.08M
+#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2015  data/~ 2019-01-08T17:~ 15aae4~   1.08M
+#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWl~ min30    Zch_~ 2016  data/~ 2019-01-08T17:~ 144468~   1.16M
+#&gt; </span><span style='color: #555555;'>8</span><span> min30/bWl~ min30    Zch_~ 2011  data/~ 2019-01-08T17:~ 16f26f~   1.07M
+#&gt; </span><span style='color: #555555;'>9</span><span> min30/bWl~ min30    Zch_~ 2012  data/~ 2019-01-08T17:~ 7e10dc~   1.08M
 #&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
 #&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## get all meta data</span>
@@ -557,15 +566,18 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </div><div class='input'>
 <span class='co'>## get the cache as local storage</span>
 <span class='no'>local</span> <span class='kw'>&lt;-</span> <span class='no'>store</span>$<span class='fu'>get_local_storage</span>()
-<span class='no'>local</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 5</span><span>
+<span class='no'>local</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 9 x 5</span><span>
 #&gt;   chunk_name interval site  year 
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2013 
 #&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014 
 #&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2011 
-#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2012 
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2016 
+#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2014 
+#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2015 
+#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWl~ min30    Zch_~ 2016 
+#&gt; </span><span style='color: #555555;'>8</span><span> min30/bWl~ min30    Zch_~ 2011 
+#&gt; </span><span style='color: #555555;'>9</span><span> min30/bWl~ min30    Zch_~ 2012 
 #&gt; </span><span style='color: #555555;'># ... with 1 more variable: chunk_path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span></div><div class='input'>
 <span class='co'>## get cached data</span>
 <span class='no'>local</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>

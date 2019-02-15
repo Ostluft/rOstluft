@@ -125,19 +125,19 @@ reg_prog_interval <- function(model, xn = 100, alpha = 0.975) {
 
 #' perform various types of regressions between two parameters
 #'
-#' Regressions are based on packages "stats", "MASS", "mcr" and include the following methods:
-#' "stats::lm","stats::glm","gam::gam","stats::loess","MASS:rlm", mcr::mcreg(..., method.reg %in% c("Deming", "WDeming", "PaBa")).
+#' Regressions are based on packages 'stats', 'MASS', 'mcr' and include the following methods:
+#' 'stats::lm','stats::glm','gam::gam','stats::loess','MASS:rlm', mcr::mcreg(..., method.reg %in% c('Deming', 'WDeming', 'PaBa')).
 #' For the chosen method, a ggplot2 object as well as the regression model, equations, confidence and prognosis intervals are returned.
 #'
 #' ... code has to be enhanced, eventually
 #'
 #' @param df input data.frame
-#' @param fmla string; supplied to as.formula(), e.g. "y ~ x"
-#' @param model string; specifies regression model, one of c("lm", "glm", "gam", "loess", "rlm", "Deming", "WDeming", "PaBa")
+#' @param fmla string; supplied to as.formula(), e.g. 'y ~ x'
+#' @param model string; specifies regression model, one of c('lm', 'glm', 'gam', 'loess', 'rlm', 'Deming', 'WDeming', 'PaBa')
 #' @param group string, optional => can be NA; name for a grouping column
 #' @param eqx numeric, optional => can be NA; explicit x-axis position of regression equation
 #' @param eqy numeric, optional => can be NA; explicit y-axis position of regression equation
-#' @param geom string; one of c("point", "hex"): possiblity to plot y vs. x as ggplot2::geom_point() or ggplot2::geom_hex()
+#' @param geom string; one of c('point', 'hex'): possiblity to plot y vs. x as ggplot2::geom_point() or ggplot2::geom_hex()
 #' @param ptsize plotting style parameters ...
 #' @param ptfill ...
 #' @param ptcol ...

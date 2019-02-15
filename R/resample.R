@@ -7,20 +7,10 @@
 #'   - apply statistical method or user provides function (user can provide list per parameter)
 #' * combine resampled series
 #'
-#' @section TODO Wind :
-#' Need a solution for wind vectoring ... this isn't as simple. probably need group all wind and non
-#' wind parameters. Handle wind like now and do something special with the wind vars. One possible to
-#' group:
-#' ```
-#' dg <- dplyr::group_by(data, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
-#' tidyr::nest()
-#' A tibble: 2 x 2
-#'  isWind data
-#'  <lgl>  <list>
-#'  1 FALSE  <tibble [208,344 x 6]>
-#'  2 TRUE   <tibble [35,037 x 6]>
-#' ```
-#' This was the easy part :P. now join the wind data, calc vector mean and return.
+#' @section TODO Wind:
+#' Code optimieren ?
+#' sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und korrektes bind_rows mit Faktoren
+#' (Deine bind_rows_with... spuckt die Zahl aus, nicht einen Faktor, in meinem Fall)
 #'
 #' @param data A tibble in rOstluft long format
 #' @param new_interval New interval. Must be longer than actual interval (not checked)
@@ -40,8 +30,8 @@
 #'
 #' @return tibble with resampled data
 #' @export
-resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
-                     start.date = NULL, end.date = NULL, drop.last = FALSE,
+resample <- function(data, statistic = "mean", new_interval, data.thresh = NULL,
+                     start.date = NULL, end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
                      percentile = 95) {
 
   # build helper function to get the statistical method for the parameter
@@ -56,42 +46,94 @@ resample <- function(data, new_interval, statistic = "mean", data.thresh = NULL,
     }
   }
 
-  data.grouped <- dplyr::group_by(data, .data$site, .data$parameter, .data$interval, .data$unit)
-  data.grouped <- dplyr::do(data.grouped, resample_series(
-    .data, new_interval, get_statistic_for_serie(dplyr::first(.data$parameter)),
-    start.date, end.date, data.thresh, drop.last, percentile
-  ))
-  dplyr::ungroup(data.grouped)
+  # separate wind data from rest, if (per default) vector averages are required and treat wind data differently (! assumption: WD always in °)
+  vector.avg <- stringr::str_detect(statistic, "vector.avg")
+  wind.data <- NULL
+  if (any(vector.avg)) {
+    wind_parameters <- statistic[vector.avg]
+    data <- cut_wind_data(data, names(wind_parameters))
+
+    if (!is.null(data$wind)) {
+      wind.data <- resample_wind(data$wind, wind_parameters, new_interval = new_interval, data.thresh = data.thresh,
+                                 start.date = start.date, end.date = end.date, drop.last = drop.last)
+    } else {
+      wind.data <- NULL
+    }
+
+    data <- data$others
+  }
+
+  # treat skalar data as intended
+  if (!is.null(data)) {
+    data <- dplyr::group_by(data, .data$site, .data$parameter, .data$interval, .data$unit)
+    group_keys <- dplyr::group_keys(data)
+    statistic_list <- purrr::map(group_keys$parameter, get_statistic_for_serie)
+    data <- dplyr::group_split(data)
+    data <-  purrr::map2(data, statistic_list, resample_series, new_interval = new_interval, at = "value",
+                         data.thresh = data.thresh, start.date = start.date, end.date = end.date, drop.last = drop.last,
+                         rename.parameter = rename.parameter, percentile = percentile)
+  }
+
+  # TODO find a more elegant way?
+  if (!is.null(wind.data) && !is.null(data)) {
+    data <- rlang::exec(bind_rows_with_factor_columns, !!!data, wind.data)
+  } else if (!is.null(data)) {
+    data <- rlang::exec(bind_rows_with_factor_columns, !!!data)
+  } else if (!is.null(wind.data)) {
+    data <- rlang::exec(bind_rows_with_factor_columns, wind.data)
+  } else {
+    data <- NULL
+  }
+  data
 }
 
 
-# resample_wind <- function(data, new_interval, ...) {
-#
-#   data.grouped <- dplyr::group_by(data, isWind = .data$parameter %in% c("WD", "WVv", "WVs"))
-#   data.grouped <- tidyr::nest(data.grouped)
-#
-#   data.grouped <- tibble::deframe(data.grouped)
-#
-#   wind_vectoring(data.grouped[["TRUE"]], new_interval)
-#
-#
-# }
-#
-# wind_vectoring <- function(data, new_interval, ...) {
-#   data
-# }
+#' Cut wind data
+#'
+#' This function splits
+#'
+#' @param data tibble with input data
+#' @param wind_parameters Character Vector of Wind parameters. Default wind_parameters = c("WD", "WVv")
+#'
+#' @return named list: $wind all wind parameters, $others everything else
+
+#' @keywords internal
+cut_wind_data <- function(data, wind_parameters = c("WD", "WVv")) {
+  data <- dplyr::group_by(data, isWind= .data$parameter %in% wind_parameters)
+  keys <- dplyr::group_keys(data)
+  data <- dplyr::group_split(data, keep = FALSE)
+  mapping <- list("TRUE" = "wind", "FALSE" = "others")
+  rlang::set_names(data, mapping[as.character(keys$isWind)])  # FALSE before TRUE, order don't matters
+}
+
+
+#TODO find the right place for this definition: statistic.R ?
+rename_list <- list(
+  "n" = "_nb_",
+  "max" = "_max_",
+  "min" = "_min_",
+  "coverage" = "_coverage_"
+)
+
+update_unit <- list(
+  "n" = "1",
+  "data.cap" = "%"
+)
 
 
 #' @title resampling a serie
 #' @param serie a tibble in rOstluft long format containing exactly one serie
 #'
+#' @return tibble with resampled series
+#'
 #' @rdname resample
-#' @export
-resample_series <- function(serie, new_interval, statistic = "mean", data.thresh = NULL,
-                            start.date = NULL, end.date = NULL, drop.last = FALSE,
+#' @keywords internal
+resample_series <- function(serie, statistic = "mean", new_interval = "d1", at = "value", data.thresh = NULL,
+                            start.date = NULL, end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
                             percentile = 95) {
 
   interval.converted <- convert_interval(new_interval)
+  old_interval <- dplyr::first(serie$interval)
 
 
   if (is.null(start.date)) {
@@ -109,15 +151,124 @@ resample_series <- function(serie, new_interval, statistic = "mean", data.thresh
 
 
   serie <- dplyr::group_by(serie,
-                            starttime = lubridate::floor_date(.data$starttime, interval.converted),
-                            .data$site, .data$parameter, .data$interval, .data$unit
+                           starttime = lubridate::floor_date(.data$starttime, interval.converted),
+                           .data$site, .data$parameter, .data$interval, .data$unit
   )
+
   FUN <- statistic_fun_factory(statistic, data.thresh, percentile)
-  serie <- dplyr::summarise_at(serie, "value", FUN)
+  serie <- dplyr::summarise(serie, value = FUN(!!! syms(at)))
   serie <- dplyr::ungroup(serie) # needed if we called resample_serie with grouped series
-  dplyr::mutate(serie, interval = new_interval)
+
+  #TODO could use forcats::fct_recode for Performance?
+  serie <- dplyr::mutate(serie, interval = forcats::as_factor(new_interval))
+
+  if (isTRUE(rename.parameter) && rlang::is_character(statistic) && statistic %in% names(rename_list)) {
+    old_parameter <- as.character(dplyr::first(serie$parameter))
+    parameter <- stringr::str_c(old_parameter, rename_list[[statistic]], old_interval)
+    serie$parameter <- forcats::as_factor(parameter)
+  }
+
+  if (rlang::is_character(statistic) && statistic %in% names(update_unit)){
+    unit <- update_unit[[statistic]]
+    print(unit)
+    serie$unit <- forcats::as_factor(unit)
+  }
+
+  serie
 }
 
+
+#' Resamples wind data
+#'
+#' @return tibble with resampled wind data
+#'
+#' @rdname resample
+#' @keywords internal
+resample_wind <- function(data, statistic, new_interval = "d1", data.thresh = NULL, start.date = NULL, end.date = NULL,
+                          drop.last = FALSE) {
+
+  data <- dplyr::group_split(data, .data$site, .data$interval)
+  data <- purrr::map(data, resample_wind_site, statistic = statistic, new_interval = new_interval,
+                     data.thresh = data.thresh, start.date = start.date, end.date = end.date, drop.last = drop.last)
+
+  rlang::exec(bind_rows_with_factor_columns, !!!data)
+}
+
+
+#' resamples wind
+#'
+#' @param data.site wind data for one specific site. should only contain wind speed and direction
+#'
+#' @return tibble with resampled wind speed and direction
+#' @keywords internal
+resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.thresh = NULL,
+                               start.date = NULL, end.date = NULL, drop.last = FALSE) {
+
+  interval.converted <- convert_interval(new_interval)
+  old_interval <- dplyr::first(data.site$interval)
+
+  if (is.null(start.date)) {
+    start.date <- lubridate::floor_date(min(data.site$starttime), interval.converted)
+  }
+
+  if (is.null(end.date)) {
+    end.max <- max(data.site$starttime)
+    end.date <- lubridate::ceiling_date(end.max, interval.converted)
+    drop.last <- (end.max != end.date)  #TODO Decide if we should always drop last in this case
+  }
+
+  groups <- dplyr::group_by(data.site, .data$parameter, .data$unit)
+  keys <- dplyr::group_keys(groups)
+  site <- dplyr::first(data.site$site)
+  groups <- dplyr::group_split(groups)
+
+  ## TODO warning if not wd and ws in data
+  if (length(groups) != 2) {
+    warning(sprintf("resample_wind_site: expected 2 groups (wd and ws) for site %s", site))
+    return(groups[[1]][0, ]) # not sure if groups[[1]] is a smart way
+  }
+
+  groups <- purrr::map(groups, pad_serie, start.date, end.date, drop.last)
+  groups <- rlang::set_names(groups, statistic[as.character(keys$parameter)])
+
+  ws <- groups$vector.avg.ws
+  wd <- groups$vector.avg.wd
+
+  # TODO test unit wd == ° => abort or use radian ?
+
+  wind_components <- tibble::tibble(
+    starttime = lubridate::floor_date(ws$starttime, interval.converted),
+    U = ws$value * sin(2 * pi * wd$value / 360),
+    V = ws$value * cos(2 * pi * wd$value / 360)
+  )
+
+  wind_components <- dplyr::group_by(wind_components, .data$starttime)
+  FUN <- statistic_fun_factory("mean", data.thresh)
+  wind_components <- dplyr::summarise(wind_components, U = FUN(.data$U), V = FUN(.data$V))
+  wind_components <- dplyr::mutate(wind_components,
+                                   wd = (atan2(.data$U, .data$V) * 360 / 2 / pi) %% 360,
+                                   ws = sqrt(.data$U^2 + .data$V^2))
+
+  ws <- tibble::tibble(
+    starttime = wind_components$starttime,
+    site = dplyr::first(ws$site),
+    parameter = dplyr::first(ws$parameter),
+    interval = new_interval,
+    unit = dplyr::first(ws$unit),
+    value = wind_components$ws
+  )
+
+  wd <- tibble::tibble(
+    starttime = wind_components$starttime,
+    site = dplyr::first(wd$site),
+    parameter = dplyr::first(wd$parameter),
+    interval = new_interval,
+    unit = dplyr::first(wd$unit),
+    value = wind_components$wd
+  )
+
+  bind_rows_with_factor_columns(wd, ws)
+}
 
 #' Pad data
 #'
@@ -127,7 +278,8 @@ resample_series <- function(serie, new_interval, statistic = "mean", data.thresh
 #' @param start.date optional start date for padding. Default min date in series
 #' @param end.date optional end date for padding. Default max date in series
 #' @param drop.last optional drop the last added time point by padding. Useful when
-#'   resampling and end.date is the first time point of the new interval#'
+#'   resampling and end.date is the first time point of the new interval
+#'
 #' @return tibble with padded data
 #'
 #' @export
@@ -174,6 +326,15 @@ pad_serie <- function(serie, start.date = NULL, end.date = NULL, drop.last = FAL
 
 
 
+#' Converts a AIRMO Zeitfenster to an interval
+#'
+#' This function is far from perfect but works with the non offseting, shifting Zeitfenster
+#'
+#' @param interval string with AIRMO Zeitfenster
+#'
+#' @return string with valid string for [base::seq.Date()] or [lubridate::floor_date()]
+#'
+#' @keywords internal
 convert_interval <- function(interval) {
   num <- stringr::str_extract(interval, "[:digit:]+")
   units <- stringr::str_extract(interval, "[:alpha:]+")

@@ -13,22 +13,20 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    dplyr,
+    dplyr (>= 0.8.0),
     tidyr,
     tibble,
     lubridate,
-    purrr,
-    readr,
-    stringr,
-    stringi,
-    aws.s3,
+    R6 (>= 2.2.2),
     rappdirs,
-    R6,
-    utils,
+    tibble (>= 2.0.0),
     base64url,
     forcats,
     fs,
-    rlang (>= 0.1.2),
+    purrr,
+    readr,
+    stringr,
+    rlang (>= 0.3.0),
     magrittr,
     rOstluft.data
 Suggests:

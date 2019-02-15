@@ -11,7 +11,8 @@
 #'
 #' @export
 bind_rows_with_factor_columns <- function(...) {
-  purrr::pmap_df(list(...), function(...) {
+  dfs <- list(...)
+  purrr::pmap_df(dfs, function(...) {
     cols_to_bind <- list(...)
     if (all(purrr::map_lgl(cols_to_bind, is.factor))) {
       forcats::fct_c(!!!cols_to_bind)

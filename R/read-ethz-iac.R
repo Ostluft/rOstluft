@@ -58,7 +58,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
     dplyr::mutate_all(as.numeric) %>%
     dplyr::mutate(date = startdate) %>%
     dplyr::filter(.data$time %% 10 == 0) %>%
-    tidyr::gather(.data$parameter_original, .data$value, - .data$date, -.data$time) %>%
+    tidyr::gather(parameter_original, value, - .data$date, -.data$time) %>%
     dplyr::mutate(
       starttime = as.POSIXct(as.Date(date), tz = timezone) + as.difftime(.data$time, units = "mins"),
       interval = "min10",
@@ -69,8 +69,3 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
   return(df)
 }
 
-
-get_ethz_iac_con <- function(date, site, userpw = NULL, cache = NULL) {
-  con <- RCurl::getURL(paste0(url$chn,"IAC-Met",site,"_", date,".dat"), userpw = userpw)
-  return(con)
-}

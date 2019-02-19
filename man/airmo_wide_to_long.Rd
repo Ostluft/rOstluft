@@ -4,7 +4,8 @@
 \alias{airmo_wide_to_long}
 \title{Converts the wide format from the files to the long format}
 \usage{
-airmo_wide_to_long(header, data, tz = "Etc/GMT-1", time_shift = NULL)
+airmo_wide_to_long(header, data, tz = "Etc/GMT-1", time_shift = NULL,
+  na.rm = TRUE)
 }
 \arguments{
 \item{header}{data frame containing airmo_kurzname, parameter, zeitfenster and einheit}

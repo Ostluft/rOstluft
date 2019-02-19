@@ -191,12 +191,13 @@ r6_storage_s3 <- R6::R6Class(
       }
 
       data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      res <- dplyr::do(data, private$merge_chunk(.data))
-      dplyr::ungroup(res)
+      data <- dplyr::group_split(data, keep = TRUE)
+      res <- purrr::map(data, private$merge_chunk)
+      bind_rows_with_factor_columns(!!!res)
     },
     get = function(filter = NULL, ...) {
       filter <- rlang::enquo(filter)
-      files <- self$format$get_chunk_names(...)
+      files <- self$format$encoded_chunk_names(...)
       files <- dplyr::mutate(files, chunk_path = self$get_chunk_path(.data$chunk_name))
       purrr::map(files$chunk_name, self$download_chunk)
       files <- dplyr::filter(files, fs::file_exists(.data$chunk_path))
@@ -374,32 +375,40 @@ r6_storage_s3 <- R6::R6Class(
       chunk
     },
     merge_chunk = function(data) {
+      # get content count
+      data_content <- dplyr::count(self$format$na.omit(data),
+                                   .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+
       # remove calculated columns
-      new_data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
-      chunk_name <- self$format$chunk_name(new_data)
+      data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
+      chunk_vars <- as.list(self$format$chunk_vars(data))
+      chunk_name <- rlang::exec(self$format$encode_chunk_name, !!!chunk_vars)
       chunk_path <- self$get_chunk_path(chunk_name)
       chunk_url <- self$get_chunk_url(chunk_name)
 
       if (self$download_chunk(chunk_name)) {
         chunk_data <- self$read_function(chunk_path)
-        chunk_data <- self$format$merge(new_data, chunk_data)
+        chunk_data <- self$format$merge(data, chunk_data)
       } else {
         fs::dir_create(fs::path_dir(chunk_path))
-        chunk_data <- new_data
+        chunk_data <- data
       }
       chunk_data <- self$format$sort(chunk_data)
       self$write_function(droplevels(chunk_data), chunk_path)
       aws.s3::put_object(chunk_path, chunk_url, self$bucket, region = self$region)
 
       chunk_content <- dplyr::count(chunk_data, .dots = c(self$format$chunk_calc, self$format$serie_columns))
-      private$merge_content(chunk_content)
+      private$merge_content(chunk_content, chunk_vars)
 
-      dplyr::count(data, .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+      data_content
     },
-    merge_content = function(new_content) {
+    merge_content = function(new_content, chunk_vars) {
       if (private$download_file(self$content_s3, self$content_path)) {
         old_content <- self$read_function(self$content_path)
-        new_content <- format_merge(new_content, old_content, self$format$content_columns)
+        # filter lines from current chunk from old content, only way to remove deleted content
+        old_content <- filter_remove_list(old_content, chunk_vars)
+        # now we can simply append the rows
+        new_content <- bind_rows_with_factor_columns(new_content, old_content)
       }
       self$write_function(new_content, self$content_path)
       aws.s3::put_object(self$content_path, self$content_s3, self$bucket, region = self$region)

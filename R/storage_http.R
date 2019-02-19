@@ -42,7 +42,7 @@ r6_storage_http <- R6::R6Class(
     },
     get = function(filter = NULL, overwrite_cache = FALSE, ...) {
       filter <- enquo(filter)
-      files <- self$format$get_chunk_names(...)
+      files <- self$format$encoded_chunk_names(...)
       files <- dplyr::mutate(files, chunk_path = self$get_chunk_path(.data$chunk_name))
 
       files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))

@@ -31,6 +31,10 @@
 #' `$destroy(confirmation)` removes all files under path from the file system if "DELETE" is supplied as
 #' confirmation
 #'
+#' @section TODO:
+#'
+#' Update Documentation is outdated
+#'
 #' @name format_rolf
 #' @docType class
 NULL
@@ -62,25 +66,37 @@ r6_format_rolf <- R6::R6Class(
       self$unique_columns <- c(self$index, self$serie_columns)
       self$content_columns <- c(self$serie_columns, names(self$chunk_calc))
     },
-    sort = function(data) {
+    sort = function(data, na.rm = TRUE) {
+      if (isTRUE(na.rm)) {
+        data <- self$na.omit(data)
+      }
       dplyr::arrange(data, .data$starttime)
     },
     merge = function(new_data, old_data) {
       format_merge(new_data, old_data, self$unique_columns)
     },
+    na.omit = function(data) {
+      dplyr::filter(data, !is.na(.data$value))
+    },
     chunk_name = function(chunk_data) {
       # better way to do it?
       row <- dplyr::slice(chunk_data, 1)
-      year <- lubridate::year(lubridate::with_tz(row$starttime, self$tz))
-      self$encode_chunk_name(row$interval, row$site, year)
+      row <- dplyr::mutate(row, !!!self$chunk_calc)
+      self$encode_chunk_name(row$interval, row$site, row$year)
     },
-    get_chunk_names = function(interval, site, year) {
-      chunk_names <- tidyr::expand(tibble::tibble(), interval, site, year)
-      dplyr::transmute(chunk_names, chunk_name = purrr::pmap(chunk_names, self$encode_chunk_name))
+    chunk_vars = function(chunk_data) {
+      # better way to do it?
+      row <- dplyr::slice(chunk_data, 1)
+      row <- dplyr::mutate(row, !!!self$chunk_calc)
+      dplyr::select(row, dplyr::one_of(c(names(self$chunk_calc), self$chunk_columns)))
     },
     encode_chunk_name = function(interval, site, year) {
-      fn <- base64url::base64_urlencode(paste(paste(interval, site, year, sep = "\u00bb"), sep = "\u00bb"))
+      fn <- base64url::base64_urlencode(stringr::str_c(interval, site, year, sep = "\u00bb"))
       fs::path_join(c(as.character(interval), fn))
+    },
+    encoded_chunk_names = function(interval, site, year) {
+      chunk_names <- tidyr::expand(tibble::tibble(), interval, site, year)
+      dplyr::transmute(chunk_names, chunk_name = purrr::pmap(chunk_names, self$encode_chunk_name))
     },
     decode_chunk_name = function(chunk_name) {
       if (is.na(chunk_name)) {

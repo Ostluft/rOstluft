@@ -14,7 +14,7 @@
 #'
 #' @export
 #' @md
-read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL) {
+read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
   data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
                             locale = locale, trim_ws = TRUE, progress = FALSE)
@@ -34,6 +34,7 @@ read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @param encoding CSV file encoding. Default "latin1"
 #' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
+#' @param na.rm remove na (empty) values
 #'
 #' @return data frame in rOstluft long format
 #'
@@ -41,7 +42,7 @@ read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @seealso [base::timezones] - Information about time zones in R
 #'
 #' @export
-read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL) {
+read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
   data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
                             locale = locale, trim_ws = TRUE, progress = FALSE)
@@ -58,6 +59,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @param data data frame only containing the data from the file
 #' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
+#' @param na.rm remove na (empty) values
 #'
 #' @return data frame in rOstluft long format
 #'
@@ -65,7 +67,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @seealso [base::timezones] - Information about time zones in R
 #'
 #' @keywords internal
-airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL) {
+airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   colnames(data)[1] <- "starttime"
 
   header_names <- lapply(header, paste, collapse = "\u00bb")
@@ -75,7 +77,7 @@ airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL
   if (lubridate::is.period(time_shift)) {
     data[["starttime"]] <- data[["starttime"]] + time_shift
   }
-  data_long <- tidyr::gather(data, "key", "value", -"starttime", na.rm = TRUE)
+  data_long <- tidyr::gather(data, "key", "value", -"starttime", na.rm = na.rm)
   data_long[["value"]] <- as.numeric(data_long[["value"]])
   data_long <- tidyr::separate(data_long, "key", c("site", "parameter", "interval", "unit"), sep = "\u00bb")
   dplyr::mutate_if(data_long, is.character, as.factor)

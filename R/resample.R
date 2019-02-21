@@ -170,7 +170,6 @@ resample_series <- function(serie, statistic = "mean", new_interval = "d1", at =
 
   if (rlang::is_character(statistic) && statistic %in% names(update_unit)){
     unit <- update_unit[[statistic]]
-    print(unit)
     serie$unit <- forcats::as_factor(unit)
   }
 
@@ -253,7 +252,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.t
     starttime = wind_components$starttime,
     site = dplyr::first(ws$site),
     parameter = dplyr::first(ws$parameter),
-    interval = new_interval,
+    interval = forcats::as_factor(new_interval),
     unit = dplyr::first(ws$unit),
     value = wind_components$ws
   )
@@ -262,7 +261,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.t
     starttime = wind_components$starttime,
     site = dplyr::first(wd$site),
     parameter = dplyr::first(wd$parameter),
-    interval = new_interval,
+    interval = forcats::as_factor(new_interval),
     unit = dplyr::first(wd$unit),
     value = wind_components$wd
   )

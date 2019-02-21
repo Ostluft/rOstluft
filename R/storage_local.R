@@ -188,31 +188,35 @@ r6_storage_local <- R6::R6Class(
       }
 
       data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      res <- dplyr::do(data, private$merge_chunk(.data))
-      dplyr::ungroup(res)
+      data <- dplyr::group_split(data, keep = TRUE)
+      res <- purrr::map(data, private$merge_chunk)
+      bind_rows_with_factor_columns(!!!res)
     },
     get = function(filter=NULL, ...) {
       filter <- enquo(filter)
-      files <- self$format$get_chunk_names(...)
+      files <- self$format$encoded_chunk_names(...)
       files <- dplyr::mutate(files, chunk_path = self$get_chunk_path(.data$chunk_name))
       files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))
       files <- dplyr::filter(files, .data$exists == TRUE)
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
+      bind_rows_with_factor_columns(!!!chunks)
     },
     get_chunk_path = function(chunk_name) {
       fs::path(self$data_path, chunk_name, ext = self$ext)
     },
     list_chunks = function() {
-      chunk_paths <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
-      chunk_names <- fs::path_ext_remove(fs::path_rel(chunk_paths, self$data_path))
+      chunks <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
+      chunks <- dplyr::select(chunks, "path", "modification_time", "size")
+      chunks <- dplyr::rename_all(chunks, .funs = dplyr::funs(paste0("local.",.)))
+      chunks <- dplyr::mutate(chunks, chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
 
-      if (NROW(chunk_paths) == 0) {
+      if (nrow(chunks) == 0) {
         chunk_vars <- self$format$decode_chunk_name(NA)
       } else {
-        chunk_vars <- purrr::map_df(chunk_names, self$format$decode_chunk_name)
+        chunk_vars <- purrr::map_dfr(chunks$chunk_name, self$format$decode_chunk_name)
       }
-      dplyr::bind_cols(chunk_vars, tibble::tibble(chunk_path = chunk_paths))
+      dplyr::bind_cols(chunk_vars, dplyr::select(chunks, -"chunk_name"))
+
     },
     get_content = function() {
       if (fs::file_exists(self$content_path)) {
@@ -273,33 +277,39 @@ r6_storage_local <- R6::R6Class(
       }
       chunk
     },
-    merge_content = function(new_content) {
+    merge_content = function(new_content, chunk_vars) {
       if (fs::file_exists(self$content_path)) {
         old_content <- self$read_function(self$content_path)
-        new_content <- format_merge(new_content, old_content, self$format$content_columns)
+        # filter lines from current chunk from old content, only way to remove deleted content
+        old_content <- filter_remove_list(old_content, chunk_vars)
+        # now we can simply append the rows
+        new_content <- bind_rows_with_factor_columns(new_content, old_content)
       }
       self$write_function(new_content, self$content_path)
       new_content
     },
     merge_chunk = function(data) {
-      # remove calculated columns
-      new_data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
-      chunk_name <- self$format$chunk_name(new_data)
+      # get content count
+      data_content <- dplyr::count(self$format$na.omit(data),
+                                   .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+      # remove calculated chunk columns
+      data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
+      chunk_vars <- as.list(self$format$chunk_vars(data))
+      chunk_name <- rlang::exec(self$format$encode_chunk_name, !!!chunk_vars)
       chunk_path <- self$get_chunk_path(chunk_name)
 
       if (fs::file_exists(chunk_path)) {
         chunk_data <- self$read_function(chunk_path)
-        chunk_data <- self$format$merge(new_data, chunk_data)
+        chunk_data <- self$format$merge(data, chunk_data)
       } else {
         fs::dir_create(fs::path_dir(chunk_path))
-        chunk_data <- new_data
+        chunk_data <- data
       }
       chunk_data <- self$format$sort(chunk_data)
       self$write_function(droplevels(chunk_data), chunk_path)
       chunk_content <- dplyr::count(chunk_data, .dots = c(self$format$chunk_calc, self$format$serie_columns))
-      private$merge_content(chunk_content)
-
-      dplyr::count(data, .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+      private$merge_content(chunk_content, chunk_vars)
+      data_content
     }
   )
 )

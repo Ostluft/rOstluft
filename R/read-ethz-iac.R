@@ -18,7 +18,7 @@ read_ethz_iac_min10_parameters <- function(x, site = NULL) {
   pars <-
     dplyr::bind_cols(
       "parameter_original" = as.character(readr::read_table2(x, skip = header - 1, n_max = 1, col_names = FALSE))[-1],
-      readr::read_delim(x, delim = "(", skip = from, n_max = to - from - 1, col_names = FALSE)[,-1]
+      readr::read_delim(x, delim = "(", skip = from, n_max = to - from - 1, col_names = FALSE, col_types = cols())[,-1]
     ) %>%
     dplyr::rename("unit" = .data$X2)
   pars$unit <- as.character(sapply(pars$unit, function(y) stringr::str_replace_all(y, "\\(|\\)|\\ ", "")))
@@ -52,7 +52,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
   startdate <- lines[which(stringr::str_detect(lines, "time in minutes since"))]
   startdate <- substring(startdate, 23, 32)
   df <-
-    readr::read_table2(x, skip = header + 1, col_names = c("time", pars$parameter_original),
+    readr::read_table2(x, skip = header + 1, col_names = c("time", pars$parameter_original), col_types = cols(),
                        na = c("99999", "99999.0", "9999.0", "99999.00", "9999.00", "-320", "-320.0", "-320.00"),
                        skip_empty_rows = TRUE, locale = readr::locale(encoding = encoding)) %>%
     dplyr::mutate_all(as.numeric) %>%

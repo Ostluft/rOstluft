@@ -42,12 +42,12 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
                        n_max = c(skip, Inf)[y + 1] - 2 - skip[y], skip_empty_rows = TRUE) %>%
       dplyr::slice(skip2) %>%
       dplyr::mutate_at(-id_cols, as.numeric) %>%
-      tidyr::gather(parameter_original, value, -id_cols) %>%
-      dplyr::mutate(starttime = lubridate::fast_strptime(as.character(.data$time), format = time_format, lt = FALSE, tz = timezone),
-                    unit = plyr::revalue(.data$parameter_original, units)) %>%
+      tidyr::gather("parameter_original", "value", -id_cols) %>%
+      dplyr::mutate("starttime" = lubridate::fast_strptime(as.character(.data$time), format = time_format, lt = FALSE, tz = timezone),
+                    "unit" = plyr::revalue(.data$parameter_original, units)) %>%
       dplyr::select(-.data$time)  %>%
       dplyr::rename(
-        site_short = .data$stn
+        "site_short" = .data$stn
       )
   }))
   return(df)

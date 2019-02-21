@@ -17,10 +17,10 @@ read_ethz_iac_min10_parameters <- function(x, site = NULL) {
   header <- which(lines == "")[1]
   pars <-
     dplyr::bind_cols(
-      parameter_original = as.character(readr::read_table2(x, skip = header - 1, n_max = 1, col_names = FALSE))[-1],
+      "parameter_original" = as.character(readr::read_table2(x, skip = header - 1, n_max = 1, col_names = FALSE))[-1],
       readr::read_delim(x, delim = "(", skip = from, n_max = to - from - 1, col_names = FALSE)[,-1]
     ) %>%
-    dplyr::rename(unit = .data$X2)
+    dplyr::rename("unit" = .data$X2)
   pars$unit <- as.character(sapply(pars$unit, function(y) stringr::str_replace_all(y, "\\(|\\)|\\ ", "")))
   pars$unit <- as.character(sapply(pars$unit, function(y) stringr::str_replace_all(y, "deg", "\u00b0")))
   pars$unit <- as.character(sapply(pars$unit, function(y) stringr::str_replace_all(y, "percent", "%")))
@@ -56,14 +56,14 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
                        na = c("99999", "99999.0", "9999.0", "99999.00", "9999.00", "-320", "-320.0", "-320.00"),
                        skip_empty_rows = TRUE, locale = readr::locale(encoding = encoding)) %>%
     dplyr::mutate_all(as.numeric) %>%
-    dplyr::mutate(date = startdate) %>%
+    dplyr::mutate("date" = startdate) %>%
     dplyr::filter(.data$time %% 10 == 0) %>%
-    tidyr::gather(parameter_original, value, - .data$date, -.data$time) %>%
+    tidyr::gather("parameter_original", "value", - .data$date, -.data$time) %>%
     dplyr::mutate(
-      starttime = as.POSIXct(as.Date(date), tz = timezone) + as.difftime(.data$time, units = "mins"),
-      interval = "min10",
-      site_short = site,
-      unit = plyr::revalue(.data$parameter_original, rlang::set_names(pars$unit, pars$parameter_original))
+      "starttime" = as.POSIXct(as.Date(.data$date), tz = timezone) + as.difftime(.data$time, units = "mins"),
+      "interval" = "min10",
+      "site_short" = site,
+      "unit" = plyr::revalue(.data$parameter_original, rlang::set_names(pars$unit, pars$parameter_original))
     ) %>%
     dplyr::select(-.data$date, -.data$time)
   return(df)

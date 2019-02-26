@@ -6,6 +6,7 @@
 #' @param encoding DAT file encoding. Default "latin1"
 #' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
+#' @param na.rm remove na (empty) values. Default TRUE
 #'
 #' @return data frame in rOstluft long format
 #'
@@ -20,7 +21,7 @@ read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
                             locale = locale, trim_ws = TRUE, progress = FALSE)
   header <- data[c(1, 2, 4, 5), -1]
   data <- utils::tail(data, -6)
-  airmo_wide_to_long(header, data, tz, time_shift)
+  airmo_wide_to_long(header, data, tz, time_shift, na.rm)
 }
 
 
@@ -34,7 +35,7 @@ read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @param encoding CSV file encoding. Default "latin1"
 #' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
-#' @param na.rm remove na (empty) values
+#' @param na.rm remove na (empty) values. Default TRUE
 #'
 #' @return data frame in rOstluft long format
 #'
@@ -48,7 +49,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
                             locale = locale, trim_ws = TRUE, progress = FALSE)
   header <- data[c(1, 5, 9, 8), -1]
   data <- utils::tail(data, -10)
-  airmo_wide_to_long(header, data, tz, time_shift)
+  airmo_wide_to_long(header, data, tz, time_shift, na.rm)
 }
 
 
@@ -59,7 +60,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @param data data frame only containing the data from the file
 #' @param tz time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
-#' @param na.rm remove na (empty) values
+#' @param na.rm remove na (empty) values. Default TRUE
 #'
 #' @return data frame in rOstluft long format
 #'

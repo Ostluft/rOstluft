@@ -3,13 +3,10 @@
 #' This factory adds wrapper around statistical methods to handle na values. Additional it provides a simple
 #' way to apply a minimum required data capture rate to any function.
 #'
-#' @param statistic Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”, "sum",
-#'   “n”, “sd”, “percentile”. Note that “sd” is the standard deviation, “n” is the number
-#'   (frequency) of valid records in the period and “coverage” is the percentage data coverage “percentile”
-#'   is the percentile level (\%) between 0-1, which can be set using the “percentile” argument.
-#'   Or a function with one argument expecting a vector.
-#' @param threshold optional minimum data capture threshold 0 - 1.0 to use
+#' @param statistic Statistical method to generate function. Can be a name or function with one argument. See
+#'   section Statistical methods in the documention of [resample()] for more details.
 #' @param percentile The percentile level in \% used when statistic = "percentile". The default is 0.95.
+#' @param threshold optional minimum data capture threshold 0 - 1.0 to use
 #' @param max_gap optional maxium Number of consecutive NA values
 #'
 #' @return statistic function with one argument
@@ -19,19 +16,10 @@ statistic_fun_factory <- function(statistic, percentile = 0.95, threshold = NULL
 
   if (is.function(statistic)) {
     statistic_fun <- statistic
-  } else {
-    statistic_fun <- switch(statistic,
-                            "mean" = statistic_mean,
-                            "median" = statistic_median,
-                            "sd" = statistic_sd,
-                            "n" = statistic_n,
-                            "sum" = statistic_sum,
-                            "max" = statistic_max,
-                            "min" = statistic_min,
-                            "coverage" = statistic_coverage,
-                            "percentile" = get_statistic_percentile(percentile),
-                            NULL
-    )
+  } else if (statistic == "percentile") {
+    statistic_fun <- get_statistic_percentile(percentile)
+  } else if (is.character(statistic)) {
+    statistic_fun <- statistic_lookup[[statistic, "FUN"]]
   }
 
   if (is.null(statistic_fun)) {
@@ -78,10 +66,10 @@ statistic_fun_factory <- function(statistic, percentile = 0.95, threshold = NULL
 #' Wrapper function for minimum capture threshold
 #'
 #' @param statistic_fun statistic function to apply if minimum capture threshold is meet
+#' @param threshold  minimum data capture threshold 0 - 1.0 to use
 #'
 #' @return wrapped function
 #'
-#' @rdname statistic_fun_factory
 #' @export
 treshold_wrapper_function <- function(statistic_fun, threshold) {
   function(x) {
@@ -98,8 +86,10 @@ treshold_wrapper_function <- function(statistic_fun, threshold) {
 #' wrapper function for maximum number of consecutive NA values
 #'
 #' @param statistic_fun statistic function to apply if max gap criterium is meet
+#' @param max_gap maxium Number of consecutive NA values
 #'
-#' @rdname statistic_fun_factory
+#' @return wrapped function
+#'
 #' @export
 gap_wrapper_function <- function(statistic_fun, max_gap) {
   function(x) {
@@ -193,7 +183,7 @@ statistic_coverage <- function(x) {
   if (all(is.na(x))) {
     res <- 0
   } else {
-    res <- (1 - sum(is.na(x)) / length(x))
+    res <- (1 - sum(is.na(x)) / length(x)) * 100
   }
   res
 }
@@ -208,5 +198,48 @@ get_statistic_percentile <- function(percentile) {
     stats::quantile(x, probs = percentile, na.rm = TRUE)
   }
 }
+
+#' @rdname statistic_fun
+#' @keywords internal
+get_statistic_limit <- function(limit) {
+  function(x) {
+    if (all(is.na(x))) {
+      NA
+    } else {
+      sum(x > limit, na.rm = TRUE)
+    }
+  }
+
+}
+
+statistic_lookup <- tibble::tribble(
+  ~statistic, ~FUN, ~rename, ~new_unit,
+  "mean", statistic_mean, NULL, NULL,
+  "median",  statistic_median, NULL, NULL,
+  "sd",  statistic_sd, NULL, NULL,
+  "n",  statistic_n, "${parameter}_nb_${basis_interval}", "1",
+  "sum",  statistic_sum, NULL, NULL,
+  "max",  statistic_max, "${parameter}_max_${basis_interval}", NULL,
+  "min",  statistic_min, "${parameter}_min_${basis_interval}", NULL,
+  "coverage",  statistic_coverage, "${parameter}_valid%_${basis_interval}", "%",
+  "perc95",  get_statistic_percentile(0.95), "${parameter}_95%_${basis_interval}",  NULL,
+  "perc98",  get_statistic_percentile(0.98), "${parameter}_98%_${basis_interval}", NULL,
+  "n>8", get_statistic_limit(8), "${parameter}_nb_${basis_interval}>8", "1",
+  "n>50", get_statistic_limit(50), "${parameter}_nb_${basis_interval}>50", "1",
+  "n>65", get_statistic_limit(65), "${parameter}_nb_${basis_interval}>65", "1",
+  "n>80", get_statistic_limit(80), "${parameter}_nb_${basis_interval}>80", "1",
+  "n>100", get_statistic_limit(100), "${parameter}_nb_${basis_interval}>100", "1",
+  "n>120", get_statistic_limit(120), "${parameter}_nb_${basis_interval}>120", "1",
+  "n>160", get_statistic_limit(160), "${parameter}_nb_${basis_interval}>160", "1",
+  "n>180", get_statistic_limit(180), "${parameter}_nb_${basis_interval}>180", "1",
+  "n>200", get_statistic_limit(200), "${parameter}_nb_${basis_interval}>200", "1",
+  "n>240", get_statistic_limit(240), "${parameter}_nb_${basis_interval}>240", "1"
+)
+
+statistic_lookup <- tibble::column_to_rownames(statistic_lookup, "statistic")
+
+
+
+
 
 

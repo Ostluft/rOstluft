@@ -2,36 +2,31 @@
 % Please edit documentation in R/resample.R
 \name{resample}
 \alias{resample}
-\alias{resample_series}
-\alias{resample_wind}
 \title{Resampling data}
 \usage{
 resample(data, statistic = "mean", new_interval, data.thresh = NULL,
-  start.date = NULL, end.date = NULL, drop.last = FALSE,
-  rename.parameter = FALSE, percentile = 95)
-
-resample_series(serie, statistic = "mean", new_interval = "d1",
-  at = "value", data.thresh = NULL, start.date = NULL,
-  end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
-  percentile = 95)
-
-resample_wind(data, statistic, new_interval = "d1", data.thresh = NULL,
+  max_gap = NULL, rename.parameter = TRUE, percentile = 0.95,
   start.date = NULL, end.date = NULL, drop.last = FALSE)
 }
 \arguments{
 \item{data}{A tibble in rOstluft long format}
 
-\item{statistic}{Statistical method to apply when aggregating the data; default is the mean.
-Can be one of “mean”, “max”, “min”, “median”, “frequency”, “sd”, “percentile”. Note that “sd”
-is the standard deviation, “frequency” is the number (frequency) of valid records in the period
-and “data.cap” is the percentage data capture. “percentile” is the percentile level (\%) between
-0-100, which can be set using the “percentile” argument.
-Or a function with one argument expecting a vector.
-Or a list with parameter as name and the statistical method as value (function or name of method)}
+\item{statistic}{Statistical method(s) to apply when aggregating the data.
+Can be a simple string with name of the method or a function with one argument.
+Or a list with parameter as name and the statistical method as value (function or name of method).
+Or a list with parameter as and a list of statisticals methods. All methods must support renaming parameter.
+A default statistic for all parameters not in the list, can be defined with the name "default_statistic".
+See section Statistical methods and examples}
 
 \item{new_interval}{New interval. Must be longer than actual interval (not checked)}
 
-\item{data.thresh}{minimum data capture threshold in \% to use}
+\item{data.thresh}{optional minimum data capture threshold in to use}
+
+\item{max_gap}{optional maxium Number of consecutive NA values}
+
+\item{rename.parameter}{optional rename parameter}
+
+\item{percentile}{The percentile level used when statistic = "percentile". The default is 0.95}
 
 \item{start.date}{optional start date for padding. Default min date in series floored to the new interval}
 
@@ -39,35 +34,105 @@ Or a list with parameter as name and the statistical method as value (function o
 
 \item{drop.last}{optional drop the last added time point by padding. Default False, true if no end.date
 provided and max date != ceiled max date.}
-
-\item{percentile}{The percentile level in \% used when statistic = "percentile". The default is 95.}
-
-\item{serie}{a tibble in rOstluft long format containing exactly one serie}
 }
 \value{
 tibble with resampled data
-
-tibble with resampled series
-
-tibble with resampled wind data
 }
 \description{
 Aggregate data by different time periods. Following this simple steps:
 \itemize{
 \item split data in series
 \itemize{
-\item pad data serie (needed for calculation of capture threshold)
+\item pad data serie (needed for calculation of capture threshold, detection of gaps)
 \item group serie by new interval with \code{\link[lubridate:floor_date]{lubridate::floor_date()}}
 \item apply statistical method or user provides function (user can provide list per parameter)
 }
 \item combine resampled series
 }
-}
-\section{TODO Wind}{
 
-Code optimieren ?
-sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und korrektes bind_rows mit Faktoren
-(Deine bind_rows_with... spuckt die Zahl aus, nicht einen Faktor, in meinem Fall)
+It is possible to supply different methods for different parameters. The argument statistic can be named list. The
+name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
+methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method.
+}
+\section{Statistical methods}{
+
+The statistical method is a function with a numeric vector as argument and returns a single value.
+\itemize{
+\item \code{"mean"} average value
+\item \code{"median"} median value
+\item \code{"sd"} standard deviation of values
+\item \code{"sum"} sum over all values
+\item \code{"max"} maxium value
+\item \code{"min"} minimum value
+\item \code{"n"} number of valid records, renames parameter, changes unit
+\item \code{"coverage"} percentage of valid records, renames parameter, changes unit
+\item \code{"percentile"} calculates the percentile. Use the argument percentile to specify the level, renames parameter
+\item \code{"perc95"} 95% percentile, renames parameter
+\item \code{"perc98"} 98% percentile, renames parameter
+\item \code{"n>8"} number of values > 8 (CO d1 limit), renames parameter, changes unit
+\item \code{"n>50"} number of values > 50 (PM10 d1 limit), renames parameter, changes unit
+\item \code{"n>65"} number of values > 65 (O3 d1 indicator), renames parameter, changes unit
+\item \code{"n>80"} number of values > 80 (NO2 d1 limit), renames parameter, changes unit
+\item \code{"n>100"} number of values > 100 (SO2 d1 limit), renames parameter, changes unit
+\item \code{"n>120"} number of values > 120 (O3 h1 limit), renames parameter, changes unit
+\item \code{"n>160"} number of values > 160 (O3 h1 indicator), renames parameter, changes unit
+\item \code{"n>180"} number of values > 180 (O3 h1 indicator), renames parameter, changes unit
+\item \code{"n>200"} number of values > 200 (O3 h1 indicator), renames parameter, changes unit
+\item \code{"n>240"} number of values > 240 (O3 h1 indicator), renames parameter, changes unit
+\item \code{"drop"} drops the parameter from the result, useful for persons too lazy to filter the input data
+}
 }
 
-\keyword{internal}
+\section{Wind}{
+
+Wind is a special case. For vector averaging the methods needs two inputs (direction and speed). To resample wind
+data it is necessary to specify three parameters with the methods \code{"wind.direction"}, \code{"wind.speed_vector"} and
+\code{"wind.speed_scalar"}. Even if scalar or vector speed isn't present. The parameter will be substituted by the other.
+
+Important: Wind calculation are standalone. It is possible to calculate multiple methods for non wind parameters.
+}
+
+\section{TODO}{
+
+\itemize{
+\item AOT40 statistic?
+\item some from https://github.com/davidcarslaw/openair/blob/master/R/aqStats.R?
+}
+}
+
+\examples{
+min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",
+                     package = "rOstluft.data", mustWork = TRUE)
+
+airmo_min30 <- read_airmo_csv(min30)
+
+# filter volume concenctrations, only use mass concentrations
+airmo_min30 <- dplyr::filter(airmo_min30, !(.data$unit == "ppb" | .data$unit == "ppm"))
+
+d1_statistics <- list(
+  "default_statistic" = "drop",
+  "Hr" = "mean",
+  "RainDur" = "sum",
+  "O3" = list("mean", "max", "min", "n")
+)
+resample(airmo_min30, d1_statistics, "d1", data.thresh = 0.8)
+
+# Note: wind parameters don't support multiple methods via list!
+h1_statistics <- list(
+  "default_statistic" = "drop",
+  "WD" = "wind.direction",
+  "WVs" = "wind.speed_scalar",
+  "WVv" = "wind.speed_vector",
+  "RainDur" = "sum",
+  "NO" = list("coverage", "mean")
+)
+resample(airmo_min30, h1_statistics, "h1", data.thresh = 0.8)
+
+# Note: all resulting values should be NA -> gap is to big (480 * min30 = 10 days)
+y1_statistics <- list(
+  "default_statistic" = "drop",
+  "O3" = list("mean", "perc98", "n", "max", "min")
+)
+resample(airmo_min30, y1_statistics, "y1", max_gap = 480)
+
+}

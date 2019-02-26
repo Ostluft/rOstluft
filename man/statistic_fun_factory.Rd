@@ -2,30 +2,23 @@
 % Please edit documentation in R/statistic.R
 \name{statistic_fun_factory}
 \alias{statistic_fun_factory}
-\alias{treshold_wrapper_function}
 \title{Factory to generate statistical functions}
 \usage{
-statistic_fun_factory(statistic, threshold = NULL, percentile = 95)
-
-treshold_wrapper_function(statistic_fun, threshold)
+statistic_fun_factory(statistic, percentile = 0.95, threshold = NULL,
+  max_gap = NULL)
 }
 \arguments{
-\item{statistic}{Statistical method to generate function. Can be one of “mean”, “max”, “min”, “median”, "sum",
-“n”, “sd”, “percentile”. Note that “sd” is the standard deviation, “n” is the number
-(frequency) of valid records in the period and “data.cap” is the percentage data capture. “percentile”
-is the percentile level (\%) between 0-100, which can be set using the “percentile” argument.
-Or a function with one argument expecting a vector.}
+\item{statistic}{Statistical method to generate function. Can be a name or function with one argument. See
+section Statistical methods in the documention of \code{\link[=resample]{resample()}} for more details.}
 
-\item{threshold}{optional minimum data capture threshold in \% to use}
+\item{percentile}{The percentile level in \% used when statistic = "percentile". The default is 0.95.}
 
-\item{percentile}{The percentile level in \% used when statistic = "percentile". The default is 95.}
+\item{threshold}{optional minimum data capture threshold 0 - 1.0 to use}
 
-\item{statistic_fun}{statistic function to apply if minimum capture threshold is meet}
+\item{max_gap}{optional maxium Number of consecutive NA values}
 }
 \value{
 statistic function with one argument
-
-wrapped function
 }
 \description{
 This factory adds wrapper around statistical methods to handle na values. Additional it provides a simple

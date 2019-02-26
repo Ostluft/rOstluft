@@ -3,42 +3,111 @@
 #' @description
 #' Aggregate data by different time periods. Following this simple steps:
 #' * split data in series
-#'   - pad data serie (needed for calculation of capture threshold)
+#'   - pad data serie (needed for calculation of capture threshold, detection of gaps)
 #'   - group serie by new interval with [lubridate::floor_date()]
 #'   - apply statistical method or user provides function (user can provide list per parameter)
 #' * combine resampled series
 #'
+#' It is possible to supply different methods for different parameters. The argument statistic can be named list. The
+#' name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
+#' methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method.
+#'
+#' @section Statistical methods:
+#' The statistical method is a function with a numeric vector as argument and returns a single value.
+#'
+#' * `"mean"` average value
+#' * `"median"` median value
+#' * `"sd"` standard deviation of values
+#' * `"sum"` sum over all values
+#' * `"max"` maxium value
+#' * `"min"` minimum value
+#' * `"n"` number of valid records, renames parameter, changes unit
+#' * `"coverage"` percentage of valid records, renames parameter, changes unit
+#' * `"percentile"` calculates the percentile. Use the argument percentile to specify the level, renames parameter
+#' * `"perc95"` 95% percentile, renames parameter
+#' * `"perc98"` 98% percentile, renames parameter
+#' * `"n>8"` number of values > 8 (CO d1 limit), renames parameter, changes unit
+#' * `"n>50"` number of values > 50 (PM10 d1 limit), renames parameter, changes unit
+#' * `"n>65"` number of values > 65 (O3 d1 indicator), renames parameter, changes unit
+#' * `"n>80"` number of values > 80 (NO2 d1 limit), renames parameter, changes unit
+#' * `"n>100"` number of values > 100 (SO2 d1 limit), renames parameter, changes unit
+#' * `"n>120"` number of values > 120 (O3 h1 limit), renames parameter, changes unit
+#' * `"n>160"` number of values > 160 (O3 h1 indicator), renames parameter, changes unit
+#' * `"n>180"` number of values > 180 (O3 h1 indicator), renames parameter, changes unit
+#' * `"n>200"` number of values > 200 (O3 h1 indicator), renames parameter, changes unit
+#' * `"n>240"` number of values > 240 (O3 h1 indicator), renames parameter, changes unit
+#' * `"drop"` drops the parameter from the result, useful for persons too lazy to filter the input data
+#'
+#' @section Wind:
+#' Wind is a special case. For vector averaging the methods needs two inputs (direction and speed). To resample wind
+#' data it is necessary to specify three parameters with the methods `"wind.direction"`, `"wind.speed_vector"` and
+#' `"wind.speed_scalar"`. Even if scalar or vector speed isn't present. The parameter will be substituted by the other.
+#'
+#' Important: Wind calculation are standalone. It is possible to calculate multiple methods for non wind parameters.
+#'
 #' @section TODO:
-#' * calculate exceeded limits
-#' * AOT40 statistic
+#' * AOT40 statistic?
 #' * some from https://github.com/davidcarslaw/openair/blob/master/R/aqStats.R?
-#' * enhance automatic renaming of parameter (percentile, exceeded limits)
-#' * more test cases
 #'
 #'
 #' @param data A tibble in rOstluft long format
+#' @param statistic Statistical method(s) to apply when aggregating the data.
+#'   Can be a simple string with name of the method or a function with one argument.
+#'   Or a list with parameter as name and the statistical method as value (function or name of method).
+#'   Or a list with parameter as and a list of statisticals methods. All methods must support renaming parameter.
+#'   A default statistic for all parameters not in the list, can be defined with the name "default_statistic".
+#'   See section Statistical methods and examples
 #' @param new_interval New interval. Must be longer than actual interval (not checked)
-#' @param statistic Statistical method to apply when aggregating the data; default is the mean.
-#'   Can be one of “mean”, “max”, “min”, “median”, “frequency”, “sd”, “percentile”, "drop". Note that “sd”
-#'   is the standard deviation, “frequency” is the number (frequency) of valid records in the period
-#'   and  and “coverage” is the percentage data coverage. “percentile” is the percentile level between
-#'   0-1, which can be set using the “percentile” argument. "drop" drops the parameter and returns an empty tibble.
-#'   Or a function with one argument expecting a vector.
-#'   Or a list with parameter as name and the statistical method as value (function or name of method)
-#'   Or a list with parameter as and a list of statisticals methods. All methos must support renaming parameter
 #' @param data.thresh optional minimum data capture threshold in to use
+#' @param max_gap optional maxium Number of consecutive NA values
+#' @param rename.parameter optional rename parameter
+#' @param percentile The percentile level used when statistic = "percentile". The default is 0.95
 #' @param start.date optional start date for padding. Default min date in series floored to the new interval
 #' @param end.date optional end date for padding. Default max date in series ceiled to the new interval
 #' @param drop.last optional drop the last added time point by padding. Default False, true if no end.date
 #'   provided and max date != ceiled max date.
-#' @param percentile The percentile level used when statistic = "percentile". The default is 0.95
-#' @param max_gap optional maxium Number of consecutive NA values
 #'
 #' @return tibble with resampled data
+#'
+#' @examples
+#' min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",
+#'                      package = "rOstluft.data", mustWork = TRUE)
+#'
+#' airmo_min30 <- read_airmo_csv(min30)
+#'
+#' # filter volume concenctrations, only use mass concentrations
+#' airmo_min30 <- dplyr::filter(airmo_min30, !(.data$unit == "ppb" | .data$unit == "ppm"))
+#'
+#' d1_statistics <- list(
+#'   "default_statistic" = "drop",
+#'   "Hr" = "mean",
+#'   "RainDur" = "sum",
+#'   "O3" = list("mean", "max", "min", "n")
+#' )
+#' resample(airmo_min30, d1_statistics, "d1", data.thresh = 0.8)
+#'
+#' # Note: wind parameters don't support multiple methods via list!
+#' h1_statistics <- list(
+#'   "default_statistic" = "drop",
+#'   "WD" = "wind.direction",
+#'   "WVs" = "wind.speed_scalar",
+#'   "WVv" = "wind.speed_vector",
+#'   "RainDur" = "sum",
+#'   "NO" = list("coverage", "mean")
+#' )
+#' resample(airmo_min30, h1_statistics, "h1", data.thresh = 0.8)
+#'
+#' # Note: all resulting values should be NA -> gap is to big (480 * min30 = 10 days)
+#' y1_statistics <- list(
+#'   "default_statistic" = "drop",
+#'   "O3" = list("mean", "perc98", "n", "max", "min")
+#' )
+#' resample(airmo_min30, y1_statistics, "y1", max_gap = 480)
+#'
 #' @export
-resample <- function(data, statistic = "mean", new_interval, data.thresh = NULL,
-                     start.date = NULL, end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
-                     percentile = 0.95, max_gap = NULL) {
+resample <- function(data, statistic = "mean", new_interval, data.thresh = NULL, max_gap = NULL,
+                     rename.parameter = TRUE, percentile = 0.95,
+                     start.date = NULL, end.date = NULL, drop.last = FALSE) {
 
   # build helper function to get the statistical method for the parameter
   if (!is.list(statistic)) {
@@ -89,46 +158,11 @@ resample <- function(data, statistic = "mean", new_interval, data.thresh = NULL,
   bind_rows_with_factor_columns(!!!data, !!!wind.data)
 }
 
-
-#' Cut wind data
-#'
-#' This function splits
-#'
-#' @param data tibble with input data
-#' @param wind_parameters Character Vector of Wind parameters. Default wind_parameters = c("WD", "WVv")
-#'
-#' @return named list: $wind all wind parameters, $others everything else
-
-#' @keywords internal
-cut_wind_data <- function(data, wind_parameters = c("WD", "WVv")) {
-  data <- dplyr::group_by(data, isWind= .data$parameter %in% wind_parameters)
-  keys <- dplyr::group_keys(data)
-  data <- dplyr::group_split(data, keep = FALSE)
-  mapping <- list("TRUE" = "wind", "FALSE" = "others")
-  rlang::set_names(data, mapping[as.character(keys$isWind)])  # FALSE before TRUE, order don't matters
-}
-
-
-#TODO find the right place for this definition: statistic.R ?
-rename_list <- list(
-  "n" = "_nb_",
-  "max" = "_max_",
-  "min" = "_min_",
-  "coverage" = "_coverage_"
-)
-
-update_unit <- list(
-  "n" = "1",
-  "data.cap" = "%"
-)
-
-
 #' @title resampling a serie
 #' @param serie a tibble in rOstluft long format containing exactly one serie
 #'
 #' @return tibble with resampled series
 #'
-#' @rdname resample
 #' @keywords internal
 resample_series <- function(serie, statistic = "mean", new_interval = "d1", data.thresh = NULL,
                             start.date = NULL, end.date = NULL, drop.last = FALSE, rename.parameter = FALSE,
@@ -158,7 +192,7 @@ resample_series <- function(serie, statistic = "mean", new_interval = "d1", data
   )
 
   if (is.list(statistic)) {
-    no_rename <- purrr::map_lgl(statistic, ~ !(is.character(.) && . %in% names(rename_list)))
+    no_rename <- purrr::map_lgl(statistic, ~ !(is.character(.) && !is.null(statistic_lookup[[., "rename"]])))
     if ((length(statistic) > 1 && isFALSE(rename.parameter)) || sum(no_rename) > 1) {
       stop("resampling one serie with multiple statistics without renaming")
     }
@@ -191,15 +225,19 @@ resample_apply_statistic <- function(statistic, serie, new_interval, old_interva
   #TODO could use forcats::fct_recode for Performance?
   serie <- dplyr::mutate(serie, interval = forcats::as_factor(new_interval))
 
-  if (isTRUE(rename.parameter) && rlang::is_character(statistic) && statistic %in% names(rename_list)) {
-    old_parameter <- as.character(dplyr::first(serie$parameter))
-    parameter <- stringr::str_c(old_parameter, rename_list[[statistic]], old_interval)
+  if (isTRUE(rename.parameter) && is.character(statistic) && !is.null(statistic_lookup[[statistic, "rename"]])) {
+    rename_vars <- list(
+      parameter = as.character(dplyr::first(serie$parameter)),
+      basis_interval = old_interval,
+      interval = new_interval
+    )
+    parameter <- stringr::str_interp(statistic_lookup[[statistic, "rename"]], rename_vars)
     serie$parameter <- forcats::as_factor(parameter)
   }
 
-  if (is.character(statistic) && statistic %in% names(update_unit)){
-    unit <- update_unit[[statistic]]
-    serie$unit <- forcats::as_factor(unit)
+
+  if (is.character(statistic) && !is.null(statistic_lookup[[statistic, "new_unit"]])){
+    serie$unit <- forcats::as_factor(statistic_lookup[[statistic, "new_unit"]])
   }
 
   serie
@@ -209,7 +247,6 @@ resample_apply_statistic <- function(statistic, serie, new_interval, old_interva
 #'
 #' @return tibble with resampled wind data
 #'
-#' @rdname resample
 #' @keywords internal
 resample_wind <- function(data, statistic, new_interval = "d1", data.thresh = NULL, start.date = NULL, end.date = NULL,
                           drop.last = FALSE, max_gap = NULL) {
@@ -395,4 +432,26 @@ convert_interval <- function(interval) {
   if (units == "y") units <- "year"
 
   stringr::str_c(num, units, sep = " ")
+}
+
+
+
+#' Cut wind data
+#'
+#' This function splits off the wind parameters
+#'
+#' TODO: create an all purpuse function?
+#'
+#' @param data tibble with input data
+#' @param wind_parameters Character Vector of Wind parameters. Default wind_parameters = c("WD", "WVv")
+#'
+#' @return named list: $wind all wind parameters, $others everything else
+#'
+#' @keywords internal
+cut_wind_data <- function(data, wind_parameters = c("WD", "WVv")) {
+  data <- dplyr::group_by(data, isWind= .data$parameter %in% wind_parameters)
+  keys <- dplyr::group_keys(data)
+  data <- dplyr::group_split(data, keep = FALSE)
+  mapping <- list("TRUE" = "wind", "FALSE" = "others")
+  rlang::set_names(data, mapping[as.character(keys$isWind)])  # FALSE before TRUE, order don't matters
 }

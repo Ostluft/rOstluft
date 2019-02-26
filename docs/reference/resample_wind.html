@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reads an AIRMO Export in CSV Format — read_airmo_csv • rOstluft</title>
+<title>Resamples wind data — resample_wind • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Reads an AIRMO Export in CSV Format — read_airmo_csv" />
+<meta property="og:title" content="Resamples wind data — resample_wind" />
 
-<meta property="og:description" content="Reads the data from a AIRMO CSV file and returns it as a data frame in rOstluft long format" />
+<meta property="og:description" content="Resamples wind data" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,64 +122,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reads an AIRMO Export in CSV Format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-airmo.R'><code>R/read-airmo.R</code></a></small>
-    <div class="hidden name"><code>read_airmo_csv.Rd</code></div>
+    <h1>Resamples wind data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/resample.R'><code>R/resample.R</code></a></small>
+    <div class="hidden name"><code>resample_wind.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Reads the data from a AIRMO CSV file and returns it as a data frame in rOstluft long format</p>
+    <p>Resamples wind data</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_airmo_csv</span>(<span class='no'>fn</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"latin1"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>,
-  <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>fn</th>
-      <td><p>CSV file name, can be relative to current directory or absolut</p></td>
-    </tr>
-    <tr>
-      <th>encoding</th>
-      <td><p>CSV file encoding. Default "latin1"</p></td>
-    </tr>
-    <tr>
-      <th>tz</th>
-      <td><p>time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"</p></td>
-    </tr>
-    <tr>
-      <th>time_shift</th>
-      <td><p>a lubridate period to add to the time. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>na.rm</th>
-      <td><p>remove na (empty) values. Default TRUE</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>resample_wind</span>(<span class='no'>data</span>, <span class='no'>statistic</span>, <span class='kw'>new_interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+        
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame in rOstluft long format</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/period.html'>lubridate::period()</a></code> - Create or parse period objects</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p></div>
+    <p>tibble with resampled wind data</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

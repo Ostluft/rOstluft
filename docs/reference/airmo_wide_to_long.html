@@ -133,7 +133,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(<span class='no'>header</span>, <span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(<span class='no'>header</span>, <span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,6 +154,10 @@
     <tr>
       <th>time_shift</th>
       <td><p>a lubridate period to add to the time. Default NULL</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>remove na (empty) values. Default TRUE</p></td>
     </tr>
     </table>
     

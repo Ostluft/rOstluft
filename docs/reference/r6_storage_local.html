@@ -319,7 +319,7 @@ confirmation</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Rosengartenstrasse Hr        %Hr    </span><span style='text-decoration: underline;'>4</span><span>010
 #&gt; </span><span style='color: #555555;'># ... with 78 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks</span>
-<span class='no'>store</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 5</span><span>
+<span class='no'>store</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 7</span><span>
 #&gt;   chunk_name interval site  year 
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2013 
@@ -329,7 +329,8 @@ confirmation</p>
 #&gt; </span><span style='color: #555555;'>5</span><span> min30/bWl~ min30    Zch_~ 2011 
 #&gt; </span><span style='color: #555555;'>6</span><span> min30/bWl~ min30    Zch_~ 2012 
 #&gt; </span><span style='color: #555555;'>7</span><span> min30/bWl~ min30    Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'># ... with 1 more variable: chunk_path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
+#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## destroy store (careful removes all files on the disk)</span>
 <span class='no'>store</span>$<span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
 ## missing examples for meta functions

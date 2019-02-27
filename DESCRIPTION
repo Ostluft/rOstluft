@@ -39,12 +39,9 @@ Suggests:
     testthat,
     pkgdown,
     lintr,
-    styler,
     roxygen2,
     openair
 Remotes:
-    jimhester/lintr,
-    r-lib/styler,
     Ostluft/rOstluft.data
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

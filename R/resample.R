@@ -193,19 +193,19 @@ resample_series <- function(serie, statistic = "mean", new_interval = "d1", data
 
   if (is.list(statistic)) {
     no_rename <- purrr::map_lgl(statistic, ~ !(is.character(.) && !is.null(statistic_lookup[[., "rename"]])))
-    if ((length(statistic) > 1 && isFALSE(rename.parameter)) || sum(no_rename) > 1) {
+    if ( (length(statistic) > 1 && isFALSE(rename.parameter)) || sum(no_rename) > 1) {
       stop("resampling one serie with multiple statistics without renaming")
     }
 
     serie <- purrr::map(statistic, resample_apply_statistic, serie = serie, new_interval = new_interval,
-                        old_interval = old_interval, data.thresh = data.thresh, rename.parameter = rename.parameter ,
+                        old_interval = old_interval, data.thresh = data.thresh, rename.parameter = rename.parameter,
                         percentile = percentile, max_gap = max_gap)
 
     serie <- bind_rows_with_factor_columns(!!!serie)
   } else {
     serie <- resample_apply_statistic(statistic, serie = serie,  new_interval = new_interval,
                                       old_interval = old_interval, data.thresh = data.thresh,
-                                      rename.parameter = rename.parameter , percentile = percentile, max_gap = max_gap)
+                                      rename.parameter = rename.parameter, percentile = percentile, max_gap = max_gap)
   }
 
   serie
@@ -215,7 +215,7 @@ resample_apply_statistic <- function(statistic, serie, new_interval, old_interva
                                      rename.parameter = FALSE, percentile = 0.95, max_gap = NULL) {
 
   if (rlang::is_character(statistic) && statistic == "drop") {
-    return(dplyr::ungroup(serie)[0,])
+    return(dplyr::ungroup(serie)[0, ])
   }
 
   FUN <- statistic_fun_factory(statistic, threshold =  data.thresh, percentile = percentile, max_gap = max_gap)
@@ -270,7 +270,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.t
                                end.date = NULL, drop.last = FALSE, max_gap = NULL) {
 
   interval_converted <- convert_interval(new_interval)
-  old_interval <- dplyr::first(data.site$interval)
+  old_interval <- dplyr::first(data.site$interval)  # nolint
 
   if (is.null(start.date)) {
     start.date <- lubridate::floor_date(min(data.site$starttime), interval_converted)
@@ -286,7 +286,6 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.t
 
   groups <- dplyr::group_by(data.site, .data$parameter, .data$unit)
   keys <- dplyr::group_keys(groups)
-  site <- dplyr::first(data.site$site)
   groups <- dplyr::group_split(groups)
 
   groups <- purrr::map(groups, pad_serie, start.date, end.date, drop.last)
@@ -319,7 +318,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data.t
     wind_components <- dplyr::summarise(wind_components, U = FUN(.data$U), V = FUN(.data$V))
     wind_components <- dplyr::mutate(wind_components,
                                      wd = (atan2(.data$U, .data$V) * 360 / 2 / pi) %% 360,
-                                     wv = sqrt(.data$U^2 + .data$V^2))
+                                     wv = sqrt(.data$U ^ 2 + .data$V ^ 2))
 
     wv <- tibble::tibble(
       starttime = wind_components$starttime,
@@ -449,9 +448,9 @@ convert_interval <- function(interval) {
 #'
 #' @keywords internal
 cut_wind_data <- function(data, wind_parameters = c("WD", "WVv")) {
-  data <- dplyr::group_by(data, isWind= .data$parameter %in% wind_parameters)
+  data <- dplyr::group_by(data, isWind = .data$parameter %in% wind_parameters)
   keys <- dplyr::group_keys(data)
   data <- dplyr::group_split(data, keep = FALSE)
   mapping <- list("TRUE" = "wind", "FALSE" = "others")
-  rlang::set_names(data, mapping[as.character(keys$isWind)])  # FALSE before TRUE, order don't matters
+  rlang::set_names(data, mapping[as.character(keys$isWind)])  # nolint
 }

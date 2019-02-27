@@ -207,7 +207,7 @@ r6_storage_local <- R6::R6Class(
     list_chunks = function() {
       chunks <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
       chunks <- dplyr::select(chunks, "path", "modification_time", "size")
-      chunks <- dplyr::rename_all(chunks, .funs = dplyr::funs(paste0("local.",.)))
+      chunks <- dplyr::rename_all(chunks, .funs = dplyr::funs(paste0("local.", .)))
       chunks <- dplyr::mutate(chunks, chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
 
       if (nrow(chunks) == 0) {

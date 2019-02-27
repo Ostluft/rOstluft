@@ -100,7 +100,7 @@ convert_unit <- function(data, parameter, from, to, method = "return", ...) {
 #' convert_multiple_units(airmo_min30_parts, conversions, method = "return")
 convert_multiple_units <- function(data, conversions, method = "return", ...) {
   if (!tibble::is_tibble(conversions) && !all(c("parameter", "from", "to") %in% names(conversions))) {
-    stop(sprintf('argument conversion must be a tibble and has the columns parameter, from, to'))
+    stop("argument conversion must be a tibble and must has the columns parameter, from, to")
   }
 
   if (method == "return") {
@@ -111,7 +111,7 @@ convert_multiple_units <- function(data, conversions, method = "return", ...) {
     return(bind_rows_with_factor_columns(data, !!!converted))
   } else if (method == "replace") {
     conversions_list <- purrr::transpose(conversions)
-    return(purrr::reduce(conversions_list, apply_convert_unit,  method = "replace" , ..., .init = data))
+    return(purrr::reduce(conversions_list, apply_convert_unit,  method = "replace", ..., .init = data))
   } else {
     stop(sprintf('Invalid value (%s) for argument method. Should be one of "return", "append", "replace"', method))
   }
@@ -149,9 +149,11 @@ parts_to_mass <- function(values, mol_mass, temperature = 20.0, pressure = 1013.
 
 
 # helper function to determinate mol_mass from parts and volume concentrations
+# nolint start
 # calculate_molmass <- function(mass, parts, temperature = 20.0, pressure = 1013.25) {
 #   mass / parts * molar_gas_constant * (temperature + 273.15) / pressure / 100
 # }
+# nolint end
 
 
 #' Helper function to reduce a list of conversions parameters
@@ -217,4 +219,3 @@ convert_conc_lookup <- tibble::tribble(
   "NO2", "\u00b5g/m3", "ppb", mass_to_parts,
   "SO2", "\u00b5g/m3", "ppb", mass_to_parts
 )
-

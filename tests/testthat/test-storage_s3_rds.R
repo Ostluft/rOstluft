@@ -10,9 +10,9 @@ is_s3_admin <- function() {
 
 destroy_s3_store <- function() {
   if (is_s3_admin()) {
-    objects <- aws.s3::get_bucket(bucket, prefix = store_name, max = Inf)
+    objects <- aws.s3::get_bucket(bucket, prefix = store_name, max = Inf) # nolint
     objects <- dplyr::bind_rows(purrr::map_dfr(objects, purrr::flatten))
-    purrr::map(objects$Key, aws.s3::delete_object, bucket = bucket)
+    purrr::map(objects$Key, aws.s3::delete_object, bucket = bucket) # nolint
   }
 }
 

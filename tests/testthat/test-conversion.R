@@ -4,7 +4,8 @@ min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",
                      package = "rOstluft.data", mustWork = TRUE)
 
 airmo_min30 <- read_airmo_csv(min30)
-airmo_min30 <- dplyr::filter(airmo_min30, .data$parameter != "NOx", .data$parameter != "PM10")  # filter special case NOx
+# filter special case NOx and PM10
+airmo_min30 <- dplyr::filter(airmo_min30, .data$parameter != "NOx", .data$parameter != "PM10")
 airmo_min30_parts <- dplyr::filter(airmo_min30, .data$unit == "ppb" | .data$unit == "ppm")
 airmo_min30_mass <- dplyr::filter(airmo_min30, .data$unit == "µg/m3" | .data$unit == "mg/m3")
 
@@ -25,14 +26,6 @@ conversions_parts_to_mass <- tibble::tribble(
   "NO2", "ppb", "µg/m3",
   "SO2", "ppb", "µg/m3"
 )
-
-
-get_molmass <- function(parameter, mass, parts) {
-  mass <- dplyr::filter(mass, parameter == !!parameter)$value
-  parts <- dplyr::filter(parts, parameter == !!parameter)$value
-  statistic_mean(calculate_molmass(mass, parts))
-}
-
 
 
 expect_equal_values <- function(parameter, unit, input, output) {
@@ -115,7 +108,7 @@ test_that("functionality multi conversion", {
 test_that("passing of additional argumens", {
   row <- conversions_parts_to_mass[2, ]
 
-  temp <- ((20 + 273.15) * 1.1) - 273.15  # 10% wärmere temperatur -> 10% weniger masse
+  temp <- ((20 + 273.15) * 1.1) - 273.15  # nolint 10% wärmere temperatur -> 10% weniger masse
   pres <- 0.9 * 1013.25  # 10% weniger durck -> 10% weniger masse
   factor <- 1.1 / 0.9
 
@@ -148,5 +141,3 @@ test_that("passing of additional argumens", {
   )
 
 })
-
-

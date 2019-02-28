@@ -121,36 +121,38 @@ convert_multiple_units <- function(data, conversions, method = "return", ...) {
 #' Converts mass to volume concentration
 #'
 #' @param values mass concentration
-#' @param mol_mass in kg/mol
+#' @param mol_mass in g/mol
 #' @param temperature in °C. Default 20 °C
 #' @param pressure in hPa. Default 1013.25 hPa
 #' @param ... catch additional arguments to keep R happy
 #'
 #' @return volume concentration
 #' @export
-mass_to_parts <- function(values, mol_mass, temperature = 20.0, pressure = 1013.25, ...) {
-  values * molar_gas_constant * (temperature + 273.15) / pressure / 100 / mol_mass  # / 100 convert hPa to Pa
+mass_to_parts <- function(values, mol_mass, temperature = 20.0, pressure = 1013, ...) {
+  # unit conversion: 1 / (g > kg) => * 1000, 1  / (hPa > Pa) => / 100 ==> resulting factor * 10
+  values * molar_gas_constant * (temperature + 273.15) / pressure / mol_mass * 10
 }
 
 #' Converts mass to volume concentration
 #'
 #' @param values volume concentration
-#' @param mol_mass in kg/mol
+#' @param mol_mass in g/mol
 #' @param temperature in °C. Default 20 °C
 #' @param pressure in hPa. Default 1013.25 hPa
 #' @param ... catch additional arguments to keep R happy
 #'
 #' @return mass concentration
 #' @export
-parts_to_mass <- function(values, mol_mass, temperature = 20.0, pressure = 1013.25, ...) {
-  values / molar_gas_constant / (temperature + 273.15) * pressure * 100 * mol_mass # * 100 convert hPa to Pa
+parts_to_mass <- function(values, mol_mass, temperature = 20.0, pressure = 1013, ...) {
+  # unit conversion: (g > kg) => / 1000, (hPa > Pa) => * 100 ==> resulting factor / 10
+  values / molar_gas_constant / (temperature + 273.15) * pressure * mol_mass / 10
 }
 
 
 
 # helper function to determinate mol_mass from parts and volume concentrations
 # nolint start
-# calculate_molmass <- function(mass, parts, temperature = 20.0, pressure = 1013.25) {
+# calculate_molmass <- function(mass, parts, temperature = 20.0, pressure = 1013) {
 #   mass / parts * molar_gas_constant * (temperature + 273.15) / pressure / 100
 # }
 # nolint end
@@ -192,16 +194,34 @@ cut_conversion_data <- function(data, parameter, unit) {
 
 
 # universal/ideal/molar gas constant R in kg * m2 / (s2 * mol * K)
-molar_gas_constant <- 8.3144598
+molar_gas_constant <- 8.31451
 
-# in kg/mol
+# in g/mol
 mol_masses <- tibble::tibble(
-  CO = 0.02800413,
-  NO = 0.03000371,
-  NO2 = 0.04600035,
-  O3 = 0.04798994,
-  SO2 = 0.06404657
+  CO = 28.011210,
+  NO = 30.011260,
+  NO2 = 46.011985,
+  O3 = 48.002073,
+  SO2 = 64.062764
 )
+
+# in g/mol
+# mol_masses <- tibble::tibble(
+#   CO = 28.01,
+#   NO = 30.01,
+#   NO2 = 46.01,
+#   O3 = 48.00,
+#   SO2 = 64.06
+# )
+#
+# in g/mol
+# mol_masses <- tibble::tibble(
+#   CO = 28.01121,
+#   NO = 30.0113,
+#   NO2 = 46.01199,
+#   O3 = 48.00207,
+#   SO2 = 64.06276
+# )
 
 
 

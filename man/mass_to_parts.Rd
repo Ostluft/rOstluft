@@ -4,13 +4,12 @@
 \alias{mass_to_parts}
 \title{Converts mass to volume concentration}
 \usage{
-mass_to_parts(values, mol_mass, temperature = 20, pressure = 1013.25,
-  ...)
+mass_to_parts(values, mol_mass, temperature = 20, pressure = 1013, ...)
 }
 \arguments{
 \item{values}{mass concentration}
 
-\item{mol_mass}{in kg/mol}
+\item{mol_mass}{in g/mol}
 
 \item{temperature}{in °C. Default 20 °C}
 

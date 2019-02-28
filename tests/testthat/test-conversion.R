@@ -27,6 +27,12 @@ conversions_parts_to_mass <- tibble::tribble(
   "SO2", "ppb", "µg/m3"
 )
 
+get_molmass <- function(parameter, mass, parts) {
+  mass <- dplyr::filter(mass, parameter == !!parameter)$value
+  parts <- dplyr::filter(parts, parameter == !!parameter)$value
+  statistic_mean(calculate_molmass(mass, parts))
+}
+
 
 expect_equal_values <- function(parameter, unit, input, output) {
   testthat::expect_equal(
@@ -109,7 +115,7 @@ test_that("passing of additional argumens", {
   row <- conversions_parts_to_mass[2, ]
 
   temp <- ((20 + 273.15) * 1.1) - 273.15  # nolint 10% wärmere temperatur -> 10% weniger masse
-  pres <- 0.9 * 1013.25  # 10% weniger durck -> 10% weniger masse
+  pres <- 0.9 * 1013  # 10% weniger durck -> 10% weniger masse
   factor <- 1.1 / 0.9
 
   # single conversion

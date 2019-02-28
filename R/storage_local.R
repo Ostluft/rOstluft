@@ -291,9 +291,9 @@ r6_storage_local <- R6::R6Class(
     merge_chunk = function(data) {
       # get content count
       data_content <- dplyr::count(self$format$na.omit(data),
-                                   .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+                                   .dots = self$format$content_columns)
       # remove calculated chunk columns
-      data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
+      data <- dplyr::select(data, -dplyr::one_of(rlang::names2(self$format$chunk_calc)))
       chunk_vars <- as.list(self$format$chunk_vars(data))
       chunk_name <- rlang::exec(self$format$encode_chunk_name, !!!chunk_vars)
       chunk_path <- self$get_chunk_path(chunk_name)
@@ -307,7 +307,9 @@ r6_storage_local <- R6::R6Class(
       }
       chunk_data <- self$format$sort(chunk_data)
       self$write_function(droplevels(chunk_data), chunk_path)
-      chunk_content <- dplyr::count(chunk_data, .dots = c(self$format$chunk_calc, self$format$serie_columns))
+      # we need to calculate the chunk columns before counting. Questions is there a more elegant solution?
+      chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+      chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
       private$merge_content(chunk_content, chunk_vars)
       data_content
     }

@@ -1,4 +1,4 @@
-context("storage_s3_rds")
+context("storage_s3_rolf_rds")
 
 
 store_name <- "testthat_s3"

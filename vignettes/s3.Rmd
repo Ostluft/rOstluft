@@ -35,14 +35,14 @@ Zugriff wird nur überprüft, ob die Daten noch identisch sind.
 Zuerst wird der Storage initialisiert:
 
 ```{r}
-store <-  rOstluft::storage_s3_rds("ol_esd", rOstluft::format_rolf(), "rostluft")
+# store <-  rOstluft::storage_s3_rds("ol_esd", prefix = "archive", rOstluft::format_rolf(), "rostluft")
 ```
 
 Um einen Überblick zu erhalten was alles im Storage enthalten ist, kann die Funktion `$get_content()` verwendet werden. 
 Diese gibt einen Tibble mit den Anzahl Messwerten für jede Station, Parameter, Mittelungszeitraum pro Jahr zurück:
 
 ```{r}
-dplyr::sample_n(store$get_content(), 10)
+# dplyr::sample_n(store$get_content(), 10)
 ```
 
 Für den Zugriff auf die Daten wird die Funktion `$get()` verwendet. Die Daten sind nach Station (site), 
@@ -51,21 +51,21 @@ Funktion `$get()` übergeben werden. Zusätzlich kann mit dem Argument filter no
 werden.
 
 ```{r}
-## Daten für eine Station und ein Jahr
-store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
-
-## Daten für mehrere Stationen und Jahre
-store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
-
-## Argumente als Variablen, nur Stickstoff Parameter
-sites <- c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse")
-years <- 2014:2016
-interval <- "min30"
-store$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
-
-## Nur die Ozon Daten an einer Station und grösser 60
-store$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
-          filter = parameter == "O3" & value > 60)
+# ## Daten für eine Station und ein Jahr
+# store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
+# 
+# ## Daten für mehrere Stationen und Jahre
+# store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
+# 
+# ## Argumente als Variablen, nur Stickstoff Parameter
+# sites <- c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse")
+# years <- 2014:2016
+# interval <- "min30"
+# store$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
+# 
+# ## Nur die Ozon Daten an einer Station und grösser 60
+# store$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
+#           filter = parameter == "O3" & value > 60)
 
 ```
 
@@ -75,24 +75,24 @@ Hat man sämtliche Daten bereits von Amazon S3 lokal gecached, kann zur Performa
 Netzwerkverbindung vorhanden ist, ein lokaler Storage verwendet werden um auf den Cache zuzugreifen:
 
 ```{r}
-local <- store$get_local_storage()
+# local <- store$get_local_storage()
 ```
 
 Der Zugriff erfolgt identisch über `$get()`:
 
 ```{r}
-## Daten für eine Station und ein Jahr
-local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
-
-## Daten für mehrere Stationen und Jahre
-local$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
-
-## Argumente als Variablen, nur Stickstoff Parameter
-local$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
-
-## Nur die Ozon Daten an einer Station und grösser 60
-local$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
-          filter = parameter == "O3" & value > 60)
+# ## Daten für eine Station und ein Jahr
+# local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)
+# 
+# ## Daten für mehrere Stationen und Jahre
+# local$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)
+# 
+# ## Argumente als Variablen, nur Stickstoff Parameter
+# local$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))
+# 
+# ## Nur die Ozon Daten an einer Station und grösser 60
+# local$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",
+#           filter = parameter == "O3" & value > 60)
 
 ```
 
@@ -101,13 +101,13 @@ man den gesamten Storage hinunterladen. Für eine feinere Kontrolle werden die `
 von `$list_chunks()` angewendet:
 
 ```{r}
-store$download(site == "Zch_Rosengartenstrasse", year < 2014, interval == "min30")
+# store$download(site == "Zch_Rosengartenstrasse", year < 2014, interval == "min30")
 ```
 
 Nun sind die Daten für 2013 auch lokal verfügbar
 
 ```{r}
-local$get(site = "Zch_Rosengartenstrasse", year = 2013, interval = "min30")
+# local$get(site = "Zch_Rosengartenstrasse", year = 2013, interval = "min30")
 ```
 
 Zusätzlich zu den Daten werden auch sämtliche Metadaten lokal gespeichert durch den Aufruf der `$download(...)` 
@@ -120,9 +120,9 @@ Die Funktion `$get_meta()` ermöglicht den Zugriff. Wird ein String als Argument
 Key zurück gegeben, wenn nicht, werden alle. Das Resultat ist immer eine Named List mit dem Key als Name:
 
 ```{r}
-store$get_meta("meta_ostluft")
-
-store$get_meta()
+# store$get_meta("meta_ostluft")
+# 
+# store$get_meta()
 ```
 
 # Administration

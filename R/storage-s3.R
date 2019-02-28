@@ -191,12 +191,13 @@ r6_storage_s3 <- R6::R6Class(
       }
 
       data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      res <- dplyr::do(data, private$merge_chunk(.data))
-      dplyr::ungroup(res)
+      data <- dplyr::group_split(data, keep = TRUE)
+      res <- purrr::map(data, private$merge_chunk)
+      bind_rows_with_factor_columns(!!!res)
     },
     get = function(filter = NULL, ...) {
       filter <- rlang::enquo(filter)
-      files <- self$format$get_chunk_names(...)
+      files <- self$format$encoded_chunk_names(...)
       files <- dplyr::mutate(files, chunk_path = self$get_chunk_path(.data$chunk_name))
       purrr::map(files$chunk_name, self$download_chunk)
       files <- dplyr::filter(files, fs::file_exists(.data$chunk_path))
@@ -214,7 +215,7 @@ r6_storage_s3 <- R6::R6Class(
       missing_files <- dplyr::mutate(missing_files, local.path = self$get_chunk_path(.data$chunk_name))
 
       changed_files <- dplyr::filter(chunks, !is.na(.data$local.path))
-      changed_files$local.md5 <- purrr::map_chr(changed_files$local.path, digest::digest, algo ="md5", file = TRUE)
+      changed_files$local.md5 <- purrr::map_chr(changed_files$local.path, digest::digest, algo = "md5", file = TRUE)
       changed_files <- dplyr::filter(changed_files, .data$local.md5 != .data$s3.etag)
 
       purrr::map2(missing_files$s3.key, missing_files$local.path, private$s3_save)
@@ -234,7 +235,7 @@ r6_storage_s3 <- R6::R6Class(
 
       # find changed files (s3.etag != local.md5 hash)
       changed_files <- dplyr::filter(chunks, !is.na(.data$local.path), !is.na(.data$s3.key))
-      changed_files$local.md5 <- purrr::map_chr(changed_files$local.path, digest::digest, algo ="md5", file = TRUE)
+      changed_files$local.md5 <- purrr::map_chr(changed_files$local.path, digest::digest, algo = "md5", file = TRUE)
       changed_files <- dplyr::filter(changed_files, .data$local.md5 != .data$s3.etag)
 
       # upload missing and changed files
@@ -265,7 +266,7 @@ r6_storage_s3 <- R6::R6Class(
     },
     list_chunks = function() {
       #TODO cache list_chunks?
-      chunks_s3 <- s3_list_objects(self$bucket,self$data_s3, Inf, fixEtag = TRUE, remove_folders = TRUE)
+      chunks_s3 <- s3_list_objects(self$bucket, self$data_s3, Inf, fixEtag = TRUE, remove_folders = TRUE)
       chunks_s3 <- dplyr::rename_all(chunks_s3, .funs = dplyr::funs(paste0("s3.", stringi::stri_trans_tolower(.))))
       chunks_s3 <- dplyr::mutate(chunks_s3, chunk_name = fs::path_ext_remove(fs::path_rel(.data$s3.key, self$data_s3)),
                                  s3.size = fs::as_fs_bytes(.data$s3.size))
@@ -273,10 +274,10 @@ r6_storage_s3 <- R6::R6Class(
 
       chunks_local <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
       chunks_local <- dplyr::select(chunks_local, "path", "modification_time", "size")
-      chunks_local <- dplyr::rename_all(chunks_local, .funs = dplyr::funs(paste0("local.",.)))
+      chunks_local <- dplyr::rename_all(chunks_local, .funs = dplyr::funs(paste0("local.", .)))
       chunks_local <- dplyr::mutate(chunks_local,
                                     chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
-      chunks <- dplyr::full_join(chunks_s3, chunks_local, by="chunk_name")
+      chunks <- dplyr::full_join(chunks_s3, chunks_local, by = "chunk_name")
 
       if (nrow(chunks) == 0) {
         chunk_vars <- self$format$decode_chunk_name(NA)
@@ -360,7 +361,7 @@ r6_storage_s3 <- R6::R6Class(
       if (isTRUE(resp)) {
         etag <- s3_fixEtag(attr(resp, "etag"))
         # only download files not existing local or different md5 hashes
-        if (!fs::file_exists(local.path) || etag != digest::digest(local.path, algo="md5", file = TRUE)) {
+        if (!fs::file_exists(local.path) || etag != digest::digest(local.path, algo = "md5", file = TRUE)) {
           aws.s3::save_object(s3.key, file = local.path, bucket = self$bucket, region = self$region)
         }
       }
@@ -374,32 +375,41 @@ r6_storage_s3 <- R6::R6Class(
       chunk
     },
     merge_chunk = function(data) {
+      # get content count
+      data_content <- dplyr::count(self$format$na.omit(data), .dots = self$format$content_columns)
+
       # remove calculated columns
-      new_data <- dplyr::select(data, -dplyr::one_of(names(self$format$chunk_calc)))
-      chunk_name <- self$format$chunk_name(new_data)
+      data <- dplyr::select(data, -dplyr::one_of(rlang::names2(self$format$chunk_calc)))
+      chunk_vars <- as.list(self$format$chunk_vars(data))
+      chunk_name <- rlang::exec(self$format$encode_chunk_name, !!!chunk_vars)
       chunk_path <- self$get_chunk_path(chunk_name)
       chunk_url <- self$get_chunk_url(chunk_name)
 
       if (self$download_chunk(chunk_name)) {
         chunk_data <- self$read_function(chunk_path)
-        chunk_data <- self$format$merge(new_data, chunk_data)
+        chunk_data <- self$format$merge(data, chunk_data)
       } else {
         fs::dir_create(fs::path_dir(chunk_path))
-        chunk_data <- new_data
+        chunk_data <- data
       }
       chunk_data <- self$format$sort(chunk_data)
       self$write_function(droplevels(chunk_data), chunk_path)
       aws.s3::put_object(chunk_path, chunk_url, self$bucket, region = self$region)
 
-      chunk_content <- dplyr::count(chunk_data, .dots = c(self$format$chunk_calc, self$format$serie_columns))
-      private$merge_content(chunk_content)
+      # we need to calculate the chunk columns before counting. Questions is there a more elegant solution?
+      chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+      chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+      private$merge_content(chunk_content, chunk_vars)
 
-      dplyr::count(data, .dots = c(names(self$format$chunk_calc), self$format$serie_columns))
+      data_content
     },
-    merge_content = function(new_content) {
+    merge_content = function(new_content, chunk_vars) {
       if (private$download_file(self$content_s3, self$content_path)) {
         old_content <- self$read_function(self$content_path)
-        new_content <- format_merge(new_content, old_content, self$format$content_columns)
+        # filter lines from current chunk from old content, only way to remove deleted content
+        old_content <- filter_remove_list(old_content, chunk_vars)
+        # now we can simply append the rows
+        new_content <- bind_rows_with_factor_columns(new_content, old_content)
       }
       self$write_function(new_content, self$content_path)
       aws.s3::put_object(self$content_path, self$content_s3, self$bucket, region = self$region)

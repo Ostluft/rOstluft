@@ -15,6 +15,9 @@ cut_wind_data(data, wind_parameters = c("WD", "WVv"))
 named list: $wind all wind parameters, $others everything else
 }
 \description{
-This function splits
+This function splits off the wind parameters
+}
+\details{
+TODO: create an all purpuse function?
 }
 \keyword{internal}

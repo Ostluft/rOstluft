@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1>[GER] AWS S3</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-02-15</h4>
+            <h4 class="date">2019-02-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/s3.Rmd"><code>vignettes/s3.Rmd</code></a></small>
       <div class="hidden name"><code>s3.Rmd</code></div>
@@ -110,434 +110,57 @@
 <h1 class="hasAnchor">
 <a href="#daten-abfragen" class="anchor"></a>Daten abfragen</h1>
 <p>Zuerst wird der Storage initialisiert:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store &lt;-<span class="st">  </span>rOstluft<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rOstluft/topics/r6_storage_s3">storage_s3_rds</a></span>(<span class="st">"ol_esd"</span>, rOstluft<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rOstluft/topics/format_rolf">format_rolf</a></span>(), <span class="st">"rostluft"</span>)
-<span class="co">#&gt; store ol_esd initialized under 'C:\Users\vot\AppData\Local\rOstluft\ol_esd'</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># store &lt;-  rOstluft::storage_s3_rds("ol_esd", prefix = "archive", rOstluft::format_rolf(), "rostluft")</span></code></pre></div>
 <p>Um einen Überblick zu erhalten was alles im Storage enthalten ist, kann die Funktion <code>$get_content()</code> verwendet werden. Diese gibt einen Tibble mit den Anzahl Messwerten für jede Station, Parameter, Mittelungszeitraum pro Jahr zurück:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(store<span class="op">$</span><span class="kw">get_content</span>(), <span class="dv">10</span>)
-<span class="co">#&gt; # A tibble: 10 x 6</span>
-<span class="co">#&gt;     year interval site                    parameter unit      n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2016 min30    8058_0030               NO2       ppb   17212</span>
-<span class="co">#&gt;  2  2002 min30    Hei_Dunanthaus          O3        ppb   16823</span>
-<span class="co">#&gt;  3  1996 min30    Zch_Stampfenbachstrasse O3        ppb   17424</span>
-<span class="co">#&gt;  4  1996 min30    Zch_Stampfenbachstrasse NO        ppb   17433</span>
-<span class="co">#&gt;  5  2016 min30    StG_Stuelegg            NOx       ppb   17190</span>
-<span class="co">#&gt;  6  1994 min30    Rog_Gries               WD        °     14014</span>
-<span class="co">#&gt;  7  2008 min30    Rap_Tüchelweier         NOx       ppb     325</span>
-<span class="co">#&gt;  8  2008 min30    Hei_Dunanthaus          p         hPa   17343</span>
-<span class="co">#&gt;  9  2010 min30    Zch_Schimmelstrasse     PN        1/cm3 16480</span>
-<span class="co">#&gt; 10  2001 min30    Gra_Marktplatz          WVv       m/s   17465</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dplyr::sample_n(store$get_content(), 10)</span></code></pre></div>
 <p>Für den Zugriff auf die Daten wird die Funktion <code>$get()</code> verwendet. Die Daten sind nach Station (site), Mittelungszeitraum (interval) und Jahre (year) aufgeteilt. Diese drei Parameter müssen immer als Argument an die Funktion <code>$get()</code> übergeben werden. Zusätzlich kann mit dem Argument filter noch ein dplyr::filter Ausdruck übergeben werden.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Daten für eine Station und ein Jahr
-store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">year =</span> <span class="dv">2011</span>)
-<span class="co">#&gt; # A tibble: 243,381 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbachstra~ SO2       min30    ppb    1.90</span>
-<span class="co">#&gt;  2 2011-01-01 00:00:00 Zch_Stampfenbachstra~ PM10      min30    µg/m3 84.0 </span>
-<span class="co">#&gt;  3 2011-01-01 00:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    1.10</span>
-<span class="co">#&gt;  4 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NO        min30    ppb   21.0 </span>
-<span class="co">#&gt;  5 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NOx       min30    ppb   43.0 </span>
-<span class="co">#&gt;  6 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NO2       min30    ppb   22.0 </span>
-<span class="co">#&gt;  7 2011-01-01 00:00:00 Zch_Stampfenbachstra~ WVv       min30    m/s    1.17</span>
-<span class="co">#&gt;  8 2011-01-01 00:00:00 Zch_Stampfenbachstra~ WD        min30    °     27.9 </span>
-<span class="co">#&gt;  9 2011-01-01 00:00:00 Zch_Stampfenbachstra~ T         min30    °C     1.59</span>
-<span class="co">#&gt; 10 2011-01-01 00:00:00 Zch_Stampfenbachstra~ Hr        min30    %Hr   91.9 </span>
-<span class="co">#&gt; # ... with 243,371 more rows</span>
-
-## Daten für mehrere Stationen und Jahre
-store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="st">"Zch_Rosengartenstrasse"</span>), <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">year =</span> <span class="dv">2014</span><span class="op">:</span><span class="dv">2016</span>)
-<span class="co">#&gt; # A tibble: 1,270,569 x 6</span>
-<span class="co">#&gt;    starttime           site               parameter interval unit     value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenst~ PM10      min30    µg/m3  298.   </span>
-<span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenst~ O3        min30    ppb      0.776</span>
-<span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenst~ NO        min30    ppb     42.8  </span>
-<span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Rosengartenst~ NOx       min30    ppb     61.4  </span>
-<span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Rosengartenst~ NO2       min30    ppb     18.6  </span>
-<span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Rosengartenst~ T         min30    °C      -2.18 </span>
-<span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Rosengartenst~ Hr        min30    %Hr     92.7  </span>
-<span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Rosengartenst~ RainDur   min30    min      0    </span>
-<span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Rosengartenst~ p         min30    hPa    966.   </span>
-<span class="co">#&gt; 10 2014-01-01 00:30:00 Zch_Rosengartenst~ PM10      min30    µg/m3  557.   </span>
-<span class="co">#&gt; # ... with 1,270,559 more rows</span>
-
-## Argumente als Variablen, nur Stickstoff Parameter
-sites &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="st">"Zch_Rosengartenstrasse"</span>)
-years &lt;-<span class="st"> </span><span class="dv">2014</span><span class="op">:</span><span class="dv">2016</span>
-interval &lt;-<span class="st"> "min30"</span>
-store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">interval =</span> interval, <span class="dt">year =</span> years, <span class="dt">site =</span> sites, <span class="dt">filter =</span> parameter <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NOx"</span>, <span class="st">"NO"</span>, <span class="st">"NO2"</span>))
-<span class="co">#&gt; # A tibble: 312,507 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstras~ NO        min30    ppb    42.8</span>
-<span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenstras~ NOx       min30    ppb    61.4</span>
-<span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenstras~ NO2       min30    ppb    18.6</span>
-<span class="co">#&gt;  4 2014-01-01 00:30:00 Zch_Rosengartenstras~ NO        min30    ppb    55.9</span>
-<span class="co">#&gt;  5 2014-01-01 00:30:00 Zch_Rosengartenstras~ NOx       min30    ppb    77.2</span>
-<span class="co">#&gt;  6 2014-01-01 00:30:00 Zch_Rosengartenstras~ NO2       min30    ppb    21.3</span>
-<span class="co">#&gt;  7 2014-01-01 01:00:00 Zch_Rosengartenstras~ NO        min30    ppb    88.1</span>
-<span class="co">#&gt;  8 2014-01-01 01:00:00 Zch_Rosengartenstras~ NOx       min30    ppb   116. </span>
-<span class="co">#&gt;  9 2014-01-01 01:00:00 Zch_Rosengartenstras~ NO2       min30    ppb    28.2</span>
-<span class="co">#&gt; 10 2014-01-01 01:30:00 Zch_Rosengartenstras~ NO        min30    ppb   105. </span>
-<span class="co">#&gt; # ... with 312,497 more rows</span>
-
-## Nur die Ozon Daten an einer Station und grösser 60
-store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">year =</span> <span class="dv">2011</span>, <span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>,
-          <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "O3"</span> <span class="op">&amp;</span><span class="st"> </span>value <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>)
-<span class="co">#&gt; # A tibble: 246 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-04-21 14:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    61.0</span>
-<span class="co">#&gt;  2 2011-04-21 15:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    64.0</span>
-<span class="co">#&gt;  3 2011-04-21 15:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    63.4</span>
-<span class="co">#&gt;  4 2011-04-21 16:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    68.0</span>
-<span class="co">#&gt;  5 2011-04-21 16:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    67.6</span>
-<span class="co">#&gt;  6 2011-04-21 17:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    60.9</span>
-<span class="co">#&gt;  7 2011-04-21 17:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    65.1</span>
-<span class="co">#&gt;  8 2011-04-21 18:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    68.8</span>
-<span class="co">#&gt;  9 2011-04-21 18:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    65.2</span>
-<span class="co">#&gt; 10 2011-04-21 19:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    61.5</span>
-<span class="co">#&gt; # ... with 236 more rows</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ## Daten für eine Station und ein Jahr</span>
+<span class="co"># store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)</span>
+<span class="co"># </span>
+<span class="co"># ## Daten für mehrere Stationen und Jahre</span>
+<span class="co"># store$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)</span>
+<span class="co"># </span>
+<span class="co"># ## Argumente als Variablen, nur Stickstoff Parameter</span>
+<span class="co"># sites &lt;- c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse")</span>
+<span class="co"># years &lt;- 2014:2016</span>
+<span class="co"># interval &lt;- "min30"</span>
+<span class="co"># store$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))</span>
+<span class="co"># </span>
+<span class="co"># ## Nur die Ozon Daten an einer Station und grösser 60</span>
+<span class="co"># store$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",</span>
+<span class="co">#           filter = parameter == "O3" &amp; value &gt; 60)</span></code></pre></div>
 </div>
 <div id="lokal-arbeiten" class="section level1">
 <h1 class="hasAnchor">
 <a href="#lokal-arbeiten" class="anchor"></a>Lokal arbeiten</h1>
 <p>Hat man sämtliche Daten bereits von Amazon S3 lokal gecached, kann zur Performance Steigerung oder wenn keine Netzwerkverbindung vorhanden ist, ein lokaler Storage verwendet werden um auf den Cache zuzugreifen:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">local &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_local_storage</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># local &lt;- store$get_local_storage()</span></code></pre></div>
 <p>Der Zugriff erfolgt identisch über <code>$get()</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Daten für eine Station und ein Jahr
-local<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">year =</span> <span class="dv">2011</span>)
-<span class="co">#&gt; # A tibble: 243,381 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-01-01 00:00:00 Zch_Stampfenbachstra~ SO2       min30    ppb    1.90</span>
-<span class="co">#&gt;  2 2011-01-01 00:00:00 Zch_Stampfenbachstra~ PM10      min30    µg/m3 84.0 </span>
-<span class="co">#&gt;  3 2011-01-01 00:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    1.10</span>
-<span class="co">#&gt;  4 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NO        min30    ppb   21.0 </span>
-<span class="co">#&gt;  5 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NOx       min30    ppb   43.0 </span>
-<span class="co">#&gt;  6 2011-01-01 00:00:00 Zch_Stampfenbachstra~ NO2       min30    ppb   22.0 </span>
-<span class="co">#&gt;  7 2011-01-01 00:00:00 Zch_Stampfenbachstra~ WVv       min30    m/s    1.17</span>
-<span class="co">#&gt;  8 2011-01-01 00:00:00 Zch_Stampfenbachstra~ WD        min30    °     27.9 </span>
-<span class="co">#&gt;  9 2011-01-01 00:00:00 Zch_Stampfenbachstra~ T         min30    °C     1.59</span>
-<span class="co">#&gt; 10 2011-01-01 00:00:00 Zch_Stampfenbachstra~ Hr        min30    %Hr   91.9 </span>
-<span class="co">#&gt; # ... with 243,371 more rows</span>
-
-## Daten für mehrere Stationen und Jahre
-local<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="st">"Zch_Rosengartenstrasse"</span>), <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">year =</span> <span class="dv">2014</span><span class="op">:</span><span class="dv">2016</span>)
-<span class="co">#&gt; # A tibble: 1,270,569 x 6</span>
-<span class="co">#&gt;    starttime           site               parameter interval unit     value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenst~ PM10      min30    µg/m3  298.   </span>
-<span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenst~ O3        min30    ppb      0.776</span>
-<span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenst~ NO        min30    ppb     42.8  </span>
-<span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Rosengartenst~ NOx       min30    ppb     61.4  </span>
-<span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Rosengartenst~ NO2       min30    ppb     18.6  </span>
-<span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Rosengartenst~ T         min30    °C      -2.18 </span>
-<span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Rosengartenst~ Hr        min30    %Hr     92.7  </span>
-<span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Rosengartenst~ RainDur   min30    min      0    </span>
-<span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Rosengartenst~ p         min30    hPa    966.   </span>
-<span class="co">#&gt; 10 2014-01-01 00:30:00 Zch_Rosengartenst~ PM10      min30    µg/m3  557.   </span>
-<span class="co">#&gt; # ... with 1,270,559 more rows</span>
-
-## Argumente als Variablen, nur Stickstoff Parameter
-local<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">interval =</span> interval, <span class="dt">year =</span> years, <span class="dt">site =</span> sites, <span class="dt">filter =</span> parameter <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NOx"</span>, <span class="st">"NO"</span>, <span class="st">"NO2"</span>))
-<span class="co">#&gt; # A tibble: 312,507 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstras~ NO        min30    ppb    42.8</span>
-<span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenstras~ NOx       min30    ppb    61.4</span>
-<span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenstras~ NO2       min30    ppb    18.6</span>
-<span class="co">#&gt;  4 2014-01-01 00:30:00 Zch_Rosengartenstras~ NO        min30    ppb    55.9</span>
-<span class="co">#&gt;  5 2014-01-01 00:30:00 Zch_Rosengartenstras~ NOx       min30    ppb    77.2</span>
-<span class="co">#&gt;  6 2014-01-01 00:30:00 Zch_Rosengartenstras~ NO2       min30    ppb    21.3</span>
-<span class="co">#&gt;  7 2014-01-01 01:00:00 Zch_Rosengartenstras~ NO        min30    ppb    88.1</span>
-<span class="co">#&gt;  8 2014-01-01 01:00:00 Zch_Rosengartenstras~ NOx       min30    ppb   116. </span>
-<span class="co">#&gt;  9 2014-01-01 01:00:00 Zch_Rosengartenstras~ NO2       min30    ppb    28.2</span>
-<span class="co">#&gt; 10 2014-01-01 01:30:00 Zch_Rosengartenstras~ NO        min30    ppb   105. </span>
-<span class="co">#&gt; # ... with 312,497 more rows</span>
-
-## Nur die Ozon Daten an einer Station und grösser 60
-local<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">year =</span> <span class="dv">2011</span>, <span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>,
-          <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "O3"</span> <span class="op">&amp;</span><span class="st"> </span>value <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>)
-<span class="co">#&gt; # A tibble: 246 x 6</span>
-<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2011-04-21 14:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    61.0</span>
-<span class="co">#&gt;  2 2011-04-21 15:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    64.0</span>
-<span class="co">#&gt;  3 2011-04-21 15:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    63.4</span>
-<span class="co">#&gt;  4 2011-04-21 16:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    68.0</span>
-<span class="co">#&gt;  5 2011-04-21 16:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    67.6</span>
-<span class="co">#&gt;  6 2011-04-21 17:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    60.9</span>
-<span class="co">#&gt;  7 2011-04-21 17:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    65.1</span>
-<span class="co">#&gt;  8 2011-04-21 18:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    68.8</span>
-<span class="co">#&gt;  9 2011-04-21 18:30:00 Zch_Stampfenbachstra~ O3        min30    ppb    65.2</span>
-<span class="co">#&gt; 10 2011-04-21 19:00:00 Zch_Stampfenbachstra~ O3        min30    ppb    61.5</span>
-<span class="co">#&gt; # ... with 236 more rows</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ## Daten für eine Station und ein Jahr</span>
+<span class="co"># local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011)</span>
+<span class="co"># </span>
+<span class="co"># ## Daten für mehrere Stationen und Jahre</span>
+<span class="co"># local$get(site = c("Zch_Stampfenbachstrasse", "Zch_Rosengartenstrasse"), interval = "min30", year = 2014:2016)</span>
+<span class="co"># </span>
+<span class="co"># ## Argumente als Variablen, nur Stickstoff Parameter</span>
+<span class="co"># local$get(interval = interval, year = years, site = sites, filter = parameter %in% c("NOx", "NO", "NO2"))</span>
+<span class="co"># </span>
+<span class="co"># ## Nur die Ozon Daten an einer Station und grösser 60</span>
+<span class="co"># local$get(year = 2011, site = "Zch_Stampfenbachstrasse", interval = "min30",</span>
+<span class="co">#           filter = parameter == "O3" &amp; value &gt; 60)</span></code></pre></div>
 <p>Um die Vorbereitung lokal zu arbeiten zu erleichtern existiert eine <code>$download(...)</code> Funktion. Mit Hilfe dieser könnte man den gesamten Storage hinunterladen. Für eine feinere Kontrolle werden die <code>...</code> Argumente als Filter auf den Output von <code>$list_chunks()</code> angewendet:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store<span class="op">$</span><span class="kw">download</span>(site <span class="op">==</span><span class="st"> "Zch_Rosengartenstrasse"</span>, year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2014</span>, interval <span class="op">==</span><span class="st"> "min30"</span>)
-<span class="co">#&gt; list()</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># store$download(site == "Zch_Rosengartenstrasse", year &lt; 2014, interval == "min30")</span></code></pre></div>
 <p>Nun sind die Daten für 2013 auch lokal verfügbar</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">local<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Rosengartenstrasse"</span>, <span class="dt">year =</span> <span class="dv">2013</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)
-<span class="co">#&gt; # A tibble: 37,711 x 6</span>
-<span class="co">#&gt;    starttime           site               parameter interval unit     value</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2013-10-03 14:30:00 Zch_Rosengartenst~ PM10      min30    µg/m3    5.72 </span>
-<span class="co">#&gt;  2 2013-10-03 14:30:00 Zch_Rosengartenst~ RainDur   min30    min      0.167</span>
-<span class="co">#&gt;  3 2013-10-03 14:30:00 Zch_Rosengartenst~ p         min30    hPa    969.   </span>
-<span class="co">#&gt;  4 2013-10-03 15:00:00 Zch_Rosengartenst~ PM10      min30    µg/m3   -5.24 </span>
-<span class="co">#&gt;  5 2013-10-03 15:00:00 Zch_Rosengartenst~ O3        min30    ppb      6.29 </span>
-<span class="co">#&gt;  6 2013-10-03 15:00:00 Zch_Rosengartenst~ NO        min30    ppb     45.9  </span>
-<span class="co">#&gt;  7 2013-10-03 15:00:00 Zch_Rosengartenst~ NOx       min30    ppb     63.3  </span>
-<span class="co">#&gt;  8 2013-10-03 15:00:00 Zch_Rosengartenst~ NO2       min30    ppb     17.4  </span>
-<span class="co">#&gt;  9 2013-10-03 15:00:00 Zch_Rosengartenst~ RainDur   min30    min      0    </span>
-<span class="co">#&gt; 10 2013-10-03 15:00:00 Zch_Rosengartenst~ p         min30    hPa    969.   </span>
-<span class="co">#&gt; # ... with 37,701 more rows</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># local$get(site = "Zch_Rosengartenstrasse", year = 2013, interval = "min30")</span></code></pre></div>
 <p>Zusätzlich zu den Daten werden auch sämtliche Metadaten lokal gespeichert durch den Aufruf der <code>$download(...)</code> Funktion.</p>
 </div>
 <div id="metadaten" class="section level1">
 <h1 class="hasAnchor">
 <a href="#metadaten" class="anchor"></a>Metadaten</h1>
 <p>Die Metadaten werden in einem Key-Value Store abgelegt. Aktuell liegen noch keine Dokumentationen zu den Metadaten vor. Die Funktion <code>$get_meta()</code> ermöglicht den Zugriff. Wird ein String als Argument übergeben, wird nur der entsprechende Key zurück gegeben, wenn nicht, werden alle. Das Resultat ist immer eine Named List mit dem Key als Name:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store<span class="op">$</span><span class="kw">get_meta</span>(<span class="st">"meta_ostluft"</span>)
-<span class="co">#&gt; $meta_ostluft</span>
-<span class="co">#&gt; # A tibble: 974 x 28</span>
-<span class="co">#&gt;     msID site  site_short site_long msKT  scDTV scDTVJahr scLKWProzent</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;int&gt;</span>
-<span class="co">#&gt;  1     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  2     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  3     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  4     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  5     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  6     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  7     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  8     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  9     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt; 10     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt; # ... with 964 more rows, and 20 more variables: scStrassenabstand &lt;int&gt;,</span>
-<span class="co">#&gt; #   scEinwohner &lt;int&gt;, scEinwohnerJahr &lt;chr&gt;, scVerkehrslage &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scSiedlungsgroesse &lt;chr&gt;, scLagerelativSiedlung &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scIDBStandorttyp &lt;chr&gt;, scIDBStationstyp &lt;chr&gt;, scIDBBebauung &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scIDBVerkehr &lt;chr&gt;, x &lt;int&gt;, y &lt;int&gt;, masl &lt;int&gt;, spBisDatum &lt;dttm&gt;,</span>
-<span class="co">#&gt; #   parameter &lt;chr&gt;, msmmBeginn &lt;dttm&gt;, msmmEnde &lt;dttm&gt;, source &lt;chr&gt;,</span>
-<span class="co">#&gt; #   parameter_original &lt;chr&gt;, timezone_original &lt;chr&gt;</span>
-
-store<span class="op">$</span><span class="kw">get_meta</span>()
-<span class="co">#&gt; $meta_ecmwf</span>
-<span class="co">#&gt;    site_short                 site site_long masl parameter_original  unit</span>
-<span class="co">#&gt; 1     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                t2m   Â°C</span>
-<span class="co">#&gt; 2     ZH_EraI ZÃ¼rich - EraInterim        NA   NA              swvl1 m3/m3</span>
-<span class="co">#&gt; 3     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                 sp   hPa</span>
-<span class="co">#&gt; 4     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                u10   m/s</span>
-<span class="co">#&gt; 5     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                v10   m/s</span>
-<span class="co">#&gt; 6     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                skt   Â°C</span>
-<span class="co">#&gt; 7     ZH_EraI ZÃ¼rich - EraInterim        NA   NA               ishf  W/m2</span>
-<span class="co">#&gt; 8     ZH_EraI ZÃ¼rich - EraInterim        NA   NA                 tp     m</span>
-<span class="co">#&gt; 9     ZH_EraI ZÃ¼rich - EraInterim        NA   NA               tco3 kg/m2</span>
-<span class="co">#&gt; 10    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               sund     s</span>
-<span class="co">#&gt; 11    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                  e m H2O</span>
-<span class="co">#&gt; 12    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                d2m   Â°C</span>
-<span class="co">#&gt; 13    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                tcc     -</span>
-<span class="co">#&gt; 14    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                blh     m</span>
-<span class="co">#&gt; 15    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               slhf  J/m2</span>
-<span class="co">#&gt; 16    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               sshf  J/m2</span>
-<span class="co">#&gt; 17    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                 sd m H2O</span>
-<span class="co">#&gt; 18    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               stl1   Â°C</span>
-<span class="co">#&gt; 19    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               tcwv kg/m2</span>
-<span class="co">#&gt; 20    ZH_EraI ZÃ¼rich - EraInterim        NA   NA               cape  J/kg</span>
-<span class="co">#&gt; 21    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                par  J/m2</span>
-<span class="co">#&gt; 22    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                uvb  J/m2</span>
-<span class="co">#&gt; 23    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                 ws   m/s</span>
-<span class="co">#&gt; 24    ZH_EraI ZÃ¼rich - EraInterim        NA   NA                 wd    Â°</span>
-<span class="co">#&gt;    interval timezone_original             source       x       y parameter</span>
-<span class="co">#&gt; 1        NA               UTC ECMWF - EraInterim 2661422 1233549         T</span>
-<span class="co">#&gt; 2        NA               UTC ECMWF - EraInterim 2661422 1233549     swvl1</span>
-<span class="co">#&gt; 3        NA               UTC ECMWF - EraInterim 2661422 1233549         p</span>
-<span class="co">#&gt; 4        NA               UTC ECMWF - EraInterim 2661422 1233549       u10</span>
-<span class="co">#&gt; 5        NA               UTC ECMWF - EraInterim 2661422 1233549       v10</span>
-<span class="co">#&gt; 6        NA               UTC ECMWF - EraInterim 2661422 1233549       skt</span>
-<span class="co">#&gt; 7        NA               UTC ECMWF - EraInterim 2661422 1233549      ishf</span>
-<span class="co">#&gt; 8        NA               UTC ECMWF - EraInterim 2661422 1233549   RainSum</span>
-<span class="co">#&gt; 9        NA               UTC ECMWF - EraInterim 2661422 1233549      tco3</span>
-<span class="co">#&gt; 10       NA               UTC ECMWF - EraInterim 2661422 1233549    SunDur</span>
-<span class="co">#&gt; 11       NA               UTC ECMWF - EraInterim 2661422 1233549         e</span>
-<span class="co">#&gt; 12       NA               UTC ECMWF - EraInterim 2661422 1233549       d2m</span>
-<span class="co">#&gt; 13       NA               UTC ECMWF - EraInterim 2661422 1233549       tcc</span>
-<span class="co">#&gt; 14       NA               UTC ECMWF - EraInterim 2661422 1233549       blh</span>
-<span class="co">#&gt; 15       NA               UTC ECMWF - EraInterim 2661422 1233549      slhf</span>
-<span class="co">#&gt; 16       NA               UTC ECMWF - EraInterim 2661422 1233549      sshf</span>
-<span class="co">#&gt; 17       NA               UTC ECMWF - EraInterim 2661422 1233549   SnowDep</span>
-<span class="co">#&gt; 18       NA               UTC ECMWF - EraInterim 2661422 1233549      stl1</span>
-<span class="co">#&gt; 19       NA               UTC ECMWF - EraInterim 2661422 1233549      tcwv</span>
-<span class="co">#&gt; 20       NA               UTC ECMWF - EraInterim 2661422 1233549      cape</span>
-<span class="co">#&gt; 21       NA               UTC ECMWF - EraInterim 2661422 1233549       par</span>
-<span class="co">#&gt; 22       NA               UTC ECMWF - EraInterim 2661422 1233549       uvb</span>
-<span class="co">#&gt; 23       NA               UTC ECMWF - EraInterim 2661422 1233549       WVv</span>
-<span class="co">#&gt; 24       NA               UTC ECMWF - EraInterim 2661422 1233549        WD</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $meta_ethz</span>
-<span class="co">#&gt;    site_short site_long              site masl parameter_original</span>
-<span class="co">#&gt; 1    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510              p_air</span>
-<span class="co">#&gt; 2    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510              T_air</span>
-<span class="co">#&gt; 3    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510              T_dew</span>
-<span class="co">#&gt; 4    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510                 RH</span>
-<span class="co">#&gt; 5    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510              illum</span>
-<span class="co">#&gt; 6    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510               rain</span>
-<span class="co">#&gt; 7    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510           wspd_vec</span>
-<span class="co">#&gt; 8    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510           wspd_scl</span>
-<span class="co">#&gt; 9    ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510               wdir</span>
-<span class="co">#&gt; 10   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510            wspd_pk</span>
-<span class="co">#&gt; 11   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510            wdir_pk</span>
-<span class="co">#&gt; 12   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510          wcp_north</span>
-<span class="co">#&gt; 13   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510           wcp_east</span>
-<span class="co">#&gt; 14   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510               baro</span>
-<span class="co">#&gt; 15   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510             thygan</span>
-<span class="co">#&gt; 16   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510                ifs</span>
-<span class="co">#&gt; 17   ETHZ_CHN        NA ETHZ_CHN-GebÃ¤ude  510               wind</span>
-<span class="co">#&gt; 18 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541              p_air</span>
-<span class="co">#&gt; 19 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541              T_air</span>
-<span class="co">#&gt; 20 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541              T_dew</span>
-<span class="co">#&gt; 21 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541                 RH</span>
-<span class="co">#&gt; 22 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541              illum</span>
-<span class="co">#&gt; 23 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541               rain</span>
-<span class="co">#&gt; 24 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541           wspd_vec</span>
-<span class="co">#&gt; 25 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541           wspd_scl</span>
-<span class="co">#&gt; 26 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541               wdir</span>
-<span class="co">#&gt; 27 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541            wspd_pk</span>
-<span class="co">#&gt; 28 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541            wdir_pk</span>
-<span class="co">#&gt; 29 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541          wcp_north</span>
-<span class="co">#&gt; 30 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541           wcp_east</span>
-<span class="co">#&gt; 31 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541               baro</span>
-<span class="co">#&gt; 32 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541             thygan</span>
-<span class="co">#&gt; 33 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541                ifs</span>
-<span class="co">#&gt; 34 ETHZ_HBerg        NA ETHZ_HÃ¶nggerberg  541               wind</span>
-<span class="co">#&gt;                     unit interval timezone_original   source       x</span>
-<span class="co">#&gt; 1                    hPa    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 2                     °C    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 3                     °C    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 4                      %    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 5  logbase10ofvalueinLux    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 6                     mm    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 7                    m/s    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 8                    m/s    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 9                      °    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 10                   m/s    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 11                     °    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 12                   m/s    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 13                   m/s    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 14                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 15                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 16                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 17                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2683830</span>
-<span class="co">#&gt; 18                   hPa    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 19                    °C    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 20                    °C    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 21                     %    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 22 logbase10ofvalueinLux    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 23                    mm    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 24                   m/s    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 25                   m/s    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 26                     °    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 27                   m/s    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 28                     °    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 29                   m/s    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 30                   m/s    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 31                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 32                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 33                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt; 34                  &lt;NA&gt;    min10           Etc/GMT ETHZ/IAC 2681009</span>
-<span class="co">#&gt;          y parameter</span>
-<span class="co">#&gt; 1  1248199         p</span>
-<span class="co">#&gt; 2  1248199         T</span>
-<span class="co">#&gt; 3  1248199     T_dew</span>
-<span class="co">#&gt; 4  1248199        Hr</span>
-<span class="co">#&gt; 5  1248199     illum</span>
-<span class="co">#&gt; 6  1248199   RainSum</span>
-<span class="co">#&gt; 7  1248199       WVv</span>
-<span class="co">#&gt; 8  1248199       WVs</span>
-<span class="co">#&gt; 9  1248199        WD</span>
-<span class="co">#&gt; 10 1248199   WVs_max</span>
-<span class="co">#&gt; 11 1248199    WD_max</span>
-<span class="co">#&gt; 12 1248199 wcp_north</span>
-<span class="co">#&gt; 13 1248199  wcp_east</span>
-<span class="co">#&gt; 14 1248199      baro</span>
-<span class="co">#&gt; 15 1248199    thygan</span>
-<span class="co">#&gt; 16 1248199       ifs</span>
-<span class="co">#&gt; 17 1248199      wind</span>
-<span class="co">#&gt; 18 1251185         p</span>
-<span class="co">#&gt; 19 1251185         T</span>
-<span class="co">#&gt; 20 1251185     T_dew</span>
-<span class="co">#&gt; 21 1251185        Hr</span>
-<span class="co">#&gt; 22 1251185     illum</span>
-<span class="co">#&gt; 23 1251185   RainSum</span>
-<span class="co">#&gt; 24 1251185       WVv</span>
-<span class="co">#&gt; 25 1251185       WVs</span>
-<span class="co">#&gt; 26 1251185        WD</span>
-<span class="co">#&gt; 27 1251185   WVs_max</span>
-<span class="co">#&gt; 28 1251185    WD_max</span>
-<span class="co">#&gt; 29 1251185 wcp_north</span>
-<span class="co">#&gt; 30 1251185  wcp_east</span>
-<span class="co">#&gt; 31 1251185      baro</span>
-<span class="co">#&gt; 32 1251185    thygan</span>
-<span class="co">#&gt; 33 1251185       ifs</span>
-<span class="co">#&gt; 34 1251185      wind</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $meta_meteoschweiz</span>
-<span class="co">#&gt; # A tibble: 214 x 15</span>
-<span class="co">#&gt;    site_short site  `LÃ¤nge` Breite      x      y  masl parameter_origi~</span>
-<span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 tre200s0        </span>
-<span class="co">#&gt;  2 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 ure200s0        </span>
-<span class="co">#&gt;  3 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 prestas0        </span>
-<span class="co">#&gt;  4 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 prestas0        </span>
-<span class="co">#&gt;  5 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 fkl010z1        </span>
-<span class="co">#&gt;  6 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 fkl010z0        </span>
-<span class="co">#&gt;  7 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 dkl010z0        </span>
-<span class="co">#&gt;  8 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 sre000z0        </span>
-<span class="co">#&gt;  9 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 sre000z0        </span>
-<span class="co">#&gt; 10 TAE        Aado~ 8°54'    47°29' 2.71e6 1.26e6   539 gre000z0        </span>
-<span class="co">#&gt; # ... with 204 more rows, and 7 more variables: source &lt;chr&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   Beschreibung &lt;chr&gt;, timezone_original &lt;chr&gt;, site_long &lt;lgl&gt;,</span>
-<span class="co">#&gt; #   interval &lt;chr&gt;, parameter &lt;chr&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $meta_ostluft</span>
-<span class="co">#&gt; # A tibble: 974 x 28</span>
-<span class="co">#&gt;     msID site  site_short site_long msKT  scDTV scDTVJahr scLKWProzent</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;int&gt;</span>
-<span class="co">#&gt;  1     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  2     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  3     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  4     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  5     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  6     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  7     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  8     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt;  9     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt; 10     1 Arb_~ ARBS       Arbon St~ TG    7900  &lt;NA&gt;                 3</span>
-<span class="co">#&gt; # ... with 964 more rows, and 20 more variables: scStrassenabstand &lt;int&gt;,</span>
-<span class="co">#&gt; #   scEinwohner &lt;int&gt;, scEinwohnerJahr &lt;chr&gt;, scVerkehrslage &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scSiedlungsgroesse &lt;chr&gt;, scLagerelativSiedlung &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scIDBStandorttyp &lt;chr&gt;, scIDBStationstyp &lt;chr&gt;, scIDBBebauung &lt;chr&gt;,</span>
-<span class="co">#&gt; #   scIDBVerkehr &lt;chr&gt;, x &lt;int&gt;, y &lt;int&gt;, masl &lt;int&gt;, spBisDatum &lt;dttm&gt;,</span>
-<span class="co">#&gt; #   parameter &lt;chr&gt;, msmmBeginn &lt;dttm&gt;, msmmEnde &lt;dttm&gt;, source &lt;chr&gt;,</span>
-<span class="co">#&gt; #   parameter_original &lt;chr&gt;, timezone_original &lt;chr&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $metadata</span>
-<span class="co">#&gt; # A tibble: 1,198 x 12</span>
-<span class="co">#&gt;    site  site_short site_long      x      y  masl parameter_origi~</span>
-<span class="co">#&gt;    &lt;fct&gt; &lt;fct&gt;      &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;           </span>
-<span class="co">#&gt;  1 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 Hr              </span>
-<span class="co">#&gt;  2 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 NO              </span>
-<span class="co">#&gt;  3 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 NO2             </span>
-<span class="co">#&gt;  4 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 NOx             </span>
-<span class="co">#&gt;  5 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 O3              </span>
-<span class="co">#&gt;  6 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 Ox              </span>
-<span class="co">#&gt;  7 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 p               </span>
-<span class="co">#&gt;  8 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 PM10            </span>
-<span class="co">#&gt;  9 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 SO2             </span>
-<span class="co">#&gt; 10 Arb_~ ARBS       Arbon St~ 2.75e6 1.26e6   407 StrGlo          </span>
-<span class="co">#&gt; # ... with 1,188 more rows, and 5 more variables: parameter &lt;fct&gt;,</span>
-<span class="co">#&gt; #   unit &lt;fct&gt;, interval &lt;fct&gt;, timezone_original &lt;fct&gt;, source &lt;fct&gt;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># store$get_meta("meta_ostluft")</span>
+<span class="co"># </span>
+<span class="co"># store$get_meta()</span></code></pre></div>
 </div>
 <div id="administration" class="section level1">
 <h1 class="hasAnchor">

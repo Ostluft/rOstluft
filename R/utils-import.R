@@ -17,7 +17,7 @@
 #' store <- rOstluft::storage_local_rds("example_rOstluft", format, read.only = FALSE)
 #' path <- system.file("extdata", package = "rOstluft.data")
 #'
-#' rOstluft::import_directory(store, path, rOstluft::read_airmo_csv)
+#' rOstluft::import_directory(store, path, rOstluft::read_airmo_csv, glob = "*Jan.csv")
 #'
 #' store$get_content()
 #'

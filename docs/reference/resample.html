@@ -34,12 +34,16 @@
 
 <meta property="og:description" content="Aggregate data by different time periods. Following this simple steps:
 split data in series
-pad data serie (needed for calculation of capture threshold)
+pad data serie (needed for calculation of capture threshold, detection of gaps)
 group serie by new interval with lubridate::floor_date()
 apply statistical method or user provides function (user can provide list per parameter)
 
 combine resampled series
 " />
+
+<meta property="og:description" content="It is possible to supply different methods for different parameters. The argument statistic can be named list. The
+name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
+methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -72,7 +76,7 @@ combine resampled series
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -138,25 +142,21 @@ combine resampled series
     
     <p>Aggregate data by different time periods. Following this simple steps:</p><ul>
 <li><p>split data in series</p><ul>
-<li><p>pad data serie (needed for calculation of capture threshold)</p></li>
+<li><p>pad data serie (needed for calculation of capture threshold, detection of gaps)</p></li>
 <li><p>group serie by new interval with <code><a href='http://lubridate.tidyverse.org/reference/round_date.html'>lubridate::floor_date()</a></code></p></li>
 <li><p>apply statistical method or user provides function (user can provide list per parameter)</p></li>
 </ul></li>
 <li><p>combine resampled series</p></li>
 </ul>
+
+    <p>It is possible to supply different methods for different parameters. The argument statistic can be named list. The
+name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
+methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>new_interval</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>rename.parameter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>95</span>)
-
-<span class='fu'>resample_series</span>(<span class='no'>serie</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>new_interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>,
-  <span class='kw'>at</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rename.parameter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>95</span>)
-
-<span class='fu'>resample_wind</span>(<span class='no'>data</span>, <span class='no'>statistic</span>, <span class='kw'>new_interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename.parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -168,13 +168,12 @@ combine resampled series
     </tr>
     <tr>
       <th>statistic</th>
-      <td><p>Statistical method to apply when aggregating the data; default is the mean.
-Can be one of “mean”, “max”, “min”, “median”, “frequency”, “sd”, “percentile”. Note that “sd”
-is the standard deviation, “frequency” is the number (frequency) of valid records in the period
-and “data.cap” is the percentage data capture. “percentile” is the percentile level (%) between
-0-100, which can be set using the “percentile” argument.
-Or a function with one argument expecting a vector.
-Or a list with parameter as name and the statistical method as value (function or name of method)</p></td>
+      <td><p>Statistical method(s) to apply when aggregating the data.
+Can be a simple string with name of the method or a function with one argument.
+Or a list with parameter as name and the statistical method as value (function or name of method).
+Or a list with parameter as and a list of statisticals methods. All methods must support renaming parameter.
+A default statistic for all parameters not in the list, can be defined with the name "default_statistic".
+See section Statistical methods and examples</p></td>
     </tr>
     <tr>
       <th>new_interval</th>
@@ -182,7 +181,19 @@ Or a list with parameter as name and the statistical method as value (function o
     </tr>
     <tr>
       <th>data.thresh</th>
-      <td><p>minimum data capture threshold in % to use</p></td>
+      <td><p>optional minimum data capture threshold in to use</p></td>
+    </tr>
+    <tr>
+      <th>max_gap</th>
+      <td><p>optional maxium Number of consecutive NA values</p></td>
+    </tr>
+    <tr>
+      <th>rename.parameter</th>
+      <td><p>optional rename parameter</p></td>
+    </tr>
+    <tr>
+      <th>percentile</th>
+      <td><p>The percentile level used when statistic = "percentile". The default is 0.95</p></td>
     </tr>
     <tr>
       <th>start.date</th>
@@ -197,30 +208,123 @@ Or a list with parameter as name and the statistical method as value (function o
       <td><p>optional drop the last added time point by padding. Default False, true if no end.date
 provided and max date != ceiled max date.</p></td>
     </tr>
-    <tr>
-      <th>percentile</th>
-      <td><p>The percentile level in % used when statistic = "percentile". The default is 95.</p></td>
-    </tr>
-    <tr>
-      <th>serie</th>
-      <td><p>a tibble in rOstluft long format containing exactly one serie</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble with resampled data</p>
-<p>tibble with resampled series</p>
-<p>tibble with resampled wind data</p>
     
-    <h2 class="hasAnchor" id="todo-wind"><a class="anchor" href="#todo-wind"></a>TODO Wind</h2>
+    <h2 class="hasAnchor" id="statistical-methods"><a class="anchor" href="#statistical-methods"></a>Statistical methods</h2>
 
     
-    <p>Code optimieren ?
-sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und korrektes bind_rows mit Faktoren
-(Deine bind_rows_with... spuckt die Zahl aus, nicht einen Faktor, in meinem Fall)</p>
+    <p>The statistical method is a function with a numeric vector as argument and returns a single value.</p><ul>
+<li><p><code>"mean"</code> average value</p></li>
+<li><p><code>"median"</code> median value</p></li>
+<li><p><code>"sd"</code> standard deviation of values</p></li>
+<li><p><code>"sum"</code> sum over all values</p></li>
+<li><p><code>"max"</code> maxium value</p></li>
+<li><p><code>"min"</code> minimum value</p></li>
+<li><p><code>"n"</code> number of valid records, renames parameter, changes unit</p></li>
+<li><p><code>"coverage"</code> percentage of valid records, renames parameter, changes unit</p></li>
+<li><p><code>"percentile"</code> calculates the percentile. Use the argument percentile to specify the level, renames parameter</p></li>
+<li><p><code>"perc95"</code> 95<!-- % percentile, renames parameter --></p></li>
+<li><p><code>"perc98"</code> 98<!-- % percentile, renames parameter --></p></li>
+<li><p><code>"n&gt;8"</code> number of values &gt; 8 (CO d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;50"</code> number of values &gt; 50 (PM10 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;65"</code> number of values &gt; 65 (O3 d1 indicator), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;80"</code> number of values &gt; 80 (NO2 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;100"</code> number of values &gt; 100 (SO2 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;120"</code> number of values &gt; 120 (O3 h1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;160"</code> number of values &gt; 160 (O3 h1 indicator), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;180"</code> number of values &gt; 180 (O3 h1 indicator), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;200"</code> number of values &gt; 200 (O3 h1 indicator), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;240"</code> number of values &gt; 240 (O3 h1 indicator), renames parameter, changes unit</p></li>
+<li><p><code>"drop"</code> drops the parameter from the result, useful for persons too lazy to filter the input data</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="wind"><a class="anchor" href="#wind"></a>Wind</h2>
+
+    
+    <p>Wind is a special case. For vector averaging the methods needs two inputs (direction and speed). To resample wind
+data it is necessary to specify three parameters with the methods <code>"wind.direction"</code>, <code>"wind.speed_vector"</code> and
+<code>"wind.speed_scalar"</code>. Even if scalar or vector speed isn't present. The parameter will be substituted by the other.</p>
+<p>Important: Wind calculation are standalone. It is possible to calculate multiple methods for non wind parameters.</p>
+    
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
+
+    
+    <ul>
+<li><p>AOT40 statistic?</p></li>
+<li><p>some from https://github.com/davidcarslaw/openair/blob/master/R/aqStats.R?</p></li>
+</ul>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>min30</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,
+                     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='no'>airmo_min30</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>min30</span>)
+
+<span class='co'># filter volume concenctrations, only use mass concentrations</span>
+<span class='no'>airmo_min30</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>airmo_min30</span>, !(<span class='no'>.data</span>$<span class='no'>unit</span> <span class='kw'>==</span> <span class='st'>"ppb"</span> <span class='kw'>|</span> <span class='no'>.data</span>$<span class='no'>unit</span> <span class='kw'>==</span> <span class='st'>"ppm"</span>))
+
+<span class='no'>d1_statistics</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+  <span class='st'>"default_statistic"</span> <span class='kw'>=</span> <span class='st'>"drop"</span>,
+  <span class='st'>"Hr"</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+  <span class='st'>"RainDur"</span> <span class='kw'>=</span> <span class='st'>"sum"</span>,
+  <span class='st'>"O3"</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"mean"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>, <span class='st'>"n"</span>)
+)
+<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>d1_statistics</span>, <span class='st'>"d1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 186 x 6</span><span>
+#&gt;    starttime           site                    parameter interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    76.0
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-02 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-03 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    78.0
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-04 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-05 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.8
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-06 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    82.3
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-07 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    84.9
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-08 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    79.0
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-09 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.4
+#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-10 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.6
+#&gt; </span><span style='color: #555555;'># ... with 176 more rows</span><span></div><div class='input'>
+<span class='co'># Note: wind parameters don't support multiple methods via list!</span>
+<span class='no'>h1_statistics</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+  <span class='st'>"default_statistic"</span> <span class='kw'>=</span> <span class='st'>"drop"</span>,
+  <span class='st'>"WD"</span> <span class='kw'>=</span> <span class='st'>"wind.direction"</span>,
+  <span class='st'>"WVs"</span> <span class='kw'>=</span> <span class='st'>"wind.speed_scalar"</span>,
+  <span class='st'>"WVv"</span> <span class='kw'>=</span> <span class='st'>"wind.speed_vector"</span>,
+  <span class='st'>"RainDur"</span> <span class='kw'>=</span> <span class='st'>"sum"</span>,
+  <span class='st'>"NO"</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"coverage"</span>, <span class='st'>"mean"</span>)
+)
+<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>h1_statistics</span>, <span class='st'>"h1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4,464 x 6</span><span>
+#&gt;    starttime           site                  parameter      interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-01 </span><span style='color: #555555;'>02:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-01 </span><span style='color: #555555;'>03:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-01 </span><span style='color: #555555;'>04:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-01 </span><span style='color: #555555;'>05:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-01 </span><span style='color: #555555;'>06:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-01 </span><span style='color: #555555;'>07:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
+#&gt; </span><span style='color: #555555;'># ... with 4,454 more rows</span><span></div><div class='input'>
+<span class='co'># Note: all resulting values should be NA -&gt; gap is to big (480 * min30 = 10 days)</span>
+<span class='no'>y1_statistics</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+  <span class='st'>"default_statistic"</span> <span class='kw'>=</span> <span class='st'>"drop"</span>,
+  <span class='st'>"O3"</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"mean"</span>, <span class='st'>"perc98"</span>, <span class='st'>"n"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>)
+)
+<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>y1_statistics</span>, <span class='st'>"y1"</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>480</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 6</span><span>
+#&gt;   starttime           site                    parameter    interval unit  value
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3           y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_98%_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_min30  y1       1        </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -229,8 +333,14 @@ sicherstellen, dass alle Voraussetzungen erfüllt sind (stopifnot() etc) und kor
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#todo-wind">TODO Wind</a></li>
-          </ul>
+      <li><a href="#statistical-methods">Statistical methods</a></li>
+
+      <li><a href="#wind">Wind</a></li>
+
+      <li><a href="#todo">TODO</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

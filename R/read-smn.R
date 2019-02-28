@@ -30,26 +30,28 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
   }
   df <- dplyr::bind_rows(lapply(1:length(skip), function(y) {
     if (!is.null(units)) {
-      units <- readr::read_table2(x, skip = skip[y] - 1, col_names = TRUE, locale = readr::locale(encoding = encoding),
+      units <- readr::read_table2(x, skip = skip[y] - 1, col_types = readr::cols(),
+                                  col_names = TRUE, locale = readr::locale(encoding = encoding),
                                   n_max = 1, skip_empty_rows = TRUE)
-      units <- rlang::set_names(as.character(units), names(units)[-c(1,2)])
-      units <- sapply(units[!is.na(units)], function(z) stringr::str_replace_all(z, "\\[|\\]", ""))
+      units <- rlang::set_names(as.character(units)[-((length(units)-1):length(units))], names(units)[-c(1,2)])
+      units <- sapply(units[!is.na(units)], function(z) stringr::str_replace_all(z,
+                                                                                 "\\[|\\]", ""))
     }
-    readr::read_table2(x, skip = skip[y] - 1, col_names = TRUE, na = c("", "NA", "-"),
-                       locale = readr::locale(encoding = encoding), n_max =  c(skip, Inf)[y + 1] - 2 - skip[y],
-                       skip_empty_rows = TRUE) %>%
+    readr::read_table2(x, skip = skip[y] - 1, col_types = readr::cols(), col_names = TRUE,
+                       na = c("", "NA", "-"), locale = readr::locale(encoding = encoding),
+                       n_max = c(skip, Inf)[y + 1] - 2 - skip[y], skip_empty_rows = TRUE) %>%
       dplyr::slice(skip2) %>%
       dplyr::mutate_at(-id_cols, as.numeric) %>%
-      tidyr::gather(.data$parameter_original, .data$value, -id_cols) %>%
-      dplyr::mutate(
-        starttime = lubridate::fast_strptime(.data$time, format = time_format, lt = FALSE, tz = timezone),
-        unit = plyr::revalue(.data$parameter_original, units)
-      ) %>%
-      dplyr::select(-.data$time)
+      tidyr::gather("parameter_original", "value", -id_cols) %>%
+      dplyr::mutate("starttime" = lubridate::fast_strptime(as.character(.data$time), format = time_format, lt = FALSE, tz = timezone),
+                    "unit" = plyr::revalue(.data$parameter_original, units)) %>%
+      dplyr::select(-.data$time)  %>%
+      dplyr::rename(
+        "site_short" = .data$stn
+      )
   }))
   return(df)
 }
-
 
 
 

@@ -5,7 +5,7 @@
 \title{Reads an AIRMO Export in CSV Format}
 \usage{
 read_airmo_csv(fn, encoding = "latin1", tz = "Etc/GMT-1",
-  time_shift = NULL)
+  time_shift = NULL, na.rm = TRUE)
 }
 \arguments{
 \item{fn}{CSV file name, can be relative to current directory or absolut}
@@ -15,6 +15,8 @@ read_airmo_csv(fn, encoding = "latin1", tz = "Etc/GMT-1",
 \item{tz}{time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"}
 
 \item{time_shift}{a lubridate period to add to the time. Default NULL}
+
+\item{na.rm}{remove na (empty) values. Default TRUE}
 }
 \value{
 data frame in rOstluft long format

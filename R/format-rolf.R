@@ -57,14 +57,14 @@ r6_format_rolf <- R6::R6Class(
     chunk_columns = c("interval", "site"),
     chunk_calc = NULL,
     unique_columns = NULL,
-    content_columns = NULL,
+    # content columns should probably contain chunk_calc names,
+    content_columns = c("year", "interval", "site", "parameter", "unit"),
     tz = NULL,
     initialize = function(tz = "Etc/GMT-1") {
       self$tz <- tz
       year_expr <- rlang::parse_expr(sprintf("lubridate::year(lubridate::with_tz(starttime, '%s'))", tz))
       self$chunk_calc <- list(year = year_expr)
       self$unique_columns <- c(self$index, self$serie_columns)
-      self$content_columns <- c(self$serie_columns, names(self$chunk_calc))
     },
     sort = function(data, na.rm = TRUE) {
       if (isTRUE(na.rm)) {

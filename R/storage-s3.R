@@ -390,7 +390,7 @@ r6_storage_s3 <- R6::R6Class(
         chunk_data <- self$format$merge(data, chunk_data)
       } else {
         fs::dir_create(fs::path_dir(chunk_path))
-        chunk_data <- data
+        chunk_data <- self$format$merge(data, data[0, ])
       }
       chunk_data <- self$format$sort(chunk_data)
       self$write_function(droplevels(chunk_data), chunk_path)

@@ -174,10 +174,7 @@ r6_storage_local <- R6::R6Class(
 
       if (is_new) {
         fs::dir_create(self$data_path, recursive = TRUE)
-        fs::dir_create(fs::path(self$path, "input"), recursive = TRUE)
-        fs::dir_create(fs::path(self$path, "tmp"), recursive = TRUE)
-        fs::dir_create(fs::path(self$path, "log_storr"), recursive = TRUE)
-
+        fs::dir_create(self$meta_path, recursive = TRUE)
         message(sprintf("Local store %s initialized under '%s'", self$name, self$path))
       }
       invisible(self)
@@ -229,7 +226,7 @@ r6_storage_local <- R6::R6Class(
     },
     get_meta = function(key = NULL) {
       if (rlang::is_null(key)) {
-        meta_files <- fs::dir_ls(self$meta_path)
+        meta_files <- fs::dir_ls(self$meta_path, recursive = TRUE, type = "file")
         if (NROW(meta_files) > 0) {
           meta_names <- fs::path_ext_remove(fs::path_rel(meta_files, self$meta_path))
           res <- purrr::map(meta_files, self$read_function)
@@ -257,6 +254,7 @@ r6_storage_local <- R6::R6Class(
       if (NROW(args) > 0) {
         args <- tibble::enframe(args)
         args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = self$ext))
+        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recursive = TRUE)
         purrr::map2(args$value, args$local.path, self$write_function)
       }
     },

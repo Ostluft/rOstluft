@@ -334,6 +334,8 @@ r6_storage_s3 <- R6::R6Class(
         args <- tibble::enframe(args)
         args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = self$ext),
                               s3.key = fs::path(self$meta_s3, .data$name, ext = self$ext))
+
+        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recursive = TRUE)
         purrr::map2(args$value, args$local.path, self$write_function)
         purrr::map2(args$local.path, args$s3.key, private$s3_put)
       }

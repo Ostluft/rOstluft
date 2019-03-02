@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
@@ -32,7 +32,7 @@ Imports:
     rlang (>= 0.3.0),
     magrittr,
     rOstluft.data,
-    RCurl
+    rgdal
 Suggests:
     knitr,
     rmarkdown,

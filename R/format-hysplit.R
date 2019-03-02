@@ -1,5 +1,20 @@
+#' @title Format defintion for hysplit back trajectories
+#'
+#' @description This formats describes the form of back trajectories calculated by the NOAA HYSPLIT model.
+#'
+#' @section TODO:
+#' Write the Documentation ...
+#'
+#' @name format_hysplit
+#' @docType class
+NULL
 
-
+#' Format defintion for hysplit trajectories
+#'
+#' @param tz Unused at the moment
+#'
+#' @return R6 class object of format_hysplit
+#' @export
 format_hysplit <- function(tz = "Etc/GMT") {
   r6_format_hysplit$new(tz = tz)
 }

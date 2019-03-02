@@ -1,4 +1,4 @@
 library(testthat)
-library(rOstluft)
+library(rOstluft)  # nolint
 
 test_check("rOstluft")

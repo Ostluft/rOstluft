@@ -132,7 +132,7 @@ test_that("get_gap_in_vector", {
   n <- 17500
   i <- 1:n / 10
 
-  i_start <- i_end <- i_middle<-  i
+  i_start <- i_end <- i_middle <-  i
   i_start[1:50] <- NA
   i_middle[5000:6000] <- NA
   i_end[n - 0:200] <- NA
@@ -170,7 +170,7 @@ test_that("max_gap", {
   n <- 17500
   i <- 1:n / 10
 
-  i_start <- i_end <- i_middle<-  i
+  i_start <- i_end <- i_middle <-  i
   i_start[1:480] <- NA
   i_middle[5000:6000] <- NA
   i_end[n - 0:480] <- NA
@@ -245,7 +245,7 @@ test_that("threshold & gap", {
   i_fail_gap[10000:10481] <- NA
 
   for (j in 1:20) {
-    i_fail_threshold[j*750+1:300] <- NA
+    i_fail_threshold[j * 750 + 1:300] <- NA
   }
 
   testthat::expect_equal(
@@ -255,7 +255,7 @@ test_that("threshold & gap", {
 
   testthat::expect_equal(
     FUN(i_ok),
-    0.1*51
+    0.1 * 51
   )
 
   testthat::expect_equal(
@@ -268,5 +268,3 @@ test_that("threshold & gap", {
     NA
   )
 })
-
-

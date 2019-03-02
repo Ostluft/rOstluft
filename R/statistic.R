@@ -118,8 +118,8 @@ get_gap_in_vector <- function(x) {
   n <- length(x)
   x <- tibble::tibble(x = x)
   x <- tibble::rowid_to_column(x)
-  x <- c(x$rowid[!is.na(x$x)], n+1)
-  max(x-dplyr::lag(x, default = 0)) - 1
+  x <- c(x$rowid[!is.na(x$x)], n + 1)
+  max(x - dplyr::lag(x, default = 0)) - 1
 }
 
 #' @title statistic functions
@@ -237,9 +237,3 @@ statistic_lookup <- tibble::tribble(
 )
 
 statistic_lookup <- tibble::column_to_rownames(statistic_lookup, "statistic")
-
-
-
-
-
-

@@ -1,6 +1,19 @@
+
 library(usethis)
 
 prepare_release <- function() {
+  choice <- utils::menu(
+    choices = c(
+      "No",
+      "Yes"
+    ),
+    title = "Run devtools::check()"
+  )
+
+  if (choice == 2) {
+    devtools::check()
+  }
+
   bump_ <- function(x, ver) {
     d <- desc::desc(text = paste0("Version: ", ver))
     suppressMessages(d$bump_version(x)$get("Version")[[1]])
@@ -46,14 +59,4 @@ prepare_release <- function() {
 
 prepare_release()
 
-choice <- utils::menu(
-  choices = c(
-    "No",
-    "Yes"
-  ),
-  title = "Run devtools::check()"
-)
 
-if (choice == 2) {
-  devtools::check()
-}

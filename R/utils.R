@@ -51,7 +51,7 @@ getElement2 <- function(object, element_name, default_value = NULL) {
 #' @return filtered tibble
 #'
 #' @keywords internal
-filter_remove_list = function(data, filter_list) {
+filter_remove_list <- function(data, filter_list) {
 
   create_filter_quo <- function(value, column) {
     value <- ifelse(is.factor(value), as.character(value), value)
@@ -77,7 +77,7 @@ filter_remove_list = function(data, filter_list) {
 #' @return filtered tibble
 #'
 #' @keywords internal
-filter_keep_list = function(data, filter_list) {
+filter_keep_list <- function(data, filter_list) {
 
   create_filter_quo <- function(value, column) {
     value <- ifelse(is.factor(value), as.character(value), value)

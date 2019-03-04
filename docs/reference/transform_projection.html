@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Converts the wide format from the files to the long format — airmo_wide_to_long • rOstluft</title>
+<title>Map projection and datum transformation — transform_projection • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Converts the wide format from the files to the long format — airmo_wide_to_long" />
+<meta property="og:title" content="Map projection and datum transformation — transform_projection" />
 
-<meta property="og:description" content="Converts the wide format from the files to the long format" />
+<meta property="og:description" content="Map projection and datum transformation" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,53 +122,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Converts the wide format from the files to the long format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-airmo.R'><code>R/read-airmo.R</code></a></small>
-    <div class="hidden name"><code>airmo_wide_to_long.Rd</code></div>
+    <h1>Map projection and datum transformation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/transform-projection.R'><code>R/transform-projection.R</code></a></small>
+    <div class="hidden name"><code>transform_projection.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Converts the wide format from the files to the long format</p>
+    <p>Map projection and datum transformation</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(<span class='no'>header</span>, <span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>transform_projection</span>(<span class='no'>df</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lon"</span>, <span class='st'>"lat"</span>),
+  <span class='kw'>initCRS</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
+  <span class='kw'>outCRS</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>header</th>
-      <td><p>data frame containing airmo_kurzname, parameter, zeitfenster and einheit</p></td>
+      <th>df</th>
+      <td><p>data frame containing the coordinate information</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>data frame only containing the data from the file</p></td>
+      <th>coord</th>
+      <td><p>columns of the coordinates. Default <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c("lon", "lat")</a></code></p></td>
     </tr>
     <tr>
-      <th>tz</th>
-      <td><p>time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"</p></td>
+      <th>initCRS</th>
+      <td><p>source coordinate reference system as <a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a>. Default <code><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS("+init=epsg:4326")</a></code></p></td>
     </tr>
     <tr>
-      <th>time_shift</th>
-      <td><p>a lubridate period to add to the time. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>na.rm</th>
-      <td><p>remove na (empty) values. Default TRUE</p></td>
+      <th>outCRS</th>
+      <td><p>target coordinate reference system as <a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a>. Default <code><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS("+init=epsg:2056")</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame in rOstluft long format</p>
+    <p>data frame containing the transformed coordinatess</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/period.html'>lubridate::period()</a></code> - Create or parse period objects</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p></div>
+    <div class='dont-index'><ul>
+<li><p><code><a href='https://www.rdocumentation.org/packages/sp/topics/spTransform'>sp::spTransform()</a></code></p></li>
+<li><p><code><a href='https://www.rdocumentation.org/packages/sp/topics/is.projected'>sp::proj4string()</a></code></p></li>
+<li><p><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a></p></li>
+<li><p><a href='https://proj4.org/'>PROJ4</a></p></li>
+</ul></div>
     
 
   </div>

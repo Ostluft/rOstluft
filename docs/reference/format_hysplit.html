@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Converts the wide format from the files to the long format — airmo_wide_to_long • rOstluft</title>
+<title>Format defintion for hysplit back trajectories — format_hysplit • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Converts the wide format from the files to the long format — airmo_wide_to_long" />
+<meta property="og:title" content="Format defintion for hysplit back trajectories — format_hysplit" />
 
-<meta property="og:description" content="Converts the wide format from the files to the long format" />
+<meta property="og:description" content="This formats describes the form of back trajectories calculated by the NOAA HYSPLIT model." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,53 +122,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Converts the wide format from the files to the long format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-airmo.R'><code>R/read-airmo.R</code></a></small>
-    <div class="hidden name"><code>airmo_wide_to_long.Rd</code></div>
+    <h1>Format defintion for hysplit back trajectories</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/format-hysplit.R'><code>R/format-hysplit.R</code></a></small>
+    <div class="hidden name"><code>format_hysplit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Converts the wide format from the files to the long format</p>
+    <p>This formats describes the form of back trajectories calculated by the NOAA HYSPLIT model.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(<span class='no'>header</span>, <span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>format_hysplit</span>(<span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>header</th>
-      <td><p>data frame containing airmo_kurzname, parameter, zeitfenster and einheit</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>data frame only containing the data from the file</p></td>
-    </tr>
-    <tr>
       <th>tz</th>
-      <td><p>time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"</p></td>
-    </tr>
-    <tr>
-      <th>time_shift</th>
-      <td><p>a lubridate period to add to the time. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>na.rm</th>
-      <td><p>remove na (empty) values. Default TRUE</p></td>
+      <td><p>Unused at the moment</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame in rOstluft long format</p>
+    <p>R6 class object of format_hysplit</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
 
-    <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/period.html'>lubridate::period()</a></code> - Create or parse period objects</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p></div>
+    
+    <p>Write the Documentation ...</p>
     
 
   </div>
@@ -179,7 +162,7 @@
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#todo">TODO</a></li>
           </ul>
 
   </div>

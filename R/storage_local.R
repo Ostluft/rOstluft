@@ -312,8 +312,16 @@ r6_storage_local <- R6::R6Class(
     },
     merge_chunk = function(data) {
       # get content count
-      data_content <- dplyr::count(self$format$na.omit(data),
-                                   .dots = self$format$content_columns)
+      data_content <- self$format$na.omit(data)
+
+      if (nrow(data_content) > 0) {
+        data_content <- dplyr::count(data_content, .dots = self$format$content_columns)
+      } else {
+        # we need an empty tibble in the correct form. simplest way is to count the NA ..
+        data_content <- dplyr::count(data, .dots = self$format$content_columns)
+        data_content <- data_content[0, ]
+      }
+
       # remove calculated chunk columns
       data <- dplyr::select(data, -dplyr::one_of(rlang::names2(self$format$chunk_calc)))
       chunk_vars <- as.list(self$format$chunk_vars(data))
@@ -327,11 +335,21 @@ r6_storage_local <- R6::R6Class(
         fs::dir_create(fs::path_dir(chunk_path))
         chunk_data <- self$format$merge(data, data[0, ])
       }
+
       chunk_data <- self$format$sort(chunk_data)
-      self$write_function(droplevels(chunk_data), chunk_path)
-      # we need to calculate the chunk columns before counting. Questions is there a more elegant solution?
-      chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
-      chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+
+      if (nrow(chunk_data) > 0) {
+        self$write_function(droplevels(chunk_data), chunk_path)
+        # we need to calculate the chunk columns again before counting
+        chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+        chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+      } else {
+        if (fs::file_exists(chunk_path)) {
+          fs::file_delete(chunk_path)
+        }
+        chunk_content <- data_content[0, ]
+      }
+
       private$merge_content(chunk_content, chunk_vars)
       data_content
     }

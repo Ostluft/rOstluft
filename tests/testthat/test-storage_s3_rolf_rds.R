@@ -97,6 +97,57 @@ test_that("get from store", {
   expect_equal(nrow(nox_staba_ros_2014), 52302 + 52245)
 })
 
+
+test_that("put NA frame", {
+  store <- storage_s3_rds(store_name,  format_rolf(), bucket, prefix = store_name, read.only = FALSE)
+  d1 <- system.file("extdata", "Zch_Stampfenbachstrasse_d1_2013_Jan.csv",
+                    package = "rOstluft.data", mustWork = TRUE)
+  airmo_d1 <- airmo_d1 <- read_airmo_csv(d1)
+  empty <- dplyr::mutate(airmo_d1, value = NA)
+
+  n_content <- nrow(store$get_content())
+  n_chunks <- nrow(store$list_chunks())
+
+  res <- store$put(empty)
+
+
+  testthat::expect_equal(
+    nrow(res),
+    0
+  )
+
+  testthat::expect_equal(
+    nrow(store$get_content()),
+    n_content
+  )
+
+  testthat::expect_equal(
+    nrow(store$list_chunks()),
+    n_chunks
+  )
+
+
+  store$put(airmo_d1)
+
+  testthat::expect_equal(
+    nrow(store$list_chunks()),
+    n_chunks + 1
+  )
+
+  res <- store$put(empty)
+
+  testthat::expect_equal(
+    nrow(store$get_content()),
+    n_content
+  )
+
+  testthat::expect_equal(
+    nrow(store$list_chunks()),
+    n_chunks
+  )
+})
+
+
 test_that("download store", {
   testthat::skip_if_not(is_s3_admin(), "Skip Test: no administator rights")
   # delete all local files

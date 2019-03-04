@@ -76,6 +76,8 @@ specified key.
 
 \code{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
 
+\code{$fix_content()} generates the content file from the data files
+
 \code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
 }

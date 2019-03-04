@@ -55,6 +55,10 @@ test_that("put into store", {
 
   content <- store_rw$get_content()
   expect_equal(sum(content$n), n_ros + n_staba)
+
+  testthat::expect_warning(
+    store_rw$put(df[0, ])
+  )
 })
 
 test_that("get from store", {

@@ -65,7 +65,7 @@
 #' @examples
 #' ## init store, creates directory if necessary
 #' format <- rOstluft::format_rolf()
-#' store <- rOstluft::storage_s3_rds("ol_esd", format, "rostluft", read.only = FALSE)
+#' store <- rOstluft::storage_s3_rds("s3_example", format, "rostluft", prefix = "aqmet")
 #'
 #' ## get all data min30 for 2011 and 2012
 #' store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
@@ -190,10 +190,15 @@ r6_storage_s3 <- R6::R6Class(
         stop(ReadOnlyStore(self$name))
       }
 
-      data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      data <- dplyr::group_split(data, keep = TRUE)
-      res <- purrr::map(data, private$merge_chunk)
-      bind_rows_with_factor_columns(!!!res)
+      if (nrow(data) > 0) {
+        data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+        data <- dplyr::group_split(data, keep = TRUE)
+        res <- purrr::map(data, private$merge_chunk)
+        bind_rows_with_factor_columns(!!!res)
+      } else {
+        warning("argument data is empty")
+        invisible(NULL)
+      }
     },
     get = function(filter = NULL, ...) {
       filter <- rlang::enquo(filter)

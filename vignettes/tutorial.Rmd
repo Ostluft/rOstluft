@@ -1,0 +1,212 @@
+---
+title: "[GER] Tutorial"
+author: "Thomas von Allmen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{[GER] Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+set.seed(1014)
+options(digits = 3)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(dplyr)
+library(magrittr)
+```
+
+# Einleitung
+
+Dieses Dokument soll einem Anwender des Packages [rOstluft::rOstluft] einen Überblick der enthaltenen Funktionalität 
+bieten und die gängisten Arbeitsabläufe aufzeigen.
+
+Der Fokus dieses Packages liegt in der Bereitstellung von Daten aus verschiedenen Datenquellen in einem einheitlichen 
+Format zur Analyse der Luftqualität. Ausserdem enthält es Werkzeuge für einige übliche Aufgaben, die während solchen 
+Analysen anfallen. Diese sind Umrechnungen zwischen verschiedenen Mittelungsintervallen, Statistische Methoden mit 
+Berücksichtung der Datenverfügbarkeit, Umwandlung von Volumen- und Massenkonzentrationen und lesen von Daten vorliegend 
+in verschiedenen Formaten.
+
+# Installation
+
+Der Quellcode von [rOstluft](https://github.com/Ostluft/rOstluft) ist auf github gehosted. Die einfachste Variante ist 
+die Installation mit Hilfe des Packages devtools:
+
+```{r eval=FALSE}
+#install.packages("devtools")
+devtools::install_github("Ostluft/rOstluft")
+```
+
+Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github 
+heruntergeladen werden (Clone or download > Download as ZIP), entpackt und manuell installiert werden. Allerdings 
+bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert 
+werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden. 
+
+Zusätzlich besteht noch die Github Abhängkigkeit zu [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses 
+Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:
+
+* Download der Quellen: [rOstluft.data](https://github.com/Ostluft/rOstluft.data) und 
+  [rOstluft](https://github.com/Ostluft/rOstluft)
+* In RStudio Tools > Install Packages
+* In der Auswahlbox "Install from" das Feld "Package Archive File (.zip; .tar.gz)" auswählen
+* Im Datei Dialog die Datei von rOstluft.data auswählen
+* Mit der Schaltfläche "Install" das Package installieren
+* Wiederholen für rostluft
+
+Nach der Installation kann das Packages verwendet werden:
+
+```{r}
+library(rOstluft)
+```
+
+
+# Abfrage von Daten
+
+## Ostluft Amazon AWS S3
+
+Die zentrale Datenablage innerhalb von Ostluft erfolgt auf [Amazon AWS S3](https://aws.amazon.com/s3/).Aus 
+Lizenztechnischen Gründen kann das Bucket nicht öffentlich zugänglich gemacht werden. Die Zugangsdaten werden von Jörg 
+Sintermann vergeben. Die Zugangsdaten werden am einfachsten über eine .Renvirion Datei im Verzeichnis des RStudio 
+Projekts dem Package zugänglich gemacht. Inhalt der .Renvirion Datei:
+
+```
+AWS_ACCESS_KEY_ID = "XXXXXXXXXXXXXXXXXXXX"
+AWS_SECRET_ACCESS_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+AWS_DEFAULT_REGION = "eu-central-1"
+```
+
+Weitere Möglichkeiten sind in der Dokumentation von [aws.signature](https://github.com/cloudyr/aws.signature/) zu 
+finden.
+
+Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden 
+Zugriff wird nur überprüft, ob die Daten noch identisch sind.
+
+Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:
+
+```{r}
+store <- storage_s3_rds("tutorial", format = format_rolf(), bucket = "rostluft", prefix = "aqmet")
+```
+
+Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:
+* `get_content()`: holt eine Übersicht über alle im store enthaltene Daten
+* `get()`: Aktuelle Datenabfrage. Welche Daten geholt werden, muss über Funktionsargumente definiert werden
+
+```{r}
+content <- store$get_content()
+content
+
+dplyr::sample_n(content, 10)
+```
+
+Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:
+
+```{r}
+store$get(site = "Zch_Schimmelstrasse", year = 2014, interval = "min30")
+```
+
+Jedes der Argumente kann auch ein Vector sein mit mehreren Werte. Es wird dann Kombination aller Möglichkeiten 
+abgefragt.
+
+```{r}
+sites <- c("Zch_Schimmelstrasse", "Zch_Rosengartenstrasse", "Zch_Stampfenbachstrasse")
+data <- store$get(site = sites, year = 2014:2015, interval = "min30")
+data
+
+dplyr::sample_n(data, 10)
+```
+
+Die letzte Funktionalität von `get` ist die Filterung der Daten vor der Rückgabe. Mit dem Argument "filter" als 
+[dplyr::filter()] kompatibler Ausdruck:
+
+```{r}
+store$get(site = sites, year = 2014, interval = "min30", filter = parameter == "PM10")
+```
+
+
+## Lokales Arbeiten mit den AWS S3 Daten
+
+Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung ob aktualisierte 
+Daten verfügbar sind vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine 
+Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits 
+herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion, 
+welche einen lokalen Store zurückgibt.
+
+```{r}
+lokal <- store$get_local_storage()
+```
+
+Dieser verfügt über die gleichen Funktionalität wie der S3 Store:
+
+```{r}
+lokal$get_content()
+
+lokal$get(site = sites, year = 2014, interval = "min30", filter = parameter == "PM10")
+```
+
+Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von `get_content()` nicht dem lokalen 
+Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten 
+lokal verfügbar sind, hilft einem die Funktion `list_chunks()` weiter. 
+
+```{r}
+lokal$list_chunks()
+```
+
+Auch der S3 Store verfügt über die `list_chunks()` Funktion.
+
+```{r}
+store$list_chunks()
+```
+
+Im normal Fall ist Nutzung von `get_content()` über `list_chunks()` zu bevorzugen. Die Rückgabe von `get_content()` 
+enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei `list_chunks()` hingegen sind einige interne 
+Informationen über den Store enthalten.
+
+Um die Vorbereitung um mit einem lokalen Store zu arbeiten zu vereinfachen verfügt der S3 Store über die Funktion 
+`download(...)`. Die dot Argumente werden als Filter auf die Rückgabe von `list_chunks()` angewendet. Ohne Argumente 
+wird der komplette Store heruntergeladen. Folgendes Beispiel lädt samtliche 30 Minutenmittelwerte für die Station 
+Rosengartenstrasse nach dem Jahr 2015 (Achtung == verwenden, es sind Filter Ausdrücke!):
+
+```{r}
+store$download(site == "Zch_Rosengartenstrasse", interval == "min30", year > 2015)
+
+lokal$list_chunks()
+```
+
+
+## Eigene Daten in einem lokalen Store
+
+Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3 
+vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:
+
+```{r}
+my_store = storage_local_rds("eigene_daten", format_rolf(), read.only = FALSE)
+```
+
+In diesen kann man nun Daten mit der Store Funktion `put()` oder der Hilfsfunktion [rOstluft::import_directory()] 
+importieren:
+
+```{r}
+path <- system.file("extdata", package = "rOstluft.data")
+rOstluft::import_directory(my_store, path, read_airmo_csv, glob = "*Jan.csv")
+my_store$get_content()
+
+fn <- fs::path(path, "Zch_Rosengartenstrasse_2010-2014.csv")
+my_data <- read_airmo_csv(fn)
+my_store$put(my_data)
+```
+
+
+
+
+
+
+```{r}
+store$read.only = FALSE
+store$destroy("DELETE")
+```

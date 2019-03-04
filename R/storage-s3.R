@@ -61,11 +61,10 @@
 #' AWS_DEFAULT_REGION = "eu-central-1"
 #' ```
 #'
-#'
 #' @examples
 #' ## init store, creates directory if necessary
 #' format <- rOstluft::format_rolf()
-#' store <- rOstluft::storage_s3_rds("ol_esd", format, "rostluft", read.only = FALSE)
+#' store <- rOstluft::storage_s3_rds("s3_example", format, "rostluft", prefix = "aqmet")
 #'
 #' ## get all data min30 for 2011 and 2012
 #' store$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
@@ -104,6 +103,7 @@
 #' local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
 #'
 #' ## destroy store (careful removes all files on the disk)
+#' store$read.only = FALSE
 #' store$destroy("DELETE")
 #'
 #' ## No examples for write operations

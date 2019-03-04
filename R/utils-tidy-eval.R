@@ -33,11 +33,11 @@
 #' @name     tidyeval
 #' @keywords internal
 #' @importFrom rlang quo quos enquo enquos quo_name sym ensym syms
-#'                   ensyms expr exprs enexpr enexprs .data
+#'                   ensyms expr exprs enexpr enexprs .data :=
 #' @aliases  quo quos enquo enquos quo_name
 #'           sym ensym syms ensyms
 #'           expr exprs enexpr enexprs
-#'           .data
+#'           .data :=
 #' @export   quo quos enquo enquos quo_name
 #' @export   sym ensym syms ensyms
 #' @export   expr enexpr enexprs

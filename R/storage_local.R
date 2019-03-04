@@ -31,6 +31,8 @@
 #'
 #' `$put_meta(...)` puts meta data into the store. the name of the argument is used as file name and the value as data.
 #'
+#' `$fix_content()` generates the content file from the data files
+#'
 #' `$destroy(confirmation)` removes all files under path from the file system if "DELETE" is supplied as
 #' confirmation
 #'
@@ -184,10 +186,15 @@ r6_storage_local <- R6::R6Class(
         stop(ReadOnlyStore(self$name))
       }
 
-      data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      data <- dplyr::group_split(data, keep = TRUE)
-      res <- purrr::map(data, private$merge_chunk)
-      bind_rows_with_factor_columns(!!!res)
+      if (nrow(data) > 0) {
+        data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+        data <- dplyr::group_split(data, keep = TRUE)
+        res <- purrr::map(data, private$merge_chunk)
+        bind_rows_with_factor_columns(!!!res)
+      } else {
+        warning("argument data is empty")
+        invisible(NULL)
+      }
     },
     get = function(filter=NULL, ...) {
       filter <- enquo(filter)
@@ -265,6 +272,23 @@ r6_storage_local <- R6::R6Class(
       } else {
         warning("Store still alive: read.only store or wrong confirmation phrase")
       }
+    },
+    fix_content = function() {
+      if (self$read.only) {
+        stop(ReadOnlyStore(self$name))
+      }
+
+      get_chunk_content <- function(chunk_path) {
+        chunk_data <- self$read_function(chunk_path)
+        chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+        dplyr::count(chunk_data, .dots = self$format$content_columns)
+      }
+
+      chunks_path <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
+      chunks_content <- purrr::map(chunks_path, get_chunk_content)
+      chunks_content <- bind_rows_with_factor_columns(!!!chunks_content)
+      self$write_function(chunks_content, self$content_path)
+      chunks_content
     }
   ),
   private = list(

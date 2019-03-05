@@ -37,18 +37,19 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
       units <- sapply(units[!is.na(units)], function(z) stringr::str_replace_all(z,
                                                                                  "\\[|\\]", ""))
     }
-    readr::read_table2(x, skip = skip[y] - 1, col_types = readr::cols(), col_names = TRUE,
-                       na = c("", "NA", "-"), locale = readr::locale(encoding = encoding),
-                       n_max = c(skip, Inf)[y + 1] - 2 - skip[y], skip_empty_rows = TRUE) %>%
+    df2 <- readr::read_table2(x, skip = skip[y] - 1, col_types = readr::cols(), col_names = TRUE,
+                              na = c("", "NA", "-"), locale = readr::locale(encoding = encoding),
+                              n_max = c(skip, Inf)[y + 1] - 2 - skip[y], skip_empty_rows = TRUE) %>%
       dplyr::slice(skip2) %>%
       dplyr::mutate_at(-id_cols, as.numeric) %>%
       tidyr::gather("parameter_original", "value", -id_cols) %>%
       dplyr::mutate("starttime" = lubridate::fast_strptime(as.character(.data$time), format = time_format, lt = FALSE, tz = timezone),
                     "unit" = plyr::revalue(.data$parameter_original, units)) %>%
-      dplyr::select(-.data$time)  %>%
-      dplyr::rename(
-        "site_short" = .data$stn
-      )
+      dplyr::select(-.data$time)
+    if ("stn" %in% names(df2)) {
+      df2 <- dplyr::rename(df2, "site_short" = .data$stn)
+    }
+    df2
   }))
   return(df)
 }

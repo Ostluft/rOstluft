@@ -61,11 +61,11 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
     tidyr::gather("parameter_original", "value", - .data$date, -.data$time) %>%
     dplyr::mutate(
       "starttime" = as.POSIXct(as.Date(.data$date), tz = timezone) + as.difftime(.data$time, units = "mins"),
-      "interval" = "min10",
+      "interval" = forcats::as_factor("min10"),
       "site_short" = site,
       "unit" = plyr::revalue(.data$parameter_original, rlang::set_names(pars$unit, pars$parameter_original))
     ) %>%
-    dplyr::select(-.data$date, -.data$time)
+    dplyr::select("starttime", "interval", "site", "parameter", "unit", "value")
   return(df)
 }
 

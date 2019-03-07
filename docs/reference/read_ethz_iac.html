@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • rOstluft</title>
+<title>Read an IAC/ETHZ meteo station file — read_ethz_iac • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -25,12 +25,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="Read an IAC/ETHZ meteo station file — read_ethz_iac" />
+
+<meta property="og:description" content="Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety
+at ETH Zürich. Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &amp;amp; Hönggerberg (see
+http://www.iac.ethz.ch/the-institute/weather-stations.html(Weather Stations))." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -50,7 +54,7 @@
   </head>
 
   <body>
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -62,7 +66,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">rOstluft</a>
+        <a class="navbar-link" href="../index.html">rOstluft</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9011</span>
       </span>
     </div>
@@ -70,13 +74,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -86,16 +90,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/einleitung.html">[GER] Einleitung rOstluft</a>
+      <a href="../articles/einleitung.html">[GER] Einleitung rOstluft</a>
     </li>
     <li>
-      <a href="articles/resample.html">[GER] Resampling data</a>
+      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
-      <a href="articles/s3.html">[GER] AWS S3</a>
+      <a href="../articles/s3.html">[GER] AWS S3</a>
     </li>
     <li>
-      <a href="articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
+      <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
 </li>
@@ -118,34 +122,72 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>Read an IAC/ETHZ meteo station file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-ethz-iac.R'><code>R/read-ethz-iac.R</code></a></small>
+    <div class="hidden name"><code>read_ethz_iac.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Thomas von Allmen</strong>. Author, maintainer. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Jörg Sintermann</strong>. Author. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Noël Rederlechner</strong>. Author. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Ostluft</strong>. Copyright holder. 
-        </p>
-      </li>
-    </ul>
+    <div class="ref-description">
+    
+    <p>Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety
+at ETH Zürich. Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &amp; Hönggerberg (see
+http://www.iac.ethz.ch/the-institute/weather-stations.html(Weather Stations)).</p>
+    
+    </div>
+
+    <pre class="usage"><span class='fu'>read_ethz_iac</span>(<span class='no'>x</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>site</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>tz</th>
+      <td><p>of the output data. Default "Etc/GMT-1"</p></td>
+    </tr>
+    <tr>
+      <th>site</th>
+      <td><p>Character string specifying the site of the meteo station. Usally the site will be autodetected from the
+header. But if autodection fails or an overwrite is needed set site. Default NULL</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>remove na values. Default TRUE</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>encoding of the data file. Default = "UTF-8"</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>tibble in rOstluft long format structure</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The files are daily files, encoded in utf-8. Timezone is GMT.</p>
+    
 
   </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+          </ul>
+
+  </div>
 </div>
-
 
       <footer>
       <div class="copyright">

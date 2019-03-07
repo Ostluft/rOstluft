@@ -65,32 +65,52 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
       "site_short" = site,
       "unit" = plyr::revalue(.data$parameter_original, rlang::set_names(pars$unit, pars$parameter_original))
     ) %>%
-    dplyr::select("starttime", "interval", "site", "parameter", "unit", "value")
+    dplyr::select(-.data$date, -.data$time)
+
   return(df)
 }
 
-read_ethz_iac <- function(x, encoding = "UTF-8", tz = "Etc/GMT", site = NULL) {
+
+#' Read an IAC/ETHZ meteo station file
+#'
+#' Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety
+#' at ETH Zürich. Currently, two stations in Zürich are under long-term operation: CHN-Gebäude & Hönggerberg (see
+#' [http://www.iac.ethz.ch/the-institute/weather-stations.html](Weather Stations)).
+#'
+#' The files are daily files, encoded in utf-8. Timezone is GMT.
+#'
+#' @param x Either a path to a file, a connection, or literal data. see [readr::read_delim()]
+#' @param tz of the output data. Default "Etc/GMT-1"
+#' @param site Character string specifying the site of the meteo station. Usally the site will be autodetected from the
+#'   header. But if autodection fails or an overwrite is needed set site. Default NULL
+#' @param na.rm remove na values. Default TRUE
+#' @param encoding encoding of the data file. Default = "UTF-8"
+#'
+#' @return tibble in rOstluft long format structure
+#'
+#' @export
+read_ethz_iac <- function(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE, encoding = "UTF-8") {
   # ethz files are quite small just read it into the memory. user fault if he supplies one big file :p
   locale <-  readr::locale(encoding = encoding)
   txt <- readr::read_file(x, locale = locale)
 
   # split header from parameter, units, data
-  txt <- stringr::str_split_fixed(txt, "\n\n", n = 2)
+  txt <- stringr::str_split_fixed(txt, "\r\n\r\n|\n\n", n = 2)  # orig files have crlf endings, but shit happens
   header <- txt[1, 1]
 
   # get line with startdate
   startdate <- stringr::str_extract(header, "time in minutes since.*")
   startdate <- stringr::str_sub(startdate, 23, 32) # do we need a more sophisticated method? we could get the tz too?
-  startdate <- lubridate::ymd(startdate, tz = tz)
+  startdate <- lubridate::ymd(startdate, tz = "GMT")
 
   # get line with location
   site_line <- stringr::str_extract(header, "location:.*")
-  if (stringr::str_detect(site_line, "CHN")) {
-    site <- as.factor("ETHZ_CHN")
-  } else if (stringr::str_detect(site_line, "berg")) { # <--- better string needed
-    site <- as.factor("ETHZ_HBerg")
-  } else if (!is.null(site) && is.character(site)) {
-    site <- as.factor(site)
+  if (!is.null(site) && is.character(site)) {
+    site <- site
+  } else if (stringr::str_detect(site_line, "roof of building CHN")) {
+    site <- "ETHZ_CHN-Gebäude"
+  } else if (stringr::str_detect(site_line, "Messfeld HPS G41")) { # <--- better string needed
+    site <- "ETHZ_Hönggerberg"
   } else {
     stop("Unkown site! Use argument site as character")
   }
@@ -124,18 +144,20 @@ read_ethz_iac <- function(x, encoding = "UTF-8", tz = "Etc/GMT", site = NULL) {
   # filter NA time and not on 10min interval, and remove duplicated timestamps, calculate starttime
   data <- dplyr::filter(data, .data$time %% 10 == 0)
   data <- dplyr::distinct(data, .data$time, .keep_all = TRUE)
-  data <- dplyr::mutate(data, starttime = startdate + + as.difftime(.data$time, units = "mins"))
+  data <- dplyr::mutate(data,
+    starttime = lubridate::with_tz(startdate + lubridate::make_difftime(minute = .data$time), tz = tz)
+  )
 
   # lookup for parameters
   units <- rlang::set_names(units, parameters)
 
-  # reform data
-  data <- tidyr::gather(data, "parameter", "value", -.data$time, -.data$starttime)
+  # reform data. data is now time, starttime + one col per parameter
+  data <- tidyr::gather(data, "parameter", "value", -.data$time, -.data$starttime, na.rm = na.rm)
   data <- dplyr::mutate(data,
-    site = site,
+    site = as.factor(site),
     interval = as.factor("min10"),
-    unit = forcats::as_factor(units[.data$parameter]),
-    parameter = forcats::as_factor(.data$parameter)     # parameter after unit or unit lookup will fail
+    unit = forcats::as_factor(units[.data$parameter]), # no recode possible. multiple parameters have the same unit
+    parameter = forcats::as_factor(.data$parameter)    # parameter after unit or lookup will use factor value not level
   )
 
   dplyr::select(data, "starttime", "site", "parameter", "interval", "unit", "value")

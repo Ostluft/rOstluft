@@ -45,7 +45,7 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
       tidyr::gather("parameter_original", "value", -id_cols) %>%
       dplyr::mutate("starttime" = lubridate::fast_strptime(as.character(.data$time), format = time_format, lt = FALSE, tz = timezone),
                     "unit" = plyr::revalue(.data$parameter_original, units)) %>%
-      dplyr::select("starttime", "interval", "site", "parameter", "unit", "value")
+      dplyr::select(-.data$time)
     if ("stn" %in% names(df2)) {
       df2 <- dplyr::rename(df2, "site_short" = .data$stn)
     }

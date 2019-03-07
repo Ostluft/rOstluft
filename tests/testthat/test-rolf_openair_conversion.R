@@ -65,7 +65,7 @@ test_that("rolf <> openair", {
   )
 
   res_list <- bind_rows_with_factor_columns(!!!purrr::map(oa_list, openair_to_rolf))
-  testthat::expect_equal(
+  testthat::expect_equal(  # devtools::check fails this test (somewhere shifted by one), devtools::test not?
     dplyr::arrange(airmo_h1, .data$parameter, .data$starttime)$value,
     dplyr::arrange(res_list, .data$parameter, .data$starttime)$value
   )

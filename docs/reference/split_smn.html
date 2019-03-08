@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn • rOstluft</title>
+<title>Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports — split_smn • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn" />
+<meta property="og:title" content="Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports — split_smn" />
 
-<meta property="og:description" content="Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format" />
+<meta property="og:description" content="Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,50 +120,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a MeteoSchweiz SwissMetNet export file</h1>
+    <h1>Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
-    <div class="hidden name"><code>read_meteoschweiz_smn.Rd</code></div>
+    <div class="hidden name"><code>split_smn.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format</p>
+    <p>Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_meteoschweiz_smn</span>(<span class='no'>x</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y%m%d%H%M"</span>)</pre>
+    <pre class="usage"><span class='fu'>split_smn</span>(<span class='no'>fn</span>, <span class='kw'>out_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"%03d.part"</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+      <th>fn</th>
+      <td><p>path to input file</p></td>
     </tr>
     <tr>
-      <th>timezone</th>
-      <td><p>time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g.
-'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"</p></td>
+      <th>out_dir</th>
+      <td><p>Output directory for parts</p></td>
+    </tr>
+    <tr>
+      <th>suffix</th>
+      <td><p>Added suffix to file name as sprintf format string. Gets file counter as argument.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>file encoding. Default: "UTF-8"</p></td>
-    </tr>
-    <tr>
-      <th>time_format</th>
-      <td><p>of data in file, different for 10min and 1H</p></td>
+      <td><p>Encoding of the input file</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>tibble in rOstluft long format structure</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::strptime</a> - Information about time format strings in R</p></div>
     
 
   </div>
@@ -171,11 +161,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

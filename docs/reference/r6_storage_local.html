@@ -34,8 +34,6 @@
 
 <meta property="og:description" content="A local storage with flexible file format (default rds). The data format defines the data chunks
 per file." />
-
-<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +64,7 @@ per file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9013</span>
       </span>
     </div>
 
@@ -259,50 +257,50 @@ confirmation</p>
 #&gt; </span><span style='color: #555555;'>18</span><span>  </span><span style='text-decoration: underline;'>2</span><span>014 min30    Zch_Rosengartenstrasse T         °C    </span><span style='text-decoration: underline;'>17</span><span>517</div><div class='input'>
 <span class='co'>## get all data min30 for 2011 and 2012</span>
 <span class='no'>store</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
-#&gt;    starttime           site                    parameter interval unit    value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO        min30    mg/m3   0.611
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO        min30    µg/m3  26.2  
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2       min30    µg/m3  42.1  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NOx       min30    ppb    43.0  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3   2.19 
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10      min30    µg/m3  84.0  
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2       min30    µg/m3   5.07 
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        min30    %Hr    91.9  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse p         min30    hPa   971.   
-#&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse RainDur   min30    min     0    
+#&gt;    starttime                site                parameter interval unit    value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ CO        min30    mg/m3   0.611
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ NO        min30    µg/m3  26.2  
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ NO2       min30    µg/m3  42.1  
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ NOx       min30    ppb    43.0  
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ O3        min30    µg/m3   2.19 
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ PM10      min30    µg/m3  84.0  
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ SO2       min30    µg/m3   5.07 
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ Hr        min30    %Hr    91.9  
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ p         min30    hPa   971.   
+#&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachst~ RainDur   min30    min     0    
 #&gt; </span><span style='color: #555555;'># ... with 488,312 more rows</span><span></div><div class='input'>
 <span class='co'>## get only data for O3</span>
 <span class='no'>store</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>, <span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
           <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>==</span> <span class='st'>"O3"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 34,996 x 6</span><span>
-#&gt;    starttime           site                    parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.19
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2011-01-01 </span><span style='color: #555555;'>00:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.10
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2011-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.10
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2011-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.00
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2011-01-01 </span><span style='color: #555555;'>02:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.04
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2011-01-01 </span><span style='color: #555555;'>02:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.09
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2011-01-01 </span><span style='color: #555555;'>03:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  1.94
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2011-01-01 </span><span style='color: #555555;'>03:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.04
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2011-01-01 </span><span style='color: #555555;'>04:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  6.19
-#&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>04:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3 37.3 
+#&gt;    starttime                site                  parameter interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.19
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2011-01-01 </span><span style='color: #555555;'>00:30:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.10
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2011-01-01 </span><span style='color: #555555;'>01:00:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.10
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2011-01-01 </span><span style='color: #555555;'>01:30:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.00
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2011-01-01 </span><span style='color: #555555;'>02:00:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.04
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2011-01-01 </span><span style='color: #555555;'>02:30:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.09
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2011-01-01 </span><span style='color: #555555;'>03:00:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  1.94
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2011-01-01 </span><span style='color: #555555;'>03:30:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  2.04
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2011-01-01 </span><span style='color: #555555;'>04:00:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3  6.19
+#&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>04:30:00.0000</span><span> Zch_Stampfenbachstra~ O3        min30    µg/m3 37.3 
 #&gt; </span><span style='color: #555555;'># ... with 34,986 more rows</span><span></div><div class='input'>
 <span class='co'>## get NOx data from multiple stations</span>
 <span class='no'>store</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='st'>"Zch_Rosengartenstrasse"</span>), <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
           <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2014</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"NOx"</span>, <span class='st'>"NO"</span>, <span class='st'>"NO2"</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 104,547 x 6</span><span>
-#&gt;    starttime           site                   parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3  53.3
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Rosengartenstrasse NO2       min30    µg/m3  35.6
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Rosengartenstrasse NOx       min30    ppb    61.4
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3  69.7
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00</span><span> Zch_Rosengartenstrasse NO2       min30    µg/m3  40.7
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00</span><span> Zch_Rosengartenstrasse NOx       min30    ppb    77.2
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3 110. 
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Rosengartenstrasse NO2       min30    µg/m3  54.0
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Rosengartenstrasse NOx       min30    ppb   116. 
-#&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3 131. 
+#&gt;    starttime                site                  parameter interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Rosengartenstras~ NO        min30    µg/m3  53.3
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Rosengartenstras~ NO2       min30    µg/m3  35.6
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Rosengartenstras~ NOx       min30    ppb    61.4
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00.0000</span><span> Zch_Rosengartenstras~ NO        min30    µg/m3  69.7
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00.0000</span><span> Zch_Rosengartenstras~ NO2       min30    µg/m3  40.7
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2014-01-01 </span><span style='color: #555555;'>00:30:00.0000</span><span> Zch_Rosengartenstras~ NOx       min30    ppb    77.2
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00.0000</span><span> Zch_Rosengartenstras~ NO        min30    µg/m3 110. 
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00.0000</span><span> Zch_Rosengartenstras~ NO2       min30    µg/m3  54.0
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2014-01-01 </span><span style='color: #555555;'>01:00:00.0000</span><span> Zch_Rosengartenstras~ NOx       min30    ppb   116. 
+#&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00.0000</span><span> Zch_Rosengartenstras~ NO        min30    µg/m3 131. 
 #&gt; </span><span style='color: #555555;'># ... with 104,537 more rows</span><span></div><div class='input'>
 <span class='co'>## get n data points grouped by intervall, station, parameter, year in the store</span>
 <span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 88 x 6</span><span>

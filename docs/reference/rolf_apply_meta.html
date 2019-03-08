@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn • rOstluft</title>
+<title>apply meta data to rolf data — rolf_apply_meta • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn" />
+<meta property="og:title" content="apply meta data to rolf data — rolf_apply_meta" />
 
-<meta property="og:description" content="Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format" />
+<meta property="og:description" content="See Tests for examples" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,50 +120,73 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a MeteoSchweiz SwissMetNet export file</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
-    <div class="hidden name"><code>read_meteoschweiz_smn.Rd</code></div>
+    <h1>apply meta data to rolf data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/meta.R'><code>R/meta.R</code></a></small>
+    <div class="hidden name"><code>rolf_apply_meta.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format</p>
+    <p>See Tests for examples</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_meteoschweiz_smn</span>(<span class='no'>x</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y%m%d%H%M"</span>)</pre>
+    <pre class="usage"><span class='fu'>rolf_apply_meta</span>(<span class='no'>data</span>, <span class='no'>meta</span>, <span class='no'>parameter_orig</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"strict"</span>, <span class='kw'>replacement_parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>replacement_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+      <th>data</th>
+      <td><p>input data</p></td>
     </tr>
     <tr>
-      <th>timezone</th>
-      <td><p>time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g.
-'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"</p></td>
+      <th>meta</th>
+      <td><p>meta data</p></td>
     </tr>
     <tr>
-      <th>encoding</th>
-      <td><p>file encoding. Default: "UTF-8"</p></td>
+      <th>parameter_orig</th>
+      <td><p>column in meta for parameter and unit remapping</p></td>
     </tr>
     <tr>
-      <th>time_format</th>
-      <td><p>of data in file, different for 10min and 1H</p></td>
+      <th>parameter</th>
+      <td><p>source column in meta for replacement of parameter_orig values in data for parameter remapping</p></td>
+    </tr>
+    <tr>
+      <th>unit</th>
+      <td><p>source column in meta for replacement of parameter_orig values in data for unit remapping</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>one of strict, drop, keep, replace</p></td>
+    </tr>
+    <tr>
+      <th>replacement_parameter</th>
+      <td><p>named list of replacement values for missing parameter_orig values in meta for
+parameter remapping</p></td>
+    </tr>
+    <tr>
+      <th>replacement_unit</th>
+      <td><p>named list of replacement values for missing parameter_orig values in meta for
+unit remapping</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble in rOstluft long format structure</p>
+    <p>in rOstluft long format structure</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::strptime</a> - Information about time format strings in R</p></div>
+    
+    <p>write one universel function: shouldn't be too hard with nse:</p><ul>
+<li><p>source and target columns in data (parameter &gt; parameter,  parameter &gt; unit)</p></li>
+<li><p>mapping columns in meta for source ( parameter_original &gt; parameter, parameter_original &gt; unit)</p></li>
+<li><p>the worst will be the user messages</p></li>
+</ul>
+    <p>just started the wrong way. Wanted to do both remappings in one go ...</p>
     
 
   </div>
@@ -174,7 +197,7 @@
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#todo">TODO</a></li>
           </ul>
 
   </div>

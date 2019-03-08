@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn • rOstluft</title>
+<title>Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports — read_smn_multiple • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,13 @@
 
 
 
-<meta property="og:title" content="Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn" />
+<meta property="og:title" content="Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports — read_smn_multiple" />
 
-<meta property="og:description" content="Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format" />
+<meta property="og:description" content="One peculiarity of MeteoSwiss is to provide multiple exports concatenated in one file, starting with a line
+containing a single space and seperated by two newlines. This function reads the whole file into the memory, splits
+the part and applies the read function to each part. Is the file too big for the available memory, the function
+split_smn() can split the file into multiple files each containing one part. On Linux the commandline tool csplit
+is another probably faster tool." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,52 +124,62 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a MeteoSchweiz SwissMetNet export file</h1>
+    <h1>Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
-    <div class="hidden name"><code>read_meteoschweiz_smn.Rd</code></div>
+    <div class="hidden name"><code>read_smn_multiple.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format</p>
+    <p>One peculiarity of MeteoSwiss is to provide multiple exports concatenated in one file, starting with a line
+containing a single space and seperated by two newlines. This function reads the whole file into the memory, splits
+the part and applies the read function to each part. Is the file too big for the available memory, the function
+<code><a href='split_smn.html'>split_smn()</a></code> can split the file into multiple files each containing one part. On Linux the commandline tool csplit
+is another probably faster tool.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_meteoschweiz_smn</span>(<span class='no'>x</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y%m%d%H%M"</span>)</pre>
+    <pre class="usage"><span class='fu'>read_smn_multiple</span>(<span class='no'>fn</span>, <span class='kw'>as_list</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+      <th>fn</th>
+      <td><p>path to input file</p></td>
     </tr>
     <tr>
-      <th>timezone</th>
-      <td><p>time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g.
-'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"</p></td>
+      <th>as_list</th>
+      <td><p>return a list with each part as element rather than one concatenated tibble</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>file encoding. Default: "UTF-8"</p></td>
+      <td><p>encoding of the data file. Default = "UTF-8"</p></td>
     </tr>
     <tr>
-      <th>time_format</th>
-      <td><p>of data in file, different for 10min and 1H</p></td>
+      <th>...</th>
+      <td><p>parameters passed to <code><a href='read_smn.html'>read_smn()</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble in rOstluft long format structure</p>
+    <p>tibble or list of tibbles in rOstluft long format structure</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::strptime</a> - Information about time format strings in R</p></div>
+    <div class='dont-index'><ul>
+<li><p><code><a href='read_smn.html'>read_smn()</a></code></p></li>
+<li><p><code><a href='split_smn.html'>split_smn()</a></code></p></li>
+<li><p><a href='http://man7.org/linux/man-pages/man1/csplit.1.html'>csplit</a> - split a file into sections determined by context
+lines</p></li>
+</ul></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn_multi.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>read_smn_multiple</span>(<span class='no'>multi</span>, <span class='kw'>as_list</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in empty_file(file): Objekt 'multi' nicht gefunden</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -175,7 +189,9 @@
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

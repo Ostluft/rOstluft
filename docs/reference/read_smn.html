@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn • rOstluft</title>
+<title>Reads a file from the SwissMetNet of MeteoSwiss — read_smn • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,13 @@
 
 
 
-<meta property="og:title" content="Read a MeteoSchweiz SwissMetNet export file — read_meteoschweiz_smn" />
+<meta property="og:title" content="Reads a file from the SwissMetNet of MeteoSwiss — read_smn" />
 
-<meta property="og:description" content="Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format" />
+<meta property="og:description" content="SwissMetNet,
+the automatic monitoring network of MeteoSwiss the Federal Office for
+Meteorology and Climatology, comprises about 160 automatic monitoring stations. These stations deliver a multitude
+of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
+by automatic precipitation stations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,39 +124,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a MeteoSchweiz SwissMetNet export file</h1>
+    <h1>Reads a file from the SwissMetNet of MeteoSwiss</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
-    <div class="hidden name"><code>read_meteoschweiz_smn.Rd</code></div>
+    <div class="hidden name"><code>read_smn.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read a MeteoSchweiz SwissMetNet export text file (such as '') and restructure the data into long format</p>
+    <p><a href='https://www.meteoswiss.admin.ch/home/measurement-and-forecasting-systems/land-based-stations/automatisches-messnetz.html'>SwissMetNet</a>,
+the automatic monitoring network of <a href='https://www.meteoschweiz.admin.ch'>MeteoSwiss</a> the Federal Office for
+Meteorology and Climatology, comprises about 160 automatic monitoring stations. These stations deliver a multitude
+of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
+by automatic precipitation stations.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_meteoschweiz_smn</span>(<span class='no'>x</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
-  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y%m%d%H%M"</span>)</pre>
+    <pre class="usage"><span class='fu'>read_smn</span>(<span class='no'>fn</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
+  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
+      <th>fn</th>
+      <td><p>path to input file</p></td>
     </tr>
     <tr>
-      <th>timezone</th>
-      <td><p>time zone of date fields. Be carefull Etc/GMT '+' actually signifies '-' and vice versa, e.g.
-'Etc/GMT-1' = UTC + 1. Default: "Etc/GMT"</p></td>
+      <th>tz</th>
+      <td><p>of the output data. Default "Etc/GMT-1"</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>file encoding. Default: "UTF-8"</p></td>
+      <td><p>encoding of the data file. Default = "UTF-8"</p></td>
     </tr>
     <tr>
       <th>time_format</th>
-      <td><p>of data in file, different for 10min and 1H</p></td>
+      <td><p>optional time_format. Use if auto detect fails. Default NULL</p></td>
+    </tr>
+    <tr>
+      <th>interval</th>
+      <td><p>optional interval of the data. Use if auto detect fails. Default NULL</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>remove na values. Default TRUE</p></td>
     </tr>
     </table>
     
@@ -160,12 +175,11 @@
 
     <p>tibble in rOstluft long format structure</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/base/topics/timezones'>base::timezones</a> - Information about time zones in R</p>
-<p><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>base::strptime</a> - Information about time format strings in R</p></div>
-    
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>read_smn</span>(<span class='no'>single</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `file` must be a string, raw vector or a connection.</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,9 +187,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

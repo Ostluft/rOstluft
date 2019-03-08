@@ -13,7 +13,7 @@ test_that("strict", {
   testthat::expect_error(rolf_apply_meta(data, meta, "parameter_original", "parameter", "unit"))
 
   res <- dplyr::filter(data, .data$parameter != "rre150z0")
-  res <- rolf_apply_meta(df, meta, "parameter_original", "parameter", "unit")
+  res <- rolf_apply_meta(res, meta, "parameter_original", "parameter", "unit")
   res <- dplyr::distinct(res, .data$parameter, .data$unit) %>%
     dplyr::mutate_all(as.character) %>%
     dplyr::arrange(.data$parameter)

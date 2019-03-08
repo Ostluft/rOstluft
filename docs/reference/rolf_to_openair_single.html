@@ -34,8 +34,6 @@
 
 <meta property="og:description" content="This function plucks the data for one parameter. If multiple combinations of parameter, unit and interval exists it
 is necessary to specify which unit and/or interval to pluck." />
-
-<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +64,7 @@ is necessary to specify which unit and/or interval to pluck." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9013</span>
       </span>
     </div>
 
@@ -174,18 +172,18 @@ is necessary to specify which unit and/or interval to pluck.</p>
 
 <span class='no'>airmo_h1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>h1</span>)
 <span class='fu'>rolf_to_openair_single</span>(<span class='no'>airmo_h1</span>, <span class='st'>"NO2"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"µg/m3"</span>, <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 742 x 5</span><span>
-#&gt;    date                site                    interval unit    NO2
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  63.9
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  61.6
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-01 </span><span style='color: #555555;'>02:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  60.9
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-01 </span><span style='color: #555555;'>03:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  56.7
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-01 </span><span style='color: #555555;'>04:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  59.2
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-01 </span><span style='color: #555555;'>05:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.9
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-01 </span><span style='color: #555555;'>06:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.5
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-01 </span><span style='color: #555555;'>07:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  44.2
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.2
-#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.1
+#&gt;    date                     site                    interval unit    NO2
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  63.9
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  61.6
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-01 </span><span style='color: #555555;'>02:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  60.9
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-01 </span><span style='color: #555555;'>03:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  56.7
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-01 </span><span style='color: #555555;'>04:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  59.2
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-01 </span><span style='color: #555555;'>05:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.9
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-01 </span><span style='color: #555555;'>06:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.5
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-01 </span><span style='color: #555555;'>07:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  44.2
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.2
+#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00.0000</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.1
 #&gt; </span><span style='color: #555555;'># ... with 732 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>

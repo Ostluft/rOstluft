@@ -26,7 +26,5 @@ tibble in rOstluft long format structure
 Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety
 at ETH Zürich. Currently, two stations in Zürich are under long-term operation: CHN-Gebäude & Hönggerberg (see
 \link{http://www.iac.ethz.ch/the-institute/weather-stations.html}(Weather Stations)).
-}
-\details{
 The files are daily files, encoded in utf-8. Timezone is GMT.
 }

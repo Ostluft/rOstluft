@@ -77,7 +77,7 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
 #'
 #' @examples
 #' input <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
-#' read_smn(single)
+#' read_smn(input)
 #'
 read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NULL, interval = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
@@ -159,7 +159,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NUL
 #' @export
 #'
 #' @examples
-#' fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
+#' multi <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
 #' read_smn_multiple(multi, as_list = TRUE)
 #'
 read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {

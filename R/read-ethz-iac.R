@@ -75,7 +75,7 @@ read_ethz_iac_min10 <- function(x, site = NULL, encoding = "UTF-8", timezone = "
 #'
 #' Reads files from meteo station measurements (10 minute time resolution) by the institute for atmosphere and climety
 #' at ETH Zürich. Currently, two stations in Zürich are under long-term operation: CHN-Gebäude & Hönggerberg (see
-#' [http://www.iac.ethz.ch/the-institute/weather-stations.html](Weather Stations)).
+#' [Weather Stations](http://www.iac.ethz.ch/the-institute/weather-stations.html)).
 #' The files are daily files, encoded in utf-8. Timezone is GMT.
 #'
 #' @param x Either a path to a file, a connection, or literal data. see [readr::read_delim()]

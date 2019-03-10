@@ -51,7 +51,8 @@ prepare_release <- function() {
   if (choice == 2) {
     pkgdown::clean_site()
     pkgdown::build_site()
-    knitr::knit("README.Rmd")
+    rmarkdown::render("README.Rmd", "github_document")
+    fs::file_delete("README.html")
   }
 
 }

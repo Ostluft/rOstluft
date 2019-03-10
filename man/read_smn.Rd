@@ -32,6 +32,6 @@ by automatic precipitation stations.
 }
 \examples{
 input <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
-read_smn(single)
+read_smn(input)
 
 }

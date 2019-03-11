@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 0.0.0.9015
+Version: 0.0.0.9016
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),

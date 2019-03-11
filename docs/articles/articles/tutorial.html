@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9017</span>
       </span>
     </div>
 
@@ -295,7 +295,7 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span>
 <span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span>
 <span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span>
-<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-11 18:05:38, 2019-03-11 18:05...</span>
+<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-11 19:00:52, 2019-03-11 19:00...</span>
 <span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())
@@ -486,16 +486,16 @@ df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class=
 <span class="co">#&gt; # A tibble: 985 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2010-01-01 00:59:00 KLO   dkl010b0  h1       &lt;NA&gt;  319  </span>
-<span class="co">#&gt;  2 2010-01-01 00:59:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.5</span>
-<span class="co">#&gt;  3 2010-01-01 00:59:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
-<span class="co">#&gt;  4 2010-01-01 00:59:00 KLO   tre200b0  h1       &lt;NA&gt;    2.3</span>
-<span class="co">#&gt;  5 2010-01-01 00:59:00 UEB   dk1towb0  h1       &lt;NA&gt;  249  </span>
-<span class="co">#&gt;  6 2010-01-01 00:59:00 UEB   fk1towb0  h1       &lt;NA&gt;    1.7</span>
-<span class="co">#&gt;  7 2010-01-01 00:59:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.7</span>
-<span class="co">#&gt;  8 2010-01-01 01:59:00 KLO   dkl010b0  h1       &lt;NA&gt;  317  </span>
-<span class="co">#&gt;  9 2010-01-01 01:59:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.7</span>
-<span class="co">#&gt; 10 2010-01-01 01:59:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  1 2010-01-01 00:00:00 KLO   dkl010b0  h1       &lt;NA&gt;  319  </span>
+<span class="co">#&gt;  2 2010-01-01 00:00:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.5</span>
+<span class="co">#&gt;  3 2010-01-01 00:00:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  4 2010-01-01 00:00:00 KLO   tre200b0  h1       &lt;NA&gt;    2.3</span>
+<span class="co">#&gt;  5 2010-01-01 00:00:00 UEB   dk1towb0  h1       &lt;NA&gt;  249  </span>
+<span class="co">#&gt;  6 2010-01-01 00:00:00 UEB   fk1towb0  h1       &lt;NA&gt;    1.7</span>
+<span class="co">#&gt;  7 2010-01-01 00:00:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.7</span>
+<span class="co">#&gt;  8 2010-01-01 01:00:00 KLO   dkl010b0  h1       &lt;NA&gt;  317  </span>
+<span class="co">#&gt;  9 2010-01-01 01:00:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.7</span>
+<span class="co">#&gt; 10 2010-01-01 01:00:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
 <span class="co">#&gt; # ... with 975 more rows</span></code></pre></div>
 <p><code><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion <code>$merge()</code> des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld <code>$format</code> verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden über Daten im zweiten Datenframe priorisiert.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kopiere Daten und setze einige NA -&gt; Resultat sollte NA enthalten</span>
@@ -542,16 +542,16 @@ df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class=
 <span class="co">#&gt; # A tibble: 985 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2010-01-01 00:59:00 KLO   dkl010b0  h1       &lt;NA&gt;  319  </span>
-<span class="co">#&gt;  2 2010-01-01 00:59:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.5</span>
-<span class="co">#&gt;  3 2010-01-01 00:59:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
-<span class="co">#&gt;  4 2010-01-01 00:59:00 KLO   tre200b0  h1       &lt;NA&gt;    2.3</span>
-<span class="co">#&gt;  5 2010-01-01 00:59:00 UEB   dk1towb0  h1       &lt;NA&gt;  249  </span>
-<span class="co">#&gt;  6 2010-01-01 00:59:00 UEB   fk1towb0  h1       &lt;NA&gt;    1.7</span>
-<span class="co">#&gt;  7 2010-01-01 00:59:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.7</span>
-<span class="co">#&gt;  8 2010-01-01 01:59:00 KLO   dkl010b0  h1       &lt;NA&gt;  317  </span>
-<span class="co">#&gt;  9 2010-01-01 01:59:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.7</span>
-<span class="co">#&gt; 10 2010-01-01 01:59:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  1 2010-01-01 00:00:00 KLO   dkl010b0  h1       &lt;NA&gt;  319  </span>
+<span class="co">#&gt;  2 2010-01-01 00:00:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.5</span>
+<span class="co">#&gt;  3 2010-01-01 00:00:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  4 2010-01-01 00:00:00 KLO   tre200b0  h1       &lt;NA&gt;    2.3</span>
+<span class="co">#&gt;  5 2010-01-01 00:00:00 UEB   dk1towb0  h1       &lt;NA&gt;  249  </span>
+<span class="co">#&gt;  6 2010-01-01 00:00:00 UEB   fk1towb0  h1       &lt;NA&gt;    1.7</span>
+<span class="co">#&gt;  7 2010-01-01 00:00:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.7</span>
+<span class="co">#&gt;  8 2010-01-01 01:00:00 KLO   dkl010b0  h1       &lt;NA&gt;  317  </span>
+<span class="co">#&gt;  9 2010-01-01 01:00:00 KLO   fkl010b0  h1       &lt;NA&gt;    1.7</span>
+<span class="co">#&gt; 10 2010-01-01 01:00:00 KLO   gre000b0  h1       &lt;NA&gt;    0  </span>
 <span class="co">#&gt; # ... with 975 more rows</span></code></pre></div>
 </div>
 <div id="metadaten" class="section level1">
@@ -625,16 +625,16 @@ data
 <span class="co">#&gt; # A tibble: 60 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2018-01-01 00:59:50 CHU   dkl010z0  min10    &lt;NA&gt;  216  </span>
-<span class="co">#&gt;  2 2018-01-01 00:59:50 CHU   fkl010z0  min10    &lt;NA&gt;    1.7</span>
-<span class="co">#&gt;  3 2018-01-01 00:59:50 CHU   fkl010z1  min10    &lt;NA&gt;    3  </span>
-<span class="co">#&gt;  4 2018-01-01 00:59:50 CHU   gre000z0  min10    &lt;NA&gt;    5  </span>
-<span class="co">#&gt;  5 2018-01-01 00:59:50 CHU   hto000s0  min10    &lt;NA&gt;   NA  </span>
-<span class="co">#&gt;  6 2018-01-01 00:59:50 CHU   prestas0  min10    &lt;NA&gt;  946. </span>
-<span class="co">#&gt;  7 2018-01-01 00:59:50 CHU   rre150z0  min10    &lt;NA&gt;    0  </span>
-<span class="co">#&gt;  8 2018-01-01 00:59:50 CHU   sre000z0  min10    &lt;NA&gt;    0  </span>
-<span class="co">#&gt;  9 2018-01-01 00:59:50 CHU   tre200s0  min10    &lt;NA&gt;    2.3</span>
-<span class="co">#&gt; 10 2018-01-01 00:59:50 CHU   ure200s0  min10    &lt;NA&gt;   82.7</span>
+<span class="co">#&gt;  1 2018-01-01 00:50:00 CHU   dkl010z0  min10    &lt;NA&gt;  216  </span>
+<span class="co">#&gt;  2 2018-01-01 00:50:00 CHU   fkl010z0  min10    &lt;NA&gt;    1.7</span>
+<span class="co">#&gt;  3 2018-01-01 00:50:00 CHU   fkl010z1  min10    &lt;NA&gt;    3  </span>
+<span class="co">#&gt;  4 2018-01-01 00:50:00 CHU   gre000z0  min10    &lt;NA&gt;    5  </span>
+<span class="co">#&gt;  5 2018-01-01 00:50:00 CHU   hto000s0  min10    &lt;NA&gt;   NA  </span>
+<span class="co">#&gt;  6 2018-01-01 00:50:00 CHU   prestas0  min10    &lt;NA&gt;  946. </span>
+<span class="co">#&gt;  7 2018-01-01 00:50:00 CHU   rre150z0  min10    &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  8 2018-01-01 00:50:00 CHU   sre000z0  min10    &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  9 2018-01-01 00:50:00 CHU   tre200s0  min10    &lt;NA&gt;    2.3</span>
+<span class="co">#&gt; 10 2018-01-01 00:50:00 CHU   ure200s0  min10    &lt;NA&gt;   82.7</span>
 <span class="co">#&gt; # ... with 50 more rows</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/conditions">tryCatch</a></span>({
@@ -653,16 +653,16 @@ df
 <span class="co">#&gt; # A tibble: 54 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2018-01-01 00:59:50 CHU   dkl010z0  min10    °     216  </span>
-<span class="co">#&gt;  2 2018-01-01 00:59:50 CHU   fkl010z0  min10    m/s     1.7</span>
-<span class="co">#&gt;  3 2018-01-01 00:59:50 CHU   fkl010z1  min10    m/s     3  </span>
-<span class="co">#&gt;  4 2018-01-01 00:59:50 CHU   gre000z0  min10    W/m2    5  </span>
-<span class="co">#&gt;  5 2018-01-01 00:59:50 CHU   hto000s0  min10    cm     NA  </span>
-<span class="co">#&gt;  6 2018-01-01 00:59:50 CHU   prestas0  min10    hPa   946. </span>
-<span class="co">#&gt;  7 2018-01-01 00:59:50 CHU   sre000z0  min10    min     0  </span>
-<span class="co">#&gt;  8 2018-01-01 00:59:50 CHU   tre200s0  min10    °C      2.3</span>
-<span class="co">#&gt;  9 2018-01-01 00:59:50 CHU   ure200s0  min10    %      82.7</span>
-<span class="co">#&gt; 10 2018-01-01 01:09:50 CHU   dkl010z0  min10    °     209  </span>
+<span class="co">#&gt;  1 2018-01-01 00:50:00 CHU   dkl010z0  min10    °     216  </span>
+<span class="co">#&gt;  2 2018-01-01 00:50:00 CHU   fkl010z0  min10    m/s     1.7</span>
+<span class="co">#&gt;  3 2018-01-01 00:50:00 CHU   fkl010z1  min10    m/s     3  </span>
+<span class="co">#&gt;  4 2018-01-01 00:50:00 CHU   gre000z0  min10    W/m2    5  </span>
+<span class="co">#&gt;  5 2018-01-01 00:50:00 CHU   hto000s0  min10    cm     NA  </span>
+<span class="co">#&gt;  6 2018-01-01 00:50:00 CHU   prestas0  min10    hPa   946. </span>
+<span class="co">#&gt;  7 2018-01-01 00:50:00 CHU   sre000z0  min10    min     0  </span>
+<span class="co">#&gt;  8 2018-01-01 00:50:00 CHU   tre200s0  min10    °C      2.3</span>
+<span class="co">#&gt;  9 2018-01-01 00:50:00 CHU   ure200s0  min10    %      82.7</span>
+<span class="co">#&gt; 10 2018-01-01 01:00:00 CHU   dkl010z0  min10    °     209  </span>
 <span class="co">#&gt; # ... with 44 more rows</span></code></pre></div>
 <p>Sollte der Parameter für spätere Bearbeitung behalten werden, kommt der Modus “keep” zum Zug:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/meta_apply.html">meta_apply</a></span>(data, meteoschweiz, <span class="st">"parameter"</span>, <span class="st">"unit"</span>, <span class="st">"parameter_original"</span>, <span class="st">"unit"</span>, <span class="dt">mode =</span> <span class="st">"keep"</span>)
@@ -673,16 +673,16 @@ df
 <span class="co">#&gt; # A tibble: 60 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2018-01-01 00:59:50 CHU   dkl010z0  min10    °     216  </span>
-<span class="co">#&gt;  2 2018-01-01 00:59:50 CHU   fkl010z0  min10    m/s     1.7</span>
-<span class="co">#&gt;  3 2018-01-01 00:59:50 CHU   fkl010z1  min10    m/s     3  </span>
-<span class="co">#&gt;  4 2018-01-01 00:59:50 CHU   gre000z0  min10    W/m2    5  </span>
-<span class="co">#&gt;  5 2018-01-01 00:59:50 CHU   hto000s0  min10    cm     NA  </span>
-<span class="co">#&gt;  6 2018-01-01 00:59:50 CHU   prestas0  min10    hPa   946. </span>
-<span class="co">#&gt;  7 2018-01-01 00:59:50 CHU   rre150z0  min10    &lt;NA&gt;    0  </span>
-<span class="co">#&gt;  8 2018-01-01 00:59:50 CHU   sre000z0  min10    min     0  </span>
-<span class="co">#&gt;  9 2018-01-01 00:59:50 CHU   tre200s0  min10    °C      2.3</span>
-<span class="co">#&gt; 10 2018-01-01 00:59:50 CHU   ure200s0  min10    %      82.7</span>
+<span class="co">#&gt;  1 2018-01-01 00:50:00 CHU   dkl010z0  min10    °     216  </span>
+<span class="co">#&gt;  2 2018-01-01 00:50:00 CHU   fkl010z0  min10    m/s     1.7</span>
+<span class="co">#&gt;  3 2018-01-01 00:50:00 CHU   fkl010z1  min10    m/s     3  </span>
+<span class="co">#&gt;  4 2018-01-01 00:50:00 CHU   gre000z0  min10    W/m2    5  </span>
+<span class="co">#&gt;  5 2018-01-01 00:50:00 CHU   hto000s0  min10    cm     NA  </span>
+<span class="co">#&gt;  6 2018-01-01 00:50:00 CHU   prestas0  min10    hPa   946. </span>
+<span class="co">#&gt;  7 2018-01-01 00:50:00 CHU   rre150z0  min10    &lt;NA&gt;    0  </span>
+<span class="co">#&gt;  8 2018-01-01 00:50:00 CHU   sre000z0  min10    min     0  </span>
+<span class="co">#&gt;  9 2018-01-01 00:50:00 CHU   tre200s0  min10    °C      2.3</span>
+<span class="co">#&gt; 10 2018-01-01 00:50:00 CHU   ure200s0  min10    %      82.7</span>
 <span class="co">#&gt; # ... with 50 more rows</span></code></pre></div>
 <p>Mit Hilfe des Modus “replace” kann eine zusätzliche “Lookup Table” übergeben werden. Werte in dieser Tabelle haben Priorität über Werte in der Meta Tabelle. Im Beispiel wird die fehlende Einheit für rre150z0 bereit gestellt und die Einheit für dkl010z0 von ° zu deg überschrieben.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/meta_apply.html">meta_apply</a></span>(data, meteoschweiz, <span class="st">"parameter"</span>, <span class="st">"unit"</span>, <span class="st">"parameter_original"</span>, <span class="st">"unit"</span>, 
@@ -694,16 +694,16 @@ df
 <span class="co">#&gt; # A tibble: 60 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2018-01-01 00:59:50 CHU   dkl010z0  min10    deg   216  </span>
-<span class="co">#&gt;  2 2018-01-01 00:59:50 CHU   fkl010z0  min10    m/s     1.7</span>
-<span class="co">#&gt;  3 2018-01-01 00:59:50 CHU   fkl010z1  min10    m/s     3  </span>
-<span class="co">#&gt;  4 2018-01-01 00:59:50 CHU   gre000z0  min10    W/m2    5  </span>
-<span class="co">#&gt;  5 2018-01-01 00:59:50 CHU   hto000s0  min10    cm     NA  </span>
-<span class="co">#&gt;  6 2018-01-01 00:59:50 CHU   prestas0  min10    hPa   946. </span>
-<span class="co">#&gt;  7 2018-01-01 00:59:50 CHU   rre150z0  min10    mm      0  </span>
-<span class="co">#&gt;  8 2018-01-01 00:59:50 CHU   sre000z0  min10    min     0  </span>
-<span class="co">#&gt;  9 2018-01-01 00:59:50 CHU   tre200s0  min10    °C      2.3</span>
-<span class="co">#&gt; 10 2018-01-01 00:59:50 CHU   ure200s0  min10    %      82.7</span>
+<span class="co">#&gt;  1 2018-01-01 00:50:00 CHU   dkl010z0  min10    deg   216  </span>
+<span class="co">#&gt;  2 2018-01-01 00:50:00 CHU   fkl010z0  min10    m/s     1.7</span>
+<span class="co">#&gt;  3 2018-01-01 00:50:00 CHU   fkl010z1  min10    m/s     3  </span>
+<span class="co">#&gt;  4 2018-01-01 00:50:00 CHU   gre000z0  min10    W/m2    5  </span>
+<span class="co">#&gt;  5 2018-01-01 00:50:00 CHU   hto000s0  min10    cm     NA  </span>
+<span class="co">#&gt;  6 2018-01-01 00:50:00 CHU   prestas0  min10    hPa   946. </span>
+<span class="co">#&gt;  7 2018-01-01 00:50:00 CHU   rre150z0  min10    mm      0  </span>
+<span class="co">#&gt;  8 2018-01-01 00:50:00 CHU   sre000z0  min10    min     0  </span>
+<span class="co">#&gt;  9 2018-01-01 00:50:00 CHU   tre200s0  min10    °C      2.3</span>
+<span class="co">#&gt; 10 2018-01-01 00:50:00 CHU   ure200s0  min10    %      82.7</span>
 <span class="co">#&gt; # ... with 50 more rows</span></code></pre></div>
 <p>Hier ein Beispiel für die komplette Überführung der MeteoSchweiz Daten, inkl. manuelle Umbennung von rre150z0 und Änderung der Einheit für die Windrichtung (WD) von ° zu deg:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/meta_apply.html">meta_apply</a></span>(data, meteoschweiz, <span class="st">"parameter"</span>, <span class="st">"unit"</span>, <span class="st">"parameter_original"</span>, <span class="st">"unit"</span>, 
@@ -724,16 +724,16 @@ df
 <span class="co">#&gt; # A tibble: 60 x 6</span>
 <span class="co">#&gt;    starttime           site  parameter    interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2018-01-01 00:59:50 Chur  WD           min10    deg   216  </span>
-<span class="co">#&gt;  2 2018-01-01 00:59:50 Chur  WVs          min10    m/s     1.7</span>
-<span class="co">#&gt;  3 2018-01-01 00:59:50 Chur  WVs_max      min10    m/s     3  </span>
-<span class="co">#&gt;  4 2018-01-01 00:59:50 Chur  StrGlo       min10    W/m2    5  </span>
-<span class="co">#&gt;  5 2018-01-01 00:59:50 Chur  SnowDep      min10    cm     NA  </span>
-<span class="co">#&gt;  6 2018-01-01 00:59:50 Chur  p            min10    hPa   946. </span>
-<span class="co">#&gt;  7 2018-01-01 00:59:50 Chur  Niederschlag min10    mm      0  </span>
-<span class="co">#&gt;  8 2018-01-01 00:59:50 Chur  SunDur       min10    min     0  </span>
-<span class="co">#&gt;  9 2018-01-01 00:59:50 Chur  T            min10    °C      2.3</span>
-<span class="co">#&gt; 10 2018-01-01 00:59:50 Chur  Hr           min10    %      82.7</span>
+<span class="co">#&gt;  1 2018-01-01 00:50:00 Chur  WD           min10    deg   216  </span>
+<span class="co">#&gt;  2 2018-01-01 00:50:00 Chur  WVs          min10    m/s     1.7</span>
+<span class="co">#&gt;  3 2018-01-01 00:50:00 Chur  WVs_max      min10    m/s     3  </span>
+<span class="co">#&gt;  4 2018-01-01 00:50:00 Chur  StrGlo       min10    W/m2    5  </span>
+<span class="co">#&gt;  5 2018-01-01 00:50:00 Chur  SnowDep      min10    cm     NA  </span>
+<span class="co">#&gt;  6 2018-01-01 00:50:00 Chur  p            min10    hPa   946. </span>
+<span class="co">#&gt;  7 2018-01-01 00:50:00 Chur  Niederschlag min10    mm      0  </span>
+<span class="co">#&gt;  8 2018-01-01 00:50:00 Chur  SunDur       min10    min     0  </span>
+<span class="co">#&gt;  9 2018-01-01 00:50:00 Chur  T            min10    °C      2.3</span>
+<span class="co">#&gt; 10 2018-01-01 00:50:00 Chur  Hr           min10    %      82.7</span>
 <span class="co">#&gt; # ... with 50 more rows</span></code></pre></div>
 </div>
 <div id="openair-kompatibles-wide-format" class="section level1">

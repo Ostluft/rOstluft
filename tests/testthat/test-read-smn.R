@@ -19,6 +19,12 @@ test_that("correct content", {
   res <- read_smn(single, na.rm = FALSE)
   testthat::expect_equal(dim(res), c(60, 6))
   testthat::expect_equal(sum(is.na(res$value)), 6)
+  # 2018-01-01T00:00:00+00:00 1h MW mit Endtime == 2018-01-01T00:00:00+01:00 Startzeit
+  testthat::expect(res$starttime[1], lubridate::as_datetime("2018-01-01T00:00:00+01:00"))
+
+  # manuel shifting of start time
+  res <- read_smn(single, time_shift = lubridate::period(-1, units = "hours"), na.rm = FALSE)
+  testthat::expect(res$starttime[1], lubridate::as_datetime("2018-01-01T00:00:00+01:00"))
 
   # probably should check columns and classes but the check should be implemented in the format class
 })

@@ -26,8 +26,8 @@ the part and applies the read function to each part. Is the file too big for the
 is another probably faster tool.
 }
 \examples{
-multi <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
-read_smn_multiple(multi, as_list = TRUE)
+fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
+read_smn_multiple(fn, as_list = TRUE)
 
 }
 \seealso{

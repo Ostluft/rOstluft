@@ -4,7 +4,7 @@
 \alias{read_smn}
 \title{Reads a file from the SwissMetNet of MeteoSwiss}
 \usage{
-read_smn(fn, tz = "Etc/GMT-1", encoding = "UTF-8",
+read_smn(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL,
   time_format = NULL, interval = NULL, na.rm = TRUE)
 }
 \arguments{
@@ -13,6 +13,8 @@ read_smn(fn, tz = "Etc/GMT-1", encoding = "UTF-8",
 \item{tz}{of the output data. Default "Etc/GMT-1"}
 
 \item{encoding}{encoding of the data file. Default = "UTF-8"}
+
+\item{time_shift}{a lubridate period to add to the time. Default NULL}
 
 \item{time_format}{optional time_format. Use if auto detect fails. Default NULL}
 
@@ -29,6 +31,11 @@ the automatic monitoring network of \href{https://www.meteoschweiz.admin.ch}{Met
 Meteorology and Climatology, comprises about 160 automatic monitoring stations. These stations deliver a multitude
 of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
 by automatic precipitation stations.
+
+This Function autodetects the delimeter and tries to find the interval. In Addition the time information in the
+files is utc and end time. The time is converted to start time and the time zone defined trough the argument tz.
+The argument time_shift provides a way to manuelly shift the time series. In this case \emph{no} automatically shifting
+is applied. The provided values is directly added to information in the file.
 }
 \examples{
 input <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)

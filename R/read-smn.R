@@ -64,9 +64,15 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
 #' of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
 #' by automatic precipitation stations.
 #'
+#' This Function autodetects the delimeter and tries to find the interval. In Addition the time information in the
+#' files is utc and end time. The time is converted to start time and the time zone defined trough the argument tz.
+#' The argument time_shift provides a way to manuelly shift the time series. In this case *no* automatically shifting
+#' is applied. The provided values is directly added to information in the file.
+#'
 #' @param fn path to input file
 #' @param tz of the output data. Default "Etc/GMT-1"
 #' @param encoding encoding of the data file. Default = "UTF-8"
+#' @param time_shift a lubridate period to add to the time. Default NULL
 #' @param time_format optional time_format. Use if auto detect fails. Default NULL
 #' @param interval optional interval of the data. Use if auto detect fails. Default NULL
 #' @param na.rm remove na values. Default TRUE
@@ -79,7 +85,8 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
 #' input <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
 #' read_smn(input)
 #'
-read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NULL, interval = NULL, na.rm = TRUE) {
+read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL, time_format = NULL,
+                     interval = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
 
   col_types <- readr::cols(
@@ -109,7 +116,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NUL
   }
 
   data <- dplyr::mutate(data,
-    time = lubridate::with_tz(lubridate::fast_strptime(data$time, time_format, lt = FALSE), tz)
+                        time = lubridate::with_tz(lubridate::fast_strptime(data$time, time_format, lt = FALSE), tz)
   )
 
   if (nrow(data) < 2 && is.null(interval)) {
@@ -117,10 +124,18 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NUL
   } else if (!is.null(interval)) {
     interval <- interval
   } else {
-    interval <- lubridate::as.duration(data$time[2] - data$time[1])
-    interval <- lubridate::time_length(interval, unit = "minutes")
-    interval <- switch(as.character(interval), "10" = "min10", "30" = "min30", "60" = "h1", "1440" = "d1",
+    duration <- lubridate::as.duration(data$time[2] - data$time[1])
+    duration <- lubridate::time_length(duration, unit = "minutes")
+    interval <- switch(as.character(duration), "10" = "min10", "30" = "min30", "60" = "h1", "1440" = "d1",
                        stop("couldn't detect interval. use argument interval"))
+  }
+
+  if (lubridate::is.period(time_shift)) {
+    data <- dplyr::mutate(data, time = .data$time + time_shift)
+  } else if (is.null(time_shift)) {
+    data <- dplyr::mutate(data, time = .data$time - duration)
+  } else {
+    stop("time_shift has to be a lubridate::period or NULL")
   }
 
   data <- tidyr::gather(data, "parameter", "value", -.data$time, -.data$stn, na.rm = na.rm)
@@ -159,8 +174,8 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_format = NUL
 #' @export
 #'
 #' @examples
-#' multi <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
-#' read_smn_multiple(multi, as_list = TRUE)
+#' fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
+#' read_smn_multiple(fn, as_list = TRUE)
 #'
 read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
   data <- readr::read_file(fn, readr::locale(encoding = encoding))
@@ -186,7 +201,6 @@ read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
 #' @return NULL
 #'
 #' @export
-
 split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-8") {
   if (is.null(out_dir)) {
     out_dir <- fs::path_dir(file)
@@ -234,7 +248,3 @@ split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-
 
   invisible(NULL)
 }
-
-
-
-

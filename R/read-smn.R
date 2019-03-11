@@ -125,15 +125,15 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     interval <- interval
   } else {
     duration <- lubridate::as.duration(data$time[2] - data$time[1])
-    duration <- lubridate::time_length(duration, unit = "minutes")
-    interval <- switch(as.character(duration), "10" = "min10", "30" = "min30", "60" = "h1", "1440" = "d1",
+    interval <- lubridate::time_length(duration, unit = "minutes")
+    interval <- switch(as.character(interval), "10" = "min10", "30" = "min30", "60" = "h1", "1440" = "d1",
                        stop("couldn't detect interval. use argument interval"))
   }
 
   if (lubridate::is.period(time_shift)) {
     data <- dplyr::mutate(data, time = .data$time + time_shift)
   } else if (is.null(time_shift)) {
-    data <- dplyr::mutate(data, time = .data$time - duration * 60)
+    data <- dplyr::mutate(data, time = .data$time - duration)
   } else {
     stop("time_shift has to be a lubridate::period or NULL")
   }

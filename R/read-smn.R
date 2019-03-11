@@ -90,25 +90,39 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
   locale <- readr::locale(encoding = encoding)
 
   col_types <- readr::cols(
-    stn = readr::col_character(),
-    time = readr::col_character(),
-    .default = readr::col_double()
+    X1 = readr::col_character(),
+    X2 = readr::col_character(),
+    .default = readr::col_number()
   )
 
   # smn files tend to have atleast one line with a space at the start ... read 20 and take the first non empty ...
   header <- readr::read_lines(fn, n_max = 20)
-  start_line <- purrr::detect_index(header, ~ stringr::str_trim(.) != "")
-  header <- header[start_line]
+  start_line <- purrr::detect_index(header, ~ stringr::str_starts(., "stn"))
+  col_names <- header[start_line]
 
-  if (stringr::str_count(header, " ") > 4) {
-    data <- readr::read_table2(fn, col_types = col_types, locale = locale, na = "-",
-                               skip = start_line - 1, skip_empty_rows = TRUE)
-  } else if (stringr::str_count(header, ";") >= 2) {
-    data <- readr::read_delim(fn, ";", col_types = col_types, locale = locale, na = "-",
-                              skip = start_line - 1, skip_empty_rows = TRUE)
+  # has the file an unit line?
+  if (stringr::str_count(header[start_line + 1], "\\[") > 0) {
+    skip <- start_line + 1
+    units <- header[start_line + 1]
+  } else {
+    skip <- start_line
+    units <- ""
+  }
+
+  if (stringr::str_count(col_names, " ") > 4) {
+    col_names <- stringr::str_split(col_names, "\\s+")[[1]]
+    units <- stringr::str_split(units, "\\s+")[[1]]
+    data <- readr::read_table2(fn, FALSE, col_types, locale, "-", skip, skip_empty_rows = TRUE)
+  } else if (stringr::str_count(col_names, ";") >= 2) {
+    col_names <- stringr::str_split(col_names, ";")[[1]]
+    units <- stringr::str_split(units, ";")[[1]]
+    data <- readr::read_delim(fn, ";", col_types = col_types, col_names = FALSE, locale = locale, na = "-",
+                              skip = skip, skip_empty_rows = TRUE)
   } else {
     stop("couldn't detect delimiter")
   }
+
+  data <- rlang::set_names(data, col_names)
 
   if (is.null(time_format)) {
     time_length <- stringr::str_length(data$time[1])                  # are we too clever with format detection?
@@ -143,7 +157,8 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     stn = forcats::as_factor(.data$stn),
     parameter = forcats::as_factor(.data$parameter),
     interval = forcats::as_factor(interval),
-    unit = factor(NA)
+    unit = factor(NA),
+    value = as.numeric(.data$value)
   )
   dplyr::select(data, starttime = "time", site = "stn", "parameter", "interval", "unit", "value")
 }

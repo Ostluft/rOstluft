@@ -1,0 +1,78 @@
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorial
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    tutorial:
+      icon: fa-leanpub
+      text: 'Tutorial'
+      href: articles/articles/tutorial.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: '[GER] Tutorial'
+        href: articles/articles/tutorial.html
+      - text: '[GER] Resampling data'
+        href: articles/resample.html
+      - text: '[GER] Technische Entscheidungen'
+        href: articles/Technische_Entscheidungen.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/Ostluft/rOstluft
+
+reference:
+- title: Storages and Formats
+  desc: Data Formats and Storages to store data
+  contents:
+  - starts_with("r6_storage")
+  - starts_with("format_")
+
+- title: Resampling data
+  desc: Functions for resampling data between different intervals and applying statistical methods
+  contents:
+  - '`resample`'
+  - '`pad`'
+  - '`statistic_fun_factory`'
+  - '`treshold_wrapper_function`'
+  - '`gap_wrapper_function`'
+
+- title: Unit conversion
+  desc: Functions for converting between Volume and Mass concentrations
+  contents:
+  - '`convert_unit`'
+  - '`conversion_fun_factory`'
+  - '`mass_to_parts`'
+  - '`parts_to_mass`'
+
+- title: Data read functions
+  desc: Read data files from different sources
+  contents:
+  - starts_with("read_")
+  - '`split_smn`'
+
+- title: "Long <> Wide Format conversion"
+  desc: Convert between rOstluft Long format and an openair compatible Wide format
+  contents:
+  - matches("openair")
+
+- title: Utility functions
+  desc: Some functions to make the life of a programmer easier
+  contents:
+  - '`bind_rows_with_factor_columns`'
+  - '`import_directory`'
+  - '`meta_apply`'
+  - '`rolf_apply_meta`'
+  - '`rOstluft`'
+  - '`transform_projection`'
+

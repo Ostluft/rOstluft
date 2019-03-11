@@ -27,11 +27,11 @@ conversions_parts_to_mass <- tibble::tribble(
   "SO2", "ppb", "µg/m3"
 )
 
-get_molmass <- function(parameter, mass, parts) {
-  mass <- dplyr::filter(mass, parameter == !!parameter)$value
-  parts <- dplyr::filter(parts, parameter == !!parameter)$value
-  statistic_mean(calculate_molmass(mass, parts))
-}
+# get_molmass <- function(parameter, mass, parts) {
+#   mass <- dplyr::filter(mass, parameter == !!parameter)$value
+#   parts <- dplyr::filter(parts, parameter == !!parameter)$value
+#   statistic_mean(calculate_molmass(mass, parts))
+# }
 
 
 expect_equal_values <- function(parameter, unit, input, output) {

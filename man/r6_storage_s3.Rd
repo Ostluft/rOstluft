@@ -149,6 +149,7 @@ local$list_chunks()
 local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
 
 ## destroy store (careful removes all files on the disk)
+store$read.only = FALSE
 store$destroy("DELETE")
 
 ## No examples for write operations

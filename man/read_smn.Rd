@@ -39,6 +39,6 @@ is applied. The provided values is directly added to information in the file.
 }
 \examples{
 input <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
-read_smn(single)
+read_smn(input)
 
 }

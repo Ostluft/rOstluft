@@ -27,7 +27,7 @@ is another probably faster tool.
 }
 \examples{
 fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
-read_smn_multiple(multi, as_list = TRUE)
+read_smn_multiple(fn, as_list = TRUE)
 
 }
 \seealso{

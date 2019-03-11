@@ -2,11 +2,6 @@
 title: "[GER] Tutorial"
 author: "Thomas von Allmen"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{[GER] Tutorial}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -22,17 +17,9 @@ library(dplyr)
 library(magrittr)
 ```
 
-# TODO List für Tutorial:
-
-* Wie linkt man am besten auf die Dokumentation? Auf die Reference von pkgdown auf github?
-* Ist eine Vignette überhaupt die richtige Form? Wo wird sie gebaut?
-  + pkgdown für Optionen durchsuchen
-  + github md
-
-
 # Einleitung
 
-Dieses Dokument soll einem Anwender des Packages [rOstluft::rOstluft] einen Überblick der enthaltenen Funktionalität 
+Dieses Dokument soll einem Anwender des Packages `rOstluft::rOstluft` einen Überblick der enthaltenen Funktionalität 
 bieten und die gängigsten Arbeitsabläufe aufzeigen.
 
 Der Fokus dieses Packages liegt in der Bereitstellung von Daten aus verschiedenen Datenquellen in einem einheitlichen 
@@ -106,8 +93,8 @@ store <- storage_s3_rds("tutorial", format = format_rolf(), bucket = "rostluft",
 
 Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:
 
-* `get_content()`: holt eine Übersicht über alle im store enthaltene Daten
-* `get()`: Aktuelle Datenabfrage. Welche Daten geholt werden, muss über Funktionsargumente definiert werden
+* `$get_content()`: holt eine Übersicht über alle im store enthaltene Daten
+* `$get()`: Aktuelle Datenabfrage. Welche Daten geholt werden, muss über Funktionsargumente definiert werden
 
 ```{r}
 content <- store$get_content()
@@ -133,8 +120,8 @@ data
 dplyr::sample_n(data, 10)
 ```
 
-Die letzte Funktionalität von `get` ist die Filterung der Daten vor der Rückgabe. Mit dem Argument "filter" als 
-[dplyr::filter()] kompatibler Ausdruck:
+Die letzte Funktionalität von `$get()` ist die Filterung der Daten vor der Rückgabe. Mit dem Argument "filter" als 
+`dplyr::filter()` kompatibler Ausdruck:
 
 ```{r}
 store$get(site = sites, year = 2014, interval = "min30", filter = parameter == "PM10")
@@ -161,26 +148,26 @@ lokal$get_content()
 lokal$get(site = sites, year = 2014, interval = "min30", filter = parameter == "PM10")
 ```
 
-Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von `get_content()` nicht dem lokalen 
+Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von `$get_content()` nicht dem lokalen 
 Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten 
-lokal verfügbar sind, hilft einem die Funktion `list_chunks()` weiter. 
+lokal verfügbar sind, hilft einem die Funktion `$list_chunks()` weiter. 
 
 ```{r}
 tibble::glimpse(lokal$list_chunks())
 ```
 
-Auch der S3 Store verfügt über die `list_chunks()` Funktion.
+Auch der S3 Store verfügt über die `$list_chunks()` Funktion.
 
 ```{r}
 tibble::glimpse(store$list_chunks())
 ```
 
-Im normal Fall ist Nutzung von `get_content()` über `list_chunks()` zu bevorzugen. Die Rückgabe von `get_content()` 
-enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei `list_chunks()` hingegen sind einige interne 
+Im normal Fall ist Nutzung von `$get_content()` über `$list_chunks()` zu bevorzugen. Die Rückgabe von `$get_content()` 
+enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei `$list_chunks()` hingegen sind einige interne 
 Informationen über den Store enthalten.
 
 Um die Vorbereitung um mit einem lokalen Store zu arbeiten zu vereinfachen verfügt der S3 Store über die Funktion 
-`download(...)`. Die dot Argumente werden als Filter auf die Rückgabe von `list_chunks()` angewendet. Ohne Argumente 
+`$download(...)`. Die dot Argumente werden als Filter auf die Rückgabe von `$list_chunks()` angewendet. Ohne Argumente 
 wird der komplette Store heruntergeladen. Folgendes Beispiel lädt samtliche 30 Minutenmittelwerte für die Station 
 Rosengartenstrasse nach dem Jahr 2015 (Achtung == verwenden, es sind Filter Ausdrücke!):
 
@@ -200,7 +187,7 @@ vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:
 my_store = storage_local_rds("eigene_daten", format_rolf(), read.only = FALSE)
 ```
 
-In diesen kann man nun Daten mit der Store Funktion `put()` oder der Hilfsfunktion [import_directory()] 
+In diesen kann man nun Daten mit der Store Funktion `$put()` oder der Hilfsfunktion `import_directory()` 
 importieren:
 
 ```{r}
@@ -212,7 +199,7 @@ my_data <- read_airmo_csv(fn)
 my_store$put(my_data)
 ```
 
-Wie gewohnt kann erhält man mit `get_content()` eine Übersicht und die Daten mit `get()`:
+Wie gewohnt kann erhält man mit `$get_content()` eine Übersicht und die Daten mit `$get()`:
 
 ```{r}
 my_store$get_content()
@@ -226,9 +213,9 @@ my_store$get(site = "Zch_Stampfenbachstrasse", interval = c("d1", "h1"), year = 
 
 Um Daten in R einzulesen exisitieren für folgende Quellen bereits Funktionen:
 
-* Ostluft: [read_airmo_csv()] und [read_airmo_dat()] für Exporte aus der AIRMO
-* MeteoSchweiz: [read_smn()] und [read_smn_multiple()] für SwissMetNet Exporte
-* ETHZ/IAC: [read_ethz_iac()] Meteo Stationen auf dem Hönggerberg und dem Hauptgebäude CHN
+* Ostluft: `read_airmo_csv()` und `read_airmo_dat()` für Exporte aus der AIRMO
+* MeteoSchweiz: `read_smn()` und `read_smn_multiple()` für SwissMetNet Exporte
+* ETHZ/IAC: `read_ethz_iac()` Meteo Stationen auf dem Hönggerberg und dem Hauptgebäude CHN
 
 Existiert für die vorliegenden Daten keine Funktion und man möchte die selber schreiben an dieser Stelle 
 einige Hinweise und Tipps.
@@ -278,7 +265,7 @@ einfach noch Spalten umzubenennen und die Reihenfolge zu ändern.
 Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- 
 und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. `dplyr::bind_rows` wird die Factoren in 
 Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. 
-Die Funktion [bind_rows_with_factor_columns(...)] führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem 
+Die Funktion `bind_rows_with_factor_columns()` führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem 
 [Quasiquotation](https://rlang.r-lib.org/reference/quasiquotation.html) von rlang[^1]. Somit kann auch eine grosse Liste 
 von tibbles im rolf Format komfortable aneinander gefügt werden:
 
@@ -295,9 +282,9 @@ df_comb <- bind_rows_with_factor_columns(!!!df_list)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
-[bind_rows_with_factor_columns(...)] entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach 
-aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion `merge()` 
-des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld `format` 
+`bind_rows_with_factor_columns()` entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach 
+aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion `$merge()` 
+des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld `$format` 
 verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden über Daten 
 im zweiten Datenframe priorisiert.
 
@@ -314,7 +301,9 @@ df_comb <- rolf$merge(df1, df2)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
-Die `merge()` Funktion unterstützt nur 2 Argumente. Muss eine Liste gemerget werden muss man `purrr::reduce()` benützen:
+Die `$merge()` Funktion unterstützt nur 2 Argumente. Muss eine Liste von tibbles gemerget werden muss man 
+`purrr::reduce()` benützen. Mit Hilfe des Argument `.dir` kann man die Priosierung setzen. Mit "forward"" haben die 
+Daten die zuerst in der Liste auftauchen Priorität, mit "backward" die Letzten.
 
 ```{r}
 df_comb <- purrr::reduce(df_list, rolf$merge, .dir = "forward")
@@ -322,9 +311,161 @@ df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
 
+# Metadaten
+
+Daten aus verschiedenen Quellen werden verschiedene Schemen für die Vergabe von Namen haben. MeteoSchweiz zum Beispiel 
+kodiert im Parameter Namen gleichzeitig das Mittelungsinterval:
+
+| Parameter | Interval                  | Messgrösse                               |
+|-----------|---------------------------|------------------------------------------|
+| ta1towb0  | Bürgerliche Stundenmittel | Lufttemperatur, Instrument 1             |
+| ta1towh0  | Stundenmittel             | Lufttemperatur, Instrument 1             |
+| ta1tows0  | Momentanwerte             | Lufttemperatur, Instrument 1             |
+| fk1towz0  | Zehnminutenmittel         | Windgeschwindigkeit skalar, Instrument 1 |
+
+
+Um die Bezeichnungen zu normalisieren kommt es zu einem Zusammenspiel von im Store bereitgestellte Daten und der 
+Funktion `meta_apply()`. Das Store Objekt verfügt über die Funktion `$get_meta()`, welche im AWS S3 bereitgestellte 
+Metadaten zurück gibt. Wird `$get_meta()` ohne Argument aufgerufen erhält man eine Liste mit sämtlichen Metadaten im 
+Store. Kennt man bereits den Namen kann man direkt die entsprechenden Metadaten holen: 
+
+
+```{r}
+meta <- store$get_meta()
+names(meta)
+
+meteoschweiz <- store$get_meta("meta_meteoschweiz")
+tibble::glimpse(meteoschweiz)
+```
+
+
+Die `meta_apply()` benützt die Metadaten als "Lookup Table". Es wird folgende Operation ausgeführt:
+
+```{r eval=FALSE}
+meta_apply(data, meta, data_src, data_dest, meta_key, meta_val) 
+
+data$data_dest = meta[meta$meta_key == data$data_src]$meta_val
+```
+
+Wobei die jeweiligen Spalten jeweils als Argument übergeben werden. Die Funktion verfügt über verschiende Modi um mit 
+fehlenden Einträgen umzugehen. Im folgenden Beispiel werden bei den MeteoSchweiz Daten die "unit" Spalte basierend 
+auf den "parameter" Spalte ausgefüllt. Da die Parameter noch die MeteoSchweiz Bezeichnungen haben müssen wir als Meta 
+Key die Spalte "parameter_original" und "unit" als Value verwenden. Es werden die Daten aus rOstluft.data verwendet. In 
+diesen fehlt in den Metadaten der MeteoSchweiz Parameter rre150z0 (Niederschlag). Der Default Modus "strict" stoppt 
+das Script:
+
+```{r}
+meteoschweiz <- readRDS(fs::path(examples_path, "meta_smn.rds"))
+data <- read_smn(fs::path(examples_path, "smn.txt"), na.rm = FALSE)
+data <- dplyr::arrange(data, .data$starttime, .data$parameter) 
+data
+
+tryCatch({
+  meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit")
+}, error = function(e) {
+  sprintf(e$message)
+})
+```
 
 
 
+Im einfachsten Fall werden Zeilen mit fehlenden Einträge einfach gelöscht. Dies geschieht mit dem Modus "drop":
+
+```{r}
+
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", mode = "drop")
+df
+```
+
+Sollte der Parameter für spätere Bearbeitung behalten werden, kommt der Modus "keep" zum Zug:
+
+```{r}
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", mode = "keep")
+df
+```
+
+Mit Hilfe des Modus "replace" kann eine zusätzliche "Lookup Table" übergeben werden. Werte in dieser Tabelle haben 
+Priorität über Werte in der Meta Tabelle. Im Beispiel wird die fehlende Einheit für rre150z0 bereit gestellt und die 
+Einheit für dkl010z0 von ° zu deg überschrieben. 
+
+```{r}
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", 
+                 mode = "replace", replacements = list(rre150z0 = "mm", dkl010z0 = "deg"))
+df
+```
+
+Hier ein Beispiel für die komplette Überführung der MeteoSchweiz Daten, inkl. manuelle Umbennung von rre150z0 und 
+Änderung der Einheit für die Windrichtung (WD) von ° zu deg:
+
+```{r}
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", 
+                 mode = "replace", replacements = list(rre150z0 = "mm", dkl010z0 = "deg"))
+
+df <- meta_apply(df, meteoschweiz, "parameter", "parameter", "parameter_original", "parameter", 
+                 mode = "replace", replacements = list(rre150z0 = "Niederschlag"))
+
+df <- meta_apply(df, meteoschweiz, "site", "site", "site_short", "site")
+
+df
+```
+
+# openair kompatibles Wide Format
+
+Das Long Format ist nicht für jede Analyse geeignet. Aus diesem Grund enthält rOstluft die Funktionalität Daten im rolf 
+Format in ein [openair](http://davidcarslaw.github.io/openair/) kompatibles Wide Format umzuwandeln. Ein Nachteil am 
+Wide Format ist, dass Informationen die zu einer Spalte gehören, wie die Einheit einer Messgrösse, verloren gehen. Dies 
+führt auch dazu, das man nicht die gleiche Messgrösse mit unterschiedlichen Einheiten in den Daten haben kann. Ausser 
+man nennt die Messgrösse um. Die Funktion `rolf_to_openair()` geht folgende Kompromisse ein: Die Einheiten werden 
+entfernt, aber im Attribute "units" des Datenframes gespeichert. Messgrössen mit der Einheit ppb oder ppm werden 
+ebenfalls entfernt (Dieser Automatismus lässt sich mit dem Argument keep_ppb abschalten). Openair nimmt an, dass alle 
+Messgrössen als Massenkonzentrationen vorliegen. Weitere Konventionen in openair sind das die Zeitinformation in der 
+Spalte "date" als `Date` oder `POSIXct` vorliegen, die Windgeschwindigkeit in der Spalte "ws" und die Windrichtung in 
+der Spalte "wd". Sämtliche Character und Factor Spalten dienen als Gruppierungsspalten. Diese werden von openair 
+ignoriert oder gar entfernt, wenn nicht das Argument type benützt wird. Dieses erlaubt die explizite Nutzung einer 
+Spalte als Gruppierungskriterium. Es können mehrere Gruppierungskriterien getrennt durch ein Komma definiert werden. 
+Die openair Funktion `openair::cutData()` übernimmt die Gruppierung.
+
+```{r}
+data <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_2010-2014.csv"))
+wide <- rolf_to_openair(data)
+tibble::glimpse(wide)
+```
+
+Diese Daten können nun direkt in openair verwendet werden:
+
+```{r}
+openair::windRose(wide)
+
+openair::polarPlot(wide, "NO2", type="year")
+```
+
+`openair_to_rolf()` konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen bereitstellen:
+
+```{r}
+openair_to_rolf(wide, interval = "min30", units = attr(wide, "units"))
+```
+
+`rolf_to_openair_single()` bietet die Möglichkeit einen bestimmten Parameter rauszupicken:
+
+```{r}
+rolf_to_openair_single(data, "NO2", unit = "µg/m3", keep_interval = TRUE)
+```
+
+Die weitere Optionen für die Funktion `rolf_to_openair()` sind in der Dokumentation zu finden.
+
+
+# Resampling von Daten
+
+
+# Einheitenumwandlung
+
+
+# Lokale Daten löschen
+
+Werden die Daten lokal nicht mehr benötigt, kann mit der Funktion `$destroy()` des Store Objektes die Daten gelöscht 
+werden. Zu beachten ist, dass der AWS S3 Store als read only initialisiert wurde. Um ihn löschen zu können muss dies 
+geändert werden. Um ein versehentliches löschen durch Autocomplete zu verhindern, muss der String "DELETE" als Argument 
+übergeben werden
 
 ```{r}
 store$read.only = FALSE
@@ -332,6 +473,7 @@ store$destroy("DELETE")
 
 my_store$destroy("DELETE")
 ```
+
 
 
 [^1]: rlang muss nicht als library importiert werden. ... leitet die Expression an rOstluft weiter. Dieses hat den 

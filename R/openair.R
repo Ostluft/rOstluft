@@ -92,7 +92,7 @@ rolf_to_openair <- function(data, as_list = FALSE, interval = NULL, keep_ppb = F
 #' @param parameter to pluck
 #' @param unit Optional: unit of the parameter to pluck. Default NULL
 #' @param interval Optional: interval of the parameter to pluck. Default NULL
-#' @param keep_interval Optional: keep interval column. Default NULL
+#' @param keep_interval Optional: keep interval column. Default FALSE
 #'
 #' @return tibble with one parameter in openair compatible format including unit, site and optional interval column
 #'

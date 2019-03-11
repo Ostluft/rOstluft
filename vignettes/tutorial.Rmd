@@ -22,10 +22,18 @@ library(dplyr)
 library(magrittr)
 ```
 
+# TODO List für Tutorial:
+
+* Wie linkt man am besten auf die Dokumentation? Auf die Reference von pkgdown auf github?
+* Ist eine Vignette überhaupt die richtige Form? Wo wird sie gebaut?
+  + pkgdown für Optionen durchsuchen
+  + github md
+
+
 # Einleitung
 
 Dieses Dokument soll einem Anwender des Packages [rOstluft::rOstluft] einen Überblick der enthaltenen Funktionalität 
-bieten und die gängisten Arbeitsabläufe aufzeigen.
+bieten und die gängigsten Arbeitsabläufe aufzeigen.
 
 Der Fokus dieses Packages liegt in der Bereitstellung von Daten aus verschiedenen Datenquellen in einem einheitlichen 
 Format zur Analyse der Luftqualität. Ausserdem enthält es Werkzeuge für einige übliche Aufgaben, die während solchen 
@@ -93,7 +101,11 @@ Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folge
 store <- storage_s3_rds("tutorial", format = format_rolf(), bucket = "rostluft", prefix = "aqmet")
 ```
 
+*TODO: Beschreibung was die verschiedenen Argument bedeuten*
+
+
 Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:
+
 * `get_content()`: holt eine Übersicht über alle im store enthaltene Daten
 * `get()`: Aktuelle Datenabfrage. Welche Daten geholt werden, muss über Funktionsargumente definiert werden
 
@@ -154,13 +166,13 @@ Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügba
 lokal verfügbar sind, hilft einem die Funktion `list_chunks()` weiter. 
 
 ```{r}
-lokal$list_chunks()
+tibble::glimpse(lokal$list_chunks())
 ```
 
 Auch der S3 Store verfügt über die `list_chunks()` Funktion.
 
 ```{r}
-store$list_chunks()
+tibble::glimpse(store$list_chunks())
 ```
 
 Im normal Fall ist Nutzung von `get_content()` über `list_chunks()` zu bevorzugen. Die Rückgabe von `get_content()` 
@@ -175,7 +187,7 @@ Rosengartenstrasse nach dem Jahr 2015 (Achtung == verwenden, es sind Filter Ausd
 ```{r}
 store$download(site == "Zch_Rosengartenstrasse", interval == "min30", year > 2015)
 
-lokal$list_chunks()
+lokal$list_chunks() %>% dplyr::select("site", "year", "interval")
 ```
 
 
@@ -188,17 +200,125 @@ vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:
 my_store = storage_local_rds("eigene_daten", format_rolf(), read.only = FALSE)
 ```
 
-In diesen kann man nun Daten mit der Store Funktion `put()` oder der Hilfsfunktion [rOstluft::import_directory()] 
+In diesen kann man nun Daten mit der Store Funktion `put()` oder der Hilfsfunktion [import_directory()] 
 importieren:
 
 ```{r}
-path <- system.file("extdata", package = "rOstluft.data")
-rOstluft::import_directory(my_store, path, read_airmo_csv, glob = "*Jan.csv")
-my_store$get_content()
+examples_path <- system.file("extdata", package = "rOstluft.data")
+import_directory(my_store, examples_path, read_airmo_csv, glob = "*Jan.csv")
 
-fn <- fs::path(path, "Zch_Rosengartenstrasse_2010-2014.csv")
+fn <- fs::path(examples_path, "Zch_Rosengartenstrasse_2010-2014.csv")
 my_data <- read_airmo_csv(fn)
 my_store$put(my_data)
+```
+
+Wie gewohnt kann erhält man mit `get_content()` eine Übersicht und die Daten mit `get()`:
+
+```{r}
+my_store$get_content()
+
+my_store$get(site = "Zch_Stampfenbachstrasse", interval = c("d1", "h1"), year = 2013)  %>% 
+  dplyr::arrange(.data$starttime, .data$parameter)
+```
+
+
+# Einlesefunktionen von Daten
+
+Um Daten in R einzulesen exisitieren für folgende Quellen bereits Funktionen:
+
+* Ostluft: [read_airmo_csv()] und [read_airmo_dat()] für Exporte aus der AIRMO
+* MeteoSchweiz: [read_smn()] und [read_smn_multiple()] für SwissMetNet Exporte
+* ETHZ/IAC: [read_ethz_iac()] Meteo Stationen auf dem Hönggerberg und dem Hauptgebäude CHN
+
+Existiert für die vorliegenden Daten keine Funktion und man möchte die selber schreiben an dieser Stelle 
+einige Hinweise und Tipps.
+
+
+## Verwende readr Funktionen und definiere die Zeichenkodierung
+
+Ein generelles Problem beim einlesen von Textdateien ist die [Zeichenkodierung](https://de.wikipedia.org/wiki/Zeichenkodierung). 
+Die meisten haben vermutlich "\uFFFD" schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von 
+`read_xxx()` Funktionen sind UTF-8 kodiert. Mit dem [readr Packages](https://readr.tidyverse.org/index.html) wird bei 
+korrekter Definition der [Locale](https://readr.tidyverse.org/articles/locales.html#character) der Text automatisch 
+zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder data.table::fread().
+
+
+## Ausgabeformat rolf
+
+Für ein reibungsloses Zusammenspiel mit den Stores zu garantieren muss das Format rolf eingehalten werden. rolf setzt 
+einen tibble mit folgenden Spalten und Klassen voraus:
+
+* **"starttime"**: POSIXct
+* **"site"**: factor
+* **"parameter"**: factor
+* **"interval"**: factor
+* **"unit"**: factor
+* **"value"**: double
+
+Selbst wenn in der Datei keine Einheiten enthalten sind, ist es besser die Spalte unit mit NA zu initialisieren. Ein 
+weiterer Trick ist es die Spalten am Ende explizit zu selektionieren. Hier ein Beispiel, wie es in `read_smn()` gelöst 
+ist:
+
+```{r eval=FALSE}
+data <- dplyr::mutate(data,
+  stn = forcats::as_factor(.data$stn),
+  parameter = forcats::as_factor(.data$parameter),
+  interval = forcats::as_factor(interval),
+  unit = factor(NA)
+)
+dplyr::select(data, starttime = "time", site = "stn", "parameter", "interval", "unit", "value")
+```
+
+Mit dem `dplyr::select` am Ende ist man sicher nur die Spalten in der Rückgabe zu haben die man haben will und es ist 
+einfach noch Spalten umzubenennen und die Reihenfolge zu ändern.
+
+
+# Zusammenfügen von Daten im rolf Format
+
+Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- 
+und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. `dplyr::bind_rows` wird die Factoren in 
+Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. 
+Die Funktion [bind_rows_with_factor_columns(...)] führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem 
+[Quasiquotation](https://rlang.r-lib.org/reference/quasiquotation.html) von rlang[^1]. Somit kann auch eine grosse Liste 
+von tibbles im rolf Format komfortable aneinander gefügt werden:
+
+```{r}
+df1 <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_h1_2013_Jan.csv"))
+df2 <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_d1_2013_Jan.csv"))
+df_comb <- bind_rows_with_factor_columns(df1, df2)
+df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
+
+# liste mit 20+ tibbles
+df_list <- read_smn_multiple(fs::path(examples_path, "smn_multi.txt"), as_list = TRUE)
+length(df_list)
+df_comb <- bind_rows_with_factor_columns(!!!df_list)
+df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
+```
+
+[bind_rows_with_factor_columns(...)] entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach 
+aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion `merge()` 
+des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld `format` 
+verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden über Daten 
+im zweiten Datenframe priorisiert.
+
+```{r}
+# kopiere Daten und setze einige NA -> Resultat sollte NA enthalten
+df1 <- df2
+df1$value[1:150] <- NA  
+
+df_comb <- store$format$merge(df1, df2)
+df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
+
+rolf <- format_rolf()
+df_comb <- rolf$merge(df1, df2)
+df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
+```
+
+Die `merge()` Funktion unterstützt nur 2 Argumente. Muss eine Liste gemerget werden muss man `purrr::reduce()` benützen:
+
+```{r}
+df_comb <- purrr::reduce(df_list, rolf$merge, .dir = "forward")
+df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
 
@@ -209,4 +329,10 @@ my_store$put(my_data)
 ```{r}
 store$read.only = FALSE
 store$destroy("DELETE")
+
+my_store$destroy("DELETE")
 ```
+
+
+[^1]: rlang muss nicht als library importiert werden. ... leitet die Expression an rOstluft weiter. Dieses hat den 
+  Operator importiert und kann somit die Expression korrekt auswerten.

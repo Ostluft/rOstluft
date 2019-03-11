@@ -31,6 +31,8 @@
 #'
 #' `$put_meta(...)` puts meta data into the store. the name of the argument is used as file name and the value as data.
 #'
+#' `$fix_content()` generates the content file from the data files
+#'
 #' `$destroy(confirmation)` removes all files under path from the file system if "DELETE" is supplied as
 #' confirmation
 #'
@@ -184,10 +186,15 @@ r6_storage_local <- R6::R6Class(
         stop(ReadOnlyStore(self$name))
       }
 
-      data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
-      data <- dplyr::group_split(data, keep = TRUE)
-      res <- purrr::map(data, private$merge_chunk)
-      bind_rows_with_factor_columns(!!!res)
+      if (nrow(data) > 0) {
+        data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+        data <- dplyr::group_split(data, keep = TRUE)
+        res <- purrr::map(data, private$merge_chunk)
+        bind_rows_with_factor_columns(!!!res)
+      } else {
+        warning("argument data is empty")
+        invisible(NULL)
+      }
     },
     get = function(filter=NULL, ...) {
       filter <- enquo(filter)
@@ -265,6 +272,23 @@ r6_storage_local <- R6::R6Class(
       } else {
         warning("Store still alive: read.only store or wrong confirmation phrase")
       }
+    },
+    fix_content = function() {
+      if (self$read.only) {
+        stop(ReadOnlyStore(self$name))
+      }
+
+      get_chunk_content <- function(chunk_path) {
+        chunk_data <- self$read_function(chunk_path)
+        chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+        dplyr::count(chunk_data, .dots = self$format$content_columns)
+      }
+
+      chunks_path <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
+      chunks_content <- purrr::map(chunks_path, get_chunk_content)
+      chunks_content <- bind_rows_with_factor_columns(!!!chunks_content)
+      self$write_function(chunks_content, self$content_path)
+      chunks_content
     }
   ),
   private = list(
@@ -288,8 +312,16 @@ r6_storage_local <- R6::R6Class(
     },
     merge_chunk = function(data) {
       # get content count
-      data_content <- dplyr::count(self$format$na.omit(data),
-                                   .dots = self$format$content_columns)
+      data_content <- self$format$na.omit(data)
+
+      if (nrow(data_content) > 0) {
+        data_content <- dplyr::count(data_content, .dots = self$format$content_columns)
+      } else {
+        # we need an empty tibble in the correct form. simplest way is to count the NA ..
+        data_content <- dplyr::count(data, .dots = self$format$content_columns)
+        data_content <- data_content[0, ]
+      }
+
       # remove calculated chunk columns
       data <- dplyr::select(data, -dplyr::one_of(rlang::names2(self$format$chunk_calc)))
       chunk_vars <- as.list(self$format$chunk_vars(data))
@@ -303,11 +335,21 @@ r6_storage_local <- R6::R6Class(
         fs::dir_create(fs::path_dir(chunk_path))
         chunk_data <- self$format$merge(data, data[0, ])
       }
+
       chunk_data <- self$format$sort(chunk_data)
-      self$write_function(droplevels(chunk_data), chunk_path)
-      # we need to calculate the chunk columns before counting. Questions is there a more elegant solution?
-      chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
-      chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+
+      if (nrow(chunk_data) > 0) {
+        self$write_function(droplevels(chunk_data), chunk_path)
+        # we need to calculate the chunk columns again before counting
+        chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
+        chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+      } else {
+        if (fs::file_exists(chunk_path)) {
+          fs::file_delete(chunk_path)
+        }
+        chunk_content <- data_content[0, ]
+      }
+
       private$merge_content(chunk_content, chunk_vars)
       data_content
     }

@@ -1,6 +1,4 @@
 
-library(usethis)
-
 prepare_release <- function() {
   choice <- utils::menu(
     choices = c(
@@ -24,7 +22,7 @@ prepare_release <- function() {
     vapply(bumps, bump_, character(1), ver = ver)
   }
 
-  proj <- proj_get()
+  proj <- usethis::proj_get()
   ver <- desc::desc_get_version(proj)
   versions <- bump_version(ver)
 
@@ -53,6 +51,8 @@ prepare_release <- function() {
   if (choice == 2) {
     pkgdown::clean_site()
     pkgdown::build_site()
+    rmarkdown::render("README.Rmd", "github_document")
+    fs::file_delete("README.html")
   }
 
 }

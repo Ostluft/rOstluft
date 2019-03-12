@@ -74,7 +74,8 @@ read_meteoschweiz_smn <- function(x, timezone = "Etc/GMT", encoding = "UTF-8", t
 #' @param encoding encoding of the data file. Default = "UTF-8"
 #' @param time_shift a lubridate period to add to the time. Default NULL
 #' @param time_format optional time_format. Use if auto detect fails. Default NULL
-#' @param interval optional interval of the data. Use if auto detect fails. Default NULL
+#' @param interval optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
+#'   define time_shift manuelly. lubridate::period(0) can be used for no shifting
 #' @param na.rm remove na values. Default TRUE
 #'
 #' @return tibble in rOstluft long format structure
@@ -95,27 +96,37 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     .default = readr::col_number()
   )
 
-  # smn files tend to have atleast one line with a space at the start ... read 20 and take the first non empty ...
+  # smn files tend to have different headers, but there are always the col name starting mit stn
   header <- readr::read_lines(fn, n_max = 20)
   start_line <- purrr::detect_index(header, ~ stringr::str_starts(., "stn"))
+
+  if (start_line == 0) {
+    stop("couldn't find a line starting with stn")
+  }
+
   col_names <- header[start_line]
 
   # has the file an unit line?
   if (stringr::str_count(header[start_line + 1], "\\[") > 0) {
     skip <- start_line + 1
     units <- header[start_line + 1]
+    units <- stringr::str_replace_all(units, "\\[|\\]", "")
   } else {
     skip <- start_line
-    units <- ""
+    units <- NULL
   }
 
   if (stringr::str_count(col_names, " ") > 4) {
     col_names <- stringr::str_split(col_names, "\\s+")[[1]]
-    units <- stringr::str_split(units, "\\s+")[[1]]
+    if (!is.null(units)) {
+      units <- stringr::str_split(units, "\\s+")[[1]]
+    }
     data <- readr::read_table2(fn, FALSE, col_types, locale, "-", skip, skip_empty_rows = TRUE)
   } else if (stringr::str_count(col_names, ";") >= 2) {
     col_names <- stringr::str_split(col_names, ";")[[1]]
-    units <- stringr::str_split(units, ";")[[1]]
+    if (!is.null(units)) {
+      units <- stringr::str_split(units, ";")[[1]]
+    }
     data <- readr::read_delim(fn, ";", col_types = col_types, col_names = FALSE, locale = locale, na = "-",
                               skip = skip, skip_empty_rows = TRUE)
   } else {
@@ -135,13 +146,16 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
 
   if (nrow(data) < 2 && is.null(interval)) {
     stop("couldn't detect interval. use argument interval")
-  } else if (!is.null(interval)) {
-    interval <- interval
-  } else {
+  } else if (is.null(interval)) {
     duration <- lubridate::as.duration(data$time[2] - data$time[1])
     interval <- lubridate::time_length(duration, unit = "minutes")
     interval <- switch(as.character(interval), "10" = "min10", "30" = "min30", "60" = "h1", "1440" = "d1",
                        stop("couldn't detect interval. use argument interval"))
+  } else if (!lubridate::is.period(time_shift)) {
+    stop(stringr::str_c("If argument interval is used, time_shift is necessary! ",
+                        "time_shift = lubridate::period(0) can be used for no shifting"))
+  } else {
+    interval <- interval
   }
 
   if (lubridate::is.period(time_shift)) {
@@ -157,9 +171,16 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     stn = forcats::as_factor(.data$stn),
     parameter = forcats::as_factor(.data$parameter),
     interval = forcats::as_factor(interval),
-    unit = factor(NA),
-    value = as.numeric(.data$value)
+    unit = factor(NA)
   )
+
+  if (!is.null(units)) {
+    parameters <- utils::tail(col_names, -2)  # the first two col_names are stn and time not parameters
+    units <-utils::tail(units, length(parameters)) # just take the number of parameters form the end
+    units <- rlang::set_names(units, parameters)
+    data <- dplyr::mutate(data, unit = dplyr::recode_factor(.data$parameter, !!!units))
+  }
+
   dplyr::select(data, starttime = "time", site = "stn", "parameter", "interval", "unit", "value")
 }
 
@@ -195,7 +216,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
 read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
   data <- readr::read_file(fn, readr::locale(encoding = encoding))
   data <- stringr::str_split(data, "\r\n\r\n|\n\n")            # line end conversion happens
-  data <- purrr::keep(data[[1]], ~ stringr::str_length(.) > 1) # remove empty and chunks with only a space
+  data <- purrr::keep(data[[1]], ~ stringr::str_detect(., "stn")) # remove empty and chunks with only a space
   data <- purrr::map(data, read_smn, encoding = encoding, ...)
 
   if (isFALSE(as_list)) {
@@ -233,11 +254,17 @@ split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-
 
   message("start splitting")
 
+  # read first line. drop it if whitespace, else keep it.
+  # without an additional chunk is genereated with files starting space\n\n
+  line <- readLines(con_in, n = 1, warn = FALSE)
+  if (stringr::str_trim(line) != "") {
+    writeLines(line, con_out)
+  }
+
   while (length(line <- readLines(con_in, n = 1, warn = FALSE)) > 0) {
-    trimmed <- stringr::str_trim(line)
 
     # new chunk -> new file
-    if ((trimmed == "") && (line_count > 0)) {
+    if ((line == "") && (line_count > 0)) {
       close(con_out)
       file_count <- file_count + 1
       message(sprintf("Got %d lines in last chunk. start chunk nr %2d", line_count, file_count))
@@ -246,7 +273,7 @@ split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-
       con_out <- file(out_fn, open = "w", encoding = encoding)
     }
 
-    if (trimmed != "") {
+    if (line != "") {
       writeLines(line, con_out)
       line_count <- line_count + 1
     }

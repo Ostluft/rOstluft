@@ -18,7 +18,8 @@ read_smn(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL,
 
 \item{time_format}{optional time_format. Use if auto detect fails. Default NULL}
 
-\item{interval}{optional interval of the data. Use if auto detect fails. Default NULL}
+\item{interval}{optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
+define time_shift manuelly. lubridate::period(0) can be used for no shifting}
 
 \item{na.rm}{remove na values. Default TRUE}
 }

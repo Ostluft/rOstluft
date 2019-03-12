@@ -1,17 +1,5 @@
 
 prepare_release <- function() {
-  choice <- utils::menu(
-    choices = c(
-      "No",
-      "Yes"
-    ),
-    title = "Run devtools::check()"
-  )
-
-  if (choice == 2) {
-    devtools::check()
-  }
-
   bump_ <- function(x, ver) {
     d <- desc::desc(text = paste0("Version: ", ver))
     suppressMessages(d$bump_version(x)$get("Version")[[1]])
@@ -38,6 +26,18 @@ prepare_release <- function() {
   if (choice != 0) {
     new_ver <- versions[choice]
     desc::desc_set_version(new_ver, proj)
+  }
+
+  choice <- utils::menu(
+    choices = c(
+      "No",
+      "Yes"
+    ),
+    title = "Run devtools::check()"
+  )
+
+  if (choice == 2) {
+    devtools::check()
   }
 
   choice <- utils::menu(

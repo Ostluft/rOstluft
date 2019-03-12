@@ -93,7 +93,7 @@
 #' store$get_meta()
 #'
 #' ## or a specific meta file
-#' store$get_meta("meta_ostluft")
+#' store$get_meta("ostluft")
 #'
 #' ## get the cache as local storage
 #' local <- store$get_local_storage()

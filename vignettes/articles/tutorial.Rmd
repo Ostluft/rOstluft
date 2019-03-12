@@ -334,7 +334,7 @@ Store. Kennt man bereits den Namen kann man direkt die entsprechenden Metadaten 
 meta <- store$get_meta()
 names(meta)
 
-meteoschweiz <- store$get_meta("meta_meteoschweiz")
+meteoschweiz <- store$get_meta("meteoschweiz")
 tibble::glimpse(meteoschweiz)
 ```
 

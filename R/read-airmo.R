@@ -17,14 +17,26 @@
 #' @md
 read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
-  data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
+
+  header_cols <- readr::cols(
+    X1 = readr::col_skip(),
+    .default = readr::col_character()
+  )
+
+  data_cols <- readr::cols(
+    X1 = readr::col_character(),
+    .default = readr::col_double()
+  )
+
+  header <- readr::read_delim(fn, ";", n_max = 6,  col_types = header_cols, col_names = FALSE,  locale = locale,
+                              trim_ws = TRUE, progress = FALSE)
+
+  data <- readr::read_delim(fn, ";", skip = 6, col_types = data_cols, col_names = FALSE,
                             locale = locale, trim_ws = TRUE, progress = FALSE)
-  header <- data[c(1, 2, 4, 5), -1]
-  data <- utils::tail(data, -6)
+
+  header <- header[c(1, 2, 4, 5), ]
   airmo_wide_to_long(header, data, tz, time_shift, na.rm)
 }
-
-
 
 
 #' Reads an AIRMO Export in CSV Format
@@ -45,10 +57,24 @@ read_airmo_dat <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @export
 read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
-  data <- readr::read_delim(fn, ";", col_types = readr::cols(), col_names = FALSE,
+
+  header_cols <- readr::cols(
+    X1 = readr::col_skip(),
+    .default = readr::col_character()
+  )
+
+  data_cols <- readr::cols(
+    X1 = readr::col_character(),
+    .default = readr::col_double()
+  )
+
+  header <- readr::read_delim(fn, ";", n_max = 10,  col_types = header_cols, col_names = FALSE,  locale = locale,
+                              trim_ws = TRUE, progress = FALSE)
+
+  data <- readr::read_delim(fn, ";", skip = 10, col_types = data_cols, col_names = FALSE,
                             locale = locale, trim_ws = TRUE, progress = FALSE)
-  header <- data[c(1, 5, 9, 8), -1]
-  data <- utils::tail(data, -10)
+
+  header <- header[c(1, 5, 9, 8), ]
   airmo_wide_to_long(header, data, tz, time_shift, na.rm)
 }
 
@@ -70,16 +96,114 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @keywords internal
 airmo_wide_to_long <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   colnames(data)[1] <- "starttime"
+  col_ids <- rlang::names2(data)[-1]
 
-  header_names <- lapply(header, paste, collapse = "\u00bb")
-  colnames(data)[-1] <- header_names
+  sites <- c(header[1, ], recursive = TRUE)
+  sites <- rlang::set_names(sites, col_ids)
+  parameters <- c(header[2, ], recursive = TRUE)
+  parameters <- rlang::set_names(parameters, col_ids)
+  intervals <- c(header[3, ], recursive = TRUE)
+  intervals <- rlang::set_names(intervals, col_ids)
+  units <- c(header[4, ], recursive = TRUE)
+  units <- rlang::set_names(units, col_ids)
 
-  data[["starttime"]] <- lubridate::parse_date_time(data[["starttime"]], c("dmYHMS", "dmYHM", "dmY"), tz = tz)
+  data <- dplyr::mutate(data,
+                        starttime = lubridate::parse_date_time(.data$starttime, c("dmYHMS", "dmYHM", "dmY"), tz = tz)
+  )
+
   if (lubridate::is.period(time_shift)) {
-    data[["starttime"]] <- data[["starttime"]] + time_shift
+    data <- dplyr::mutate(data, starttime = .data$starttime + time_shift)
   }
-  data_long <- tidyr::gather(data, "key", "value", -"starttime", na.rm = na.rm)
-  data_long[["value"]] <- as.numeric(data_long[["value"]])
-  data_long <- tidyr::separate(data_long, "key", c("site", "parameter", "interval", "unit"), sep = "\u00bb")
-  dplyr::mutate_if(data_long, is.character, as.factor)
+
+  data <- tidyr::gather(data, "id", "value", -"starttime", na.rm = na.rm, factor_key = TRUE)
+
+  data <- dplyr::mutate(data,
+                        site = dplyr::recode(.data$id, !!!sites),
+                        parameter = dplyr::recode(.data$id, !!!parameters),
+                        interval = dplyr::recode(.data$id, !!!intervals),
+                        unit = dplyr::recode(.data$id, !!!units)
+  )
+
+  dplyr::select(data, "starttime", "site", "parameter", "interval", "unit", "value")
+}
+
+
+read_airmo_csv_ref <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
+  locale <- readr::locale(encoding = encoding)
+
+  header_cols <- readr::cols(
+    X1 = readr::col_skip(),
+    .default = readr::col_character()
+  )
+
+  data_cols <- readr::cols(
+    X1 = readr::col_character(),
+    .default = readr::col_double()
+  )
+
+  header <- readr::read_delim(fn, ";", n_max = 10,  col_types = header_cols, col_names = FALSE,  locale = locale,
+                              trim_ws = TRUE, progress = FALSE)
+
+  data <- readr::read_delim(fn, ";", skip = 10, col_types = data_cols, col_names = FALSE,
+                            locale = locale, trim_ws = TRUE, progress = FALSE)
+
+  header <- header[c(1, 5, 9, 8), ]
+  airmo_wide_to_long_ref(header, data, tz, time_shift, na.rm)
+}
+
+read_airmo_dat_ref <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
+  locale <- readr::locale(encoding = encoding)
+
+  header_cols <- readr::cols(
+    X1 = readr::col_skip(),
+    .default = readr::col_character()
+  )
+
+  data_cols <- readr::cols(
+    X1 = readr::col_character(),
+    .default = readr::col_double()
+  )
+
+  header <- readr::read_delim(fn, ";", n_max = 6,  col_types = header_cols, col_names = FALSE,  locale = locale,
+                              trim_ws = TRUE, progress = FALSE)
+
+  data <- readr::read_delim(fn, ";", skip = 6, col_types = data_cols, col_names = FALSE,
+                            locale = locale, trim_ws = TRUE, progress = FALSE)
+
+  header <- header[c(1, 2, 4, 5), ]
+  airmo_wide_to_long_ref(header, data, tz, time_shift, na.rm)
+}
+
+airmo_wide_to_long_ref <- function(header, data, tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
+
+  colnames(data)[1] <- "starttime"
+  col_ids <- rlang::names2(data)[-1]
+
+  parameters <- c(dplyr::slice(header, 2), recursive = TRUE)
+  parameters <- rlang::set_names(parameters, col_ids)
+  units <- c(dplyr::slice(header, 4), recursive = TRUE)
+  units <- rlang::set_names(units, col_ids)
+  intervals <- c(dplyr::slice(header, 3), recursive = TRUE)
+  intervals <- rlang::set_names(intervals, col_ids)
+  sites <- c(dplyr::slice(header, 3), recursive = TRUE)
+  sites <- rlang::set_names(sites, col_ids)
+
+  data <- dplyr::mutate(data,
+    starttime = lubridate::parse_date_time(.data$starttime, c("dmYHMS", "dmYHM", "dmY"), tz = tz)
+  )
+
+  if (lubridate::is.period(time_shift)) {
+    data <- dplyr::mutate(data, starttime = .data$starttime + time_shift)
+  }
+
+  data <- tidyr::gather(data, "id", "value", -"starttime", na.rm = na.rm, factor_key = TRUE)
+
+  data <- dplyr::mutate(data,
+    site = dplyr::recode(.data$id, !!!sites),
+    parameter = dplyr::recode(.data$id, !!!parameters),
+    interval = dplyr::recode(.data$id, !!!intervals),
+    unit = dplyr::recode(.data$id, !!!units)
+  )
+
+  dplyr::select(data, "starttime", "site", "parameter", "interval", "unit", "value")
 }

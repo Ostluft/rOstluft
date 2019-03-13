@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9019</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-03-12</h4>
+            <h4 class="date">2019-03-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -295,7 +295,7 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span>
 <span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span>
 <span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span>
-<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-12 19:26:45, 2019-03-12 19:26...</span>
+<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-13 14:49:24, 2019-03-13 14:49...</span>
 <span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())
@@ -341,15 +341,15 @@ lokal<span class="op">$</span><span class="kw">list_chunks</span>() <span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)
 <span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)
 <span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.19 seconds. Got 2170 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.04 seconds</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.18 seconds. Got 2170 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.03 seconds</span>
 <span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.06 seconds. Got 14116 data points</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span>
 <span class="co">#&gt; Put data into store eigene_daten in 0.07 seconds</span>
 <span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.12 seconds. Got 28234 data points</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span>
 <span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span>
-<span class="co">#&gt; Finished import after 0.57 seconds</span>
+<span class="co">#&gt; Finished import after 0.44 seconds</span>
 
 fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)
 my_data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)
@@ -357,22 +357,22 @@ my_store<span class="op">$</span><span class="kw">put</span>(my_data)
 <span class="co">#&gt; # A tibble: 18 x 6</span>
 <span class="co">#&gt;     year interval site                   parameter unit      n</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2013 min30    Zch_Rosengartenstrasse Hr        %Hr    4010</span>
-<span class="co">#&gt;  2  2013 min30    Zch_Rosengartenstrasse NO        µg/m3  4269</span>
-<span class="co">#&gt;  3  2013 min30    Zch_Rosengartenstrasse NO2       µg/m3  4269</span>
-<span class="co">#&gt;  4  2013 min30    Zch_Rosengartenstrasse NOx       ppb    4269</span>
-<span class="co">#&gt;  5  2013 min30    Zch_Rosengartenstrasse O3        µg/m3  4277</span>
-<span class="co">#&gt;  6  2013 min30    Zch_Rosengartenstrasse p         hPa    4291</span>
-<span class="co">#&gt;  7  2013 min30    Zch_Rosengartenstrasse PM10      µg/m3  4025</span>
+<span class="co">#&gt;  1  2013 min30    Zch_Rosengartenstrasse NO        µg/m3  4269</span>
+<span class="co">#&gt;  2  2013 min30    Zch_Rosengartenstrasse NO2       µg/m3  4269</span>
+<span class="co">#&gt;  3  2013 min30    Zch_Rosengartenstrasse NOx       ppb    4269</span>
+<span class="co">#&gt;  4  2013 min30    Zch_Rosengartenstrasse O3        µg/m3  4277</span>
+<span class="co">#&gt;  5  2013 min30    Zch_Rosengartenstrasse PM10      µg/m3  4025</span>
+<span class="co">#&gt;  6  2013 min30    Zch_Rosengartenstrasse Hr        %Hr    4010</span>
+<span class="co">#&gt;  7  2013 min30    Zch_Rosengartenstrasse p         hPa    4291</span>
 <span class="co">#&gt;  8  2013 min30    Zch_Rosengartenstrasse RainDur   min    4291</span>
 <span class="co">#&gt;  9  2013 min30    Zch_Rosengartenstrasse T         °C     4010</span>
-<span class="co">#&gt; 10  2014 min30    Zch_Rosengartenstrasse Hr        %Hr   17517</span>
-<span class="co">#&gt; 11  2014 min30    Zch_Rosengartenstrasse NO        µg/m3 17415</span>
-<span class="co">#&gt; 12  2014 min30    Zch_Rosengartenstrasse NO2       µg/m3 17415</span>
-<span class="co">#&gt; 13  2014 min30    Zch_Rosengartenstrasse NOx       ppb   17415</span>
-<span class="co">#&gt; 14  2014 min30    Zch_Rosengartenstrasse O3        µg/m3 17366</span>
-<span class="co">#&gt; 15  2014 min30    Zch_Rosengartenstrasse p         hPa   17519</span>
-<span class="co">#&gt; 16  2014 min30    Zch_Rosengartenstrasse PM10      µg/m3 16788</span>
+<span class="co">#&gt; 10  2014 min30    Zch_Rosengartenstrasse NO        µg/m3 17415</span>
+<span class="co">#&gt; 11  2014 min30    Zch_Rosengartenstrasse NO2       µg/m3 17415</span>
+<span class="co">#&gt; 12  2014 min30    Zch_Rosengartenstrasse NOx       ppb   17415</span>
+<span class="co">#&gt; 13  2014 min30    Zch_Rosengartenstrasse O3        µg/m3 17366</span>
+<span class="co">#&gt; 14  2014 min30    Zch_Rosengartenstrasse PM10      µg/m3 16788</span>
+<span class="co">#&gt; 15  2014 min30    Zch_Rosengartenstrasse Hr        %Hr   17517</span>
+<span class="co">#&gt; 16  2014 min30    Zch_Rosengartenstrasse p         hPa   17519</span>
 <span class="co">#&gt; 17  2014 min30    Zch_Rosengartenstrasse RainDur   min   17519</span>
 <span class="co">#&gt; 18  2014 min30    Zch_Rosengartenstrasse T         °C    17517</span></code></pre></div>
 <p>Wie gewohnt kann erhält man mit <code>$get_content()</code> eine Übersicht und die Daten mit <code>$get()</code>:</p>
@@ -380,16 +380,16 @@ my_store<span class="op">$</span><span class="kw">put</span>(my_data)
 <span class="co">#&gt; # A tibble: 126 x 6</span>
 <span class="co">#&gt;     year interval site                   parameter unit      n</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2014 min30    Zch_Rosengartenstrasse Hr        %Hr   17517</span>
-<span class="co">#&gt;  2  2014 min30    Zch_Rosengartenstrasse NO        µg/m3 17415</span>
-<span class="co">#&gt;  3  2014 min30    Zch_Rosengartenstrasse NO2       µg/m3 17415</span>
-<span class="co">#&gt;  4  2014 min30    Zch_Rosengartenstrasse NOx       ppb   17415</span>
-<span class="co">#&gt;  5  2014 min30    Zch_Rosengartenstrasse O3        µg/m3 17366</span>
-<span class="co">#&gt;  6  2014 min30    Zch_Rosengartenstrasse p         hPa   17519</span>
-<span class="co">#&gt;  7  2014 min30    Zch_Rosengartenstrasse PM10      µg/m3 16788</span>
+<span class="co">#&gt;  1  2014 min30    Zch_Rosengartenstrasse NO        µg/m3 17415</span>
+<span class="co">#&gt;  2  2014 min30    Zch_Rosengartenstrasse NO2       µg/m3 17415</span>
+<span class="co">#&gt;  3  2014 min30    Zch_Rosengartenstrasse NOx       ppb   17415</span>
+<span class="co">#&gt;  4  2014 min30    Zch_Rosengartenstrasse O3        µg/m3 17366</span>
+<span class="co">#&gt;  5  2014 min30    Zch_Rosengartenstrasse PM10      µg/m3 16788</span>
+<span class="co">#&gt;  6  2014 min30    Zch_Rosengartenstrasse Hr        %Hr   17517</span>
+<span class="co">#&gt;  7  2014 min30    Zch_Rosengartenstrasse p         hPa   17519</span>
 <span class="co">#&gt;  8  2014 min30    Zch_Rosengartenstrasse RainDur   min   17519</span>
 <span class="co">#&gt;  9  2014 min30    Zch_Rosengartenstrasse T         °C    17517</span>
-<span class="co">#&gt; 10  2013 min30    Zch_Rosengartenstrasse Hr        %Hr    4010</span>
+<span class="co">#&gt; 10  2013 min30    Zch_Rosengartenstrasse NO        µg/m3  4269</span>
 <span class="co">#&gt; # ... with 116 more rows</span>
 
 my_store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"d1"</span>, <span class="st">"h1"</span>), <span class="dt">year =</span> <span class="dv">2013</span>)  <span class="op">%&gt;%</span><span class="st"> </span>
@@ -747,14 +747,14 @@ tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyver
 <span class="co">#&gt; $ date    &lt;dttm&gt; 2010-01-01 00:00:00, 2010-01-01 00:30:00, 2010-01-01 ...</span>
 <span class="co">#&gt; $ site    &lt;fct&gt; Zch_Stampfenbachstrasse, Zch_Stampfenbachstrasse, Zch_...</span>
 <span class="co">#&gt; $ CO      &lt;dbl&gt; 0.513, 0.609, 0.822, 1.063, 0.861, 0.760, 0.633, 0.666...</span>
-<span class="co">#&gt; $ Hr      &lt;dbl&gt; 87.9, 88.6, 91.1, 91.8, 92.0, 92.4, 92.8, 92.0, 90.4, ...</span>
 <span class="co">#&gt; $ NO      &lt;dbl&gt; 9.50, 26.85, 59.95, 85.55, 72.04, 49.74, 26.50, 36.18,...</span>
 <span class="co">#&gt; $ NO2     &lt;dbl&gt; 37.0, 46.5, 54.6, 60.5, 58.8, 52.9, 49.0, 50.9, 56.3, ...</span>
 <span class="co">#&gt; $ O3      &lt;dbl&gt; 11.812, 7.989, 2.111, 1.410, 2.517, 2.416, 3.606, 1.61...</span>
-<span class="co">#&gt; $ p       &lt;dbl&gt; 942, 942, 942, 942, 942, 942, 941, 941, 941, 941, 940,...</span>
 <span class="co">#&gt; $ PM10    &lt;dbl&gt; 49.7, 82.3, 152.9, 169.2, 190.1, 158.9, 93.0, 54.9, 58...</span>
-<span class="co">#&gt; $ RainDur &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</span>
 <span class="co">#&gt; $ SO2     &lt;dbl&gt; 2.36, 3.13, 4.19, 4.60, 3.97, 2.71, 2.29, 2.46, 2.86, ...</span>
+<span class="co">#&gt; $ Hr      &lt;dbl&gt; 87.9, 88.6, 91.1, 91.8, 92.0, 92.4, 92.8, 92.0, 90.4, ...</span>
+<span class="co">#&gt; $ p       &lt;dbl&gt; 942, 942, 942, 942, 942, 942, 941, 941, 941, 941, 940,...</span>
+<span class="co">#&gt; $ RainDur &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</span>
 <span class="co">#&gt; $ StrGlo  &lt;dbl&gt; 0.00749, 0.00727, 0.01020, 0.00781, 0.01215, 0.01573, ...</span>
 <span class="co">#&gt; $ T       &lt;dbl&gt; 5.61, 5.57, 5.35, 5.39, 5.11, 4.81, 4.58, 4.80, 5.38, ...</span>
 <span class="co">#&gt; $ wd      &lt;dbl&gt; 159.6, 147.9, 258.2, 2.9, 27.7, 35.4, 40.2, 164.1, 182...</span>

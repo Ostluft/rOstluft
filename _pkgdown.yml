@@ -51,13 +51,15 @@ reference:
   - '`treshold_wrapper_function`'
   - '`gap_wrapper_function`'
 
-- title: Unit conversion
+- title: concentrations conversion
   desc: Functions for converting between Volume and Mass concentrations
   contents:
-  - '`convert_unit`'
-  - '`conversion_fun_factory`'
+  - '`convert_conc`'
+  - '`conversion_conc_fun_factory`'
   - '`mass_to_parts`'
   - '`parts_to_mass`'
+  - starts_with("convert_get")
+  - starts_with("convert_set")
 
 - title: Data read functions
   desc: Read data files from different sources

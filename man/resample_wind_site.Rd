@@ -5,8 +5,8 @@
 \title{resamples wind}
 \usage{
 resample_wind_site(data.site, statistic, new_interval = "d1",
-  data.thresh = NULL, start.date = NULL, end.date = NULL,
-  drop.last = FALSE, max_gap = NULL)
+  data_thresh = NULL, max_gap = NULL, skip_padding = FALSE,
+  start_date = NULL, end_date = NULL, drop_last = FALSE)
 }
 \arguments{
 \item{data.site}{wind data for one specific site. should only contain wind speed and direction}

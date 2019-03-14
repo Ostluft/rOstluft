@@ -2,6 +2,8 @@
 
 export("%>%")
 export(bind_rows_with_factor_columns)
+export(calculate_LRV)
+export(calculate_stats)
 export(conversion_conc_fun_factory)
 export(convert_conc)
 export(convert_conc_multiple)

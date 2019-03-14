@@ -107,9 +107,9 @@ read_ethz_iac <- function(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE, encodi
   if (!is.null(site) && is.character(site)) {
     site <- site
   } else if (stringr::str_detect(site_line, "roof of building CHN")) {
-    site <- "ETHZ_CHN-Gebäude"
-  } else if (stringr::str_detect(site_line, "Messfeld HPS G41")) { # <--- better string needed
-    site <- "ETHZ_Hönggerberg"
+    site <- "ETHZ_CHN-Geb\u00e4ude"
+  } else if (stringr::str_detect(site_line, "Messfeld HPS G41")) {
+    site <- "ETHZ_H\u00f6nggerberg"
   } else {
     stop("Unkown site! Use argument site as character")
   }

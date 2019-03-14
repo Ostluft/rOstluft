@@ -27,25 +27,19 @@ conversions_parts_to_mass <- tibble::tribble(
   "SO2", "ppb", "µg/m3"
 )
 
-# get_molmass <- function(parameter, mass, parts) {
-#   mass <- dplyr::filter(mass, parameter == !!parameter)$value
-#   parts <- dplyr::filter(parts, parameter == !!parameter)$value
-#   statistic_mean(calculate_molmass(mass, parts))
-# }
-
 
 expect_equal_values <- function(parameter, unit, input, output) {
   testthat::expect_equal(
     dplyr::filter(input, .data$parameter == !!parameter, .data$unit == !! unit)$value,
     dplyr::filter(output, .data$parameter == !!parameter, .data$unit == !! unit)$value,
-    tolerance = 1e-5,
+    tolerance = 5e-8,
     info = sprintf("testing parameter %s and unit %s", parameter, unit)
   )
 }
 
 
 test_that("parts to mass math", {
-  res_mass <- convert_multiple_units(airmo_min30_parts, conversions_parts_to_mass, method = "return")
+  res_mass <- convert_conc_multiple(airmo_min30_parts, conversions_parts_to_mass, method = "return")
 
   for (i in 1:nrow(conversions_parts_to_mass)) {
     row <- conversions_parts_to_mass[i, ]
@@ -54,7 +48,7 @@ test_that("parts to mass math", {
 })
 
 test_that("mass to parts math", {
-  res_parts <- convert_multiple_units(airmo_min30_mass, conversions_mass_to_parts, method = "return")
+  res_parts <- convert_conc_multiple(airmo_min30_mass, conversions_mass_to_parts, method = "return")
 
   for (i in 1:nrow(conversions_mass_to_parts)) {
     row <- conversions_mass_to_parts[i, ]
@@ -64,7 +58,7 @@ test_that("mass to parts math", {
 
 test_that("functionality single conversion", {
   testthat::expect_error(
-    convert_unit(airmo_min30_parts, "xyz", "from_unit", "to_unit", method = "return")
+    convert_conc(airmo_min30_parts, "xyz", "from_unit", "to_unit", method = "return")
   )
 
 
@@ -74,17 +68,17 @@ test_that("functionality single conversion", {
   n_par <- nrow(dplyr::filter(airmo_min30_parts, .data$parameter == row$parameter, .data$unit == row$from))
 
   testthat::expect_equal(
-    nrow(convert_unit(airmo_min30_parts, row$parameter, row$from, row$to, method = "replace")),
+    nrow(convert_conc(airmo_min30_parts, row$parameter, row$from, row$to, method = "replace")),
     n
   )
 
   testthat::expect_equal(
-    nrow(convert_unit(airmo_min30_parts, row$parameter, row$from, row$to, method = "return")),
+    nrow(convert_conc(airmo_min30_parts, row$parameter, row$from, row$to, method = "return")),
     n_par
   )
 
   testthat::expect_equal(
-    nrow(convert_unit(airmo_min30_parts, row$parameter, row$from, row$to, method = "append")),
+    nrow(convert_conc(airmo_min30_parts, row$parameter, row$from, row$to, method = "append")),
     n_par + n
   )
 })
@@ -96,17 +90,17 @@ test_that("functionality multi conversion", {
   n_par <- nrow(dplyr::filter(airmo_min30, .data$unit == "µg/m3" | .data$unit == "mg/m3"))
 
   testthat::expect_equal(
-    nrow(convert_multiple_units(airmo_min30_without_mass, conversions_parts_to_mass, method = "replace")),
+    nrow(convert_conc_multiple(airmo_min30_without_mass, conversions_parts_to_mass, method = "replace")),
     n
   )
 
   testthat::expect_equal(
-    nrow(convert_multiple_units(airmo_min30_without_mass, conversions_parts_to_mass, method = "return")),
+    nrow(convert_conc_multiple(airmo_min30_without_mass, conversions_parts_to_mass, method = "return")),
     n_par
   )
 
   testthat::expect_equal(
-    nrow(convert_multiple_units(airmo_min30_without_mass, conversions_parts_to_mass, method = "append")),
+    nrow(convert_conc_multiple(airmo_min30_without_mass, conversions_parts_to_mass, method = "append")),
     n_par + n
   )
 })
@@ -119,8 +113,8 @@ test_that("passing of additional argumens", {
   factor <- 1.1 / 0.9
 
   # single conversion
-  res <- convert_unit(airmo_min30_parts, row$parameter, row$from, row$to, method = "return")
-  res_add <- convert_unit(airmo_min30_parts, row$parameter, row$from, row$to, method = "return",
+  res <- convert_conc(airmo_min30_parts, row$parameter, row$from, row$to, method = "return")
+  res_add <- convert_conc(airmo_min30_parts, row$parameter, row$from, row$to, method = "return",
                           temperature = temp, pressure = pres)
 
   testthat::expect_equal(
@@ -129,10 +123,10 @@ test_that("passing of additional argumens", {
   )
 
   # multi conversion, test replace and return different implementations
-  res <- convert_multiple_units(airmo_min30_parts, conversions_parts_to_mass, method = "return")
-  res_return <- convert_multiple_units(airmo_min30_parts, conversions_parts_to_mass, method = "return",
+  res <- convert_conc_multiple(airmo_min30_parts, conversions_parts_to_mass, method = "return")
+  res_return <- convert_conc_multiple(airmo_min30_parts, conversions_parts_to_mass, method = "return",
                                        temperature = temp, pressure = pres)
-  res_replace <- convert_multiple_units(airmo_min30_parts, conversions_parts_to_mass, method = "replace",
+  res_replace <- convert_conc_multiple(airmo_min30_parts, conversions_parts_to_mass, method = "replace",
                                         temperature = temp, pressure = pres)
 
 

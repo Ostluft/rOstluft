@@ -52,10 +52,10 @@ calculate_mass_concentrations <- function(data, keep_ppb = FALSE) {
   conversions <- tibble::tribble(
     ~parameter, ~from, ~to,
     "CO", "ppm", "mg/m3",
-    "NO", "ppb", "µg/m3",
-    "O3", "ppb", "µg/m3",
-    "NO2", "ppb", "µg/m3",
-    "SO2", "ppb", "µg/m3"
+    "NO", "ppb", "\u00b5g/m3",
+    "O3", "ppb", "\u00b5g/m3",
+    "NO2", "ppb", "\u00b5g/m3",
+    "SO2", "ppb", "\u00b5g/m3"
   )
 
   if (isFALSE(keep_ppb)) {

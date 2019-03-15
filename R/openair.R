@@ -44,7 +44,8 @@ rolf_to_openair <- function(data, as_list = FALSE, interval = NULL, keep_ppb = F
   }
 
   if (isFALSE(keep_ppb)) {
-    data <-  dplyr::filter(data, .data$parameter == "NOx" | !(.data$unit == "ppb" | .data$unit == "ppm"))
+    data <-  dplyr::filter(data, stringr::str_starts(.data$parameter, "NOx") |
+                             !(.data$unit == "ppb" | .data$unit == "ppm"))
   }
 
   if (!is.null(ws) && ws %in% levels(data$parameter)) {

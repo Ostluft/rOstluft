@@ -72,6 +72,7 @@ calculate_mass_concentrations <- function(data, keep_ppb = FALSE) {
 #'
 #' @description
 #' Calculates the most common used stats from min10 or min30 data values for every parameter:
+#'
 #' * input > h1, d1, m1, y1: Averages (wind vector and scalar, RainDur Sum):
 #' * input > y1: min, max, n, perc95 (perc98, perc02 for O3, only n for RainDur)
 #' * input > m1: min, max (no stats for RainDur)
@@ -150,6 +151,7 @@ calculate_stats <- function(data) {
 #' @description
 #' Calculates the number of exceedances of the limits defined in the
 #' [LRV](https://www.admin.ch/opc/de/classified-compilation/19850321/index.html):
+#'
 #' * h1 > y1: n>120 of O3
 #' * d1 > y1: n>100 of SO2, n>80 of NO2, n>8 of CO, n>50 of PM10, n>25 of PM2.5, n>120 of O3_max_h1 as O3_nb_d1_h1>120
 #'
@@ -240,18 +242,20 @@ calculate_LRV <- function(data, quiet = FALSE) {
 #'
 #' @description
 #' calculates the following direct statistics:
-#' h1 > d1: "n>160", "n>180", "n>200", "n>240", "max", "n"
-#' h1 > m1: "n>160", "n>180", "n>200", "n>240", "max", "n"
-#' h1 > y1: "n>160", "n>180", "n>200", "n>240", "max", "n"
-#' d1 > m1: "n>65"
-#' d1 > y1: "n>65"
-#' h1 > m6,m4-m9: 7h mean from 9:00 - 16:00 CET, AOT40 sum ppb value > 40 from 8:00 - 20:00 CET
+#'
+#' * h1 > d1: "n>160", "n>180", "n>200", "n>240", "max", "n"
+#' * h1 > m1: "n>160", "n>180", "n>200", "n>240", "max", "n"
+#' * h1 > y1: "n>160", "n>180", "n>200", "n>240", "max", "n"
+#' * d1 > m1: "n>65"
+#' * d1 > y1: "n>65"
+#' * h1 > m6,m4-m9: 7h mean from 9:00 - 16:00 CET, AOT40 sum ppb value > 40 from 8:00 - 20:00 CET
 #'
 #' And following two step statistics (number of days with hour values > xxx):
-#' h1 > m1: O3_nb_d1_h1>160, O3_nb_d1_h1>180, O3_nb_d1_h1>200, O3_nb_d1_h1>240
-#' h1 > y1: O3_nb_d1_h1>160, O3_nb_d1_h1>180, O3_nb_d1_h1>200, O3_nb_d1_h1>240
 #'
-#' @param data input data in rolf format should contain 10min or 30min data of O3 in \u00b5g/m3
+#' * h1 > m1: O3_nb_d1_h1>160, O3_nb_d1_h1>180, O3_nb_d1_h1>200, O3_nb_d1_h1>240
+#' * h1 > y1: O3_nb_d1_h1>160, O3_nb_d1_h1>180, O3_nb_d1_h1>200, O3_nb_d1_h1>240
+#'
+#' @param data input data in rolf format should contain 10min or 30min data of O3 in µg/m3
 #' @param quiet Instead of stopping if no parameter is found return an empty frame. Default FALSE
 #'
 #' @return list with d1, m1, y1 and
@@ -326,6 +330,7 @@ calculate_O3 <- function(data, quiet = FALSE) {
   AOT40 <- convert_conc(AOT40, "O3", "\u00b5g/m3", "ppb")
   AOT40 <- dplyr::filter(AOT40, dplyr::between(.data$month, 4, 9), dplyr::between(.data$hour, 8, 19), .data$value > 40)
   AOT40 <- dplyr::select(AOT40, "starttime", "site", "parameter", "interval", "unit", "value")
+  AOT40 <- dplyr::mutate(AOT40, value = .data$value - 40)
   AOT40 <- resample(AOT40, "sum", "y1", skip_padding = TRUE)
   AOT40 <- dplyr::mutate(AOT40, parameter = as.factor("AOT40"), interval = as.factor("m6,m4-m9"),
                          unit = as.factor("ppbh"))
@@ -347,6 +352,7 @@ calculate_O3 <- function(data, quiet = FALSE) {
 #' error is thrown.
 #'
 #' Statistics:
+#'
 #' * h8gl left aligned
 #' * max h8gl > y1
 #'
@@ -397,11 +403,12 @@ calculate_CO_h8gl <- function(data, quiet = FALSE) {
 #' error is thrown.
 #'
 #' Statistics:
+#'
 #' * h8gl left aligned
 #' * max, n>100, n>120, n>200 of h8gl > y1
 #'
 #'
-#' @param data input data in rolf format should contain 10min or 30min data of O3 in \u00b5g/m3
+#' @param data input data in rolf format should contain 10min or 30min data of O3 in µg/m3
 #' @param quiet Instead of stopping if no parameter is found return an empty frame. Default FALSE
 #'
 #' @return list with h8gl and y1 stats

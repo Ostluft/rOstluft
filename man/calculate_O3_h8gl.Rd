@@ -7,7 +7,7 @@
 calculate_O3_h8gl(data, quiet = FALSE)
 }
 \arguments{
-\item{data}{input data in rolf format should contain 10min or 30min data of O3 in \u00b5g/m3}
+\item{data}{input data in rolf format should contain 10min or 30min data of O3 in µg/m3}
 
 \item{quiet}{Instead of stopping if no parameter is found return an empty frame. Default FALSE}
 }

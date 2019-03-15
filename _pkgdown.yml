@@ -51,6 +51,11 @@ reference:
   - '`treshold_wrapper_function`'
   - '`gap_wrapper_function`'
 
+- title: Statistic calculations
+  desc: Applying resampling of data to get relevant Statistics
+  contents:
+  - starts_with("calculate_")
+
 - title: concentrations conversion
   desc: Functions for converting between Volume and Mass concentrations
   contents:
@@ -66,6 +71,9 @@ reference:
   contents:
   - starts_with("read_")
   - '`split_smn`'
+
+
+
 
 - title: "Long <> Wide Format conversion"
   desc: Convert between rOstluft Long format and an openair compatible Wide format

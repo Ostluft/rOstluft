@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
       </span>
     </div>
 
@@ -208,22 +208,66 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-unit-conversion" class="hasAnchor"><a href="#section-unit-conversion" class="anchor"></a>Unit conversion</h2>
+          <h2 id="section-statistic-calculations" class="hasAnchor"><a href="#section-statistic-calculations" class="anchor"></a>Statistic calculations</h2>
+          <p class="section-desc"><p>Applying resampling of data to get relevant Statistics</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="calculate_CO_h8gl.html">calculate_CO_h8gl()</a></code> </p>
+        </td>
+        <td><p>Calculates CO 8 hour rolling statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_LRV.html">calculate_LRV()</a></code> </p>
+        </td>
+        <td><p>Calculates exceedance of LRV limits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_mass_concentrations.html">calculate_mass_concentrations()</a></code> </p>
+        </td>
+        <td><p>Prepares data for stats calculations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_O3.html">calculate_O3()</a></code> </p>
+        </td>
+        <td><p>Calculates a lot of O3 indicators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_O3_h8gl.html">calculate_O3_h8gl()</a></code> </p>
+        </td>
+        <td><p>Calculates O3 8 hour rolling statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_stats.html">calculate_stats()</a></code> </p>
+        </td>
+        <td><p>Calculates most common stats</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-concentrations-conversion" class="hasAnchor"><a href="#section-concentrations-conversion" class="anchor"></a>concentrations conversion</h2>
           <p class="section-desc"><p>Functions for converting between Volume and Mass concentrations</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="convert_unit.html">convert_unit()</a></code> <code><a href="convert_unit.html">convert_multiple_units()</a></code> </p>
+          <p><code><a href="convert_conc.html">convert_conc()</a></code> <code><a href="convert_conc.html">convert_conc_multiple()</a></code> </p>
         </td>
-        <td><p>Convert the unit of a single parameter</p></td>
+        <td><p>Convert between volume and mass concentrations</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="conversion_fun_factory.html">conversion_fun_factory()</a></code> </p>
+          <p><code><a href="conversion_conc_fun_factory.html">conversion_conc_fun_factory()</a></code> </p>
         </td>
-        <td><p>Factory to generate conversion functions</p></td>
+        <td><p>Factory to generate conc conversion functions</p></td>
       </tr><tr>
         
         <td>
@@ -236,6 +280,12 @@
           <p><code><a href="parts_to_mass.html">parts_to_mass()</a></code> </p>
         </td>
         <td><p>Converts mass to volume concentration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="convert_get_R.html">convert_get_R()</a></code> <code><a href="convert_get_R.html">convert_set_R()</a></code> <code><a href="convert_get_R.html">convert_get_mol_masses()</a></code> <code><a href="convert_get_R.html">convert_set_mol_masses()</a></code> <code><a href="convert_get_R.html">convert_get_conc_lookup()</a></code> <code><a href="convert_get_R.html">convert_set_conc_lookup()</a></code> </p>
+        </td>
+        <td><p>Customize concentration conversion</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -378,7 +428,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-storages-and-formats">Storages and Formats</a></li>
       <li><a href="#section-resampling-data">Resampling data</a></li>
-      <li><a href="#section-unit-conversion">Unit conversion</a></li>
+      <li><a href="#section-statistic-calculations">Statistic calculations</a></li>
+      <li><a href="#section-concentrations-conversion">concentrations conversion</a></li>
       <li><a href="#section-data-read-functions">Data read functions</a></li>
       <li><a href="#section-long-wide-format-conversion">Long &lt;&gt; Wide Format conversion</a></li>
       <li><a href="#section-utility-functions">Utility functions</a></li>

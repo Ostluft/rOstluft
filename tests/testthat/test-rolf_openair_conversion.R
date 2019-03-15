@@ -36,8 +36,8 @@ test_that("rolf <> openair", {
   oa_h1 <- rolf_to_openair(airmo_mixed, interval = "h1")
   oa_list <- rolf_to_openair(airmo_mixed, interval = "h1", as_list = TRUE, keep_ppb = TRUE, keep_interval = TRUE)
 
-  testthat::expect_equivalent(dim(oa_d1), c(31, 64))
-  testthat::expect_equivalent(dim(oa_h1), c(744, 15))
+  testthat::expect_equivalent(dim(oa_d1), c(31, 67))
+  testthat::expect_equivalent(dim(oa_h1), c(744, 16))
   testthat::expect_true(all(c("ws", "wd") %in% rlang::names2(oa_h1))) # check auto renaming of wind params
   testthat::expect_equal(length(oa_list), 19)
 
@@ -56,7 +56,8 @@ test_that("rolf <> openair", {
   testthat::expect_true(all(c("WVv", "WD") %in% res_h1$parameter)) # check auto renaming of wind params
 
   res_d1 <- openair_to_rolf(oa_d1, interval = "d1", units = units_d1)
-  cmp_d1 <- dplyr::filter(airmo_d1, !(.data$unit == "ppb" | .data$unit == "ppm")) %>%
+  cmp_d1 <- dplyr::filter(airmo_d1,
+                stringr::str_starts(.data$parameter, "NOx") | !(.data$unit == "ppb" | .data$unit == "ppm")) %>%
     dplyr::arrange(.data$parameter, .data$starttime)
 
   testthat::expect_equal(

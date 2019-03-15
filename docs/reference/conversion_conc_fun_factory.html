@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>resampling a serie — resample_series • rOstluft</title>
+<title>Factory to generate conc conversion functions — conversion_conc_fun_factory • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="resampling a serie — resample_series" />
+<meta property="og:title" content="Factory to generate conc conversion functions — conversion_conc_fun_factory" />
 
-<meta property="og:description" content="resampling a serie" />
+<meta property="og:description" content="Factory to generate conc conversion functions" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,34 +126,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>resampling a serie</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/resample.R'><code>R/resample.R</code></a></small>
-    <div class="hidden name"><code>resample_series.Rd</code></div>
+    <h1>Factory to generate conc conversion functions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/conversion-conc.R'><code>R/conversion-conc.R</code></a></small>
+    <div class="hidden name"><code>conversion_conc_fun_factory.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>resampling a serie</p>
+    <p>Factory to generate conc conversion functions</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>resample_series</span>(<span class='no'>serie</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>new_interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>,
-  <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename_parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>skip_padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>conversion_conc_fun_factory</span>(<span class='no'>parameter</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>serie</th>
-      <td><p>a tibble in rOstluft long format containing exactly one serie</p></td>
+      <th>parameter</th>
+      <td><p>to convert</p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>start unit</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>target unit</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>addional parameters passed to conversion function. see <code><a href='https://purrr.tidyverse.org/reference/partial.html'>purrr::partial()</a></code>, <code><a href='parts_to_mass.html'>parts_to_mass()</a></code>,
+<code><a href='mass_to_parts.html'>mass_to_parts()</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble with resampled series</p>
+    <p>conversion function with one argument</p>
     
 
   </div>

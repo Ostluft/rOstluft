@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
       </span>
     </div>
 
@@ -137,10 +137,10 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>pad</span>(<span class='no'>data</span>, <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>pad</span>(<span class='no'>data</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>pad_serie</span>(<span class='no'>serie</span>, <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>pad_serie</span>(<span class='no'>serie</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,17 +150,17 @@
       <td><p>tibble in rOstluft long format</p></td>
     </tr>
     <tr>
-      <th>start.date</th>
+      <th>start_date</th>
       <td><p>optional start date for padding. Default min date in series</p></td>
     </tr>
     <tr>
-      <th>end.date</th>
+      <th>end_date</th>
       <td><p>optional end date for padding. Default max date in series</p></td>
     </tr>
     <tr>
-      <th>drop.last</th>
+      <th>drop_last</th>
       <td><p>optional drop the last added time point by padding. Useful when
-resampling and end.date is the first time point of the new interval</p></td>
+resampling and end_date is the first time point of the new interval</p></td>
     </tr>
     <tr>
       <th>serie</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Factory to generate conversion functions — conversion_fun_factory • rOstluft</title>
+<title>Helper function to reduce a list of conversions parameters — apply_convert_conc • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Factory to generate conversion functions — conversion_fun_factory" />
+<meta property="og:title" content="Helper function to reduce a list of conversions parameters — apply_convert_conc" />
 
-<meta property="og:description" content="Factory to generate conversion functions" />
+<meta property="og:description" content="Helper function to reduce a list of conversions parameters" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
       </span>
     </div>
 
@@ -126,44 +126,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Factory to generate conversion functions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/conversion.R'><code>R/conversion.R</code></a></small>
-    <div class="hidden name"><code>conversion_fun_factory.Rd</code></div>
+    <h1>Helper function to reduce a list of conversions parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/conversion-conc.R'><code>R/conversion-conc.R</code></a></small>
+    <div class="hidden name"><code>apply_convert_conc.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Factory to generate conversion functions</p>
+    <p>Helper function to reduce a list of conversions parameters</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>conversion_fun_factory</span>(<span class='no'>parameter</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>apply_convert_conc</span>(<span class='no'>data</span>, <span class='no'>args</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>parameter</th>
-      <td><p>to convert</p></td>
+      <th>data</th>
+      <td><p>to convert the units</p></td>
     </tr>
     <tr>
-      <th>from</th>
-      <td><p>start unit</p></td>
-    </tr>
-    <tr>
-      <th>to</th>
-      <td><p>target unit</p></td>
+      <th>args</th>
+      <td><p>the arguments for the conversion. a named list with parameter, to, from as named item</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>addional parameters passed to conversion function. see <code><a href='https://purrr.tidyverse.org/reference/partial.html'>purrr::partial()</a></code>, <code><a href='parts_to_mass.html'>parts_to_mass()</a></code>,
-<code><a href='mass_to_parts.html'>mass_to_parts()</a></code></p></td>
+      <td><p>additional arguments to pass to convert_units</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>conversion function with one argument</p>
+    <p>result of convert_units</p>
     
 
   </div>

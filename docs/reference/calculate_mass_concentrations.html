@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>resampling a serie — resample_series • rOstluft</title>
+<title>Prepares data for stats calculations — calculate_mass_concentrations • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="resampling a serie — resample_series" />
+<meta property="og:title" content="Prepares data for stats calculations — calculate_mass_concentrations" />
 
-<meta property="og:description" content="resampling a serie" />
+<meta property="og:description" content="Most indicators are calculated from mass concentrations. This functions converts all volume concentrations to mass
+concentration with the exception of NOx. The argument keep_ppb allows to keep the volume concentrations" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,34 +127,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>resampling a serie</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/resample.R'><code>R/resample.R</code></a></small>
-    <div class="hidden name"><code>resample_series.Rd</code></div>
+    <h1>Prepares data for stats calculations</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stats.R'><code>R/stats.R</code></a></small>
+    <div class="hidden name"><code>calculate_mass_concentrations.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>resampling a serie</p>
+    <p>Most indicators are calculated from mass concentrations. This functions converts all volume concentrations to mass
+concentration with the exception of NOx. The argument keep_ppb allows to keep the volume concentrations</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>resample_series</span>(<span class='no'>serie</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>new_interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>,
-  <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename_parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>skip_padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_mass_concentrations</span>(<span class='no'>data</span>, <span class='kw'>keep_ppb</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>serie</th>
-      <td><p>a tibble in rOstluft long format containing exactly one serie</p></td>
+      <th>data</th>
+      <td><p>input data in rolf format</p></td>
+    </tr>
+    <tr>
+      <th>keep_ppb</th>
+      <td><p>usually volume concentrations are not used for analyses and are dropped with the exception of NOx.
+When FALSE drops parameters with ppb/ppm units except NOx. Default FALSE</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble with resampled series</p>
+    <p>tibble in rolf format containing mass concentrations</p>
     
 
   </div>

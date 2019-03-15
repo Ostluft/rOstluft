@@ -222,13 +222,13 @@ calculate_LRV <- function(data, quiet = FALSE) {
   m1_from_h1 <- resample(h1, limits_h1, "m1", data_thresh = 0.8, skip_padding = TRUE)
   m1_from_d1 <- resample(d1, limits_d1, "m1", data_thresh = 0.8, skip_padding = TRUE)
   m1_from_d1 <- dplyr::mutate(m1_from_d1,
-                              parameter = dplyr::recode(.data$parameter, "O3_max_h1_nb_d1>120" = "O3_nb_d1_h1>120")
+                              parameter = dplyr::recode(.data$parameter, "O3_max_h1_nb_d1>120" = "O3_nb_d1_mit_h1>120")
   )
 
   y1_from_h1 <- resample(h1, limits_h1, "y1", data_thresh = 0.8, max_gap = max_gap, skip_padding = TRUE)
   y1_from_d1 <- resample(d1, limits_d1, "y1", data_thresh = 0.8, max_gap = max_gap, skip_padding = TRUE)
   y1_from_d1 <- dplyr::mutate(y1_from_d1,
-                              parameter = dplyr::recode(.data$parameter, "O3_max_h1_nb_d1>120" = "O3_nb_d1_h1>120")
+                              parameter = dplyr::recode(.data$parameter, "O3_max_h1_nb_d1>120" = "O3_nb_d1_mit_h1>120")
   )
 
   list(
@@ -298,10 +298,10 @@ calculate_O3 <- function(data, quiet = FALSE) {
   )
 
   mapping <- list(
-    "O3_max_h1_nb_d1>160" = "O3_nb_d1_h1>160",
-    "O3_max_h1_nb_d1>180" = "O3_nb_d1_h1>180",
-    "O3_max_h1_nb_d1>200" = "O3_nb_d1_h1>200",
-    "O3_max_h1_nb_d1>240" = "O3_nb_d1_h1>240"
+    "O3_max_h1_nb_d1>160" = "O3_nb_d1_mit_h1>160",
+    "O3_max_h1_nb_d1>180" = "O3_nb_d1_mit_h1>180",
+    "O3_max_h1_nb_d1>200" = "O3_nb_d1_mit_h1>200",
+    "O3_max_h1_nb_d1>240" = "O3_nb_d1_mit_h1>240"
   )
 
   m1_nb_d1_h1 <- resample(d1_from_h1, indicators_nb_d1_h1, "m1", data_thresh = 0.8, skip_padding = TRUE)
@@ -309,14 +309,14 @@ calculate_O3 <- function(data, quiet = FALSE) {
                                parameter = dplyr::recode(.data$parameter, !!!mapping)
   )
 
-  y1_nb_d1_h1 <- resample(d1_from_h1, indicators_nb_d1_h1, "m1", data_thresh = 0.8, max_gap = max_gap,
+  y1_nb_d1_h1 <- resample(d1_from_h1, indicators_nb_d1_h1, "y1", data_thresh = 0.8, max_gap = max_gap,
                           skip_padding = TRUE)
   y1_nb_d1_h1 <- dplyr::mutate(y1_nb_d1_h1,
                                parameter = dplyr::recode(.data$parameter, !!!mapping)
   )
 
-  # calculate hours and month to select the correct data for AOT40 (sum ppb beween 8:00 - 20:00 Etc/GMT-1) and
-  # mean_7h (between xx:00 - xx:00 tz = xxx) from April until September (m6,m4-m9)
+  # calculate hours and month to select the correct data for AOT40 (sum ppb beween 8:00 - 20:00 CET) and
+  # mean_7h (between 09:00 - 16:00 CET) from April until September
   AOT40 <- dplyr::mutate(h1,
                          hour = lubridate::hour(.data$starttime),
                          month = lubridate::month(.data$starttime)
@@ -325,21 +325,17 @@ calculate_O3 <- function(data, quiet = FALSE) {
   mean_7h <- dplyr::filter(AOT40, dplyr::between(.data$month, 4, 9), dplyr::between(.data$hour, 9, 15))
   mean_7h <- dplyr::select(mean_7h, "starttime", "site", "parameter", "interval", "unit", "value")
   mean_7h <- resample(mean_7h, "mean", "y1", skip_padding = TRUE)
-  mean_7h <- dplyr::mutate(mean_7h, interval = as.factor("m6,m4-m9"))
+  mean_7h <- dplyr::mutate(mean_7h, parameter = as.factor("O3_h709001600"))
 
   AOT40 <- convert_conc(AOT40, "O3", "\u00b5g/m3", "ppb")
-  AOT40 <- dplyr::filter(AOT40, dplyr::between(.data$month, 4, 9), dplyr::between(.data$hour, 8, 19), .data$value > 40)
+  AOT40 <- dplyr::filter(AOT40, dplyr::between(.data$month, 4, 9), dplyr::between(.data$hour, 8, 19))
   AOT40 <- dplyr::select(AOT40, "starttime", "site", "parameter", "interval", "unit", "value")
-  AOT40 <- dplyr::mutate(AOT40, value = .data$value - 40)
-  AOT40 <- resample(AOT40, "sum", "y1", skip_padding = TRUE)
-  AOT40 <- dplyr::mutate(AOT40, parameter = as.factor("AOT40"), interval = as.factor("m6,m4-m9"),
-                         unit = as.factor("ppbh"))
+  AOT40 <- resample(AOT40, "AOT40k", "y1", skip_padding = TRUE)
 
   list(
     d1 = d1_from_h1,
     m1 = bind_rows_with_factor_columns(m1_from_h1, m1_from_d1, m1_nb_d1_h1),
-    y1 = bind_rows_with_factor_columns(y1_from_h1, y1_from_d1, y1_nb_d1_h1),
-    "m6,m4-m9" = bind_rows_with_factor_columns(mean_7h, AOT40)
+    y1 = bind_rows_with_factor_columns(y1_from_h1, y1_from_d1, y1_nb_d1_h1, mean_7h, AOT40)
   )
 }
 

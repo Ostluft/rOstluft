@@ -76,7 +76,7 @@ methods renames the parameter and changes the unit. A list of method names can o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
       </span>
     </div>
 
@@ -159,9 +159,10 @@ methods renames the parameter and changes the unit. A list of method names can o
     
     </div>
 
-    <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>new_interval</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename.parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>start.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end.date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop.last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>new_interval</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename_parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>skip_padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,7 +185,7 @@ See section Statistical methods and examples</p></td>
       <td><p>New interval. Must be longer than actual interval (not checked)</p></td>
     </tr>
     <tr>
-      <th>data.thresh</th>
+      <th>data_thresh</th>
       <td><p>optional minimum data capture threshold in to use</p></td>
     </tr>
     <tr>
@@ -192,7 +193,7 @@ See section Statistical methods and examples</p></td>
       <td><p>optional maxium Number of consecutive NA values</p></td>
     </tr>
     <tr>
-      <th>rename.parameter</th>
+      <th>rename_parameter</th>
       <td><p>optional rename parameter</p></td>
     </tr>
     <tr>
@@ -200,16 +201,20 @@ See section Statistical methods and examples</p></td>
       <td><p>The percentile level used when statistic = "percentile". The default is 0.95</p></td>
     </tr>
     <tr>
-      <th>start.date</th>
+      <th>skip_padding</th>
+      <td><p>don't pad the data before applying statistics. Default FALSE</p></td>
+    </tr>
+    <tr>
+      <th>start_date</th>
       <td><p>optional start date for padding. Default min date in series floored to the new interval</p></td>
     </tr>
     <tr>
-      <th>end.date</th>
+      <th>end_date</th>
       <td><p>optional end date for padding. Default max date in series ceiled to the new interval</p></td>
     </tr>
     <tr>
-      <th>drop.last</th>
-      <td><p>optional drop the last added time point by padding. Default False, true if no end.date
+      <th>drop_last</th>
+      <td><p>optional drop the last added time point by padding. Default False, true if no end_date
 provided and max date != ceiled max date.</p></td>
     </tr>
     </table>
@@ -278,7 +283,7 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
   <span class='st'>"RainDur"</span> <span class='kw'>=</span> <span class='st'>"sum"</span>,
   <span class='st'>"O3"</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"mean"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>, <span class='st'>"n"</span>)
 )
-<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>d1_statistics</span>, <span class='st'>"d1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 186 x 6</span><span>
+<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>d1_statistics</span>, <span class='st'>"d1"</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 186 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit  value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    76.0
@@ -301,7 +306,7 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
   <span class='st'>"RainDur"</span> <span class='kw'>=</span> <span class='st'>"sum"</span>,
   <span class='st'>"NO"</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"coverage"</span>, <span class='st'>"mean"</span>)
 )
-<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>h1_statistics</span>, <span class='st'>"h1"</span>, <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4,464 x 6</span><span>
+<span class='fu'>resample</span>(<span class='no'>airmo_min30</span>, <span class='no'>h1_statistics</span>, <span class='st'>"h1"</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4,464 x 6</span><span>
 #&gt;    starttime           site                  parameter      interval unit  value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100

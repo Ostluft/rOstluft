@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Helper function to reduce a list of conversions parameters — apply_convert_unit • rOstluft</title>
+<title>Calculates exceedance of LRV limits — calculate_LRV • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,13 @@
 
 
 
-<meta property="og:title" content="Helper function to reduce a list of conversions parameters — apply_convert_unit" />
+<meta property="og:title" content="Calculates exceedance of LRV limits — calculate_LRV" />
 
-<meta property="og:description" content="Helper function to reduce a list of conversions parameters" />
+<meta property="og:description" content="Calculates the number of exceedances of the limits defined in the
+LRV:
+h1 &amp;gt; y1: n&amp;gt;120 of O3
+d1 &amp;gt; y1: n&amp;gt;100 of SO2, n&amp;gt;80 of NO2, n&amp;gt;8 of CO, n&amp;gt;50 of PM10, n&amp;gt;25 of PM2.5, n&amp;gt;120 of O3_max_h1 as O3_nb_d1_h1&amp;gt;120
+" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
       </span>
     </div>
 
@@ -126,39 +130,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Helper function to reduce a list of conversions parameters</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/conversion.R'><code>R/conversion.R</code></a></small>
-    <div class="hidden name"><code>apply_convert_unit.Rd</code></div>
+    <h1>Calculates exceedance of LRV limits</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stats.R'><code>R/stats.R</code></a></small>
+    <div class="hidden name"><code>calculate_LRV.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Helper function to reduce a list of conversions parameters</p>
+    <p>Calculates the number of exceedances of the limits defined in the
+<a href='https://www.admin.ch/opc/de/classified-compilation/19850321/index.html'>LRV</a>:</p><ul>
+<li><p>h1 &gt; y1: n&gt;120 of O3</p></li>
+<li><p>d1 &gt; y1: n&gt;100 of SO2, n&gt;80 of NO2, n&gt;8 of CO, n&gt;50 of PM10, n&gt;25 of PM2.5, n&gt;120 of O3_max_h1 as O3_nb_d1_h1&gt;120</p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>apply_convert_unit</span>(<span class='no'>data</span>, <span class='no'>args</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_LRV</span>(<span class='no'>data</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>to convert the units</p></td>
+      <td><p>input data in rolf format should contain 10min or 30min data and one of CO, NO2, SO2, O3, PM10, PM2.5 as
+mass concentration</p></td>
     </tr>
     <tr>
-      <th>args</th>
-      <td><p>the arguments for the conversion. a named list with parameter, to, from as named item</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments to pass to convert_units</p></td>
+      <th>quiet</th>
+      <td><p>Instead of stopping if no parameter is found return an empty frame. Default FALSE</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>result of convert_units</p>
+    <p>list with m1 and y1 stats</p>
     
 
   </div>

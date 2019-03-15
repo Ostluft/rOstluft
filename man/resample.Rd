@@ -4,9 +4,10 @@
 \alias{resample}
 \title{Resampling data}
 \usage{
-resample(data, statistic = "mean", new_interval, data.thresh = NULL,
-  max_gap = NULL, rename.parameter = TRUE, percentile = 0.95,
-  start.date = NULL, end.date = NULL, drop.last = FALSE)
+resample(data, statistic = "mean", new_interval, data_thresh = NULL,
+  max_gap = NULL, rename_parameter = TRUE, percentile = 0.95,
+  skip_padding = FALSE, start_date = NULL, end_date = NULL,
+  drop_last = FALSE)
 }
 \arguments{
 \item{data}{A tibble in rOstluft long format}
@@ -20,19 +21,21 @@ See section Statistical methods and examples}
 
 \item{new_interval}{New interval. Must be longer than actual interval (not checked)}
 
-\item{data.thresh}{optional minimum data capture threshold in to use}
+\item{data_thresh}{optional minimum data capture threshold in to use}
 
 \item{max_gap}{optional maxium Number of consecutive NA values}
 
-\item{rename.parameter}{optional rename parameter}
+\item{rename_parameter}{optional rename parameter}
 
 \item{percentile}{The percentile level used when statistic = "percentile". The default is 0.95}
 
-\item{start.date}{optional start date for padding. Default min date in series floored to the new interval}
+\item{skip_padding}{don't pad the data before applying statistics. Default FALSE}
 
-\item{end.date}{optional end date for padding. Default max date in series ceiled to the new interval}
+\item{start_date}{optional start date for padding. Default min date in series floored to the new interval}
 
-\item{drop.last}{optional drop the last added time point by padding. Default False, true if no end.date
+\item{end_date}{optional end date for padding. Default max date in series ceiled to the new interval}
+
+\item{drop_last}{optional drop the last added time point by padding. Default False, true if no end_date
 provided and max date != ceiled max date.}
 }
 \value{
@@ -115,7 +118,7 @@ d1_statistics <- list(
   "RainDur" = "sum",
   "O3" = list("mean", "max", "min", "n")
 )
-resample(airmo_min30, d1_statistics, "d1", data.thresh = 0.8)
+resample(airmo_min30, d1_statistics, "d1", data_thresh = 0.8)
 
 # Note: wind parameters don't support multiple methods via list!
 h1_statistics <- list(
@@ -126,7 +129,7 @@ h1_statistics <- list(
   "RainDur" = "sum",
   "NO" = list("coverage", "mean")
 )
-resample(airmo_min30, h1_statistics, "h1", data.thresh = 0.8)
+resample(airmo_min30, h1_statistics, "h1", data_thresh = 0.8)
 
 # Note: all resulting values should be NA -> gap is to big (480 * min30 = 10 days)
 y1_statistics <- list(

@@ -224,7 +224,7 @@ einige Hinweise und Tipps.
 ## Verwende readr Funktionen und definiere die Zeichenkodierung
 
 Ein generelles Problem beim einlesen von Textdateien ist die [Zeichenkodierung](https://de.wikipedia.org/wiki/Zeichenkodierung). 
-Die meisten haben vermutlich "\uFFFD" schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von 
+Die meisten haben vermutlich "�" schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von 
 `read_xxx()` Funktionen sind UTF-8 kodiert. Mit dem [readr Packages](https://readr.tidyverse.org/index.html) wird bei 
 korrekter Definition der [Locale](https://readr.tidyverse.org/articles/locales.html#character) der Text automatisch 
 zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder data.table::fread().
@@ -235,12 +235,14 @@ zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder data.table::fre
 Für ein reibungsloses Zusammenspiel mit den Stores zu garantieren muss das Format rolf eingehalten werden. rolf setzt 
 einen tibble mit folgenden Spalten und Klassen voraus:
 
-* **"starttime"**: POSIXct
-* **"site"**: factor
-* **"parameter"**: factor
-* **"interval"**: factor
-* **"unit"**: factor
-* **"value"**: double
+| Spalte          | Klasse  |
+|-----------------|---------|
+| **"starttime"** | POSIXct |
+| **"site"**      | factor  |
+| **"parameter"** | factor  |
+| **"interval"**  | factor  |
+| **"unit"**      | factor  |
+| **"value"**     | double  |
 
 Selbst wenn in der Datei keine Einheiten enthalten sind, ist es besser die Spalte unit mit NA zu initialisieren. Ein 
 weiterer Trick ist es die Spalten am Ende explizit zu selektionieren. Hier ein Beispiel, wie es in `read_smn()` gelöst 
@@ -457,7 +459,40 @@ Die weitere Optionen für die Funktion `rolf_to_openair()` sind in der Dokumenta
 # Resampling von Daten
 
 
-# Einheitenumwandlung
+# Umwandlung von Volumen- und Massenkonzentrationen
+
+Die Umwandlung der Konzentrationen erfolgt äquivalent zu den Berechnungen in der AIRMO. Sollen andere Konstanten 
+verwendet werden, ist die Dokumentation von `convert_set_R()` zu konsultieren. Die Funktionen `convert_conc()` und 
+`convert_conc_multiple()` verfügen beide über Varianten wie die umgewandelten Daten zurückgegeben werden. Definiert 
+wird dies mit dem Argument method. Bei "return" werden nur die umgewandelten Daten zurückgegeben, bei "append" werden 
+sie am Ende angehängt und zuletzt bei "replace" werden die ursprünglichen Daten ersetzt.
+
+```{r}
+input <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_min30_2013_Jan.csv"))
+
+# Behalte nur Volumenkonzentrationen im input
+input <- dplyr::filter(input, .data$unit == "ppb" | .data$unit == "ppm")
+
+convert_conc(input, "NO", "ppb", "µg/m3", method = "return")
+
+conversions <- tibble::tribble(
+  ~parameter, ~from, ~to,
+  "CO", "ppm", "mg/m3",
+  "NO", "ppb", "µg/m3",
+  "O3", "ppb", "µg/m3",
+  "NO2", "ppb", "µg/m3",
+  "SO2", "ppb", "µg/m3"
+)
+convert_conc_multiple(input, conversions, method = "return") %>% 
+  dplyr::arrange(.data$starttime)
+
+convert_conc_multiple(input, conversions, method = "append") %>% 
+  dplyr::arrange(.data$starttime)
+
+convert_conc_multiple(input, conversions, method = "replace") %>% 
+  dplyr::arrange(.data$starttime)
+
+```
 
 
 # Lokale Daten löschen

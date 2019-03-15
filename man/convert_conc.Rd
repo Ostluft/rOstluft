@@ -3,7 +3,7 @@
 \name{convert_conc}
 \alias{convert_conc}
 \alias{convert_conc_multiple}
-\title{Convert the concentration of a single parameter}
+\title{Convert between volume and mass concentrations}
 \usage{
 convert_conc(data, parameter, from, to, method = "return", ...)
 

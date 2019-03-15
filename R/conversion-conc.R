@@ -311,7 +311,7 @@ convert_get_R <- function() {
 
 #' Title
 #'
-#' @param R new value for molar gas constant in [kg * m2 / (s2 * mol * K)]
+#' @param R new value for molar gas constant in \preformatted{[kg * m2 / (s2 * mol * K)]}
 #'
 #' @export
 #'
@@ -333,7 +333,8 @@ convert_get_mol_masses <- function() {
 }
 
 
-#' @param mol_masses A tibble with one row, parameter as name of column and mol mass as bare double value in [g / mol]
+#' @param mol_masses A tibble with one row, parameter as name of column and mol mass as bare double value in
+#'   \preformatted{[g / mol]}
 #'
 #' @export
 #'

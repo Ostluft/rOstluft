@@ -22,9 +22,10 @@ convert_get_conc_lookup()
 convert_set_conc_lookup(lookup)
 }
 \arguments{
-\item{R}{new value for molar gas constant in \link{kg * m2 / (s2 * mol * K)}}
+\item{R}{new value for molar gas constant in \preformatted{[kg * m2 / (s2 * mol * K)]}}
 
-\item{mol_masses}{A tibble with one row, parameter as name of column and mol mass as bare double value in \link{g / mol}}
+\item{mol_masses}{A tibble with one row, parameter as name of column and mol mass as bare double value in
+\preformatted{[g / mol]}}
 
 \item{lookup}{new lookup table. For Details see section Lookup Table or examples}
 }

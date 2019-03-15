@@ -17,8 +17,8 @@
 #' @param as_list optional, if TRUE returns a list a tibble for each parameter and keeps the unit information. Handy
 #'   for applying functions with purrr.
 #' @param interval optional filter for interval
-#' @param keep_ppb usually volume concentrations are not used for analyses and are dropped. When TRUE keep parameters
-#'   with ppb/ppm units. Default FALSE
+#' @param keep_ppb usually volume concentrations are not used for analyses and are dropped with the exception of NOx.
+#'   When FALSE drops parameters with ppb/ppm units except NOx. Default FALSE
 #' @param keep_interval keep the "interval" column. Default FALSE
 #' @param ws renames this parameter to "ws". Default "WVv". Set ws = NULL to disable renaming
 #' @param wd renames this parameter to "wd". Default "WD". Set wd = NULL to disable renaming
@@ -44,7 +44,7 @@ rolf_to_openair <- function(data, as_list = FALSE, interval = NULL, keep_ppb = F
   }
 
   if (isFALSE(keep_ppb)) {
-    data <- dplyr::filter(data, !(.data$unit == "ppb" | .data$unit == "ppm"))
+    data <-  dplyr::filter(data, .data$parameter == "NOx" | !(.data$unit == "ppb" | .data$unit == "ppm"))
   }
 
   if (!is.null(ws) && ws %in% levels(data$parameter)) {

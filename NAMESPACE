@@ -2,7 +2,11 @@
 
 export("%>%")
 export(bind_rows_with_factor_columns)
+export(calculate_CO_h8gl)
 export(calculate_LRV)
+export(calculate_O3)
+export(calculate_O3_h8gl)
+export(calculate_mass_concentrations)
 export(calculate_stats)
 export(conversion_conc_fun_factory)
 export(convert_conc)

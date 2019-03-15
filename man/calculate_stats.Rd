@@ -4,20 +4,22 @@
 \alias{calculate_stats}
 \title{Calculates most common stats}
 \usage{
-calculate_stats(input)
+calculate_stats(data)
 }
 \arguments{
-\item{input}{data in rolf format}
+\item{data}{input data in rolf format}
 }
 \value{
 list with stats for h1, d1, m1, y1
 }
 \description{
-Calculates the most common used stats from min10 or min30 input values:
+Calculates the most common used stats from min10 or min30 data values for every parameter:
 \itemize{
-\item Averages (wind vector and scalar, RainDur Sum): input > h1, d1, m1, y1
-\item min max:  input > d1, m1, y1  &  d1 > m1, y1
-\item n: input > y1  &  d1 > y1
-\item perc95 (perc02 & perc98 for O3): input > y1
+\item input > h1, d1, m1, y1: Averages (wind vector and scalar, RainDur Sum):
+\item input > y1: min, max, n, perc95 (perc98, perc02 for O3, only n for RainDur)
+\item input > m1: min, max (no stats for RainDur)
+\item input > d1: min, max (no stats for RainDur)
+\item d1 > y1: min, max, n (no stats for RainDur)
+\item d1 > m1: min, max (no stats for RainDur)
 }
 }

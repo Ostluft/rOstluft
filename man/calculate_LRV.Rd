@@ -4,14 +4,22 @@
 \alias{calculate_LRV}
 \title{Calculates exceedance of LRV limits}
 \usage{
-calculate_LRV(input)
+calculate_LRV(data, quiet = FALSE)
 }
 \arguments{
-\item{input}{data in rolf format}
+\item{data}{input data in rolf format should contain 10min or 30min data and one of CO, NO2, SO2, O3, PM10, PM2.5 as
+mass concentration}
+
+\item{quiet}{Instead of stopping if no parameter is found return an empty frame. Default FALSE}
 }
 \value{
 list with m1 and y1 stats
 }
 \description{
-Calculates exceedance of LRV limits
+Calculates the number of exceedances of the limits defined in the
+\href{https://www.admin.ch/opc/de/classified-compilation/19850321/index.html}{LRV}:
+\itemize{
+\item h1 > y1: n>120 of O3
+\item d1 > y1: n>100 of SO2, n>80 of NO2, n>8 of CO, n>50 of PM10, n>25 of PM2.5, n>120 of O3_max_h1 as O3_nb_d1_h1>120
+}
 }

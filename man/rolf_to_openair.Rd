@@ -15,8 +15,8 @@ for applying functions with purrr.}
 
 \item{interval}{optional filter for interval}
 
-\item{keep_ppb}{usually volume concentrations are not used for analyses and are dropped. When TRUE keep parameters
-with ppb/ppm units. Default FALSE}
+\item{keep_ppb}{usually volume concentrations are not used for analyses and are dropped with the exception of NOx.
+When FALSE drops parameters with ppb/ppm units except NOx. Default FALSE}
 
 \item{keep_interval}{keep the "interval" column. Default FALSE}
 

@@ -1,7 +1,101 @@
+#' Expands compact statstable to a table with one stats per row
+#'
+#' @param statstable compact statstable
+#' @param sep seperator of combined values
+#'
+#' @return expanded statstable
+#' @export
+expand_statstable <- function(statstable, sep = "\\s*,\\s*") {
+  statstable <- tidyr::separate_rows(statstable, parameter, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, statistic, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, from, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, to, sep  = sep)
+  statstable
+}
+
+
+#' Create resample compatible statistic lists
+#'
+#' Could be exported for user to debug his table
+#'
+#' @param table statstable
+#' @param from interval to generate statistic list
+#' @param inputs parameters in input
+#'
+#' @return list with statistic list for every to
+#'
+#' @keywords internal
+get_statistics_from_table <- function(table, from, inputs = NULL) {
+
+  res <- dplyr::filter(table, .data$from == !!from)
+  res <- dplyr::group_by(res, .data$to)
+  keys <- dplyr::group_keys(res)
+  res <- dplyr::group_split(res)
+  res <- purrr::map(res, get_list)
+  res <- rlang::set_names(res, keys$to)
+
+  # set default statistic to drop
+  res <- purrr::map(res, append_default)
+
+  # expand statistics with input parameters
+  if (!is.null(inputs)) {
+    res <- purrr::map(res, expand_inputs, inputs = inputs)
+  }
+}
+
+
+#' convert table to resample compatible list
+#'
+#' @param table statstable
+#'
+#' @return list
+#'
+#' @keywords internal
+get_list <- function(table) {
+  table <- dplyr::group_by(table, parameter)
+  table <- dplyr::summarise(table, statistic = list(.data$statistic))
+  res <- rlang::set_names(table$statistic, table$parameter)
+  purrr::map(res, ~ if (length(.x) > 1) { as.list(.x) } else { .x } )
+}
+
+#' Appends default_statistic drop if necessary
+#'
+#' @param x statistic list
+#'
+#' @return statistic list containing a default_statistic
+#'
+#' @keywords internal
+append_default <- function(x) {
+  if (is.null(x[["default_statistic"]])) {
+    x["default_statistic"] <- "drop"
+  }
+  x
+}
+
+#' Adds statistics for parameters in inputs
+#'
+#' @param x statistic list
+#' @param inputs parameters in input
+#'
+#' @return expanded statistic list
+#'
+#' @keywords internal
+expand_inputs <- function(x, inputs) {
+  if (!is.null(x[["_inputs_"]])) {
+    for (parameter in inputs) {
+      if (is.null(x[[parameter]])) {
+        x[[parameter]] <- x[["_inputs_"]]
+      }
+    }
+    x[["_inputs_"]] <- NULL
+  }
+  x
+}
+
 #' Calculates stats described in a table
 #'
 #' @description
-#' With variues caveats:
+#' With various caveats:
 #'
 #' * data_thresh = 0.8 for all stats
 #' * No combining wind averaging with other stats. they must have there own row
@@ -11,56 +105,34 @@
 #' @param data input data in rolf format
 #' @param statstable description of statistics to calculate in table form
 #' @param sep seperator for combined values in statstable
+#' @param keep_input should the input data be kept in return list as item input. Default FALSE
 #' @param order defines the order of calculation in the from column
 #'
 #' @return list with one item per to interval
 #' @export
-calculate_statstable <- function(data, statstable, sep = ",",
+calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE,
                                  order = c("input", "h1", "h8gl", "d1", "m1", "y1")) {
-  ####### HELPER FUNCTIONS  #######
-
-  # create statistic list for resample for from interval from table
-  get_statistics_from_table <- function(table, from) {
-    res <- dplyr::filter(table, .data$from == !!from)
-    res <- dplyr::group_by(res, .data$to)
-    keys <- dplyr::group_keys(res)
-    res <- dplyr::group_split(res)
-    res <- purrr::map(res, get_list)
-    res <- rlang::set_names(res, keys$to)
-
-    # set default statistic to drop
-    purrr::map(res, append_default)
-  }
-
-  # convert table to resample compatible list
-  get_list <- function(table) {
-    table <- dplyr::group_by(table, parameter)
-    table <- dplyr::summarise(table, statistic = list(.data$statistic))
-    res <- rlang::set_names(table$statistic, table$parameter)
-    purrr::map(res, ~ if (length(.x) > 1) { as.list(.x) } else { .x } )
-  }
-
-  append_default <- function(x) {
-    if (is.null(x$default_statistic)) {
-      x["default_statistic"] <- "drop"
-    }
-    x
-  }
-
 
   # hand over calculation of h8gl to open air.
   calc_h8gl <- function(parameter, data) {
-    result <- rolf_to_openair_single(data, parameter)
-    result <- openair::rollingMean(result, pollutant = parameter, new.name = parameter,
-                                   width = 8, align = "left", data.thresh = 80)
-    openair_to_rolf(result, interval = "h8gl")
+    data <- dplyr::filter(data, .data$parameter == !!parameter)
+
+    if (nrow(data) < 8) {
+      data[0, ]
+    } else {
+      data <- dplyr::arrange(data, .data$starttime)
+      data$value <- .Call("rollMean", data$value, 8, 80, "left", PACKAGE = "openair")
+      data <- dplyr::mutate(data, interval = as.factor("h8gl"))
+      data
+    }
   }
 
 
   # wrapper around resample  to handle exceptions for max_gap and h8gl
   calc_stats <- function(data, stats, to, from) {
-    if (to == "y1" && from %in% c("min10", "min30", "h1", "d1")) {
-      max_gap <- switch(from, "min10" = 1440, "min30" = 480, "h1" = 240, "d1" = 10)
+    if (to == "y1" && from %in% c("input", "min10", "min30", "h1", "d1")) {
+      interval <- as.character(dplyr::first(data[[from]]$interval)) # we need to take the interval from the data for case input
+      max_gap <- switch(interval, "min10" = 1440, "min30" = 480, "h1" = 240, "d1" = 10)
       result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = 0.8, max_gap = max_gap)
     } else if (to == "h8gl") {
       if (from != "h1") {
@@ -87,16 +159,15 @@ calculate_statstable <- function(data, statstable, sep = ",",
 
   # expand statstable, create for a row for every combined cell
   # probably not reasonable for all columns
-  statstable <- tidyr::separate_rows(statstable, parameter, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, statistic, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, from, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, to, sep  = sep)
+  statstable <- expand_statstable(statstable, sep)
 
   # prepare res for reduce/loop
-  intervals <- dplyr::distinct(statstable, to)[["to"]]
+  intervals <- dplyr::distinct(statstable, .data$to)[["to"]]
   res <- purrr::map(intervals, ~ data[0, ])
   res <- rlang::set_names(res, intervals)
-  res$input <- pad_input(input)
+  input_interval <- detect_interval(data)  # use detect interval to be sure only one interval is in data
+  input_params <- as.character(dplyr::distinct(data, .data$parameter)[["parameter"]])
+  res$input <- pad_input(data)
 
   # we need to seperate wind stats and all other, because we cannot combine them
   # for restrictions in resample
@@ -105,17 +176,21 @@ calculate_statstable <- function(data, statstable, sep = ",",
   statstable <- statstable[!is_wind_stat, ]
 
   # get needed steps to calculate all stats
-  order <- dplyr::intersect(order, wind_stats$from)
-  for (from in order) {
-    stats <- get_statistics_from_table(wind_stats, from)
+  loop_order <- dplyr::intersect(order, wind_stats$from)
+  for (from in loop_order) {
+    stats <- get_statistics_from_table(wind_stats, from, input_params)
     res <- purrr::reduce2(stats, names(stats), calc_stats, .init = res, from = from)
   }
 
   # get needed steps to calculate all stats
-  order <- dplyr::intersect(order, statstable$from)
-  for (from in order) {
-    stats <- get_statistics_from_table(statstable, from)
+  loop_order <- dplyr::intersect(order, statstable$from)
+  for (from in loop_order) {
+    stats <- get_statistics_from_table(statstable, from, input_params)
     res <- purrr::reduce2(stats, names(stats), calc_stats, .init = res, from = from)
+  }
+
+  if (!keep_input) {
+    res[["input"]] <- NULL
   }
   res
 }

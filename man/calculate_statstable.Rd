@@ -4,8 +4,9 @@
 \alias{calculate_statstable}
 \title{Calculates stats described in a table}
 \usage{
-calculate_statstable(data, statstable, sep = ",", order = c("input",
-  "h1", "h8gl", "d1", "m1", "y1"))
+calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
+  keep_input = FALSE, order = c("input", "h1", "h8gl", "d1", "m1",
+  "y1"))
 }
 \arguments{
 \item{data}{input data in rolf format}
@@ -14,13 +15,15 @@ calculate_statstable(data, statstable, sep = ",", order = c("input",
 
 \item{sep}{seperator for combined values in statstable}
 
+\item{keep_input}{should the input data be kept in return list as item input. Default FALSE}
+
 \item{order}{defines the order of calculation in the from column}
 }
 \value{
 list with one item per to interval
 }
 \description{
-With variues caveats:
+With various caveats:
 \itemize{
 \item data_thresh = 0.8 for all stats
 \item No combining wind averaging with other stats. they must have there own row

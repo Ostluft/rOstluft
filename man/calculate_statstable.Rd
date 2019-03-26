@@ -17,11 +17,11 @@ calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
 
 \item{keep_input}{should the input data be kept in return list as item input. Default FALSE}
 
+\item{data_thresh}{minimum data capture threshold 0 - 1.0 to use. Default 0.8}
+
 \item{max_gap}{in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days}
 
 \item{order}{defines the order of calculation in the from column}
-
-\item{threshold}{minimum data capture threshold 0 - 1.0 to use. Default 0.8}
 }
 \value{
 list with one item per to interval

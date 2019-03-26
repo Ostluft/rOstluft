@@ -54,6 +54,8 @@ reference:
 - title: Statistic calculations
   desc: Applying resampling of data to get relevant Statistics
   contents:
+  - calculate_statstable
+  - expand_statstable
   - starts_with("calculate_")
 
 - title: concentrations conversion

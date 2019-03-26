@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-03-15</h4>
+            <h4 class="date">2019-03-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -143,7 +143,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden Zugriff wird nur überprüft, ob die Daten noch identisch sind.</p>
 <p>Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"tutorial"</span>, <span class="dt">format =</span> <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">bucket =</span> <span class="st">"rostluft"</span>, <span class="dt">prefix =</span> <span class="st">"aqmet"</span>)
-<span class="co">#&gt; store tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\tutorial'</span></code></pre></div>
+<span class="co">#&gt; store tutorial initialized under 'C:\Users\tom\AppData\Local\rOstluft\tutorial'</span></code></pre></div>
 <p><em>TODO: Beschreibung was die verschiedenen Argument bedeuten</em></p>
 <p>Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:</p>
 <ul>
@@ -154,35 +154,35 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">content &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_content</span>()
 content
-<span class="co">#&gt; # A tibble: 9,874 x 6</span>
-<span class="co">#&gt;     year interval site             parameter unit         n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;            &lt;fct&gt;     &lt;fct&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1  2019 min10    ETHZ_Hönggerberg Hr        %        10357</span>
-<span class="co">#&gt;  2  2019 min10    ETHZ_Hönggerberg illum     log10lux 10357</span>
-<span class="co">#&gt;  3  2019 min10    ETHZ_Hönggerberg p         hPa      10358</span>
-<span class="co">#&gt;  4  2019 min10    ETHZ_Hönggerberg RainSum   mm       10357</span>
-<span class="co">#&gt;  5  2019 min10    ETHZ_Hönggerberg StrGlo    W/m2     10357</span>
-<span class="co">#&gt;  6  2019 min10    ETHZ_Hönggerberg T         °C       10357</span>
-<span class="co">#&gt;  7  2019 min10    ETHZ_Hönggerberg T_dew     °C       10357</span>
-<span class="co">#&gt;  8  2019 min10    ETHZ_Hönggerberg wcp_east  m/s      10358</span>
-<span class="co">#&gt;  9  2019 min10    ETHZ_Hönggerberg wcp_north m/s      10358</span>
-<span class="co">#&gt; 10  2019 min10    ETHZ_Hönggerberg WD        °        10358</span>
-<span class="co">#&gt; # ... with 9,864 more rows</span>
+<span class="co">#&gt; # A tibble: 146,220 x 6</span>
+<span class="co">#&gt;     year interval site      parameter unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2018 h8gl     8058_0030 O3        µg/m3  8672</span>
+<span class="co">#&gt;  2  2018 y1       8058_0030 Hr        %Hr       1</span>
+<span class="co">#&gt;  3  2018 y1       8058_0030 NO2       µg/m3     1</span>
+<span class="co">#&gt;  4  2018 y1       8058_0030 NO        µg/m3     1</span>
+<span class="co">#&gt;  5  2018 y1       8058_0030 NOx       ppb       1</span>
+<span class="co">#&gt;  6  2018 y1       8058_0030 O3        µg/m3     1</span>
+<span class="co">#&gt;  7  2018 y1       8058_0030 PM10      µg/m3     1</span>
+<span class="co">#&gt;  8  2018 y1       8058_0030 RainDur   min       1</span>
+<span class="co">#&gt;  9  2018 y1       8058_0030 T         °C        1</span>
+<span class="co">#&gt; 10  2018 y1       8058_0030 p         hPa       1</span>
+<span class="co">#&gt; # ... with 146,210 more rows</span>
 
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(content, <span class="dv">10</span>)
 <span class="co">#&gt; # A tibble: 10 x 6</span>
-<span class="co">#&gt;     year interval site                    parameter unit      n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2015 min10    Pilatus                 WD        °     52191</span>
-<span class="co">#&gt;  2  1995 min30    Kon_Wallgutstrasse      NO2       ppb   16968</span>
-<span class="co">#&gt;  3  1998 min30    Wal_Dietlikonerstrasse  NOx       ppb   17193</span>
-<span class="co">#&gt;  4  2000 min10    Pilatus                 T         °C    52704</span>
-<span class="co">#&gt;  5  1992 d1       Reinwaldhorn            CAP9      &lt;NA&gt;    366</span>
-<span class="co">#&gt;  6  2005 min30    Vad_Austrasse           T         °C    11835</span>
-<span class="co">#&gt;  7  2012 min30    Wld_Höhenklinik         p         hPa   17567</span>
-<span class="co">#&gt;  8  2000 h1       Zürich - EraInterim     blh       m       732</span>
-<span class="co">#&gt;  9  2014 min30    Neu_Schaffhauserstrasse Hr        %Hr      58</span>
-<span class="co">#&gt; 10  2016 min30    Opf_Glattpark           O3        ppb   11513</span></code></pre></div>
+<span class="co">#&gt;     year interval site                      parameter     unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                     &lt;fct&gt;         &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2005 y1       Zch_Stampfenbachstrasse   CO_nb_min30   1         1</span>
+<span class="co">#&gt;  2  2011 m1       Säntis                    WVs_min_min10 m/s      12</span>
+<span class="co">#&gt;  3  1994 m1       Fra_Bahnhofstrasse        T_min_h1      °C       12</span>
+<span class="co">#&gt;  4  2018 d1       Zch_Rosengartenstrasse    NO_min_min30  µg/m3   361</span>
+<span class="co">#&gt;  5  2013 m1       8058_0030                 T_max_h1      °C       12</span>
+<span class="co">#&gt;  6  2013 y1       StG_Blumenbergplatz       NO_nb_d1      1         1</span>
+<span class="co">#&gt;  7  1996 m1       Rap_Merkurstrasse         WD            °        12</span>
+<span class="co">#&gt;  8  2016 m1       WeF_Berufsbildungszentrum Hr_nb_min30   1        12</span>
+<span class="co">#&gt;  9  2004 y1       Opf_Balsberg              O3_nb_h1      1         1</span>
+<span class="co">#&gt; 10  2005 d1       Mau_Pünt                  WD_nb_min30   1       108</span></code></pre></div>
 <p>Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Schimmelstrasse"</span>, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)
 <span class="co">#&gt; # A tibble: 243,875 x 6</span>
@@ -256,20 +256,20 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lokal &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_local_storage</span>()</code></pre></div>
 <p>Dieser verfügt über die gleichen Funktionalität wie der S3 Store:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lokal<span class="op">$</span><span class="kw">get_content</span>()
-<span class="co">#&gt; # A tibble: 9,874 x 6</span>
-<span class="co">#&gt;     year interval site             parameter unit         n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;            &lt;fct&gt;     &lt;fct&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1  2019 min10    ETHZ_Hönggerberg Hr        %        10357</span>
-<span class="co">#&gt;  2  2019 min10    ETHZ_Hönggerberg illum     log10lux 10357</span>
-<span class="co">#&gt;  3  2019 min10    ETHZ_Hönggerberg p         hPa      10358</span>
-<span class="co">#&gt;  4  2019 min10    ETHZ_Hönggerberg RainSum   mm       10357</span>
-<span class="co">#&gt;  5  2019 min10    ETHZ_Hönggerberg StrGlo    W/m2     10357</span>
-<span class="co">#&gt;  6  2019 min10    ETHZ_Hönggerberg T         °C       10357</span>
-<span class="co">#&gt;  7  2019 min10    ETHZ_Hönggerberg T_dew     °C       10357</span>
-<span class="co">#&gt;  8  2019 min10    ETHZ_Hönggerberg wcp_east  m/s      10358</span>
-<span class="co">#&gt;  9  2019 min10    ETHZ_Hönggerberg wcp_north m/s      10358</span>
-<span class="co">#&gt; 10  2019 min10    ETHZ_Hönggerberg WD        °        10358</span>
-<span class="co">#&gt; # ... with 9,864 more rows</span>
+<span class="co">#&gt; # A tibble: 146,220 x 6</span>
+<span class="co">#&gt;     year interval site      parameter unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2018 h8gl     8058_0030 O3        µg/m3  8672</span>
+<span class="co">#&gt;  2  2018 y1       8058_0030 Hr        %Hr       1</span>
+<span class="co">#&gt;  3  2018 y1       8058_0030 NO2       µg/m3     1</span>
+<span class="co">#&gt;  4  2018 y1       8058_0030 NO        µg/m3     1</span>
+<span class="co">#&gt;  5  2018 y1       8058_0030 NOx       ppb       1</span>
+<span class="co">#&gt;  6  2018 y1       8058_0030 O3        µg/m3     1</span>
+<span class="co">#&gt;  7  2018 y1       8058_0030 PM10      µg/m3     1</span>
+<span class="co">#&gt;  8  2018 y1       8058_0030 RainDur   min       1</span>
+<span class="co">#&gt;  9  2018 y1       8058_0030 T         °C        1</span>
+<span class="co">#&gt; 10  2018 y1       8058_0030 p         hPa       1</span>
+<span class="co">#&gt; # ... with 146,210 more rows</span>
 
 lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)
 <span class="co">#&gt; # A tibble: 51,319 x 6</span>
@@ -294,21 +294,21 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; $ interval                &lt;chr&gt; "min30", "min30", "min30", "min30", "m...</span>
 <span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span>
 <span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span>
-<span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span>
-<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-15 17:46:01, 2019-03-15 17:46...</span>
+<span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/tom/AppData/Local/rOstl...</span>
+<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-26 20:09:14, 2019-03-26 20:09...</span>
 <span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())
-<span class="co">#&gt; Observations: 1,395</span>
+<span class="co">#&gt; Observations: 7,025</span>
 <span class="co">#&gt; Variables: 11</span>
-<span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu1JlaW53YWxkaG9ybsK7MTk5MQ", "...</span>
+<span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu01hdV9Qw7xudMK7MTk5MA", "d1/Z...</span>
 <span class="co">#&gt; $ interval                &lt;chr&gt; "d1", "d1", "d1", "d1", "d1", "d1", "d...</span>
-<span class="co">#&gt; $ site                    &lt;chr&gt; "Reinwaldhorn", "Reinwaldhorn", "Reinw...</span>
-<span class="co">#&gt; $ year                    &lt;chr&gt; "1991", "1992", "1993", "1994", "1995"...</span>
-<span class="co">#&gt; $ s3.key                  &lt;chr&gt; "aqmet/data/d1/ZDHCu1JlaW53YWxkaG9ybsK...</span>
-<span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2019-03-14T13:15:53.000Z", "2019-03-1...</span>
-<span class="co">#&gt; $ s3.etag                 &lt;chr&gt; "e3412fc9d0e2d0ebd172435dae211e65", "a...</span>
-<span class="co">#&gt; $ s3.size                 &lt;fs::bytes&gt; 1.8K, 1.81K, 1.81K, 1.81K, 1.81K...</span>
+<span class="co">#&gt; $ site                    &lt;chr&gt; "Mau_Pünt", "Mau_Pünt", "Mau_Pünt", "M...</span>
+<span class="co">#&gt; $ year                    &lt;chr&gt; "1990", "1991", "1992", "1993", "1994"...</span>
+<span class="co">#&gt; $ s3.key                  &lt;chr&gt; "aqmet/data/d1/ZDHCu01hdV9Qw7xudMK7MTk...</span>
+<span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2019-03-26T15:20:05.000Z", "2019-03-2...</span>
+<span class="co">#&gt; $ s3.etag                 &lt;chr&gt; "cb52efc18f4157a6c6cb508f5d116922", "2...</span>
+<span class="co">#&gt; $ s3.size                 &lt;fs::bytes&gt; 15.7K, 27.02K, 29.17K, 28.24K, 1...</span>
 <span class="co">#&gt; $ local.path              &lt;fs::path&gt; NA, NA, NA, NA, NA, NA, NA, NA, N...</span>
 <span class="co">#&gt; $ local.modification_time &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span>
 <span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; NA, NA, NA, NA, NA, NA, NA, NA, ...</span></code></pre></div>
@@ -336,20 +336,20 @@ lokal<span class="op">$</span><span class="kw">list_chunks</span>() <span class=
 <a href="#eigene-daten-in-einem-lokalen-store" class="anchor"></a>Eigene Daten in einem lokalen Store</h2>
 <p>Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3 vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_store =<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_local.html">storage_local_rds</a></span>(<span class="st">"eigene_daten"</span>, <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">read.only =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\vot\AppData\Local\rOstluft\eigene_daten'</span></code></pre></div>
+<span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\tom\AppData\Local\rOstluft\eigene_daten'</span></code></pre></div>
 <p>In diesen kann man nun Daten mit der Store Funktion <code>$put()</code> oder der Hilfsfunktion <code><a href="../../reference/import_directory.html">import_directory()</a></code> importieren:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)
 <span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)
-<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.19 seconds. Got 2170 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.04 seconds</span>
-<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.07 seconds</span>
-<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span>
-<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span>
+<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.4K. File 1 of 3</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.24 seconds. Got 2170 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.05 seconds</span>
+<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 142K. File 2 of 3</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.08 seconds. Got 14116 data points</span>
 <span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span>
-<span class="co">#&gt; Finished import after 0.46 seconds</span>
+<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 258K. File 3 of 3</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.07 seconds. Got 28234 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.11 seconds</span>
+<span class="co">#&gt; Finished import after 0.64 seconds</span>
 
 fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)
 my_data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)
@@ -609,7 +609,7 @@ df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_meta</span>()
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(meta)
 <span class="co">#&gt; [1] "all"          "ecmwf"        "ethz"         "hysplit"     </span>
-<span class="co">#&gt; [5] "meteoschweiz" "meteotest"    "ostluft"</span>
+<span class="co">#&gt; [5] "meteoschweiz" "meteotest"    "nabel"        "ostluft"</span>
 
 meteoschweiz &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_meta</span>(<span class="st">"meteoschweiz"</span>)
 tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(meteoschweiz)

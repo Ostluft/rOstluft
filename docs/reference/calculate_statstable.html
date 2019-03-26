@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the biggest number of consecutive NA Values — get_gap_in_vector • rOstluft</title>
+<title>Calculates stats described in a table — calculate_statstable • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,13 @@
 
 
 
-<meta property="og:title" content="Get the biggest number of consecutive NA Values — get_gap_in_vector" />
+<meta property="og:title" content="Calculates stats described in a table — calculate_statstable" />
 
-<meta property="og:description" content="Probably not the fastest way to do it. Compared with a loop approach. The loop is a lot faster for short vectors.
-But for 17500 elements (1 year min30 data) this is faster. But In the end the perfomance don't really matters." />
+<meta property="og:description" content="With various caveats:
+always the same data threshold for all calculations
+to h8gl: only mean from h1
+only to y1 uses max gap
+" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,54 +130,69 @@ But for 17500 elements (1 year min30 data) this is faster. But In the end the pe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the biggest number of consecutive NA Values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statistic.R'><code>R/statistic.R</code></a></small>
-    <div class="hidden name"><code>statistic_fun.Rd</code></div>
+    <h1>Calculates stats described in a table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statstable.R'><code>R/statstable.R</code></a></small>
+    <div class="hidden name"><code>calculate_statstable.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Probably not the fastest way to do it. Compared with a loop approach. The loop is a lot faster for short vectors.
-But for 17500 elements (1 year min30 data) this is faster. But In the end the perfomance don't really matters.</p>
+    <p>With various caveats:</p><ul>
+<li><p>always the same data threshold for all calculations</p></li>
+<li><p>to h8gl: only mean from h1</p></li>
+<li><p>only to y1 uses max gap</p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_gap_in_vector</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_mean</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_median</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_sd</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_n</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_sum</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_max</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_min</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_coverage</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_aot40k</span>(<span class='no'>x</span>)
-
-<span class='fu'>get_statistic_percentile</span>(<span class='no'>percentile</span>)
-
-<span class='fu'>get_statistic_limit</span>(<span class='no'>limit</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_statstable</span>(<span class='no'>data</span>, <span class='no'>statstable</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\\s*,\\s*"</span>,
+  <span class='kw'>keep_input</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Vector</p></td>
+      <th>data</th>
+      <td><p>input data in rolf format</p></td>
+    </tr>
+    <tr>
+      <th>statstable</th>
+      <td><p>description of statistics to calculate in table form</p></td>
+    </tr>
+    <tr>
+      <th>sep</th>
+      <td><p>seperator for combined values in statstable</p></td>
+    </tr>
+    <tr>
+      <th>keep_input</th>
+      <td><p>should the input data be kept in return list as item input. Default FALSE</p></td>
+    </tr>
+    <tr>
+      <th>data_thresh</th>
+      <td><p>minimum data capture threshold 0 - 1.0 to use. Default 0.8</p></td>
+    </tr>
+    <tr>
+      <th>max_gap</th>
+      <td><p>in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days</p></td>
+    </tr>
+    <tr>
+      <th>order</th>
+      <td><p>defines the order of calculation in the from column</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>number longest consecutive NA values</p>
+    <p>list with one item per to interval</p>
+    
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
+
+    
+    <ul>
+<li><p>example needed. See Tests for an example usage</p></li>
+<li><p>documentation needed</p></li>
+</ul>
     
 
   </div>
@@ -184,6 +202,8 @@ But for 17500 elements (1 year min30 data) this is faster. But In the end the pe
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#todo">TODO</a></li>
           </ul>
 
   </div>

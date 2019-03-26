@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the biggest number of consecutive NA Values — get_gap_in_vector • rOstluft</title>
+<title>Appends default_statistic drop if necessary — append_default • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Get the biggest number of consecutive NA Values — get_gap_in_vector" />
+<meta property="og:title" content="Appends default_statistic drop if necessary — append_default" />
 
-<meta property="og:description" content="Probably not the fastest way to do it. Compared with a loop approach. The loop is a lot faster for short vectors.
-But for 17500 elements (1 year min30 data) this is faster. But In the end the perfomance don't really matters." />
+<meta property="og:description" content="Appends default_statistic drop if necessary" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,54 +126,31 @@ But for 17500 elements (1 year min30 data) this is faster. But In the end the pe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the biggest number of consecutive NA Values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statistic.R'><code>R/statistic.R</code></a></small>
-    <div class="hidden name"><code>statistic_fun.Rd</code></div>
+    <h1>Appends default_statistic drop if necessary</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statstable.R'><code>R/statstable.R</code></a></small>
+    <div class="hidden name"><code>append_default.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Probably not the fastest way to do it. Compared with a loop approach. The loop is a lot faster for short vectors.
-But for 17500 elements (1 year min30 data) this is faster. But In the end the perfomance don't really matters.</p>
+    <p>Appends default_statistic drop if necessary</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_gap_in_vector</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_mean</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_median</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_sd</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_n</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_sum</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_max</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_min</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_coverage</span>(<span class='no'>x</span>)
-
-<span class='fu'>statistic_aot40k</span>(<span class='no'>x</span>)
-
-<span class='fu'>get_statistic_percentile</span>(<span class='no'>percentile</span>)
-
-<span class='fu'>get_statistic_limit</span>(<span class='no'>limit</span>)</pre>
+    <pre class="usage"><span class='fu'>append_default</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Vector</p></td>
+      <td><p>statistic list</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>number longest consecutive NA values</p>
+    <p>statistic list containing a default_statistic</p>
     
 
   </div>

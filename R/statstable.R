@@ -6,10 +6,10 @@
 #' @return expanded statstable
 #' @export
 expand_statstable <- function(statstable, sep = "\\s*,\\s*") {
-  statstable <- tidyr::separate_rows(statstable, parameter, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, statistic, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, from, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, to, sep  = sep)
+  statstable <- tidyr::separate_rows(statstable, .data$parameter, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, .data$statistic, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, .data$from, sep = sep)
+  statstable <- tidyr::separate_rows(statstable, .data$to, sep  = sep)
   statstable
 }
 
@@ -26,7 +26,6 @@ expand_statstable <- function(statstable, sep = "\\s*,\\s*") {
 #'
 #' @keywords internal
 get_statistics_from_table <- function(table, from, inputs = NULL) {
-
   res <- dplyr::filter(table, .data$from == !!from)
   res <- dplyr::group_by(res, .data$to)
   keys <- dplyr::group_keys(res)
@@ -52,7 +51,7 @@ get_statistics_from_table <- function(table, from, inputs = NULL) {
 #'
 #' @keywords internal
 get_list <- function(table) {
-  table <- dplyr::group_by(table, parameter)
+  table <- dplyr::group_by(table, .data$parameter)
   table <- dplyr::summarise(table, statistic = list(.data$statistic))
   res <- rlang::set_names(table$statistic, table$parameter)
   purrr::map(res, ~ if (length(.x) > 1) { as.list(.x) } else { .x } )
@@ -97,21 +96,27 @@ expand_inputs <- function(x, inputs) {
 #' @description
 #' With various caveats:
 #'
-#' * data_thresh = 0.8 for all stats
-#' * No combining wind averaging with other stats. they must have there own row
+#' * always the same data threshold for all calculations
 #' * to h8gl: only mean from h1
-#' * min10, min30, h1, d1 > y1 always use max_gap
+#' * only to y1 uses max gap
+#'
+#' @section TODO:
+#'
+#' * example needed. See Tests for an example usage
+#' * documentation needed
 #'
 #' @param data input data in rolf format
 #' @param statstable description of statistics to calculate in table form
 #' @param sep seperator for combined values in statstable
 #' @param keep_input should the input data be kept in return list as item input. Default FALSE
+#' @param data_thresh minimum data capture threshold 0 - 1.0 to use. Default 0.8
+#' @param max_gap in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days
 #' @param order defines the order of calculation in the from column
 #'
 #' @return list with one item per to interval
 #' @export
-calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE,
-                                 order = c("input", "h1", "h8gl", "d1", "m1", "y1")) {
+calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE, data_thresh = 0.8,
+                                 max_gap = 10, order = c("input", "h1", "h8gl", "d1", "m1", "y1")) {
 
   # hand over calculation of h8gl to open air.
   calc_h8gl <- function(parameter, data) {
@@ -121,7 +126,7 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
       data[0, ]
     } else {
       data <- dplyr::arrange(data, .data$starttime)
-      data$value <- .Call("rollMean", data$value, 8, 80, "left", PACKAGE = "openair")
+      data$value <- .Call("rollMean", data$value, 8, data_thresh * 100, "left", PACKAGE = "openair")
       data <- dplyr::mutate(data, interval = as.factor("h8gl"))
       data
     }
@@ -130,16 +135,16 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
 
   # wrapper around resample  to handle exceptions for max_gap and h8gl
   calc_stats <- function(data, stats, to, from) {
-    if (to == "y1" && from %in% c("input", "min10", "min30", "h1", "d1")) {
+    if (to == "y1" && !is.null(max_gap) && from %in% c("input", "min10", "min30", "h1", "d1")) {
       interval <- as.character(dplyr::first(data[[from]]$interval)) # we need to take the interval from the data for case input
-      max_gap <- switch(interval, "min10" = 1440, "min30" = 480, "h1" = 240, "d1" = 10)
-      result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = 0.8, max_gap = max_gap)
+      max_gap <- switch(interval, "min10" = 144, "min30" = 48, "h1" = 24, "d1" = 1) * max_gap
+      result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = data_thresh, max_gap = max_gap)
     } else if (to == "h8gl") {
       if (from != "h1") {
         stop("h8gl can only calculated from h1")
       }
       if (isFALSE(requireNamespace("openair"))) {
-        stop("Package openair is needed")
+        stop("Package openair is needed to calculate rollings means")
       }
       # need to remove the automatic added default_statistics
       # this implementation should be refactored too many iterations over the complete data
@@ -148,7 +153,7 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
       result <- purrr::map(parameters, calc_h8gl, data[[from]])
       result <- bind_rows_with_factor_columns(!!!result)
     } else {
-      result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = 0.8)
+      result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = data_thresh)
     }
 
     data[[to]] <- bind_rows_with_factor_columns(data[[to]], result)

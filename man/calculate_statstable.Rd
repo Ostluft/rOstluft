@@ -5,8 +5,8 @@
 \title{Calculates stats described in a table}
 \usage{
 calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
-  keep_input = FALSE, order = c("input", "h1", "h8gl", "d1", "m1",
-  "y1"))
+  keep_input = FALSE, data_thresh = 0.8, max_gap = 10,
+  order = c("input", "h1", "h8gl", "d1", "m1", "y1"))
 }
 \arguments{
 \item{data}{input data in rolf format}
@@ -17,7 +17,11 @@ calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
 
 \item{keep_input}{should the input data be kept in return list as item input. Default FALSE}
 
+\item{max_gap}{in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days}
+
 \item{order}{defines the order of calculation in the from column}
+
+\item{threshold}{minimum data capture threshold 0 - 1.0 to use. Default 0.8}
 }
 \value{
 list with one item per to interval
@@ -25,9 +29,16 @@ list with one item per to interval
 \description{
 With various caveats:
 \itemize{
-\item data_thresh = 0.8 for all stats
-\item No combining wind averaging with other stats. they must have there own row
+\item always the same data threshold for all calculations
 \item to h8gl: only mean from h1
-\item min10, min30, h1, d1 > y1 always use max_gap
+\item only to y1 uses max gap
 }
 }
+\section{TODO}{
+
+\itemize{
+\item example needed. See Tests for an example usage
+\item documentation needed
+}
+}
+

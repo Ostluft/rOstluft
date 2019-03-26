@@ -52,7 +52,7 @@ prepare_release <- function() {
     devtools::install(quick = TRUE, reload = FALSE, dependencies = FALSE)
     pkgdown::clean_site()
     pkgdown::build_site()
-    rmarkdown::render("README.Rmd", "github_document")
+    rmarkdown::render("README.Rmd", "github_document", encoding = "UTF-8")
     fs::file_delete("README.html")
   }
 

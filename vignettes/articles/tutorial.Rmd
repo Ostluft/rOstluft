@@ -38,6 +38,13 @@ die Installation mit Hilfe des Packages devtools:
 devtools::install_github("Ostluft/rOstluft")
 ```
 
+Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version 
+veraltet ist:
+
+```{r eval=FALSE}
+install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
+```
+
 Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github 
 heruntergeladen werden (Clone or download > Download as ZIP), entpackt und manuell installiert werden. Allerdings 
 bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert 
@@ -46,20 +53,32 @@ werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten inst
 Zusätzlich besteht noch die Github Abhängkigkeit zu [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses 
 Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:
 
-* Download der Quellen: [rOstluft.data](https://github.com/Ostluft/rOstluft.data) und 
-  [rOstluft](https://github.com/Ostluft/rOstluft)
-* In RStudio Tools > Install Packages
-* In der Auswahlbox "Install from" das Feld "Package Archive File (.zip; .tar.gz)" auswählen
-* Im Datei Dialog die Datei von rOstluft.data auswählen
-* Mit der Schaltfläche "Install" das Package installieren
-* Wiederholen für rostluft
+```{r eval=FALSE}
+download.file("https://github.com/Ostluft/rOstluft/archive/master.zip", "rOstluft-master.zip")
+download.file("https://github.com/Ostluft/rOstluft.data/archive/master.zip", "rOstluft.data-master.zip")
+
+install.packages("devtools")
+install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
+
+deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats', 
+          'fs', 'purrr', 'readr', 'stringr', 'plyr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
+
+for (p in deps) {
+  install.packages(p)
+}
+
+devtools::install_local("rOstluft.data-master.zip", dependencies = FALSE)
+devtools::install_local("rOstluft-master.zip", dependencies = FALSE)
+```
+
+Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der 
+Fehlermeldung entnommen werden.
 
 Nach der Installation kann das Packages verwendet werden:
 
 ```{r}
 library(rOstluft)
 ```
-
 
 # Abfrage von Daten
 

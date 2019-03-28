@@ -94,7 +94,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-03-26</h4>
+            <h4 class="date">2019-03-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -115,17 +115,26 @@
 <p>Der Quellcode von <a href="https://github.com/Ostluft/rOstluft">rOstluft</a> ist auf github gehosted. Die einfachste Variante ist die Installation mit Hilfe des Packages devtools:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</code></pre></div>
+<p>Zusätzlich muss das Package <code>aws.s3</code> manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version veraltet ist:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</code></pre></div>
 <p>Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github heruntergeladen werden (Clone or download &gt; Download as ZIP), entpackt und manuell installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.</p>
 <p>Zusätzlich besteht noch die Github Abhängkigkeit zu <a href="https://github.com/Ostluft/rOstluft.data">rOstluft.data</a>. Dieses Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:</p>
-<ul>
-<li>Download der Quellen: <a href="https://github.com/Ostluft/rOstluft.data">rOstluft.data</a> und <a href="https://github.com/Ostluft/rOstluft">rOstluft</a>
-</li>
-<li>In RStudio Tools &gt; Install Packages</li>
-<li>In der Auswahlbox “Install from” das Feld “Package Archive File (.zip; .tar.gz)” auswählen</li>
-<li>Im Datei Dialog die Datei von rOstluft.data auswählen</li>
-<li>Mit der Schaltfläche “Install” das Package installieren</li>
-<li>Wiederholen für rostluft</li>
-</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft/archive/master.zip"</span>, <span class="st">"rOstluft-master.zip"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft.data/archive/master.zip"</span>, <span class="st">"rOstluft.data-master.zip"</span>)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))
+
+deps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'dplyr'</span>, <span class="st">'tidyr'</span>, <span class="st">'lubridate'</span>, <span class="st">'R6'</span>, <span class="st">'rappdirs'</span>, <span class="st">'tibble'</span>, <span class="st">'base64url'</span>, <span class="st">'forcats'</span>, 
+          <span class="st">'fs'</span>, <span class="st">'purrr'</span>, <span class="st">'readr'</span>, <span class="st">'stringr'</span>, <span class="st">'plyr'</span>, <span class="st">'stringi'</span>, <span class="st">'sp'</span>, <span class="st">'rgdal'</span>, <span class="st">'rlang'</span>, <span class="st">'magrittr'</span>)
+
+<span class="cf">for</span> (p <span class="cf">in</span> deps) {
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(p)
+}
+
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.</p>
 <p>Nach der Installation kann das Packages verwendet werden:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rOstluft)</code></pre></div>
 </div>
@@ -295,7 +304,7 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span>
 <span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span>
 <span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/tom/AppData/Local/rOstl...</span>
-<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-26 20:09:14, 2019-03-26 20:09...</span>
+<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-28 16:29:50, 2019-03-28 16:29...</span>
 <span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())
@@ -341,15 +350,15 @@ lokal<span class="op">$</span><span class="kw">list_chunks</span>() <span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)
 <span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)
 <span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.4K. File 1 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.24 seconds. Got 2170 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.05 seconds</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.37 seconds. Got 2170 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.04 seconds</span>
 <span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 142K. File 2 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.08 seconds. Got 14116 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.07 seconds. Got 14116 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.09 seconds</span>
 <span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 258K. File 3 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.07 seconds. Got 28234 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.11 seconds</span>
-<span class="co">#&gt; Finished import after 0.64 seconds</span>
+<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.08 seconds. Got 28234 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span>
+<span class="co">#&gt; Finished import after 0.76 seconds</span>
 
 fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)
 my_data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)
@@ -780,10 +789,10 @@ tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyver
 <span class="co">#&gt; $ ws      &lt;dbl&gt; 0.904, 0.314, 0.630, 0.625, 1.905, 2.281, 2.245, 0.846...</span></code></pre></div>
 <p>Diese Daten können nun direkt in openair verwendet werden:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/windRose">windRose</a></span>(wide)</code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
+<p><img src="tutorial_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/polarPlot">polarPlot</a></span>(wide, <span class="st">"NO2"</span>, <span class="dt">type=</span><span class="st">"year"</span>)</code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-28-2.png" width="700"></p>
+<p><img src="tutorial_files/figure-html/unnamed-chunk-30-2.png" width="700"></p>
 <p><code><a href="../../reference/openair_to_rolf.html">openair_to_rolf()</a></code> konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen bereitstellen:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/openair_to_rolf.html">openair_to_rolf</a></span>(wide, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">units =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(wide, <span class="st">"units"</span>))
 <span class="co">#&gt; # A tibble: 1,226,764 x 6</span>

@@ -10,6 +10,7 @@ options(digits = 3)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
+  cache = FALSE,
   comment = "#>"
 )
 
@@ -19,18 +20,18 @@ library(magrittr)
 
 # Einleitung
 
-Dieses Dokument soll einem Anwender des Packages `rOstluft::rOstluft` einen Überblick der enthaltenen Funktionalität 
+Dieses Dokument soll einem Anwender des Packages `rOstluft::rOstluft` einen Überblick der enthaltenen Funktionalität
 bieten und die gängigsten Arbeitsabläufe aufzeigen.
 
-Der Fokus dieses Packages liegt in der Bereitstellung von Daten aus verschiedenen Datenquellen in einem einheitlichen 
-Format zur Analyse der Luftqualität. Ausserdem enthält es Werkzeuge für einige übliche Aufgaben, die während solchen 
-Analysen anfallen. Diese sind Umrechnungen zwischen verschiedenen Mittelungsintervallen, Statistische Methoden mit 
-Berücksichtung der Datenverfügbarkeit, Umwandlung von Volumen- und Massenkonzentrationen und lesen von Daten vorliegend 
-in verschiedenen Formaten.
+Der Fokus dieses Packages liegt in der Bereitstellung von Daten aus verschiedenen Datenquellen in einem einheitlichen
+Format zur Analyse der Luftqualität. Ausserdem enthält es Werkzeuge für einige übliche Aufgaben, die während
+solchen Analysen anfallen. Diese sind Umrechnungen zwischen verschiedenen Mittelungsintervallen, Statistische Methoden
+mit Berücksichtung der Datenverfügbarkeit, Umwandlung von Volumen- und Massenkonzentrationen und lesen von Daten
+vorliegend in verschiedenen Formaten.
 
 # Installation
 
-Der Quellcode von [rOstluft](https://github.com/Ostluft/rOstluft) ist auf github gehosted. Die einfachste Variante ist 
+Der Quellcode von [rOstluft](https://github.com/Ostluft/rOstluft) ist auf github gehosted. Die einfachste Variante ist
 die Installation mit Hilfe des Packages devtools:
 
 ```{r eval=FALSE}
@@ -38,19 +39,19 @@ die Installation mit Hilfe des Packages devtools:
 devtools::install_github("Ostluft/rOstluft")
 ```
 
-Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version 
+Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version
 veraltet ist:
 
 ```{r eval=FALSE}
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
 ```
 
-Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github 
-heruntergeladen werden (Clone or download > Download as ZIP), entpackt und manuell installiert werden. Allerdings 
-bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert 
-werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden. 
+Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github
+heruntergeladen werden (Clone or download > Download as ZIP), entpackt und manuell installiert werden. Allerdings
+bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert
+werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.
 
-Zusätzlich besteht noch die Github Abhängkigkeit zu [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses 
+Zusätzlich besteht noch die Github Abhängkigkeit zu [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses
 Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:
 
 ```{r eval=FALSE}
@@ -60,7 +61,7 @@ download.file("https://github.com/Ostluft/rOstluft.data/archive/master.zip", "rO
 install.packages("devtools")
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
 
-deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats', 
+deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats',
           'fs', 'purrr', 'readr', 'stringr', 'plyr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
 
 for (p in deps) {
@@ -71,7 +72,7 @@ devtools::install_local("rOstluft.data-master.zip", dependencies = FALSE)
 devtools::install_local("rOstluft-master.zip", dependencies = FALSE)
 ```
 
-Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der 
+Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der
 Fehlermeldung entnommen werden.
 
 Nach der Installation kann das Packages verwendet werden:
@@ -84,10 +85,10 @@ library(rOstluft)
 
 ## Ostluft Amazon AWS S3
 
-Die zentrale Datenablage innerhalb von Ostluft erfolgt auf [Amazon AWS S3](https://aws.amazon.com/s3/).Aus 
-Lizenztechnischen Gründen kann das Bucket nicht öffentlich zugänglich gemacht werden. Die Zugangsdaten werden von Jörg 
-Sintermann vergeben. Die Zugangsdaten werden am einfachsten über eine .Renvirion Datei im Verzeichnis des RStudio 
-Projekts dem Package zugänglich gemacht. Inhalt der .Renvirion Datei:
+Die zentrale Datenablage innerhalb von Ostluft erfolgt auf [Amazon AWS S3](https://aws.amazon.com/s3/).Aus
+Lizenztechnischen Gründen kann das Bucket nicht öffentlich zugänglich gemacht werden. Die Zugangsdaten werden von
+Jörg Sintermann vergeben. Die Zugangsdaten werden am einfachsten über eine .Renvirion Datei im Verzeichnis des
+RStudio Projektes oder im HOME Verzeichnis des Users[^3] dem Package zugänglich gemacht. Inhalt der .Renvirion Datei:
 
 ```
 AWS_ACCESS_KEY_ID = "XXXXXXXXXXXXXXXXXXXX"
@@ -95,11 +96,11 @@ AWS_SECRET_ACCESS_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 AWS_DEFAULT_REGION = "eu-central-1"
 ```
 
-Weitere Möglichkeiten sind in der Dokumentation von [aws.signature](https://github.com/cloudyr/aws.signature/) zu 
+Weitere Möglichkeiten sind in der Dokumentation von [aws.signature](https://github.com/cloudyr/aws.signature/) zu
 finden.
 
-Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden 
-Zugriff wird nur überprüft, ob die Daten noch identisch sind.
+Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem
+folgenden Zugriff wird nur überprüft, ob die Daten noch identisch sind.
 
 Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:
 
@@ -122,13 +123,14 @@ content
 dplyr::sample_n(content, 10)
 ```
 
-Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:
+Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten
+Mittelungszeitraum:
 
 ```{r}
 store$get(site = "Zch_Schimmelstrasse", year = 2014, interval = "min30")
 ```
 
-Jedes der Argumente kann auch ein Vector sein mit mehreren Werte. Es wird dann Kombination aller Möglichkeiten 
+Jedes der Argumente kann auch ein Vector sein mit mehreren Werte. Es wird dann Kombination aller Möglichkeiten
 abgefragt.
 
 ```{r}
@@ -139,7 +141,7 @@ data
 dplyr::sample_n(data, 10)
 ```
 
-Die letzte Funktionalität von `$get()` ist die Filterung der Daten vor der Rückgabe. Mit dem Argument "filter" als 
+Die letzte Funktionalität von `$get()` ist die Filterung der Daten vor der Rückgabe. Mit dem Argument "filter" als
 `dplyr::filter()` kompatibler Ausdruck:
 
 ```{r}
@@ -149,10 +151,10 @@ store$get(site = sites, year = 2014, interval = "min30", filter = parameter == "
 
 ## Lokales Arbeiten mit den AWS S3 Daten
 
-Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung ob aktualisierte 
-Daten verfügbar sind vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine 
-Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits 
-herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion, 
+Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung ob aktualisierte
+Daten verfügbar sind vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine
+Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits
+herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion,
 welche einen lokalen Store zurückgibt.
 
 ```{r}
@@ -167,9 +169,9 @@ lokal$get_content()
 lokal$get(site = sites, year = 2014, interval = "min30", filter = parameter == "PM10")
 ```
 
-Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von `$get_content()` nicht dem lokalen 
-Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten 
-lokal verfügbar sind, hilft einem die Funktion `$list_chunks()` weiter. 
+Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von `$get_content()` nicht dem lokalen
+Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten
+lokal verfügbar sind, hilft einem die Funktion `$list_chunks()` weiter.
 
 ```{r}
 tibble::glimpse(lokal$list_chunks())
@@ -181,13 +183,13 @@ Auch der S3 Store verfügt über die `$list_chunks()` Funktion.
 tibble::glimpse(store$list_chunks())
 ```
 
-Im normal Fall ist Nutzung von `$get_content()` über `$list_chunks()` zu bevorzugen. Die Rückgabe von `$get_content()` 
-enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei `$list_chunks()` hingegen sind einige interne 
-Informationen über den Store enthalten.
+Im normal Fall ist Nutzung von `$get_content()` über `$list_chunks()` zu bevorzugen. Die Rückgabe von
+`$get_content()` enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei `$list_chunks()` hingegen
+sind einige interne Informationen über den Store enthalten.
 
-Um die Vorbereitung um mit einem lokalen Store zu arbeiten zu vereinfachen verfügt der S3 Store über die Funktion 
-`$download(...)`. Die dot Argumente werden als Filter auf die Rückgabe von `$list_chunks()` angewendet. Ohne Argumente 
-wird der komplette Store heruntergeladen. Folgendes Beispiel lädt samtliche 30 Minutenmittelwerte für die Station 
+Um die Vorbereitung um mit einem lokalen Store zu arbeiten zu vereinfachen verfügt der S3 Store über die Funktion
+`$download(...)`. Die dot Argumente werden als Filter auf die Rückgabe von `$list_chunks()` angewendet. Ohne Argumente
+wird der komplette Store heruntergeladen. Folgendes Beispiel lädt samtliche 30 Minutenmittelwerte für die Station
 Rosengartenstrasse nach dem Jahr 2015 (Achtung == verwenden, es sind Filter Ausdrücke!):
 
 ```{r}
@@ -199,23 +201,22 @@ lokal$list_chunks() %>% dplyr::select("site", "year", "interval")
 
 ## Eigene Daten in einem lokalen Store
 
-Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3 
+Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3
 vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:
 
 ```{r}
 my_store = storage_local_rds("eigene_daten", format_rolf(), read.only = FALSE)
 ```
 
-In diesen kann man nun Daten mit der Store Funktion `$put()` oder der Hilfsfunktion `import_directory()` 
-importieren:
+In diesen kann man nun Daten mit der Store Funktion `$put()` oder der Hilfsfunktion `import_directory()` importieren:
 
 ```{r}
 examples_path <- system.file("extdata", package = "rOstluft.data")
 import_directory(my_store, examples_path, read_airmo_csv, glob = "*Jan.csv")
 
 fn <- fs::path(examples_path, "Zch_Rosengartenstrasse_2010-2014.csv")
-my_data <- read_airmo_csv(fn)
-my_store$put(my_data)
+data <- read_airmo_csv(fn)
+my_store$put(data)
 ```
 
 Wie gewohnt kann erhält man mit `$get_content()` eine Übersicht und die Daten mit `$get()`:
@@ -223,7 +224,7 @@ Wie gewohnt kann erhält man mit `$get_content()` eine Übersicht und die Daten 
 ```{r}
 my_store$get_content()
 
-my_store$get(site = "Zch_Stampfenbachstrasse", interval = c("d1", "h1"), year = 2013)  %>% 
+my_store$get(site = "Zch_Stampfenbachstrasse", interval = c("d1", "h1"), year = 2013)  %>%
   dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
@@ -236,35 +237,30 @@ Um Daten in R einzulesen exisitieren für folgende Quellen bereits Funktionen:
 * MeteoSchweiz: `read_smn()` und `read_smn_multiple()` für SwissMetNet Exporte
 * ETHZ/IAC: `read_ethz_iac()` Meteo Stationen auf dem Hönggerberg und dem Hauptgebäude CHN
 
-Existiert für die vorliegenden Daten keine Funktion und man möchte die selber schreiben an dieser Stelle 
-einige Hinweise und Tipps.
+Existiert für die vorliegenden Daten keine Funktion und man möchte die selber schreiben an dieser Stelle einige
+Hinweise und Tipps.
 
 
 ## Verwende readr Funktionen und definiere die Zeichenkodierung
 
-Ein generelles Problem beim einlesen von Textdateien ist die [Zeichenkodierung](https://de.wikipedia.org/wiki/Zeichenkodierung). 
-Die meisten haben vermutlich "�" schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von 
-`read_xxx()` Funktionen sind UTF-8 kodiert. Mit dem [readr Packages](https://readr.tidyverse.org/index.html) wird bei 
-korrekter Definition der [Locale](https://readr.tidyverse.org/articles/locales.html#character) der Text automatisch 
-zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder data.table::fread().
+Ein generelles Problem beim einlesen von Textdateien ist die
+[Zeichenkodierung](https://de.wikipedia.org/wiki/Zeichenkodierung).  Die meisten haben vermutlich "�" schon in Texten
+gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von `read_xxx()` Funktionen sind UTF-8 kodiert. Mit dem
+[readr Packages](https://readr.tidyverse.org/index.html) wird bei korrekter Definition der
+[Locale](https://readr.tidyverse.org/articles/locales.html#character) der Text automatisch zu UTF-8 konvertiert. Im
+Gegensatz zu den R Base Funktionen oder data.table::fread().
 
 
 ## Ausgabeformat rolf
 
-Für ein reibungsloses Zusammenspiel mit den Stores zu garantieren muss das Format rolf eingehalten werden. rolf setzt 
+Für ein reibungsloses Zusammenspiel mit den Stores zu garantieren muss das Format rolf eingehalten werden. rolf setzt
 einen tibble mit folgenden Spalten und Klassen voraus:
 
-| Spalte          | Klasse  |
-|-----------------|---------|
-| **"starttime"** | POSIXct |
-| **"site"**      | factor  |
-| **"parameter"** | factor  |
-| **"interval"**  | factor  |
-| **"unit"**      | factor  |
-| **"value"**     | double  |
+| Spalte | Klasse | |-----------------|---------| | **"starttime"** | POSIXct | | **"site"** | factor | |
+**"parameter"** | factor | | **"interval"** | factor | | **"unit"** | factor | | **"value"** | double |
 
-Selbst wenn in der Datei keine Einheiten enthalten sind, ist es besser die Spalte unit mit NA zu initialisieren. Ein 
-weiterer Trick ist es die Spalten am Ende explizit zu selektionieren. Hier ein Beispiel, wie es in `read_smn()` gelöst 
+Selbst wenn in der Datei keine Einheiten enthalten sind, ist es besser die Spalte unit mit NA zu initialisieren. Ein
+weiterer Trick ist es die Spalten am Ende explizit zu selektionieren. Hier ein Beispiel, wie es in `read_smn()` gelöst
 ist:
 
 ```{r eval=FALSE}
@@ -277,18 +273,18 @@ data <- dplyr::mutate(data,
 dplyr::select(data, starttime = "time", site = "stn", "parameter", "interval", "unit", "value")
 ```
 
-Mit dem `dplyr::select` am Ende ist man sicher nur die Spalten in der Rückgabe zu haben die man haben will und es ist 
+Mit dem `dplyr::select` am Ende ist man sicher nur die Spalten in der Rückgabe zu haben die man haben will und es ist
 einfach noch Spalten umzubenennen und die Reihenfolge zu ändern.
 
 
 # Zusammenfügen von Daten im rolf Format
 
-Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- 
-und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. `dplyr::bind_rows` wird die Factoren in 
-Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. 
-Die Funktion `bind_rows_with_factor_columns()` führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem 
-[Quasiquotation](https://rlang.r-lib.org/reference/quasiquotation.html) von rlang[^1]. Somit kann auch eine grosse Liste 
-von tibbles im rolf Format komfortable aneinander gefügt werden:
+Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese-
+und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. `dplyr::bind_rows` wird die Factoren in
+Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind.  Die Funktion
+`bind_rows_with_factor_columns()` führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem
+[Quasiquotation](https://rlang.r-lib.org/reference/quasiquotation.html) von rlang[^1]. Somit kann auch eine grosse
+Liste von tibbles im rolf Format komfortable aneinander gefügt werden:
 
 ```{r}
 df1 <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_h1_2013_Jan.csv"))
@@ -303,16 +299,16 @@ df_comb <- bind_rows_with_factor_columns(!!!df_list)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
-`bind_rows_with_factor_columns()` entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach 
-aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion `$merge()` 
-des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld `$format` 
-verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden über Daten 
-im zweiten Datenframe priorisiert.
+`bind_rows_with_factor_columns()` entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach
+aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion
+`$merge()` des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld
+`$format` verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden
+über Daten im zweiten Datenframe priorisiert.
 
 ```{r}
 # kopiere Daten und setze einige NA -> Resultat sollte NA enthalten
 df1 <- df2
-df1$value[1:150] <- NA  
+df1$value[1:150] <- NA
 
 df_comb <- store$format$merge(df1, df2)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
@@ -322,8 +318,8 @@ df_comb <- rolf$merge(df1, df2)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
-Die `$merge()` Funktion unterstützt nur 2 Argumente. Muss eine Liste von tibbles gemerget werden muss man 
-`purrr::reduce()` benützen. Mit Hilfe des Argument `.dir` kann man die Priosierung setzen. Mit "forward"" haben die 
+Die `$merge()` Funktion unterstützt nur 2 Argumente. Muss eine Liste von tibbles gemerget werden muss man
+`purrr::reduce()` benützen. Mit Hilfe des Argument `.dir` kann man die Priosierung setzen. Mit "forward"" haben die
 Daten die zuerst in der Liste auftauchen Priorität, mit "backward" die Letzten.
 
 ```{r}
@@ -334,21 +330,20 @@ df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 
 # Metadaten
 
-Daten aus verschiedenen Quellen werden verschiedene Schemen für die Vergabe von Namen haben. MeteoSchweiz zum Beispiel 
+Daten aus verschiedenen Quellen werden verschiedene Schemen für die Vergabe von Namen haben. MeteoSchweiz zum Beispiel
 kodiert im Parameter Namen gleichzeitig das Mittelungsinterval:
 
-| Parameter | Interval                  | Messgrösse                               |
-|-----------|---------------------------|------------------------------------------|
-| ta1towb0  | Bürgerliche Stundenmittel | Lufttemperatur, Instrument 1             |
-| ta1towh0  | Stundenmittel             | Lufttemperatur, Instrument 1             |
-| ta1tows0  | Momentanwerte             | Lufttemperatur, Instrument 1             |
-| fk1towz0  | Zehnminutenmittel         | Windgeschwindigkeit skalar, Instrument 1 |
+| Parameter | Interval | Messgrösse |
+|-----------|---------------------------|------------------------------------------| | ta1towb0 | Bürgerliche
+Stundenmittel | Lufttemperatur, Instrument 1 | | ta1towh0 | Stundenmittel | Lufttemperatur, Instrument 1 | | ta1tows0 |
+Momentanwerte | Lufttemperatur, Instrument 1 | | fk1towz0 | Zehnminutenmittel | Windgeschwindigkeit skalar, Instrument
+1 |
 
 
-Um die Bezeichnungen zu normalisieren kommt es zu einem Zusammenspiel von im Store bereitgestellte Daten und der 
-Funktion `meta_apply()`. Das Store Objekt verfügt über die Funktion `$get_meta()`, welche im AWS S3 bereitgestellte 
-Metadaten zurück gibt. Wird `$get_meta()` ohne Argument aufgerufen erhält man eine Liste mit sämtlichen Metadaten im 
-Store. Kennt man bereits den Namen kann man direkt die entsprechenden Metadaten holen: 
+Um die Bezeichnungen zu normalisieren kommt es zu einem Zusammenspiel von im Store bereitgestellte Daten und der
+Funktion `meta_apply()`. Das Store Objekt verfügt über die Funktion `$get_meta()`, welche im AWS S3 bereitgestellte
+Metadaten zurück gibt. Wird `$get_meta()` ohne Argument aufgerufen erhält man eine Liste mit sämtlichen Metadaten im
+Store. Kennt man bereits den Namen kann man direkt die entsprechenden Metadaten holen:
 
 
 ```{r}
@@ -363,22 +358,22 @@ tibble::glimpse(meteoschweiz)
 Die `meta_apply()` benützt die Metadaten als "Lookup Table". Es wird folgende Operation ausgeführt:
 
 ```{r eval=FALSE}
-meta_apply(data, meta, data_src, data_dest, meta_key, meta_val) 
+meta_apply(data, meta, data_src, data_dest, meta_key, meta_val)
 
 data$data_dest = meta[meta$meta_key == data$data_src]$meta_val
 ```
 
-Wobei die jeweiligen Spalten jeweils als Argument übergeben werden. Die Funktion verfügt über verschiende Modi um mit 
-fehlenden Einträgen umzugehen. Im folgenden Beispiel werden bei den MeteoSchweiz Daten die "unit" Spalte basierend 
-auf den "parameter" Spalte ausgefüllt. Da die Parameter noch die MeteoSchweiz Bezeichnungen haben müssen wir als Meta 
-Key die Spalte "parameter_original" und "unit" als Value verwenden. Es werden die Daten aus rOstluft.data verwendet. In 
-diesen fehlt in den Metadaten der MeteoSchweiz Parameter rre150z0 (Niederschlag). Der Default Modus "strict" stoppt 
-das Script:
+Wobei die jeweiligen Spalten jeweils als Argument übergeben werden. Die Funktion verfügt über verschiende Modi um
+mit fehlenden Einträgen umzugehen. Im folgenden Beispiel werden bei den MeteoSchweiz Daten die "unit" Spalte basierend
+auf den "parameter" Spalte ausgefüllt. Da die Parameter noch die MeteoSchweiz Bezeichnungen haben müssen wir als Meta
+Key die Spalte "parameter_original" und "unit" als Value verwenden. Es werden die Daten aus rOstluft.data verwendet. In
+diesen fehlt in den Metadaten der MeteoSchweiz Parameter rre150z0 (Niederschlag). Der Default Modus "strict" stoppt das
+Script:
 
 ```{r}
 meteoschweiz <- readRDS(fs::path(examples_path, "meta_smn.rds"))
 data <- read_smn(fs::path(examples_path, "smn.txt"), na.rm = FALSE)
-data <- dplyr::arrange(data, .data$starttime, .data$parameter) 
+data <- dplyr::arrange(data, .data$starttime, .data$parameter)
 data
 
 tryCatch({
@@ -405,24 +400,24 @@ df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", 
 df
 ```
 
-Mit Hilfe des Modus "replace" kann eine zusätzliche "Lookup Table" übergeben werden. Werte in dieser Tabelle haben 
-Priorität über Werte in der Meta Tabelle. Im Beispiel wird die fehlende Einheit für rre150z0 bereit gestellt und die 
-Einheit für dkl010z0 von ° zu deg überschrieben. 
+Mit Hilfe des Modus "replace" kann eine zusätzliche "Lookup Table" übergeben werden. Werte in dieser Tabelle haben
+Priorität über Werte in der Meta Tabelle. Im Beispiel wird die fehlende Einheit für rre150z0 bereit gestellt und die
+Einheit für dkl010z0 von ° zu deg überschrieben.
 
 ```{r}
-df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", 
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit",
                  mode = "replace", replacements = list(rre150z0 = "mm", dkl010z0 = "deg"))
 df
 ```
 
-Hier ein Beispiel für die komplette Überführung der MeteoSchweiz Daten, inkl. manuelle Umbennung von rre150z0 und 
+Hier ein Beispiel für die komplette Überführung der MeteoSchweiz Daten, inkl. manuelle Umbennung von rre150z0 und
 Änderung der Einheit für die Windrichtung (WD) von ° zu deg:
 
 ```{r}
-df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit", 
+df <- meta_apply(data, meteoschweiz, "parameter", "unit", "parameter_original", "unit",
                  mode = "replace", replacements = list(rre150z0 = "mm", dkl010z0 = "deg"))
 
-df <- meta_apply(df, meteoschweiz, "parameter", "parameter", "parameter_original", "parameter", 
+df <- meta_apply(df, meteoschweiz, "parameter", "parameter", "parameter_original", "parameter",
                  mode = "replace", replacements = list(rre150z0 = "Niederschlag"))
 
 df <- meta_apply(df, meteoschweiz, "site", "site", "site_short", "site")
@@ -432,19 +427,19 @@ df
 
 # openair kompatibles Wide Format
 
-Das Long Format ist nicht für jede Analyse geeignet. Aus diesem Grund enthält rOstluft die Funktionalität Daten im rolf 
-Format in ein [openair](http://davidcarslaw.github.io/openair/) kompatibles Wide Format umzuwandeln. Ein Nachteil am 
-Wide Format ist, dass Informationen die zu einer Spalte gehören, wie die Einheit einer Messgrösse, verloren gehen. Dies 
-führt auch dazu, das man nicht die gleiche Messgrösse mit unterschiedlichen Einheiten in den Daten haben kann. Ausser 
-man nennt die Messgrösse um. Die Funktion `rolf_to_openair()` geht folgende Kompromisse ein: Die Einheiten werden 
-entfernt, aber im Attribute "units" des Datenframes gespeichert. Messgrössen mit der Einheit ppb oder ppm werden 
-ebenfalls entfernt (Dieser Automatismus lässt sich mit dem Argument keep_ppb abschalten). Openair nimmt an, dass alle 
-Messgrössen als Massenkonzentrationen vorliegen. Weitere Konventionen in openair sind das die Zeitinformation in der 
-Spalte "date" als `Date` oder `POSIXct` vorliegen, die Windgeschwindigkeit in der Spalte "ws" und die Windrichtung in 
-der Spalte "wd". Sämtliche Character und Factor Spalten dienen als Gruppierungsspalten. Diese werden von openair 
-ignoriert oder gar entfernt, wenn nicht das Argument type benützt wird. Dieses erlaubt die explizite Nutzung einer 
-Spalte als Gruppierungskriterium. Es können mehrere Gruppierungskriterien getrennt durch ein Komma definiert werden. 
-Die openair Funktion `openair::cutData()` übernimmt die Gruppierung.
+Das Long Format ist nicht für jede Analyse geeignet. Aus diesem Grund enthält rOstluft die Funktionalität Daten im
+rolf Format in ein [openair](http://davidcarslaw.github.io/openair/) kompatibles Wide Format umzuwandeln. Ein Nachteil
+am Wide Format ist, dass Informationen die zu einer Spalte gehören, wie die Einheit einer Messgrösse, verloren gehen.
+Dies führt auch dazu, das man nicht die gleiche Messgrösse mit unterschiedlichen Einheiten in den Daten haben kann.
+Ausser man nennt die Messgrösse um. Die Funktion `rolf_to_openair()` geht folgende Kompromisse ein: Die Einheiten
+werden entfernt, aber im Attribute "units" des Datenframes gespeichert. Messgrössen mit der Einheit ppb oder ppm
+werden ebenfalls entfernt (Dieser Automatismus lässt sich mit dem Argument keep_ppb abschalten). Openair nimmt an,
+dass alle Messgrössen als Massenkonzentrationen vorliegen. Weitere Konventionen in openair sind das die
+Zeitinformation in der Spalte "date" als `Date` oder `POSIXct` vorliegen, die Windgeschwindigkeit in der Spalte "ws"
+und die Windrichtung in der Spalte "wd". Sämtliche Character und Factor Spalten dienen als Gruppierungsspalten. Diese
+werden von openair ignoriert oder gar entfernt, wenn nicht das Argument type benützt wird. Dieses erlaubt die
+explizite Nutzung einer Spalte als Gruppierungskriterium. Es können mehrere Gruppierungskriterien getrennt durch ein
+Komma definiert werden.  Die openair Funktion `openair::cutData()` übernimmt die Gruppierung.
 
 ```{r}
 data <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_2010-2014.csv"))
@@ -456,11 +451,11 @@ Diese Daten können nun direkt in openair verwendet werden:
 
 ```{r}
 openair::windRose(wide)
-
-openair::polarPlot(wide, "NO2", type="year")
+openair::pollutionRose(wide, "NO2", type="year")
 ```
 
-`openair_to_rolf()` konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen bereitstellen:
+`openair_to_rolf()` konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen
+bereitstellen:
 
 ```{r}
 openair_to_rolf(wide, interval = "min30", units = attr(wide, "units"))
@@ -475,24 +470,275 @@ rolf_to_openair_single(data, "NO2", unit = "µg/m3", keep_interval = TRUE)
 Die weitere Optionen für die Funktion `rolf_to_openair()` sind in der Dokumentation zu finden.
 
 
-# Resampling von Daten
+# Berechnung von Statistiken
 
+Statistiken und die Verdichtung von Daten ist ein grundlegender Bestandteil einer Datenanalyse. In rOstluft gibt es die
+Funktion `resample()` zur Berechnung von Statistiken von einem Interval zu einem anderen. Die Funktion
+`calculate_statstable()` erlaubt die Definition von Berechnungen über mehrere verschiedene Intervale, ist aber weniger
+flexibel.
+
+## resample
+
+`resample()` aggregiert die Daten in folgenden Schritten:
+
+* Aufsplitten der Daten in Serien (site, parameter, interval, unit)
+  - `pad_serie()`: Auffüllen von Lücken mit NA (kann übersprungen werden)
+  - Gruppiere Serie mit neuem Interval mit Hilfe von `lubridate::floor_date()`
+  - Berechne definierte Statistiken für den Parameter
+* kombiniere die neu berechneten Serien
+
+```{r}
+data <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_min30_2013_Jan.csv"))
+
+# Behalte nur Massenkonzentrationen
+data <- dplyr::filter(data, !(.data$unit == "ppb" | .data$unit == "ppm"))
+
+statistics <- list(
+  "default_statistic" = "drop",
+  "O3" = list("mean", "perc95", "n", "min", "max"),
+  "RainDur" = "sum",
+  "WD" = "wind.direction",
+  "WVs" = "wind.speed_scalar",
+  "WVv" = "wind.speed_vector"
+)
+
+# Monatsmittelwerte
+resample(data, statistics, "m1")
+
+# Tagesmittelwerte
+resample(data, statistics, "d1") %>%
+  dplyr::arrange(.data$starttime)
+```
+
+`resample()` verfügt über die Funktionalität Datenverfügbarkeit und Lücken mit den Argumenten `data_thresh` und
+`max_gap` zu berücksichtigen:
+
+```{r}
+# Jahresmittelwerte nur mit Daten vom Januar
+resample(data, statistics, "y1")
+
+# Jahresmittelwerte 80% Datenverfügbarkeit => all NA
+resample(data, statistics, "y1", data_thresh = 0.8)
+
+# Jahresmittelwerte 10 Tage Lücke = 48' 30min Werte => all NA
+resample(data, statistics, "y1", max_gap = 480)
+```
+
+### `default_statistic`
+
+In der Liste werden für jeden Parameter die Statistiken definiert, welche angewendet werden sollen. Der Listeneintrag
+`default_statistic` wird auf alle nicht eingetragenen Parameter angewendet. Die Statistik drop schliesst einen
+Parameter aus den Resultaten aus. Dies erlaubt die schnelle Berechnung von Statistiken für ein paar wenige Parametern.
+Gleichzeitig ist es auch möglich die gleichen Statistiken auf viele Parameter anzuwenden und ein paar wenige Ausnahmen
+zu definieren:
+
+```{r}
+statistics <- list(
+  "default_statistic" = "mean",
+  "RainDur" = "sum",
+  "StrGlo" = "max",
+  "WD" = "drop",
+  "WVv" = "drop"
+)
+
+resample(data, statistics, "m1")
+```
+
+
+### Automatismen und Einschränkungen
+
+Die Funktion benennt für die meisten Statistiken den Parameter gemäss dem AIRMO Schema[^2] um. Die Statistiken mean,
+median, sum, sd, percentile benennen den Paremeter nicht um und sind somit nicht kombinierbar.
+
+Das Auffüllen der Lücken kann mittels des Argument `skip_padding` übersprungen werden. Zusätzlich kann mittels
+`start_date`, `end_date` und `drop_last` das Füllen kontrolliert werden. Normalerweise nimmt die Funktion das letzte
+Datum und füllt bis zum letzten neuen Intervall auf. Werden zum Beispiel Tagesmittelwerte berechnet und es sind nur
+Daten bis zum 22. Dezember 2017 10:00 Uhr vorhanden, wird der letzte Wert in der Serie 2017-12-22 00:00 sein. Wird eine
+komplette Jahresreihe benötigt, kann entweder das `end_date` auf 2017-12-31 oder auf 2018-01-01 und `drop_last` auf
+TRUE gesetzt werden.
+
+### Windmittelung
+
+Ein weiterer Spezialfall sind die Windberechnungen. Für die vektorielle Mittelung müssen die Paremeter
+zusammengefasst werden. Es müssen für alle drei Statistiken (wind.direction, wind.speed_vector, wind.speed_scalar)
+die Parameter definiert werden. Ist nur eine der Geschwindigkeiten vorhanden, wird die andere auf Basis der Vorhandenen
+berechnet.  Zusätzlich ist die Windmittelung nicht kombinierbar mit anderen Statistiken.
+
+## Statstable
+
+Werden viele verschiedene und mehrstufige Statistiken benötigt ist die Berechnung mit `resample()` umständlich. Die
+Funktion `calculate_statstable()` hingegen bietet diese Funktionalität, hat aber folgende Einschränkungen:
+
+* Datenreihen werden immer auf komplette Jahre aufgefüllt
+* max_gap wird nur auf Berechnungen zu Jahresintervallen berücksichtigt und in **Tagen** definiert
+* data_thresh ist für alle Berechnungen identisch.
+* Intervall h8gl erwartet Intervall h1 als Basis
+* Die Verwendung von `default_statistic` und `_input_` führt schnell zu unerwarteten Ergebnissen
+
+Zur Analyse von Luftqualität sind diese Einschränkungen kein Problem, bzw. sogar erwünscht. Die Funktion
+`calculate_statstable()` erwartet wie der Name schon vermuten lässt die Defintion der Statistiken in einer
+Tabellenform. Die Tabelle hat die vier Spalten "parameter", "statistic", "from", "to". Jede Zeile enthält eine zu
+berechnende Statistik für einen Parameter vom Basis Interval ("from") zum neuen Interval ("to"). Die Tabelle wird dann
+gruppiert zuerst mit "from", dann mit "to" und zuletzt mit Parameter. Auf diese Weise wird eine Liste generiert die mit
+`resample()` kompatibel ist. Ist keine `default_statistic` definiert wird automatisch `default_statistic = "drop"` zur
+Liste hinzugefügt. In welcher Reihenfolge die verschiedenen "from" Intervalle berechnet werden, kann optional mit
+Hilfe des Argument order definiert werden. Der Default Wert ist `c("input", "h1", "h8gl", "d1", "m1", "y1")`. Um die
+Tabelle in einer kompakten Form zu erstellen kann in jeder Zelle mehrere Werte getrennt durch "," zusammengefasst
+werden. Hier die Tabelle zur Berechnung der LRV Grenzwerte aus 30min Werten (entspricht 6 Aufrufe von `resample()`):
+
+```{r}
+lrv_table <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "SO2, NO2, PM10", "mean", "input", "y1",
+  "SO2, NO2", "perc95", "input", "y1",
+  "O3", "perc98", "input", "m1",
+  "O3", "mean", "input", "h1",
+  "O3", "n>120", "h1", "y1",
+  "SO2, NO2, CO, PM10", "mean", "input", "d1",
+  "SO2", "n>100", "d1", "y1",
+  "NO2", "n>80", "d1", "y1",
+  "CO", "n>8", "d1", "y1",
+  "PM10", "n>50", "d1", "y1"
+)
+```
+
+```{r}
+knitr::kable(lrv_table)
+```
+
+Wird diese Tabelle verwendet resultiert eine Liste mit h1, m1 und y1 Einträgen, welche die berechneten Grössen
+enthält:
+
+```{r}
+data <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_min30_2017.csv"))
+
+# Berechne Massenkonzentrationen aus Volumenkonzentrationen
+data <- calculate_mass_concentrations(data)
+
+stats <- calculate_statstable(data, lrv_table)
+stats
+```
+
+Nur die m1 und y1 sind für die LRV relevant:
+
+```{r}
+lrv <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+```
+
+```{r include = TRUE, echo = FALSE}
+knitr::kable(lrv, digits = 0)
+```
+
+
+## `_inputs_`
+
+Der Parameter `_inputs_` ist ein Hilfskonstrukt wie `default_statistic`. Ein Problem bei mehrstufigen Berechnungen ist,
+dass unter Umständen bereits Resultate im Input für weitere Berechnungen enthalten sind. In folgenden Bespiel wird
+zuerst aus den 30min Werten d1 Mittelwerte, Anzahl Datenpunkte, min und max berechnet für d1, m1 und y1. Danach sollte
+das Tagesmaximum für das Jahr bestimmt werden:
+
+```{r}
+# Ein Parameter reicht für die Veranschaulichung
+O3 <- dplyr::filter(data, .data$parameter == "O3")
+
+statstable <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "default_statistic", "mean, n, min, max", "input", "d1, m1, y1",
+  "default_statistic", "max", "d1", "y1"
+)
+
+# Keine Berücksichtung der Datenverfügbarkeit
+stats <- calculate_statstable(O3, statstable, data_thresh = 0, max_gap = NULL)
+stats$y1
+```
+
+Wird für die Berechnung des maximalen Tagesmittelwert des Jahres `_inputs_` statt `default_statistic` verwendet,
+werden nur die Statistiken für Parameter berechnet die in den Input Daten enthalten sind.
+
+```{r}
+statstable <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "default_statistic", "mean, n, min, max", "input", "d1, m1, y1",
+  "_inputs_", "max", "d1", "y1"
+)
+
+# Keine Berücksichtung der Datenverfügbarkeit
+stats <- calculate_statstable(O3, statstable, data_thresh = 0, max_gap = NULL)
+stats$y1
+```
+
+Im Allgemeinen dürfte die explizite Definition der Statistiken für jeden Parameter gegenüber der Verwendung von
+`default_statistic` und `_inputs_` vorzuziehen. Ansonsten kann das Resultat unerwartete Ergebnisse enthalten. Die
+Definition der statstable kann auch in einer Textdatei oder Exceldatei erfolgen und dann eingelesen werden, statt im
+Code definiert werden.
+
+An dieser Stelle noch die Berechnungen aller Statistiken im aqmet Store. Aus 21 Input Grössen werden 361 Statistiken
+berechnet:
+
+```{r include=FALSE}
+aqmet_stats <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "CO, NO, NOx, NO2, O3, SO2", "mean", "input", "h1,d1,m1,y1",
+  "CO, NO, NOx, NO2, O3, SO2", "max, min, n", "input", "d1,m1,y1",
+  "CO, NO, NOx, NO2, SO2", "perc95", "input", "y1",
+  "O3", "perc02, perc98", "input", "y1",
+  "O3", "max, min, n, n>120, n>160, n>180, n>200, n>240", "h1", "d1,m1,y1",
+  "NO2", "max, n, n>200", "h1", "d1,m1,y1",
+  "O3", "mean", "h1", "h8gl",
+  "CO", "mean", "h1", "h8gl",
+  "CO", "max", "h8gl", "y1",
+  "O3", "max, n>120, n>160, n>180, n>200, n>240", "h8gl", "y1",
+  "CO, NO, NOx, NO2, O3, SO2", "min, max, n", "d1", "y1",
+  "CO", "n>8", "d1", "y1",
+  "SO2", "n>100", "d1", "y1",
+  "NO2", "n>80", "d1", "y1",
+  "O3", "n>120, n>160, n>200, n>180, n>240, n>65", "d1", "y1",
+  "O3_max_h1", "n>120, n>160, n>180, n>200, n>240", "d1", "m1,y1",
+  "EC1.0, EC2.5, PM10, PM2.5, PN", "mean", "input", "h1,d1,m1,y1",
+  "EC1.0, EC2.5, PM10, PM2.5, PN", "max, min, n", "input", "d1,m1,y1",
+  "EC1.0, EC2.5, PM10, PM2.5, PN", "perc95", "input", "y1",
+  "EC1.0, EC2.5, PM10, PM2.5, PN", "min, max, n", "d1", "y1",
+  "PM10", "n>50", "d1", "y1",
+  "PM2.5", "n>25", "d1", "y1",
+  "WD", "wind.direction", "input", "h1,d1,m1,y1",
+  "WVs", "wind.speed_scalar", "input", "h1,d1,m1,y1",
+  "WVv", "wind.speed_vector", "input", "h1,d1,m1,y1",
+  "WD", "n", "input", "d1,m1,y1",
+  "WVs", "max, min, n", "input", "d1,m1,y1",
+  "WVv", "max, min, n", "input", "d1,m1,y1",
+  "Hr, p, StrGlo, T", "mean", "input", "h1,d1,m1,y1",
+  "Hr, p", "min,max", "input", "d1",
+  "T", "min, max, n", "input", "d1,m1,y1",
+  "T", "min, max", "h1", "d1,m1,y1",
+  "T", "min, max, n", "d1", "m1,y1",
+  "StrGlo", "max, n", "input", "d1,m1,y1",
+  "Hr, p", "n", "input", "d1,m1,y1",
+  "RainDur, RainSum,  SunDur", "sum", "input", "h1,d1,m1,y1",
+  "RainDur, RainSum,  SunDur", "n", "input", "d1,m1,y1",
+  "RainDur, RainSum,  SunDur", "max", "d1", "y1"
+)
+```
+
+
+```{r include = TRUE, echo = FALSE}
+knitr::kable(aqmet_stats)
+```
 
 # Umwandlung von Volumen- und Massenkonzentrationen
 
-Die Umwandlung der Konzentrationen erfolgt äquivalent zu den Berechnungen in der AIRMO. Sollen andere Konstanten 
-verwendet werden, ist die Dokumentation von `convert_set_R()` zu konsultieren. Die Funktionen `convert_conc()` und 
-`convert_conc_multiple()` verfügen beide über Varianten wie die umgewandelten Daten zurückgegeben werden. Definiert 
-wird dies mit dem Argument method. Bei "return" werden nur die umgewandelten Daten zurückgegeben, bei "append" werden 
+Die Umwandlung der Konzentrationen erfolgt äquivalent zu den Berechnungen in der AIRMO. Sollen andere Konstanten
+verwendet werden, ist die Dokumentation von `convert_set_R()` zu konsultieren. Die Funktionen `convert_conc()` und
+`convert_conc_multiple()` verfügen beide über Varianten wie die umgewandelten Daten zurückgegeben werden. Definiert
+wird dies mit dem Argument method. Bei "return" werden nur die umgewandelten Daten zurückgegeben, bei "append" werden
 sie am Ende angehängt und zuletzt bei "replace" werden die ursprünglichen Daten ersetzt.
 
 ```{r}
-input <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_min30_2013_Jan.csv"))
+data <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_min30_2013_Jan.csv"))
 
-# Behalte nur Volumenkonzentrationen im input
-input <- dplyr::filter(input, .data$unit == "ppb" | .data$unit == "ppm")
+# Behalte nur Volumenkonzentrationen
+data <- dplyr::filter(data, .data$unit == "ppb" | .data$unit == "ppm")
 
-convert_conc(input, "NO", "ppb", "µg/m3", method = "return")
+convert_conc(data, "NO", "ppb", "µg/m3", method = "return")
 
 conversions <- tibble::tribble(
   ~parameter, ~from, ~to,
@@ -502,33 +748,61 @@ conversions <- tibble::tribble(
   "NO2", "ppb", "µg/m3",
   "SO2", "ppb", "µg/m3"
 )
-convert_conc_multiple(input, conversions, method = "return") %>% 
+convert_conc_multiple(data, conversions, method = "return") %>%
   dplyr::arrange(.data$starttime)
 
-convert_conc_multiple(input, conversions, method = "append") %>% 
+convert_conc_multiple(data, conversions, method = "append") %>%
   dplyr::arrange(.data$starttime)
 
-convert_conc_multiple(input, conversions, method = "replace") %>% 
+convert_conc_multiple(data, conversions, method = "replace") %>%
   dplyr::arrange(.data$starttime)
+```
 
+Die Funktion `calculate_mass_concentrations()` ist eine Hilfsfunktion, die aus Volumenkonzentrationen für CO, NO, NO2,
+NO2, SO2 in einem tibble automatisch die Massenkonzentrationen berechnet. Mit dem Argument keep_ppb können optional
+die Volumenkonzentration behalten werden. Das Default vorgehen ist die Volumenkonzentrationen zu ersetzen.
+
+
+# NOAA Hysplit Trajektorien
+
+Neben dem Ostluft AWS Store aqmet existiert noch ein Store mit hysplit Trajektorien von 1980 bis zum jeweiligen
+Vormonat des aktuellen Datums für die Standorte Zürich Kaserne und St. Gallen Blumenbergplatz. Die Trajektorien sind
+jeweils für 01:00 und 13:00 UTC+1 (=Luftmassen Herkunft) gerechnet.
+
+Beim Format hysplit wird für die Abfrage nur die `site` und das `year` benötigt:
+
+```{r}
+hysplit_store <- storage_s3_rds("hysplit", format_hysplit(), "rostluft", "hysplit")
+traj <- hysplit_store$get(site = "ZH-Kaserne-hysplit", year = 2018)
+
+# plotte die Daten mit openair
+openair::trajPlot(openair::selectByDate(traj, start = "2018-01-01", end = "2018-01-05"))
 ```
 
 
 # Lokale Daten löschen
 
-Werden die Daten lokal nicht mehr benötigt, kann mit der Funktion `$destroy()` des Store Objektes die Daten gelöscht 
-werden. Zu beachten ist, dass der AWS S3 Store als read only initialisiert wurde. Um ihn löschen zu können muss dies 
-geändert werden. Um ein versehentliches löschen durch Autocomplete zu verhindern, muss der String "DELETE" als Argument 
-übergeben werden
+Werden die Daten lokal nicht mehr benötigt, kann mit der Funktion `$destroy()` des Store Objektes die Daten gelöscht
+werden. Zu beachten ist, dass der AWS S3 Store als read only initialisiert wurde. Um ihn löschen zu können muss dies
+geändert werden. Um ein versehentliches löschen durch Autocomplete zu verhindern, muss der String "DELETE" als
+Argument übergeben werden
 
 ```{r}
 store$read.only = FALSE
 store$destroy("DELETE")
 
 my_store$destroy("DELETE")
+
+hysplit_store$read.only = FALSE
+hysplit_store$destroy("DELETE")
 ```
 
 
 
-[^1]: rlang muss nicht als library importiert werden. ... leitet die Expression an rOstluft weiter. Dieses hat den 
+[^1]: rlang muss nicht als library importiert werden. ... leitet die Expression an rOstluft weiter. Dieses hat den
   Operator importiert und kann somit die Expression korrekt auswerten.
+
+[^2]: Ausnahme für die Statistiken perc02, perc95, perc98. Die AIRMO spezifiert nicht das Basis Interval => O3_95%, In
+rOstluft O3_95%_min30.
+
+[^3]: Der Pfad zum Verzeichnis entspricht der Ausgabe von `Sys.getenv("HOME")`

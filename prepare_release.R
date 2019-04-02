@@ -49,7 +49,7 @@ prepare_release <- function() {
   )
 
   if (choice == 2) {
-    devtools::install(quick = TRUE, reload = FALSE, dependencies = FALSE)
+    devtools::install(quick = TRUE, reload = TRUE, dependencies = FALSE)
     pkgdown::clean_site()
     pkgdown::build_site()
     rmarkdown::render("README.Rmd", "github_document", encoding = "UTF-8")

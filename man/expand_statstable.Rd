@@ -15,5 +15,18 @@ expand_statstable(statstable, sep = "\\\\s*,\\\\s*")
 expanded statstable
 }
 \description{
-Expands compact statstable to a table with one stats per row
+For each comma seperated value in a cell a new row is added.
+}
+\examples{
+statstable <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "O3, NO2", "min, max", "h1, d1", "m1, y1"
+)
+expand_statstable(statstable)
+
+}
+\seealso{
+\itemize{
+\item \code{tidyr::seperate_rows()} is used to expand the table. One call per column.
+}
 }

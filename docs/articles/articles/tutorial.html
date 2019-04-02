@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[GER] Tutorial • rOstluft</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="[GER] Tutorial">
@@ -94,7 +94,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-03-28</h4>
+            <h4 class="date">2019-04-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -144,15 +144,14 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div id="ostluft-amazon-aws-s3" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ostluft-amazon-aws-s3" class="anchor"></a>Ostluft Amazon AWS S3</h2>
-<p>Die zentrale Datenablage innerhalb von Ostluft erfolgt auf <a href="https://aws.amazon.com/s3/">Amazon AWS S3</a>.Aus Lizenztechnischen Gründen kann das Bucket nicht öffentlich zugänglich gemacht werden. Die Zugangsdaten werden von Jörg Sintermann vergeben. Die Zugangsdaten werden am einfachsten über eine .Renvirion Datei im Verzeichnis des RStudio Projekts dem Package zugänglich gemacht. Inhalt der .Renvirion Datei:</p>
+<p>Die zentrale Datenablage innerhalb von Ostluft erfolgt auf <a href="https://aws.amazon.com/s3/">Amazon AWS S3</a>.Aus Lizenztechnischen Gründen kann das Bucket nicht öffentlich zugänglich gemacht werden. Die Zugangsdaten werden von Jörg Sintermann vergeben. Die Zugangsdaten werden am einfachsten über eine .Renvirion Datei im Verzeichnis des RStudio Projektes oder im HOME Verzeichnis des Users<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> dem Package zugänglich gemacht. Inhalt der .Renvirion Datei:</p>
 <pre><code>AWS_ACCESS_KEY_ID = "XXXXXXXXXXXXXXXXXXXX"
 AWS_SECRET_ACCESS_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Weitere Möglichkeiten sind in der Dokumentation von <a href="https://github.com/cloudyr/aws.signature/">aws.signature</a> zu finden.</p>
 <p>Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden Zugriff wird nur überprüft, ob die Daten noch identisch sind.</p>
 <p>Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"tutorial"</span>, <span class="dt">format =</span> <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">bucket =</span> <span class="st">"rostluft"</span>, <span class="dt">prefix =</span> <span class="st">"aqmet"</span>)
-<span class="co">#&gt; store tutorial initialized under 'C:\Users\tom\AppData\Local\rOstluft\tutorial'</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"tutorial"</span>, <span class="dt">format =</span> <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">bucket =</span> <span class="st">"rostluft"</span>, <span class="dt">prefix =</span> <span class="st">"aqmet"</span>)</code></pre></div>
 <p><em>TODO: Beschreibung was die verschiedenen Argument bedeuten</em></p>
 <p>Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:</p>
 <ul>
@@ -164,34 +163,34 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">content &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_content</span>()
 content
 <span class="co">#&gt; # A tibble: 146,220 x 6</span>
-<span class="co">#&gt;     year interval site      parameter unit      n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2018 h8gl     8058_0030 O3        µg/m3  8672</span>
-<span class="co">#&gt;  2  2018 y1       8058_0030 Hr        %Hr       1</span>
-<span class="co">#&gt;  3  2018 y1       8058_0030 NO2       µg/m3     1</span>
-<span class="co">#&gt;  4  2018 y1       8058_0030 NO        µg/m3     1</span>
-<span class="co">#&gt;  5  2018 y1       8058_0030 NOx       ppb       1</span>
-<span class="co">#&gt;  6  2018 y1       8058_0030 O3        µg/m3     1</span>
-<span class="co">#&gt;  7  2018 y1       8058_0030 PM10      µg/m3     1</span>
-<span class="co">#&gt;  8  2018 y1       8058_0030 RainDur   min       1</span>
-<span class="co">#&gt;  9  2018 y1       8058_0030 T         °C        1</span>
-<span class="co">#&gt; 10  2018 y1       8058_0030 p         hPa       1</span>
+<span class="co">#&gt;     year interval site            parameter unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span>
+<span class="co">#&gt;  2  2004 h8gl     Rap_Tüchelweier O3        µg/m3    15</span>
+<span class="co">#&gt;  3  2004 h1       Rap_Tüchelweier CO        mg/m3    20</span>
+<span class="co">#&gt;  4  2004 h1       Rap_Tüchelweier Hr        %Hr      19</span>
+<span class="co">#&gt;  5  2004 h1       Rap_Tüchelweier NO2       µg/m3    20</span>
+<span class="co">#&gt;  6  2004 h1       Rap_Tüchelweier NO        µg/m3    20</span>
+<span class="co">#&gt;  7  2004 h1       Rap_Tüchelweier NOx       ppb      20</span>
+<span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span>
+<span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span>
+<span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span>
 <span class="co">#&gt; # ... with 146,210 more rows</span>
 
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(content, <span class="dv">10</span>)
 <span class="co">#&gt; # A tibble: 10 x 6</span>
-<span class="co">#&gt;     year interval site                      parameter     unit      n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                     &lt;fct&gt;         &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2005 y1       Zch_Stampfenbachstrasse   CO_nb_min30   1         1</span>
-<span class="co">#&gt;  2  2011 m1       Säntis                    WVs_min_min10 m/s      12</span>
-<span class="co">#&gt;  3  1994 m1       Fra_Bahnhofstrasse        T_min_h1      °C       12</span>
-<span class="co">#&gt;  4  2018 d1       Zch_Rosengartenstrasse    NO_min_min30  µg/m3   361</span>
-<span class="co">#&gt;  5  2013 m1       8058_0030                 T_max_h1      °C       12</span>
-<span class="co">#&gt;  6  2013 y1       StG_Blumenbergplatz       NO_nb_d1      1         1</span>
-<span class="co">#&gt;  7  1996 m1       Rap_Merkurstrasse         WD            °        12</span>
-<span class="co">#&gt;  8  2016 m1       WeF_Berufsbildungszentrum Hr_nb_min30   1        12</span>
-<span class="co">#&gt;  9  2004 y1       Opf_Balsberg              O3_nb_h1      1         1</span>
-<span class="co">#&gt; 10  2005 d1       Mau_Pünt                  WD_nb_min30   1       108</span></code></pre></div>
+<span class="co">#&gt;     year interval site                    parameter      unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                   &lt;fct&gt;          &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2014 d1       St.Gallen               WVv            m/s     365</span>
+<span class="co">#&gt;  2  1992 d1       Bac_Turm                O3             µg/m3   334</span>
+<span class="co">#&gt;  3  1992 y1       StG_Stuelegg            O3_nb_h1&gt;200   1         1</span>
+<span class="co">#&gt;  4  2008 min10    ETHZ_CHN-Gebäude        Hr             %     44051</span>
+<span class="co">#&gt;  5  2019 d1       Altenrhein              p              hPa      90</span>
+<span class="co">#&gt;  6  2005 y1       Wal_Dietlikonerstrasse  PM10_95%_min30 µg/m3     1</span>
+<span class="co">#&gt;  7  1991 d1       Vad_Mühleholz           Hr_nb_min30    1       181</span>
+<span class="co">#&gt;  8  2011 h1       Zch_Schimmelstrasse     NO             µg/m3  8661</span>
+<span class="co">#&gt;  9  2014 d1       Gla_Feuerwehrstützpunkt O3_nb_min30    1       362</span>
+<span class="co">#&gt; 10  1992 m1       Fra_Bahnhofstrasse      T_min_min30    °C       11</span></code></pre></div>
 <p>Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Schimmelstrasse"</span>, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)
 <span class="co">#&gt; # A tibble: 243,875 x 6</span>
@@ -266,18 +265,18 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <p>Dieser verfügt über die gleichen Funktionalität wie der S3 Store:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lokal<span class="op">$</span><span class="kw">get_content</span>()
 <span class="co">#&gt; # A tibble: 146,220 x 6</span>
-<span class="co">#&gt;     year interval site      parameter unit      n</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  2018 h8gl     8058_0030 O3        µg/m3  8672</span>
-<span class="co">#&gt;  2  2018 y1       8058_0030 Hr        %Hr       1</span>
-<span class="co">#&gt;  3  2018 y1       8058_0030 NO2       µg/m3     1</span>
-<span class="co">#&gt;  4  2018 y1       8058_0030 NO        µg/m3     1</span>
-<span class="co">#&gt;  5  2018 y1       8058_0030 NOx       ppb       1</span>
-<span class="co">#&gt;  6  2018 y1       8058_0030 O3        µg/m3     1</span>
-<span class="co">#&gt;  7  2018 y1       8058_0030 PM10      µg/m3     1</span>
-<span class="co">#&gt;  8  2018 y1       8058_0030 RainDur   min       1</span>
-<span class="co">#&gt;  9  2018 y1       8058_0030 T         °C        1</span>
-<span class="co">#&gt; 10  2018 y1       8058_0030 p         hPa       1</span>
+<span class="co">#&gt;     year interval site            parameter unit      n</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span>
+<span class="co">#&gt;  2  2004 h8gl     Rap_Tüchelweier O3        µg/m3    15</span>
+<span class="co">#&gt;  3  2004 h1       Rap_Tüchelweier CO        mg/m3    20</span>
+<span class="co">#&gt;  4  2004 h1       Rap_Tüchelweier Hr        %Hr      19</span>
+<span class="co">#&gt;  5  2004 h1       Rap_Tüchelweier NO2       µg/m3    20</span>
+<span class="co">#&gt;  6  2004 h1       Rap_Tüchelweier NO        µg/m3    20</span>
+<span class="co">#&gt;  7  2004 h1       Rap_Tüchelweier NOx       ppb      20</span>
+<span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span>
+<span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span>
+<span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span>
 <span class="co">#&gt; # ... with 146,210 more rows</span>
 
 lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)
@@ -297,25 +296,25 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; # ... with 51,309 more rows</span></code></pre></div>
 <p>Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von <code>$get_content()</code> nicht dem lokalen Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten lokal verfügbar sind, hilft einem die Funktion <code>$list_chunks()</code> weiter.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(lokal<span class="op">$</span><span class="kw">list_chunks</span>())
-<span class="co">#&gt; Observations: 6</span>
+<span class="co">#&gt; Observations: 7</span>
 <span class="co">#&gt; Variables: 7</span>
-<span class="co">#&gt; $ chunk_name              &lt;chr&gt; "min30/bWluMzDCu1pjaF9Sb3NlbmdhcnRlbnN...</span>
-<span class="co">#&gt; $ interval                &lt;chr&gt; "min30", "min30", "min30", "min30", "m...</span>
-<span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span>
-<span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span>
-<span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/tom/AppData/Local/rOstl...</span>
-<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-03-28 16:29:50, 2019-03-28 16:29...</span>
-<span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></code></pre></div>
+<span class="co">#&gt; $ chunk_name              &lt;chr&gt; "h1/aDHCu1pIX0thc2VybmVfaHlzcGxpdMK7Mj...</span>
+<span class="co">#&gt; $ interval                &lt;chr&gt; "h1", "min30", "min30", "min30", "min3...</span>
+<span class="co">#&gt; $ site                    &lt;chr&gt; "ZH_Kaserne_hysplit", "Zch_Rosengarten...</span>
+<span class="co">#&gt; $ year                    &lt;chr&gt; "2018", "2014", "2015", "2014", "2015"...</span>
+<span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span>
+<span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-04-02 16:50:54, 2019-04-02 17:08...</span>
+<span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 3.03K, 662.57K, 780.05K, 1.07M, ...</span></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())
-<span class="co">#&gt; Observations: 7,025</span>
+<span class="co">#&gt; Observations: 7,257</span>
 <span class="co">#&gt; Variables: 11</span>
 <span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu01hdV9Qw7xudMK7MTk5MA", "d1/Z...</span>
 <span class="co">#&gt; $ interval                &lt;chr&gt; "d1", "d1", "d1", "d1", "d1", "d1", "d...</span>
 <span class="co">#&gt; $ site                    &lt;chr&gt; "Mau_Pünt", "Mau_Pünt", "Mau_Pünt", "M...</span>
 <span class="co">#&gt; $ year                    &lt;chr&gt; "1990", "1991", "1992", "1993", "1994"...</span>
 <span class="co">#&gt; $ s3.key                  &lt;chr&gt; "aqmet/data/d1/ZDHCu01hdV9Qw7xudMK7MTk...</span>
-<span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2019-03-26T15:20:05.000Z", "2019-03-2...</span>
+<span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2019-03-30T15:17:31.000Z", "2019-03-3...</span>
 <span class="co">#&gt; $ s3.etag                 &lt;chr&gt; "cb52efc18f4157a6c6cb508f5d116922", "2...</span>
 <span class="co">#&gt; $ s3.size                 &lt;fs::bytes&gt; 15.7K, 27.02K, 29.17K, 28.24K, 1...</span>
 <span class="co">#&gt; $ local.path              &lt;fs::path&gt; NA, NA, NA, NA, NA, NA, NA, NA, N...</span>
@@ -327,42 +326,43 @@ lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentati
 <span class="co">#&gt; list()</span>
 
 lokal<span class="op">$</span><span class="kw">list_chunks</span>() <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="st">"site"</span>, <span class="st">"year"</span>, <span class="st">"interval"</span>)
-<span class="co">#&gt; # A tibble: 9 x 3</span>
-<span class="co">#&gt;   site                    year  interval</span>
-<span class="co">#&gt;   &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;   </span>
-<span class="co">#&gt; 1 Zch_Rosengartenstrasse  2017  min30   </span>
-<span class="co">#&gt; 2 Zch_Rosengartenstrasse  2018  min30   </span>
-<span class="co">#&gt; 3 Zch_Rosengartenstrasse  2014  min30   </span>
-<span class="co">#&gt; 4 Zch_Rosengartenstrasse  2015  min30   </span>
-<span class="co">#&gt; 5 Zch_Rosengartenstrasse  2016  min30   </span>
-<span class="co">#&gt; 6 Zch_Stampfenbachstrasse 2014  min30   </span>
-<span class="co">#&gt; 7 Zch_Stampfenbachstrasse 2015  min30   </span>
-<span class="co">#&gt; 8 Zch_Schimmelstrasse     2014  min30   </span>
-<span class="co">#&gt; 9 Zch_Schimmelstrasse     2015  min30</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 10 x 3</span>
+<span class="co">#&gt;    site                    year  interval</span>
+<span class="co">#&gt;    &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;   </span>
+<span class="co">#&gt;  1 ZH_Kaserne_hysplit      2018  h1      </span>
+<span class="co">#&gt;  2 Zch_Rosengartenstrasse  2017  min30   </span>
+<span class="co">#&gt;  3 Zch_Rosengartenstrasse  2018  min30   </span>
+<span class="co">#&gt;  4 Zch_Rosengartenstrasse  2014  min30   </span>
+<span class="co">#&gt;  5 Zch_Rosengartenstrasse  2015  min30   </span>
+<span class="co">#&gt;  6 Zch_Rosengartenstrasse  2016  min30   </span>
+<span class="co">#&gt;  7 Zch_Stampfenbachstrasse 2014  min30   </span>
+<span class="co">#&gt;  8 Zch_Stampfenbachstrasse 2015  min30   </span>
+<span class="co">#&gt;  9 Zch_Schimmelstrasse     2014  min30   </span>
+<span class="co">#&gt; 10 Zch_Schimmelstrasse     2015  min30</span></code></pre></div>
 </div>
 <div id="eigene-daten-in-einem-lokalen-store" class="section level2">
 <h2 class="hasAnchor">
 <a href="#eigene-daten-in-einem-lokalen-store" class="anchor"></a>Eigene Daten in einem lokalen Store</h2>
 <p>Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3 vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_store =<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_local.html">storage_local_rds</a></span>(<span class="st">"eigene_daten"</span>, <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">read.only =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\tom\AppData\Local\rOstluft\eigene_daten'</span></code></pre></div>
+<span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\vot\AppData\Local\rOstluft\eigene_daten'</span></code></pre></div>
 <p>In diesen kann man nun Daten mit der Store Funktion <code>$put()</code> oder der Hilfsfunktion <code><a href="../../reference/import_directory.html">import_directory()</a></code> importieren:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)
 <span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)
-<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.4K. File 1 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.37 seconds. Got 2170 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.04 seconds</span>
-<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 142K. File 2 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.07 seconds. Got 14116 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.09 seconds</span>
-<span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 258K. File 3 of 3</span>
-<span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.08 seconds. Got 28234 data points</span>
-<span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span>
-<span class="co">#&gt; Finished import after 0.76 seconds</span>
+<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.20 seconds. Got 2170 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.03 seconds</span>
+<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.07 seconds</span>
+<span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span>
+<span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.5/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span>
+<span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span>
+<span class="co">#&gt; Finished import after 0.46 seconds</span>
 
 fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)
-my_data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)
-my_store<span class="op">$</span><span class="kw">put</span>(my_data)
+data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)
+my_store<span class="op">$</span><span class="kw">put</span>(data)
 <span class="co">#&gt; # A tibble: 18 x 6</span>
 <span class="co">#&gt;     year interval site                   parameter unit      n</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span>
@@ -484,7 +484,7 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <div id="zusammenfugen-von-daten-im-rolf-format" class="section level1">
 <h1 class="hasAnchor">
 <a href="#zusammenfugen-von-daten-im-rolf-format" class="anchor"></a>Zusammenfügen von Daten im rolf Format</h1>
-<p>Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_rows</a></code> wird die Factoren in Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. Die Funktion <code><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem <a href="https://rlang.r-lib.org/reference/quasiquotation.html">Quasiquotation</a> von rlang<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Somit kann auch eine grosse Liste von tibbles im rolf Format komfortable aneinander gefügt werden:</p>
+<p>Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_rows</a></code> wird die Factoren in Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. Die Funktion <code><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem <a href="https://rlang.r-lib.org/reference/quasiquotation.html">Quasiquotation</a> von rlang<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. Somit kann auch eine grosse Liste von tibbles im rolf Format komfortable aneinander gefügt werden:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>))
 df2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_d1_2013_Jan.csv"</span>))
 df_comb &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns</a></span>(df1, df2)
@@ -790,8 +790,7 @@ tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyver
 <p>Diese Daten können nun direkt in openair verwendet werden:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/windRose">windRose</a></span>(wide)</code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/polarPlot">polarPlot</a></span>(wide, <span class="st">"NO2"</span>, <span class="dt">type=</span><span class="st">"year"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/windRose">pollutionRose</a></span>(wide, <span class="st">"NO2"</span>, <span class="dt">type=</span><span class="st">"year"</span>)</code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-30-2.png" width="700"></p>
 <p><code><a href="../../reference/openair_to_rolf.html">openair_to_rolf()</a></code> konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen bereitstellen:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/openair_to_rolf.html">openair_to_rolf</a></span>(wide, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">units =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(wide, <span class="st">"units"</span>))
@@ -827,20 +826,811 @@ openair<span class="op">::</span><span class="kw"><a href="https://www.rdocument
 <span class="co">#&gt; # ... with 86,873 more rows</span></code></pre></div>
 <p>Die weitere Optionen für die Funktion <code><a href="../../reference/rolf_to_openair.html">rolf_to_openair()</a></code> sind in der Dokumentation zu finden.</p>
 </div>
-<div id="resampling-von-daten" class="section level1">
+<div id="berechnung-von-statistiken" class="section level1">
 <h1 class="hasAnchor">
-<a href="#resampling-von-daten" class="anchor"></a>Resampling von Daten</h1>
+<a href="#berechnung-von-statistiken" class="anchor"></a>Berechnung von Statistiken</h1>
+<p>Statistiken und die Verdichtung von Daten ist ein grundlegender Bestandteil einer Datenanalyse. In rOstluft gibt es die Funktion <code><a href="../../reference/resample.html">resample()</a></code> zur Berechnung von Statistiken von einem Interval zu einem anderen. Die Funktion <code><a href="../../reference/calculate_statstable.html">calculate_statstable()</a></code> erlaubt die Definition von Berechnungen über mehrere verschiedene Intervale, ist aber weniger flexibel.</p>
+<div id="resample" class="section level2">
+<h2 class="hasAnchor">
+<a href="#resample" class="anchor"></a>resample</h2>
+<p><code><a href="../../reference/resample.html">resample()</a></code> aggregiert die Daten in folgenden Schritten:</p>
+<ul>
+<li>Aufsplitten der Daten in Serien (site, parameter, interval, unit)</li>
+<li>
+<code><a href="../../reference/pad.html">pad_serie()</a></code>: Auffüllen von Lücken mit NA (kann übersprungen werden)</li>
+<li>Gruppiere Serie mit neuem Interval mit Hilfe von <code><a href="http://lubridate.tidyverse.org/reference/round_date.html">lubridate::floor_date()</a></code>
+</li>
+<li>Berechne definierte Statistiken für den Parameter</li>
+<li>kombiniere die neu berechneten Serien</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>))
+
+<span class="co"># Behalte nur Massenkonzentrationen</span>
+data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data, <span class="op">!</span>(.data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppb"</span> <span class="op">|</span><span class="st"> </span>.data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppm"</span>))
+
+statistics &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
+  <span class="st">"default_statistic"</span> =<span class="st"> "drop"</span>,
+  <span class="st">"O3"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"mean"</span>, <span class="st">"perc95"</span>, <span class="st">"n"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>),
+  <span class="st">"RainDur"</span> =<span class="st"> "sum"</span>,
+  <span class="st">"WD"</span> =<span class="st"> "wind.direction"</span>,
+  <span class="st">"WVs"</span> =<span class="st"> "wind.speed_scalar"</span>,
+  <span class="st">"WVv"</span> =<span class="st"> "wind.speed_vector"</span>
+)
+
+<span class="co"># Monatsmittelwerte</span>
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"m1"</span>)
+<span class="co">#&gt; # A tibble: 9 x 6</span>
+<span class="co">#&gt;   starttime           site               parameter   interval unit    value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          m1       µg/m3 2.12e+1</span>
+<span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ m1       µg/m3 6.44e+1</span>
+<span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 m1       1     1.49e+3</span>
+<span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ m1       µg/m3 1.04e+0</span>
+<span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ m1       µg/m3 7.67e+1</span>
+<span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     m1       min   6.26e+3</span>
+<span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         m1       m/s   1.69e+0</span>
+<span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         m1       m/s   4.57e-1</span>
+<span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          m1       °     2.58e+2</span>
+
+<span class="co"># Tagesmittelwerte</span>
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"d1"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)
+<span class="co">#&gt; # A tibble: 279 x 6</span>
+<span class="co">#&gt;    starttime           site               parameter   interval unit   value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          d1       µg/m3  42.9 </span>
+<span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ d1       µg/m3  70.3 </span>
+<span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 d1       1      48   </span>
+<span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ d1       µg/m3   2.58</span>
+<span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ d1       µg/m3  74.1 </span>
+<span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     d1       min   495.  </span>
+<span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         d1       m/s     2.22</span>
+<span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         d1       m/s     1.98</span>
+<span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          d1       °     227.  </span>
+<span class="co">#&gt; 10 2013-01-02 00:00:00 Zch_Stampfenbachs~ O3          d1       µg/m3  36.0 </span>
+<span class="co">#&gt; # ... with 269 more rows</span></code></pre></div>
+<p><code><a href="../../reference/resample.html">resample()</a></code> verfügt über die Funktionalität Datenverfügbarkeit und Lücken mit den Argumenten <code>data_thresh</code> und <code>max_gap</code> zu berücksichtigen:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Jahresmittelwerte nur mit Daten vom Januar</span>
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>)
+<span class="co">#&gt; # A tibble: 9 x 6</span>
+<span class="co">#&gt;   starttime           site               parameter   interval unit    value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          y1       µg/m3 2.12e+1</span>
+<span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ y1       µg/m3 6.44e+1</span>
+<span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 y1       1     1.49e+3</span>
+<span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ y1       µg/m3 1.04e+0</span>
+<span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ y1       µg/m3 7.67e+1</span>
+<span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     y1       min   6.26e+3</span>
+<span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         y1       m/s   1.69e+0</span>
+<span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         y1       m/s   4.57e-1</span>
+<span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          y1       °     2.58e+2</span>
+
+<span class="co"># Jahresmittelwerte 80% Datenverfügbarkeit =&gt; all NA</span>
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>, <span class="dt">data_thresh =</span> <span class="fl">0.8</span>)
+<span class="co">#&gt; # A tibble: 9 x 6</span>
+<span class="co">#&gt;   starttime           site                 parameter   interval unit  value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3          y1       µg/m3    NA</span>
+<span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_95%_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_nb_min30 y1       1        NA</span>
+<span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_min_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_max_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ RainDur     y1       min      NA</span>
+<span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVs         y1       m/s      NA</span>
+<span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVv         y1       m/s      NA</span>
+<span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WD          y1       °        NA</span>
+
+<span class="co"># Jahresmittelwerte 10 Tage Lücke = 48' 30min Werte =&gt; all NA</span>
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>, <span class="dt">max_gap =</span> <span class="dv">480</span>)
+<span class="co">#&gt; # A tibble: 9 x 6</span>
+<span class="co">#&gt;   starttime           site                 parameter   interval unit  value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3          y1       µg/m3    NA</span>
+<span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_95%_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_nb_min30 y1       1        NA</span>
+<span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_min_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_max_min~ y1       µg/m3    NA</span>
+<span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ RainDur     y1       min      NA</span>
+<span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVs         y1       m/s      NA</span>
+<span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVv         y1       m/s      NA</span>
+<span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WD          y1       °        NA</span></code></pre></div>
+<div id="default_statistic" class="section level3">
+<h3 class="hasAnchor">
+<a href="#default_statistic" class="anchor"></a><code>default_statistic</code>
+</h3>
+<p>In der Liste werden für jeden Parameter die Statistiken definiert, welche angewendet werden sollen. Der Listeneintrag <code>default_statistic</code> wird auf alle nicht eingetragenen Parameter angewendet. Die Statistik drop schliesst einen Parameter aus den Resultaten aus. Dies erlaubt die schnelle Berechnung von Statistiken für ein paar wenige Parametern. Gleichzeitig ist es auch möglich die gleichen Statistiken auf viele Parameter anzuwenden und ein paar wenige Ausnahmen zu definieren:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">statistics &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
+  <span class="st">"default_statistic"</span> =<span class="st"> "mean"</span>,
+  <span class="st">"RainDur"</span> =<span class="st"> "sum"</span>,
+  <span class="st">"StrGlo"</span> =<span class="st"> "max"</span>,
+  <span class="st">"WD"</span> =<span class="st"> "drop"</span>,
+  <span class="st">"WVv"</span> =<span class="st"> "drop"</span>
+)
+
+<span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"m1"</span>)
+<span class="co">#&gt; # A tibble: 11 x 6</span>
+<span class="co">#&gt;    starttime           site            parameter     interval unit    value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;           &lt;fct&gt;         &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenba~ CO            m1       mg/m3 4.36e-1</span>
+<span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenba~ Hr            m1       %Hr   7.97e+1</span>
+<span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenba~ NO            m1       µg/m3 2.41e+1</span>
+<span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenba~ NO2           m1       µg/m3 4.04e+1</span>
+<span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenba~ O3            m1       µg/m3 2.12e+1</span>
+<span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenba~ p             m1       hPa   9.64e+2</span>
+<span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenba~ PM10          m1       µg/m3 2.63e+1</span>
+<span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenba~ RainDur       m1       min   6.26e+3</span>
+<span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenba~ SO2           m1       µg/m3 2.54e+0</span>
+<span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenba~ StrGlo_max_m~ m1       W/m2  5.12e+2</span>
+<span class="co">#&gt; 11 2013-01-01 00:00:00 Zch_Stampfenba~ T             m1       °C    2.12e+0</span></code></pre></div>
+</div>
+<div id="automatismen-und-einschrankungen" class="section level3">
+<h3 class="hasAnchor">
+<a href="#automatismen-und-einschrankungen" class="anchor"></a>Automatismen und Einschränkungen</h3>
+<p>Die Funktion benennt für die meisten Statistiken den Parameter gemäss dem AIRMO Schema<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> um. Die Statistiken mean, median, sum, sd, percentile benennen den Paremeter nicht um und sind somit nicht kombinierbar.</p>
+<p>Das Auffüllen der Lücken kann mittels des Argument <code>skip_padding</code> übersprungen werden. Zusätzlich kann mittels <code>start_date</code>, <code>end_date</code> und <code>drop_last</code> das Füllen kontrolliert werden. Normalerweise nimmt die Funktion das letzte Datum und füllt bis zum letzten neuen Intervall auf. Werden zum Beispiel Tagesmittelwerte berechnet und es sind nur Daten bis zum 22. Dezember 2017 10:00 Uhr vorhanden, wird der letzte Wert in der Serie 2017-12-22 00:00 sein. Wird eine komplette Jahresreihe benötigt, kann entweder das <code>end_date</code> auf 2017-12-31 oder auf 2018-01-01 und <code>drop_last</code> auf TRUE gesetzt werden.</p>
+</div>
+<div id="windmittelung" class="section level3">
+<h3 class="hasAnchor">
+<a href="#windmittelung" class="anchor"></a>Windmittelung</h3>
+<p>Ein weiterer Spezialfall sind die Windberechnungen. Für die vektorielle Mittelung müssen die Paremeter zusammengefasst werden. Es müssen für alle drei Statistiken (wind.direction, wind.speed_vector, wind.speed_scalar) die Parameter definiert werden. Ist nur eine der Geschwindigkeiten vorhanden, wird die andere auf Basis der Vorhandenen berechnet. Zusätzlich ist die Windmittelung nicht kombinierbar mit anderen Statistiken.</p>
+</div>
+</div>
+<div id="statstable" class="section level2">
+<h2 class="hasAnchor">
+<a href="#statstable" class="anchor"></a>Statstable</h2>
+<p>Werden viele verschiedene und mehrstufige Statistiken benötigt ist die Berechnung mit <code><a href="../../reference/resample.html">resample()</a></code> umständlich. Die Funktion <code><a href="../../reference/calculate_statstable.html">calculate_statstable()</a></code> hingegen bietet diese Funktionalität, hat aber folgende Einschränkungen:</p>
+<ul>
+<li>Datenreihen werden immer auf komplette Jahre aufgefüllt</li>
+<li>max_gap wird nur auf Berechnungen zu Jahresintervallen berücksichtigt und in <strong>Tagen</strong> definiert</li>
+<li>data_thresh ist für alle Berechnungen identisch.</li>
+<li>Intervall h8gl erwartet Intervall h1 als Basis</li>
+<li>Die Verwendung von <code>default_statistic</code> und <code>_input_</code> führt schnell zu unerwarteten Ergebnissen</li>
+</ul>
+<p>Zur Analyse von Luftqualität sind diese Einschränkungen kein Problem, bzw. sogar erwünscht. Die Funktion <code><a href="../../reference/calculate_statstable.html">calculate_statstable()</a></code> erwartet wie der Name schon vermuten lässt die Defintion der Statistiken in einer Tabellenform. Die Tabelle hat die vier Spalten “parameter”, “statistic”, “from”, “to”. Jede Zeile enthält eine zu berechnende Statistik für einen Parameter vom Basis Interval (“from”) zum neuen Interval (“to”). Die Tabelle wird dann gruppiert zuerst mit “from”, dann mit “to” und zuletzt mit Parameter. Auf diese Weise wird eine Liste generiert die mit <code><a href="../../reference/resample.html">resample()</a></code> kompatibel ist. Ist keine <code>default_statistic</code> definiert wird automatisch <code>default_statistic = "drop"</code> zur Liste hinzugefügt. In welcher Reihenfolge die verschiedenen “from” Intervalle berechnet werden, kann optional mit Hilfe des Argument order definiert werden. Der Default Wert ist <code><a href="https://www.rdocumentation.org/packages/base/topics/c">c("input", "h1", "h8gl", "d1", "m1", "y1")</a></code>. Um die Tabelle in einer kompakten Form zu erstellen kann in jeder Zelle mehrere Werte getrennt durch “,” zusammengefasst werden. Hier die Tabelle zur Berechnung der LRV Grenzwerte aus 30min Werten (entspricht 6 Aufrufe von <code><a href="../../reference/resample.html">resample()</a></code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrv_table &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(
+  <span class="op">~</span>parameter, <span class="op">~</span>statistic, <span class="op">~</span>from, <span class="op">~</span>to,
+  <span class="st">"SO2, NO2, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,
+  <span class="st">"SO2, NO2"</span>, <span class="st">"perc95"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,
+  <span class="st">"O3"</span>, <span class="st">"perc98"</span>, <span class="st">"input"</span>, <span class="st">"m1"</span>,
+  <span class="st">"O3"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"h1"</span>,
+  <span class="st">"O3"</span>, <span class="st">"n&gt;120"</span>, <span class="st">"h1"</span>, <span class="st">"y1"</span>,
+  <span class="st">"SO2, NO2, CO, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"d1"</span>,
+  <span class="st">"SO2"</span>, <span class="st">"n&gt;100"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,
+  <span class="st">"NO2"</span>, <span class="st">"n&gt;80"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,
+  <span class="st">"CO"</span>, <span class="st">"n&gt;8"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,
+  <span class="st">"PM10"</span>, <span class="st">"n&gt;50"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>
+)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(lrv_table)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">parameter</th>
+<th align="left">statistic</th>
+<th align="left">from</th>
+<th align="left">to</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">SO2, NO2, PM10</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">SO2, NO2</td>
+<td align="left">perc95</td>
+<td align="left">input</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">O3</td>
+<td align="left">perc98</td>
+<td align="left">input</td>
+<td align="left">m1</td>
+</tr>
+<tr class="even">
+<td align="left">O3</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">h1</td>
+</tr>
+<tr class="odd">
+<td align="left">O3</td>
+<td align="left">n&gt;120</td>
+<td align="left">h1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">SO2, NO2, CO, PM10</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">d1</td>
+</tr>
+<tr class="odd">
+<td align="left">SO2</td>
+<td align="left">n&gt;100</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">NO2</td>
+<td align="left">n&gt;80</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">CO</td>
+<td align="left">n&gt;8</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">PM10</td>
+<td align="left">n&gt;50</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+</tbody>
+</table>
+<p>Wird diese Tabelle verwendet resultiert eine Liste mit h1, m1 und y1 Einträgen, welche die berechneten Grössen enthält:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_min30_2017.csv"</span>))
+
+<span class="co"># Berechne Massenkonzentrationen aus Volumenkonzentrationen</span>
+data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_mass_concentrations.html">calculate_mass_concentrations</a></span>(data)
+
+stats &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_statstable.html">calculate_statstable</a></span>(data, lrv_table)
+stats
+<span class="co">#&gt; $y1</span>
+<span class="co">#&gt; # A tibble: 10 x 6</span>
+<span class="co">#&gt;    starttime           site                parameter   interval unit  value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2         y1       µg/m3 30.4 </span>
+<span class="co">#&gt;  2 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2_95%_mi~ y1       µg/m3 68.8 </span>
+<span class="co">#&gt;  3 2017-01-01 00:00:00 Zch_Stampfenbachst~ PM10        y1       µg/m3 15.9 </span>
+<span class="co">#&gt;  4 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2         y1       µg/m3  1.05</span>
+<span class="co">#&gt;  5 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2_95%_mi~ y1       µg/m3  2.17</span>
+<span class="co">#&gt;  6 2017-01-01 00:00:00 Zch_Stampfenbachst~ O3_nb_h1&gt;1~ y1       1     81   </span>
+<span class="co">#&gt;  7 2017-01-01 00:00:00 Zch_Stampfenbachst~ CO_nb_d1&gt;8  y1       1      0   </span>
+<span class="co">#&gt;  8 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2_nb_d1&gt;~ y1       1      1   </span>
+<span class="co">#&gt;  9 2017-01-01 00:00:00 Zch_Stampfenbachst~ PM10_nb_d1~ y1       1      8   </span>
+<span class="co">#&gt; 10 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2_nb_d1&gt;~ y1       1      0   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $m1</span>
+<span class="co">#&gt; # A tibble: 12 x 6</span>
+<span class="co">#&gt;    starttime           site                parameter   interval unit  value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  62.5</span>
+<span class="co">#&gt;  2 2017-02-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  79.3</span>
+<span class="co">#&gt;  3 2017-03-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  94.4</span>
+<span class="co">#&gt;  4 2017-04-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 105. </span>
+<span class="co">#&gt;  5 2017-05-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 128. </span>
+<span class="co">#&gt;  6 2017-06-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 134. </span>
+<span class="co">#&gt;  7 2017-07-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 113. </span>
+<span class="co">#&gt;  8 2017-08-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 109. </span>
+<span class="co">#&gt;  9 2017-09-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  82.6</span>
+<span class="co">#&gt; 10 2017-10-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  74.9</span>
+<span class="co">#&gt; 11 2017-11-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  67.6</span>
+<span class="co">#&gt; 12 2017-12-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  71.8</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $h1</span>
+<span class="co">#&gt; # A tibble: 8,760 x 6</span>
+<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.45</span>
+<span class="co">#&gt;  2 2017-01-01 01:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.35</span>
+<span class="co">#&gt;  3 2017-01-01 02:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.02</span>
+<span class="co">#&gt;  4 2017-01-01 03:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.54</span>
+<span class="co">#&gt;  5 2017-01-01 04:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.41</span>
+<span class="co">#&gt;  6 2017-01-01 05:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.14</span>
+<span class="co">#&gt;  7 2017-01-01 06:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.41</span>
+<span class="co">#&gt;  8 2017-01-01 07:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.67</span>
+<span class="co">#&gt;  9 2017-01-01 08:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  3.74</span>
+<span class="co">#&gt; 10 2017-01-01 09:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  6.52</span>
+<span class="co">#&gt; # ... with 8,750 more rows</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d1</span>
+<span class="co">#&gt; # A tibble: 1,460 x 6</span>
+<span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.381</span>
+<span class="co">#&gt;  2 2017-01-02 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.339</span>
+<span class="co">#&gt;  3 2017-01-03 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.349</span>
+<span class="co">#&gt;  4 2017-01-04 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.248</span>
+<span class="co">#&gt;  5 2017-01-05 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.278</span>
+<span class="co">#&gt;  6 2017-01-06 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.282</span>
+<span class="co">#&gt;  7 2017-01-07 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.378</span>
+<span class="co">#&gt;  8 2017-01-08 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.349</span>
+<span class="co">#&gt;  9 2017-01-09 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.388</span>
+<span class="co">#&gt; 10 2017-01-10 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.314</span>
+<span class="co">#&gt; # ... with 1,450 more rows</span></code></pre></div>
+<p>Nur die m1 und y1 sind für die LRV relevant:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrv &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns</a></span>(stats<span class="op">$</span>y1, stats<span class="op">$</span>m1)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">starttime</th>
+<th align="left">site</th>
+<th align="left">parameter</th>
+<th align="left">interval</th>
+<th align="left">unit</th>
+<th align="right">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">NO2</td>
+<td align="left">y1</td>
+<td align="left">µg/m3</td>
+<td align="right">30</td>
+</tr>
+<tr class="even">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">NO2_95%_min30</td>
+<td align="left">y1</td>
+<td align="left">µg/m3</td>
+<td align="right">69</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">PM10</td>
+<td align="left">y1</td>
+<td align="left">µg/m3</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">SO2</td>
+<td align="left">y1</td>
+<td align="left">µg/m3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">SO2_95%_min30</td>
+<td align="left">y1</td>
+<td align="left">µg/m3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_nb_h1&gt;120</td>
+<td align="left">y1</td>
+<td align="left">1</td>
+<td align="right">81</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">CO_nb_d1&gt;8</td>
+<td align="left">y1</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">NO2_nb_d1&gt;80</td>
+<td align="left">y1</td>
+<td align="left">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">PM10_nb_d1&gt;50</td>
+<td align="left">y1</td>
+<td align="left">1</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">SO2_nb_d1&gt;100</td>
+<td align="left">y1</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-01-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">62</td>
+</tr>
+<tr class="even">
+<td align="left">2017-02-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">79</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-03-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">94</td>
+</tr>
+<tr class="even">
+<td align="left">2017-04-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">105</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-05-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">128</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">134</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-07-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">113</td>
+</tr>
+<tr class="even">
+<td align="left">2017-08-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">109</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">83</td>
+</tr>
+<tr class="even">
+<td align="left">2017-10-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">75</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-11-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">68</td>
+</tr>
+<tr class="even">
+<td align="left">2017-12-01</td>
+<td align="left">Zch_Stampfenbachstrasse</td>
+<td align="left">O3_98%_min30</td>
+<td align="left">m1</td>
+<td align="left">µg/m3</td>
+<td align="right">72</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="inputs_" class="section level2">
+<h2 class="hasAnchor">
+<a href="#inputs_" class="anchor"></a><code>_inputs_</code>
+</h2>
+<p>Der Parameter <code>_inputs_</code> ist ein Hilfskonstrukt wie <code>default_statistic</code>. Ein Problem bei mehrstufigen Berechnungen ist, dass unter Umständen bereits Resultate im Input für weitere Berechnungen enthalten sind. In folgenden Bespiel wird zuerst aus den 30min Werten d1 Mittelwerte, Anzahl Datenpunkte, min und max berechnet für d1, m1 und y1. Danach sollte das Tagesmaximum für das Jahr bestimmt werden:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ein Parameter reicht für die Veranschaulichung</span>
+O3 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data, .data<span class="op">$</span>parameter <span class="op">==</span><span class="st"> "O3"</span>)
+
+statstable &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(
+  <span class="op">~</span>parameter, <span class="op">~</span>statistic, <span class="op">~</span>from, <span class="op">~</span>to,
+  <span class="st">"default_statistic"</span>, <span class="st">"mean, n, min, max"</span>, <span class="st">"input"</span>, <span class="st">"d1, m1, y1"</span>,
+  <span class="st">"default_statistic"</span>, <span class="st">"max"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>
+)
+
+<span class="co"># Keine Berücksichtung der Datenverfügbarkeit</span>
+stats &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_statstable.html">calculate_statstable</a></span>(O3, statstable, <span class="dt">data_thresh =</span> <span class="dv">0</span>, <span class="dt">max_gap =</span> <span class="ot">NULL</span>)
+stats<span class="op">$</span>y1
+<span class="co">#&gt; # A tibble: 8 x 6</span>
+<span class="co">#&gt;   starttime           site           parameter      interval unit     value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;          &lt;fct&gt;          &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenb~ O3             y1       µg/m3  4.53e+1</span>
+<span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenb~ O3_nb_min30    y1       1      1.75e+4</span>
+<span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenb~ O3_min_min30   y1       µg/m3  2.44e-1</span>
+<span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_min30   y1       µg/m3  1.54e+2</span>
+<span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_d1      y1       µg/m3  1.16e+2</span>
+<span class="co">#&gt; 6 2017-01-01 00:00:00 Zch_Stampfenb~ O3_nb_min30_m~ y1       1      4.80e+1</span>
+<span class="co">#&gt; 7 2017-01-01 00:00:00 Zch_Stampfenb~ O3_min_min30_~ y1       µg/m3  9.00e+1</span>
+<span class="co">#&gt; 8 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_min30_~ y1       µg/m3  1.54e+2</span></code></pre></div>
+<p>Wird für die Berechnung des maximalen Tagesmittelwert des Jahres <code>_inputs_</code> statt <code>default_statistic</code> verwendet, werden nur die Statistiken für Parameter berechnet die in den Input Daten enthalten sind.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">statstable &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(
+  <span class="op">~</span>parameter, <span class="op">~</span>statistic, <span class="op">~</span>from, <span class="op">~</span>to,
+  <span class="st">"default_statistic"</span>, <span class="st">"mean, n, min, max"</span>, <span class="st">"input"</span>, <span class="st">"d1, m1, y1"</span>,
+  <span class="st">"_inputs_"</span>, <span class="st">"max"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>
+)
+
+<span class="co"># Keine Berücksichtung der Datenverfügbarkeit</span>
+stats &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_statstable.html">calculate_statstable</a></span>(O3, statstable, <span class="dt">data_thresh =</span> <span class="dv">0</span>, <span class="dt">max_gap =</span> <span class="ot">NULL</span>)
+stats<span class="op">$</span>y1
+<span class="co">#&gt; # A tibble: 5 x 6</span>
+<span class="co">#&gt;   starttime           site              parameter   interval unit     value</span>
+<span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;             &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenbach~ O3          y1       µg/m3  4.53e+1</span>
+<span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_nb_min30 y1       1      1.75e+4</span>
+<span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_min_min~ y1       µg/m3  2.44e-1</span>
+<span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_min~ y1       µg/m3  1.54e+2</span>
+<span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_d1   y1       µg/m3  1.16e+2</span></code></pre></div>
+<p>Im Allgemeinen dürfte die explizite Definition der Statistiken für jeden Parameter gegenüber der Verwendung von <code>default_statistic</code> und <code>_inputs_</code> vorzuziehen. Ansonsten kann das Resultat unerwartete Ergebnisse enthalten. Die Definition der statstable kann auch in einer Textdatei oder Exceldatei erfolgen und dann eingelesen werden, statt im Code definiert werden.</p>
+<p>An dieser Stelle noch die Berechnungen aller Statistiken im aqmet Store. Aus 21 Input Grössen werden 361 Statistiken berechnet:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">parameter</th>
+<th align="left">statistic</th>
+<th align="left">from</th>
+<th align="left">to</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">CO, NO, NOx, NO2, O3, SO2</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">CO, NO, NOx, NO2, O3, SO2</td>
+<td align="left">max, min, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">CO, NO, NOx, NO2, SO2</td>
+<td align="left">perc95</td>
+<td align="left">input</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">O3</td>
+<td align="left">perc02, perc98</td>
+<td align="left">input</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">O3</td>
+<td align="left">max, min, n, n&gt;120, n&gt;160, n&gt;180, n&gt;200, n&gt;240</td>
+<td align="left">h1</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">NO2</td>
+<td align="left">max, n, n&gt;200</td>
+<td align="left">h1</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">O3</td>
+<td align="left">mean</td>
+<td align="left">h1</td>
+<td align="left">h8gl</td>
+</tr>
+<tr class="even">
+<td align="left">CO</td>
+<td align="left">mean</td>
+<td align="left">h1</td>
+<td align="left">h8gl</td>
+</tr>
+<tr class="odd">
+<td align="left">CO</td>
+<td align="left">max</td>
+<td align="left">h8gl</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">O3</td>
+<td align="left">max, n&gt;120, n&gt;160, n&gt;180, n&gt;200, n&gt;240</td>
+<td align="left">h8gl</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">CO, NO, NOx, NO2, O3, SO2</td>
+<td align="left">min, max, n</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">CO</td>
+<td align="left">n&gt;8</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">SO2</td>
+<td align="left">n&gt;100</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">NO2</td>
+<td align="left">n&gt;80</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">O3</td>
+<td align="left">n&gt;120, n&gt;160, n&gt;200, n&gt;180, n&gt;240, n&gt;65</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">O3_max_h1</td>
+<td align="left">n&gt;120, n&gt;160, n&gt;180, n&gt;200, n&gt;240</td>
+<td align="left">d1</td>
+<td align="left">m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">EC1.0, EC2.5, PM10, PM2.5, PN</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">EC1.0, EC2.5, PM10, PM2.5, PN</td>
+<td align="left">max, min, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">EC1.0, EC2.5, PM10, PM2.5, PN</td>
+<td align="left">perc95</td>
+<td align="left">input</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">EC1.0, EC2.5, PM10, PM2.5, PN</td>
+<td align="left">min, max, n</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">PM10</td>
+<td align="left">n&gt;50</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="even">
+<td align="left">PM2.5</td>
+<td align="left">n&gt;25</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+<tr class="odd">
+<td align="left">WD</td>
+<td align="left">wind.direction</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">WVs</td>
+<td align="left">wind.speed_scalar</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">WVv</td>
+<td align="left">wind.speed_vector</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">WD</td>
+<td align="left">n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">WVs</td>
+<td align="left">max, min, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">WVv</td>
+<td align="left">max, min, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hr, p, StrGlo, T</td>
+<td align="left">mean</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">Hr, p</td>
+<td align="left">min,max</td>
+<td align="left">input</td>
+<td align="left">d1</td>
+</tr>
+<tr class="odd">
+<td align="left">T</td>
+<td align="left">min, max, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">T</td>
+<td align="left">min, max</td>
+<td align="left">h1</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">T</td>
+<td align="left">min, max, n</td>
+<td align="left">d1</td>
+<td align="left">m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">StrGlo</td>
+<td align="left">max, n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hr, p</td>
+<td align="left">n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">RainDur, RainSum, SunDur</td>
+<td align="left">sum</td>
+<td align="left">input</td>
+<td align="left">h1,d1,m1,y1</td>
+</tr>
+<tr class="odd">
+<td align="left">RainDur, RainSum, SunDur</td>
+<td align="left">n</td>
+<td align="left">input</td>
+<td align="left">d1,m1,y1</td>
+</tr>
+<tr class="even">
+<td align="left">RainDur, RainSum, SunDur</td>
+<td align="left">max</td>
+<td align="left">d1</td>
+<td align="left">y1</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="umwandlung-von-volumen--und-massenkonzentrationen" class="section level1">
 <h1 class="hasAnchor">
 <a href="#umwandlung-von-volumen--und-massenkonzentrationen" class="anchor"></a>Umwandlung von Volumen- und Massenkonzentrationen</h1>
 <p>Die Umwandlung der Konzentrationen erfolgt äquivalent zu den Berechnungen in der AIRMO. Sollen andere Konstanten verwendet werden, ist die Dokumentation von <code><a href="../../reference/convert_get_R.html">convert_set_R()</a></code> zu konsultieren. Die Funktionen <code><a href="../../reference/convert_conc.html">convert_conc()</a></code> und <code><a href="../../reference/convert_conc.html">convert_conc_multiple()</a></code> verfügen beide über Varianten wie die umgewandelten Daten zurückgegeben werden. Definiert wird dies mit dem Argument method. Bei “return” werden nur die umgewandelten Daten zurückgegeben, bei “append” werden sie am Ende angehängt und zuletzt bei “replace” werden die ursprünglichen Daten ersetzt.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">input &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>))
 
-<span class="co"># Behalte nur Volumenkonzentrationen im input</span>
-input &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(input, .data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppb"</span> <span class="op">|</span><span class="st"> </span>.data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppm"</span>)
+<span class="co"># Behalte nur Volumenkonzentrationen</span>
+data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(data, .data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppb"</span> <span class="op">|</span><span class="st"> </span>.data<span class="op">$</span>unit <span class="op">==</span><span class="st"> "ppm"</span>)
 
-<span class="kw"><a href="../../reference/convert_conc.html">convert_conc</a></span>(input, <span class="st">"NO"</span>, <span class="st">"ppb"</span>, <span class="st">"µg/m3"</span>, <span class="dt">method =</span> <span class="st">"return"</span>)
+<span class="kw"><a href="../../reference/convert_conc.html">convert_conc</a></span>(data, <span class="st">"NO"</span>, <span class="st">"ppb"</span>, <span class="st">"µg/m3"</span>, <span class="dt">method =</span> <span class="st">"return"</span>)
 <span class="co">#&gt; # A tibble: 1,484 x 6</span>
 <span class="co">#&gt;    starttime           site                  parameter interval unit  value</span>
 <span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span>
@@ -864,7 +1654,7 @@ conversions &lt;-<span class="st"> </span>tibble<span class="op">::</span><span 
   <span class="st">"NO2"</span>, <span class="st">"ppb"</span>, <span class="st">"µg/m3"</span>,
   <span class="st">"SO2"</span>, <span class="st">"ppb"</span>, <span class="st">"µg/m3"</span>
 )
-<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(input, conversions, <span class="dt">method =</span> <span class="st">"return"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"return"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)
 <span class="co">#&gt; # A tibble: 7,424 x 6</span>
 <span class="co">#&gt;    starttime           site                 parameter interval unit   value</span>
@@ -881,7 +1671,7 @@ conversions &lt;-<span class="st"> </span>tibble<span class="op">::</span><span 
 <span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstr~ SO2       min30    µg/m3 12.2  </span>
 <span class="co">#&gt; # ... with 7,414 more rows</span>
 
-<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(input, conversions, <span class="dt">method =</span> <span class="st">"append"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"append"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)
 <span class="co">#&gt; # A tibble: 16,332 x 6</span>
 <span class="co">#&gt;    starttime           site                 parameter interval unit   value</span>
@@ -898,7 +1688,7 @@ conversions &lt;-<span class="st"> </span>tibble<span class="op">::</span><span 
 <span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO2       min30    µg/m3 63.0  </span>
 <span class="co">#&gt; # ... with 16,322 more rows</span>
 
-<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(input, conversions, <span class="dt">method =</span> <span class="st">"replace"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"replace"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)
 <span class="co">#&gt; # A tibble: 8,908 x 6</span>
 <span class="co">#&gt;    starttime           site                 parameter interval unit   value</span>
@@ -914,6 +1704,19 @@ conversions &lt;-<span class="st"> </span>tibble<span class="op">::</span><span 
 <span class="co">#&gt;  9 2013-01-01 00:30:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 81.8  </span>
 <span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.40 </span>
 <span class="co">#&gt; # ... with 8,898 more rows</span></code></pre></div>
+<p>Die Funktion <code><a href="../../reference/calculate_mass_concentrations.html">calculate_mass_concentrations()</a></code> ist eine Hilfsfunktion, die aus Volumenkonzentrationen für CO, NO, NO2, NO2, SO2 in einem tibble automatisch die Massenkonzentrationen berechnet. Mit dem Argument keep_ppb können optional die Volumenkonzentration behalten werden. Das Default vorgehen ist die Volumenkonzentrationen zu ersetzen.</p>
+</div>
+<div id="noaa-hysplit-trajektorien" class="section level1">
+<h1 class="hasAnchor">
+<a href="#noaa-hysplit-trajektorien" class="anchor"></a>NOAA Hysplit Trajektorien</h1>
+<p>Neben dem Ostluft AWS Store aqmet existiert noch ein Store mit hysplit Trajektorien von 1980 bis zum jeweiligen Vormonat des aktuellen Datums für die Standorte Zürich Kaserne und St. Gallen Blumenbergplatz. Die Trajektorien sind jeweils für 01:00 und 13:00 UTC+1 (=Luftmassen Herkunft) gerechnet.</p>
+<p>Beim Format hysplit wird für die Abfrage nur die <code>site</code> und das <code>year</code> benötigt:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"hysplit"</span>, <span class="kw"><a href="../../reference/format_hysplit.html">format_hysplit</a></span>(), <span class="st">"rostluft"</span>, <span class="st">"hysplit"</span>)
+traj &lt;-<span class="st"> </span>hysplit_store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"ZH-Kaserne-hysplit"</span>, <span class="dt">year =</span> <span class="dv">2018</span>)
+
+<span class="co"># plotte die Daten mit openair</span>
+openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/trajPlot">trajPlot</a></span>(openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/selectByDate">selectByDate</a></span>(traj, <span class="dt">start =</span> <span class="st">"2018-01-01"</span>, <span class="dt">end =</span> <span class="st">"2018-01-05"</span>))</code></pre></div>
+<p><img src="tutorial_files/figure-html/unnamed-chunk-46-1.png" width="700"></p>
 </div>
 <div id="lokale-daten-loschen" class="section level1">
 <h1 class="hasAnchor">
@@ -924,12 +1727,18 @@ store<span class="op">$</span><span class="kw">destroy</span>(<span class="st">"
 <span class="co">#&gt; Cache for Store tutorial destroyed</span>
 
 my_store<span class="op">$</span><span class="kw">destroy</span>(<span class="st">"DELETE"</span>)
-<span class="co">#&gt; Store eigene_daten destroyed</span></code></pre></div>
+<span class="co">#&gt; Store eigene_daten destroyed</span>
+
+hysplit_store<span class="op">$</span>read.only =<span class="st"> </span><span class="ot">FALSE</span>
+hysplit_store<span class="op">$</span><span class="kw">destroy</span>(<span class="st">"DELETE"</span>)
+<span class="co">#&gt; Cache for Store hysplit destroyed</span></code></pre></div>
 </div>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>rlang muss nicht als library importiert werden. … leitet die Expression an rOstluft weiter. Dieses hat den Operator importiert und kann somit die Expression korrekt auswerten.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Der Pfad zum Verzeichnis entspricht der Ausgabe von <code><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv("HOME")</a></code><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>rlang muss nicht als library importiert werden. … leitet die Expression an rOstluft weiter. Dieses hat den Operator importiert und kann somit die Expression korrekt auswerten.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Ausnahme für die Statistiken perc02, perc95, perc98. Die AIRMO spezifiert nicht das Basis Interval =&gt; O3_95%, In rOstluft O3_95%_min30.<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
   </div>
@@ -957,8 +1766,15 @@ my_store<span class="op">$</span><span class="kw">destroy</span>(<span class="st
       <li><a href="#zusammenfugen-von-daten-im-rolf-format">Zusammenfügen von Daten im rolf Format</a></li>
       <li><a href="#metadaten">Metadaten</a></li>
       <li><a href="#openair-kompatibles-wide-format">openair kompatibles Wide Format</a></li>
-      <li><a href="#resampling-von-daten">Resampling von Daten</a></li>
+      <li>
+<a href="#berechnung-von-statistiken">Berechnung von Statistiken</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#resample">resample</a></li>
+      <li><a href="#statstable">Statstable</a></li>
+      <li><a href="#inputs_"><code>_inputs_</code></a></li>
+      </ul>
+</li>
       <li><a href="#umwandlung-von-volumen--und-massenkonzentrationen">Umwandlung von Volumen- und Massenkonzentrationen</a></li>
+      <li><a href="#noaa-hysplit-trajektorien">NOAA Hysplit Trajektorien</a></li>
       <li><a href="#lokale-daten-loschen">Lokale Daten löschen</a></li>
       </ul>
 </div>

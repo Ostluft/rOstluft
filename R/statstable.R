@@ -1,7 +1,19 @@
 #' Expands compact statstable to a table with one stats per row
 #'
+#' For each comma seperated value in a cell a new row is added.
+#'
 #' @param statstable compact statstable
 #' @param sep seperator of combined values
+#'
+#' @seealso
+#' * `tidyr::seperate_rows()` is used to expand the table. One call per column.
+#'
+#' @examples
+#' statstable <- tibble::tribble(
+#'   ~parameter, ~statistic, ~from, ~to,
+#'   "O3, NO2", "min, max", "h1, d1", "m1, y1"
+#' )
+#' expand_statstable(statstable)
 #'
 #' @return expanded statstable
 #' @export
@@ -94,16 +106,22 @@ expand_inputs <- function(x, inputs) {
 #' Calculates stats described in a table
 #'
 #' @description
-#' With various caveats:
+#' Calculate a lot of statistics defined in a table with various caveats:
 #'
-#' * always the same data threshold for all calculations
+#' * series always padded to complete years
+#' * the same data threshold for all calculations
 #' * to h8gl: only mean from h1
-#' * only to y1 uses max gap
+#' * max_gap only by to y1, and definition in **days**
+#' * usage of `default_statistic` and `_inputs_` can contain suprises in the result
 #'
-#' @section TODO:
-#'
-#' * example needed. See Tests for an example usage
-#' * documentation needed
+#' All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
+#' one statistic for one parameter with a basis interval ("from") and the target interval ("to"). The rows are then
+#' grouped with "from", then with "to" and then with "parameter". This results in a list of statistic for each
+#' parameter. This list is compatible with `resample()`. If no `default_statistic` is defined,
+#' `default_statistic = "drop"` is added. Multi-step statistics are possible. `_inputs_` can be used as substitute for
+#' `default_statistic` in multi-step calculation if the input in "from" already contains calculated statistics.
+#' The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
+#' will be expanded and a row added. See `expand_statstable()`
 #'
 #' @param data input data in rolf format
 #' @param statstable description of statistics to calculate in table form
@@ -113,8 +131,39 @@ expand_inputs <- function(x, inputs) {
 #' @param max_gap in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days
 #' @param order defines the order of calculation in the from column
 #'
-#' @return list with one item per to interval
+#' @return list with one item for every to interval
 #' @export
+#'
+#' @examples
+#' # calculate LRV statisitcs
+#' lrv_table <- tibble::tribble(
+#'   ~parameter, ~statistic, ~from, ~to,
+#'   "SO2, NO2, PM10", "mean", "input", "y1",
+#'   "SO2, NO2", "perc95", "input", "y1",
+#'   "O3", "perc98", "input", "m1",
+#'   "O3", "mean", "input", "h1",
+#'   "O3", "n>120", "h1", "y1",
+#'   "SO2, NO2, CO, PM10", "mean", "input", "d1",
+#'   "SO2", "n>100", "d1", "y1",
+#'   "NO2", "n>80", "d1", "y1",
+#'   "CO", "n>8", "d1", "y1",
+#'   "PM10", "n>50", "d1", "y1"
+#' )
+#'
+#' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2017.csv",
+#'                    package = "rOstluft.data", mustWork = TRUE)
+#'
+#' data <- read_airmo_csv(fn)
+#'
+#' # convert volume concentrations to mass concentrations
+#' data <- calculate_mass_concentrations(data)
+#'
+#' stats <- calculate_statstable(data, lrv_table)
+#'
+#' # we are only interested in the m1 and y1 results
+#' stats <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+#' stats
+#'
 calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE, data_thresh = 0.8,
                                  max_gap = 10, order = c("input", "h1", "h8gl", "d1", "m1", "y1")) {
 
@@ -160,7 +209,7 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
     data
   }
 
-  ####### CODE START #####
+  ####### FUNCTION START #####
 
   # expand statstable, create for a row for every combined cell
   # probably not reasonable for all columns

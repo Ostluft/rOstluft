@@ -24,21 +24,55 @@ calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
 \item{order}{defines the order of calculation in the from column}
 }
 \value{
-list with one item per to interval
+list with one item for every to interval
 }
 \description{
-With various caveats:
+Calculate a lot of statistics defined in a table with various caveats:
 \itemize{
-\item always the same data threshold for all calculations
+\item series always padded to complete years
+\item the same data threshold for all calculations
 \item to h8gl: only mean from h1
-\item only to y1 uses max gap
-}
-}
-\section{TODO}{
-
-\itemize{
-\item example needed. See Tests for an example usage
-\item documentation needed
-}
+\item max_gap only by to y1, and definition in \strong{days}
+\item usage of \code{default_statistic} and \code{_inputs_} can contain suprises in the result
 }
 
+All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
+one statistic for one parameter with a basis interval ("from") and the target interval ("to"). The rows are then
+grouped with "from", then with "to" and then with "parameter". This results in a list of statistic for each
+parameter. This list is compatible with \code{resample()}. If no \code{default_statistic} is defined,
+\code{default_statistic = "drop"} is added. Multi-step statistics are possible. \code{_inputs_} can be used as substitute for
+\code{default_statistic} in multi-step calculation if the input in "from" already contains calculated statistics.
+The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
+will be expanded and a row added. See \code{expand_statstable()}
+}
+\examples{
+# calculate LRV statisitcs
+lrv_table <- tibble::tribble(
+  ~parameter, ~statistic, ~from, ~to,
+  "SO2, NO2, PM10", "mean", "input", "y1",
+  "SO2, NO2", "perc95", "input", "y1",
+  "O3", "perc98", "input", "m1",
+  "O3", "mean", "input", "h1",
+  "O3", "n>120", "h1", "y1",
+  "SO2, NO2, CO, PM10", "mean", "input", "d1",
+  "SO2", "n>100", "d1", "y1",
+  "NO2", "n>80", "d1", "y1",
+  "CO", "n>8", "d1", "y1",
+  "PM10", "n>50", "d1", "y1"
+)
+
+fn <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2017.csv",
+                   package = "rOstluft.data", mustWork = TRUE)
+
+data <- read_airmo_csv(fn)
+
+# convert volume concentrations to mass concentrations
+data <- calculate_mass_concentrations(data)
+
+stats <- calculate_statstable(data, lrv_table)
+
+# we are only interested in the m1 and y1 results
+stats <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+stats
+
+}

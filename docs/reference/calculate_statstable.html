@@ -11,7 +11,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -32,11 +32,22 @@
 
 <meta property="og:title" content="Calculates stats described in a table — calculate_statstable" />
 
-<meta property="og:description" content="With various caveats:
-always the same data threshold for all calculations
+<meta property="og:description" content="Calculate a lot of statistics defined in a table with various caveats:
+series always padded to complete years
+the same data threshold for all calculations
 to h8gl: only mean from h1
-only to y1 uses max gap
+max_gap only by to y1, and definition in days
+usage of default_statistic and _inputs_ can contain suprises in the result
 " />
+
+<meta property="og:description" content="All statistics are defined in a table with the columns &quot;parameter&quot;, &quot;statistic&quot;, &quot;from&quot; and &quot;to&quot;. Each row contains
+one statistic for one parameter with a basis interval (&quot;from&quot;) and the target interval (&quot;to&quot;). The rows are then
+grouped with &quot;from&quot;, then with &quot;to&quot; and then with &quot;parameter&quot;. This results in a list of statistic for each
+parameter. This list is compatible with resample(). If no default_statistic is defined,
+default_statistic = &quot;drop&quot; is added. Multi-step statistics are possible. _inputs_ can be used as substitute for
+default_statistic in multi-step calculation if the input in &quot;from&quot; already contains calculated statistics.
+The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
+will be expanded and a row added. See expand_statstable()" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -137,11 +148,22 @@ only to y1 uses max gap
 
     <div class="ref-description">
     
-    <p>With various caveats:</p><ul>
-<li><p>always the same data threshold for all calculations</p></li>
+    <p>Calculate a lot of statistics defined in a table with various caveats:</p><ul>
+<li><p>series always padded to complete years</p></li>
+<li><p>the same data threshold for all calculations</p></li>
 <li><p>to h8gl: only mean from h1</p></li>
-<li><p>only to y1 uses max gap</p></li>
+<li><p>max_gap only by to y1, and definition in <strong>days</strong></p></li>
+<li><p>usage of <code>default_statistic</code> and <code>_inputs_</code> can contain suprises in the result</p></li>
 </ul>
+
+    <p>All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
+one statistic for one parameter with a basis interval ("from") and the target interval ("to"). The rows are then
+grouped with "from", then with "to" and then with "parameter". This results in a list of statistic for each
+parameter. This list is compatible with <code><a href='resample.html'>resample()</a></code>. If no <code>default_statistic</code> is defined,
+<code>default_statistic = "drop"</code> is added. Multi-step statistics are possible. <code>_inputs_</code> can be used as substitute for
+<code>default_statistic</code> in multi-step calculation if the input in "from" already contains calculated statistics.
+The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
+will be expanded and a row added. See <code><a href='expand_statstable.html'>expand_statstable()</a></code></p>
     
     </div>
 
@@ -184,17 +206,52 @@ only to y1 uses max gap
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list with one item per to interval</p>
-    
-    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
-
-    
-    <ul>
-<li><p>example needed. See Tests for an example usage</p></li>
-<li><p>documentation needed</p></li>
-</ul>
+    <p>list with one item for every to interval</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># calculate LRV statisitcs</span>
+<span class='no'>lrv_table</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span>(
+  ~<span class='no'>parameter</span>, ~<span class='no'>statistic</span>, ~<span class='no'>from</span>, ~<span class='no'>to</span>,
+  <span class='st'>"SO2, NO2, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"SO2, NO2"</span>, <span class='st'>"perc95"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"O3"</span>, <span class='st'>"perc98"</span>, <span class='st'>"input"</span>, <span class='st'>"m1"</span>,
+  <span class='st'>"O3"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"h1"</span>,
+  <span class='st'>"O3"</span>, <span class='st'>"n&gt;120"</span>, <span class='st'>"h1"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"SO2, NO2, CO, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"d1"</span>,
+  <span class='st'>"SO2"</span>, <span class='st'>"n&gt;100"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"NO2"</span>, <span class='st'>"n&gt;80"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"CO"</span>, <span class='st'>"n&gt;8"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
+  <span class='st'>"PM10"</span>, <span class='st'>"n&gt;50"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>
+)
+
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,
+                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>)
+
+<span class='co'># convert volume concentrations to mass concentrations</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_mass_concentrations.html'>calculate_mass_concentrations</a></span>(<span class='no'>data</span>)
+
+<span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_statstable</span>(<span class='no'>data</span>, <span class='no'>lrv_table</span>)
+
+<span class='co'># we are only interested in the m1 and y1 results</span>
+<span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bind_rows_with_factor_columns.html'>bind_rows_with_factor_columns</a></span>(<span class='no'>stats</span>$<span class='no'>y1</span>, <span class='no'>stats</span>$<span class='no'>m1</span>)
+<span class='no'>stats</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22 x 6</span><span>
+#&gt;    starttime           site                    parameter    interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   
+#&gt; </span><span style='color: #555555;'>10</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   
+#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -202,9 +259,9 @@ only to y1 uses max gap
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#todo">TODO</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

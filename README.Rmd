@@ -85,34 +85,22 @@ devtools::install_dev_deps()
 
 # Demo
 
-Ein paar kurze Code Bespiele
-
+Eine ausführliche Einführung ist im [Tutorial](https://ostluft.github.io/rOstluft/articles/articles/tutorial.html) zu 
+finden.
 
 # Aktueller Stand
 
-* Grundgerüst des Packages ist definiert
-* Tools zur automatischen generierung der Dokumentation sind eingerichtet
-* Endgültige Ablage des Datensatz in Amazon S3
-* github Organziation Ostluft erstellt und die beiden Reprositories 
-  [Ostluft/rOstluft](https://github.com/Ostluft/rOstluft) und 
-  [Ostluft/rOstluft.data](https://github.com/Ostluft/rOstluft.data)
-* Dokumentation wird ebenfalls auf github via gh-pages gehostet
-* Keine Argumente in Prozente als 0-100 sondern immer 0-1 verwenden. In Ausgaben ok
-
+* Alpha Version ist erstellt
+* Mechanismen zur automatischen Erstellung einer Dokumentation sind vorhanden
+* Initialversion eines Tutorial ist vorhanden
+* Die kritischen Komponenten (resample/Statistiken/Konzentrationsumrechnungen) verfügen über umfangreiche Tests
 
 # TODO
 
-* Reihenfolge der üblichen Argumente (station, intervall, jahr, parameter, etc) in 
-  Funktionen bestimmen 
-* Umbennung der Datenfelder
-* Schreiben eines kleines Scriptes zur Unterstützung von neuen Package Releases
-* Funktionen um mit AWS S3 datastore zu kommunizieren/interagieren
-* Parameter-Umbenennung lookup tabel etc
-* Metadaten-Tabellen aus OL MetaDB und von weiteren Datenquellen
-* Mitteln aller Datensätze auf diverse Mittelungsintervalle
-* Tests ob Struktur der Daten stimmt & sicherstellen, dass keine Duplikate in datensatz sind (mittels distinct() ?)
-* Zusammenführen des kompletten Datastore auf AWS S3
-* Dokumentation: Anwendungsbeispiele
-* ausführliche Vignette inkl. Auswertungs-Beispielen
-
-
+* Aufräumen des Codes (veraltete Funktionen löschen)
+* Überarbeiten der Dokumentation der R6 Klassen
+* Travis/CI Integration?
+* Erste Anwendungen des Stores implementieren
+* utility Funktionen wie pluck_param, pluck_interval, pluck_site für rolf tibbles?
+* rOstluft.plot Package?
+* Grund für Differenzen bei AOT40 und O3_h709001600 Berechnung zwischen AIRMO und rOstluft finden

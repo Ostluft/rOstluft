@@ -188,6 +188,23 @@ statistic_coverage <- function(x) {
   res
 }
 
+
+
+#' @rdname statistic_fun
+#' @keywords internal
+statistic_aot40k <- function(x) {
+  nf <- sum(is.na(x))
+  ntot <- 2196 # (30 + 31 + 30 + 31 + 31 + 30) Tage * 12 Stunden
+
+  if (nf >= 0.1 * ntot) { # data avaibility greater 90%
+    NA
+  } else {
+    aot40 <- sum(x[x > 40] - 40, na.rm = TRUE)
+    aot40 * ntot / (ntot - nf)
+  }
+}
+
+
 #' @rdname statistic_fun
 #' @keywords internal
 get_statistic_percentile <- function(percentile) {
@@ -224,7 +241,9 @@ statistic_lookup <- tibble::tribble(
   "coverage",  statistic_coverage, "${parameter}_valid%_${basis_interval}", "%",
   "perc95",  get_statistic_percentile(0.95), "${parameter}_95%_${basis_interval}",  NULL,
   "perc98",  get_statistic_percentile(0.98), "${parameter}_98%_${basis_interval}", NULL,
+  "perc02",  get_statistic_percentile(0.02), "${parameter}_02%_${basis_interval}", NULL,
   "n>8", get_statistic_limit(8), "${parameter}_nb_${basis_interval}>8", "1",
+  "n>25", get_statistic_limit(25), "${parameter}_nb_${basis_interval}>8", "1",
   "n>50", get_statistic_limit(50), "${parameter}_nb_${basis_interval}>50", "1",
   "n>65", get_statistic_limit(65), "${parameter}_nb_${basis_interval}>65", "1",
   "n>80", get_statistic_limit(80), "${parameter}_nb_${basis_interval}>80", "1",
@@ -233,7 +252,8 @@ statistic_lookup <- tibble::tribble(
   "n>160", get_statistic_limit(160), "${parameter}_nb_${basis_interval}>160", "1",
   "n>180", get_statistic_limit(180), "${parameter}_nb_${basis_interval}>180", "1",
   "n>200", get_statistic_limit(200), "${parameter}_nb_${basis_interval}>200", "1",
-  "n>240", get_statistic_limit(240), "${parameter}_nb_${basis_interval}>240", "1"
+  "n>240", get_statistic_limit(240), "${parameter}_nb_${basis_interval}>240", "1",
+  "AOT40k", statistic_aot40k, "AOT40", "ppbh"
 )
 
 statistic_lookup <- tibble::column_to_rownames(statistic_lookup, "statistic")

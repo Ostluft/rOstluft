@@ -10,6 +10,7 @@
 \alias{statistic_max}
 \alias{statistic_min}
 \alias{statistic_coverage}
+\alias{statistic_aot40k}
 \alias{get_statistic_percentile}
 \alias{get_statistic_limit}
 \title{Get the biggest number of consecutive NA Values}
@@ -31,6 +32,8 @@ statistic_max(x)
 statistic_min(x)
 
 statistic_coverage(x)
+
+statistic_aot40k(x)
 
 get_statistic_percentile(percentile)
 

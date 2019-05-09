@@ -5,20 +5,20 @@
 \alias{pad_serie}
 \title{Pad data}
 \usage{
-pad(data, start.date = NULL, end.date = NULL, drop.last = FALSE)
+pad(data, start_date = NULL, end_date = NULL, drop_last = FALSE)
 
-pad_serie(serie, start.date = NULL, end.date = NULL,
-  drop.last = FALSE)
+pad_serie(serie, start_date = NULL, end_date = NULL,
+  drop_last = FALSE)
 }
 \arguments{
 \item{data}{tibble in rOstluft long format}
 
-\item{start.date}{optional start date for padding. Default min date in series}
+\item{start_date}{optional start date for padding. Default min date in series}
 
-\item{end.date}{optional end date for padding. Default max date in series}
+\item{end_date}{optional end date for padding. Default max date in series}
 
-\item{drop.last}{optional drop the last added time point by padding. Useful when
-resampling and end.date is the first time point of the new interval}
+\item{drop_last}{optional drop the last added time point by padding. Useful when
+resampling and end_date is the first time point of the new interval}
 
 \item{serie}{a tibble in rOstluft long format containing exactly one serie}
 }

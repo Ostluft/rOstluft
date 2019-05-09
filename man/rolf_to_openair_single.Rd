@@ -16,7 +16,7 @@ rolf_to_openair_single(data, parameter = NULL, unit = NULL,
 
 \item{interval}{Optional: interval of the parameter to pluck. Default NULL}
 
-\item{keep_interval}{Optional: keep interval column. Default NULL}
+\item{keep_interval}{Optional: keep interval column. Default FALSE}
 }
 \value{
 tibble with one parameter in openair compatible format including unit, site and optional interval column

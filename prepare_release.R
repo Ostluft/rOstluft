@@ -1,19 +1,5 @@
 
-library(usethis)
-
 prepare_release <- function() {
-  choice <- utils::menu(
-    choices = c(
-      "No",
-      "Yes"
-    ),
-    title = "Run devtools::check()"
-  )
-
-  if (choice == 2) {
-    devtools::check()
-  }
-
   bump_ <- function(x, ver) {
     d <- desc::desc(text = paste0("Version: ", ver))
     suppressMessages(d$bump_version(x)$get("Version")[[1]])
@@ -24,7 +10,7 @@ prepare_release <- function() {
     vapply(bumps, bump_, character(1), ver = ver)
   }
 
-  proj <- proj_get()
+  proj <- usethis::proj_get()
   ver <- desc::desc_get_version(proj)
   versions <- bump_version(ver)
 
@@ -47,12 +33,27 @@ prepare_release <- function() {
       "No",
       "Yes"
     ),
+    title = "Run devtools::check()"
+  )
+
+  if (choice == 2) {
+    devtools::check()
+  }
+
+  choice <- utils::menu(
+    choices = c(
+      "No",
+      "Yes"
+    ),
     title = "Update Documentation"
   )
 
   if (choice == 2) {
+    devtools::install(quick = TRUE, reload = TRUE, dependencies = FALSE)
     pkgdown::clean_site()
     pkgdown::build_site()
+    rmarkdown::render("README.Rmd", "github_document", encoding = "UTF-8")
+    fs::file_delete("README.html")
   }
 
 }

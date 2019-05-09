@@ -5,9 +5,9 @@
 \title{resampling a serie}
 \usage{
 resample_series(serie, statistic = "mean", new_interval = "d1",
-  data.thresh = NULL, start.date = NULL, end.date = NULL,
-  drop.last = FALSE, rename.parameter = FALSE, percentile = 0.95,
-  max_gap = NULL)
+  data_thresh = NULL, max_gap = NULL, rename_parameter = TRUE,
+  percentile = 0.95, skip_padding = FALSE, start_date = NULL,
+  end_date = NULL, drop_last = FALSE)
 }
 \arguments{
 \item{serie}{a tibble in rOstluft long format containing exactly one serie}

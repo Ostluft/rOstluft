@@ -139,7 +139,7 @@ dplyr::filter(store$list_chunks(), !is.na(local.path))
 store$get_meta()
 
 ## or a specific meta file
-store$get_meta("meta_ostluft")
+store$get_meta("ostluft")
 
 ## get the cache as local storage
 local <- store$get_local_storage()
@@ -149,6 +149,7 @@ local$list_chunks()
 local$get(site = "Zch_Stampfenbachstrasse", interval = "min30", year = 2011:2012)
 
 ## destroy store (careful removes all files on the disk)
+store$read.only = FALSE
 store$destroy("DELETE")
 
 ## No examples for write operations

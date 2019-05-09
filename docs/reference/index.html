@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
       </span>
     </div>
 
@@ -86,18 +86,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/einleitung.html">[GER] Einleitung rOstluft</a>
+      <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
     </li>
     <li>
       <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
-      <a href="../articles/s3.html">[GER] AWS S3</a>
-    </li>
-    <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../articles/articles/tutorial.html">
+    <span class="fa fa-leanpub"></span>
+     
+    Tutorial
+  </a>
 </li>
       </ul>
       
@@ -134,77 +138,11 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-storages-and-formats" class="hasAnchor"><a href="#section-storages-and-formats" class="anchor"></a>Storages and Formats</h2>
+          <p class="section-desc"><p>Data Formats and Storages to store data</p></p>
         </th>
       </tr>
       <tr>
-        
-        <td>
-          <p><code><a href="bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> </p>
-        </td>
-        <td><p>bind rows of data frames with factors</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="conversion_fun_factory.html">conversion_fun_factory()</a></code> </p>
-        </td>
-        <td><p>Factory to generate conversion functions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="convert_unit.html">convert_unit()</a></code> <code><a href="convert_unit.html">convert_multiple_units()</a></code> </p>
-        </td>
-        <td><p>Convert the unit of a single parameter</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="format_hysplit.html">format_hysplit()</a></code> </p>
-        </td>
-        <td><p>Format defintion for hysplit back trajectories</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="format_rolf.html">format_rolf()</a></code> </p>
-        </td>
-        <td><p>rOstluft long format (rolf)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gap_wrapper_function.html">gap_wrapper_function()</a></code> </p>
-        </td>
-        <td><p>wrapper function for maximum number of consecutive NA values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="import_directory.html">import_directory()</a></code> </p>
-        </td>
-        <td><p>Imports directory into store</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mass_to_parts.html">mass_to_parts()</a></code> </p>
-        </td>
-        <td><p>Converts mass to volume concentration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="openair_to_rolf.html">openair_to_rolf()</a></code> </p>
-        </td>
-        <td><p>Converts data from openair format to rolf</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pad.html">pad()</a></code> <code><a href="pad.html">pad_serie()</a></code> </p>
-        </td>
-        <td><p>Pad data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parts_to_mass.html">parts_to_mass()</a></code> </p>
-        </td>
-        <td><p>Converts mass to volume concentration</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="r6_storage_local.html">storage_local_rds()</a></code> <code><a href="r6_storage_local.html">storage_local_tsv()</a></code> </p>
@@ -219,6 +157,158 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="format_hysplit.html">format_hysplit()</a></code> </p>
+        </td>
+        <td><p>Format defintion for hysplit back trajectories</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="format_rolf.html">format_rolf()</a></code> </p>
+        </td>
+        <td><p>rOstluft long format (rolf)</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-resampling-data" class="hasAnchor"><a href="#section-resampling-data" class="anchor"></a>Resampling data</h2>
+          <p class="section-desc"><p>Functions for resampling data between different intervals and applying statistical methods</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="resample.html">resample()</a></code> </p>
+        </td>
+        <td><p>Resampling data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pad.html">pad()</a></code> <code><a href="pad.html">pad_serie()</a></code> </p>
+        </td>
+        <td><p>Pad data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="statistic_fun_factory.html">statistic_fun_factory()</a></code> </p>
+        </td>
+        <td><p>Factory to generate statistical functions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="treshold_wrapper_function.html">treshold_wrapper_function()</a></code> </p>
+        </td>
+        <td><p>Wrapper function for minimum capture threshold</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gap_wrapper_function.html">gap_wrapper_function()</a></code> </p>
+        </td>
+        <td><p>wrapper function for maximum number of consecutive NA values</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-statistic-calculations" class="hasAnchor"><a href="#section-statistic-calculations" class="anchor"></a>Statistic calculations</h2>
+          <p class="section-desc"><p>Applying resampling of data to get relevant Statistics</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="calculate_statstable.html">calculate_statstable()</a></code> </p>
+        </td>
+        <td><p>Calculates stats described in a table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="expand_statstable.html">expand_statstable()</a></code> </p>
+        </td>
+        <td><p>Expands compact statstable to a table with one stats per row</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_CO_h8gl.html">calculate_CO_h8gl()</a></code> </p>
+        </td>
+        <td><p>Calculates CO 8 hour rolling statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_LRV.html">calculate_LRV()</a></code> </p>
+        </td>
+        <td><p>Calculates exceedance of LRV limits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_mass_concentrations.html">calculate_mass_concentrations()</a></code> </p>
+        </td>
+        <td><p>Prepares data for stats calculations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_O3.html">calculate_O3()</a></code> </p>
+        </td>
+        <td><p>Calculates a lot of O3 indicators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_O3_h8gl.html">calculate_O3_h8gl()</a></code> </p>
+        </td>
+        <td><p>Calculates O3 8 hour rolling statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calculate_stats.html">calculate_stats()</a></code> </p>
+        </td>
+        <td><p>Calculates most common stats</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-concentrations-conversion" class="hasAnchor"><a href="#section-concentrations-conversion" class="anchor"></a>concentrations conversion</h2>
+          <p class="section-desc"><p>Functions for converting between Volume and Mass concentrations</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="convert_conc.html">convert_conc()</a></code> <code><a href="convert_conc.html">convert_conc_multiple()</a></code> </p>
+        </td>
+        <td><p>Convert between volume and mass concentrations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="conversion_conc_fun_factory.html">conversion_conc_fun_factory()</a></code> </p>
+        </td>
+        <td><p>Factory to generate conc conversion functions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="mass_to_parts.html">mass_to_parts()</a></code> </p>
+        </td>
+        <td><p>Converts mass to volume concentration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parts_to_mass.html">parts_to_mass()</a></code> </p>
+        </td>
+        <td><p>Converts mass to volume concentration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="convert_get_R.html">convert_get_R()</a></code> <code><a href="convert_get_R.html">convert_set_R()</a></code> <code><a href="convert_get_R.html">convert_get_mol_masses()</a></code> <code><a href="convert_get_R.html">convert_set_mol_masses()</a></code> <code><a href="convert_get_R.html">convert_get_conc_lookup()</a></code> <code><a href="convert_get_R.html">convert_set_conc_lookup()</a></code> </p>
+        </td>
+        <td><p>Customize concentration conversion</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-read-functions" class="hasAnchor"><a href="#section-data-read-functions" class="anchor"></a>Data read functions</h2>
+          <p class="section-desc"><p>Read data files from different sources</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
           <p><code><a href="read_airmo_csv.html">read_airmo_csv()</a></code> </p>
         </td>
         <td><p>Reads an AIRMO Export in CSV Format</p></td>
@@ -228,6 +318,12 @@
           <p><code><a href="read_airmo_dat.html">read_airmo_dat()</a></code> </p>
         </td>
         <td><p>Reads an AIRMO Export in DAT Format</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_ethz_iac.html">read_ethz_iac()</a></code> </p>
+        </td>
+        <td><p>Read an IAC/ETHZ meteo station file</p></td>
       </tr><tr>
         
         <td>
@@ -249,9 +345,35 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="resample.html">resample()</a></code> </p>
+          <p><code><a href="read_smn.html">read_smn()</a></code> </p>
         </td>
-        <td><p>Resampling data</p></td>
+        <td><p>Reads a file from the SwissMetNet of MeteoSwiss</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_smn_multiple.html">read_smn_multiple()</a></code> </p>
+        </td>
+        <td><p>Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="split_smn.html">split_smn()</a></code> </p>
+        </td>
+        <td><p>Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-long-wide-format-conversion" class="hasAnchor"><a href="#section-long-wide-format-conversion" class="anchor"></a>Long &lt;&gt; Wide Format conversion</h2>
+          <p class="section-desc"><p>Convert between rOstluft Long format and an openair compatible Wide format</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="openair_to_rolf.html">openair_to_rolf()</a></code> </p>
+        </td>
+        <td><p>Converts data from openair format to rolf</p></td>
       </tr><tr>
         
         <td>
@@ -264,6 +386,38 @@
           <p><code><a href="rolf_to_openair_single.html">rolf_to_openair_single()</a></code> </p>
         </td>
         <td><p>Converts one parameter in a rolf data frame to an openair compatible format</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-utility-functions" class="hasAnchor"><a href="#section-utility-functions" class="anchor"></a>Utility functions</h2>
+          <p class="section-desc"><p>Some functions to make the life of a programmer easier</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> </p>
+        </td>
+        <td><p>bind rows of data frames with factors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="import_directory.html">import_directory()</a></code> </p>
+        </td>
+        <td><p>Imports directory into store</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="meta_apply.html">meta_apply()</a></code> </p>
+        </td>
+        <td><p>Transforms data based on an other meta table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rolf_apply_meta.html">rolf_apply_meta()</a></code> </p>
+        </td>
+        <td><p>apply meta data to rolf data</p></td>
       </tr><tr>
         
         <td>
@@ -273,21 +427,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="statistic_fun_factory.html">statistic_fun_factory()</a></code> </p>
-        </td>
-        <td><p>Factory to generate statistical functions</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="transform_projection.html">transform_projection()</a></code> </p>
         </td>
         <td><p>Map projection and datum transformation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="treshold_wrapper_function.html">treshold_wrapper_function()</a></code> </p>
-        </td>
-        <td><p>Wrapper function for minimum capture threshold</p></td>
       </tr>
     </tbody>
     </table>
@@ -296,7 +438,13 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-storages-and-formats">Storages and Formats</a></li>
+      <li><a href="#section-resampling-data">Resampling data</a></li>
+      <li><a href="#section-statistic-calculations">Statistic calculations</a></li>
+      <li><a href="#section-concentrations-conversion">concentrations conversion</a></li>
+      <li><a href="#section-data-read-functions">Data read functions</a></li>
+      <li><a href="#section-long-wide-format-conversion">Long &lt;&gt; Wide Format conversion</a></li>
+      <li><a href="#section-utility-functions">Utility functions</a></li>
     </ul>
   </div>
 </div>

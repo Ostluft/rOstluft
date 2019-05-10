@@ -74,9 +74,6 @@ reference:
   - starts_with("read_")
   - '`split_smn`'
 
-
-
-
 - title: "Long <> Wide Format conversion"
   desc: Convert between rOstluft Long format and an openair compatible Wide format
   contents:
@@ -86,6 +83,7 @@ reference:
   desc: Some functions to make the life of a programmer easier
   contents:
   - '`bind_rows_with_factor_columns`'
+  - starts_with("pluck_")
   - '`import_directory`'
   - '`meta_apply`'
   - '`rolf_apply_meta`'

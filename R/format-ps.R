@@ -4,14 +4,45 @@
 #' This format is used for non periodical data
 #'
 #' @section TODO:
-#' Write the Documentation ...
+#' Define class of columns
+#'
+#' @section Columns:
+#'
+#' * **starttime**: POSIXct
+#' * **endtime**: POSIXct
+#' * **site**: factor/character
+#' * **parameter**: factor/character
+#' * **unit**: factor/character
+#' * **value**: double
+#'
+#' @section Series:
+#'
+#' A serie is the unique combination of the columns:
+#'
+#' * site
+#' * parameter
+#' * unit
+#'
+#' @section Chunking:
+#'
+#' The data is chunked by the columns
+#'
+#' * site
+#'
+#' @section Content Columns:
+#'
+#' * year = year(with_tz(starttime, tz))
+#' * site
+#' * parameter
+#' * unit
+#' * n = number of valid values
 #'
 #' @name format_ps
 #' @docType class
 NULL
 
 
-#' @param tz time zone used for chunking.  Default Etc/GMT-1
+#' @param tz time zone used for chunking/content. Default Etc/GMT-1
 #'
 #' @return R6 class object of format_rolf
 #' @export
@@ -30,10 +61,14 @@ r6_format_ps <- R6::R6Class(
     chunk_calc = character(),
     unique_columns = c("starttime", "endtime", "site", "parameter", "unit"),
     # content columns should probably contain chunk_calc names,
-    content_columns = c("year" =  ~lubridate::year(starttime), "site", "parameter", "unit"),
+    content_columns = NULL,
     tz = NULL,
     initialize = function(tz = "Etc/GMT-1") {
       self$tz <- tz
+      self$content_columns <- c(
+        "year" = rlang::parse_expr(sprintf("lubridate::year(lubridate::with_tz(starttime, '%s'))", tz)),
+        "site", "parameter", "unit"
+      )
     },
     sort = function(data, na.rm = TRUE) {
       if (isTRUE(na.rm)) {

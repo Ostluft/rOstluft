@@ -28,7 +28,7 @@ filtered input data
 }
 \description{
 All pluck funtions are wrappers around \code{dplyr::filter()}. The dots arguments are converted in a vector and then each
-function searchs the specific column with the \%in\% operator.
+function searchs the specific column with the \code{\%in\%} operator.
 }
 \examples{
 fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data")
@@ -45,6 +45,9 @@ pluck_interval(data, !!!intervals) \%>\% dplyr::slice(40:45)
 
 # pluck_year supports vector
 pluck_year(data, 2010:2012)
+
+# NAs in data aren't a problem
+pluck_unit(data, "hPa")
 
 # pipe friendly
 data \%>\%

@@ -43,7 +43,7 @@ parameter. This list is compatible with \code{resample()}. If no \code{default_s
 \code{default_statistic = "drop"} is added. Multi-step statistics are possible. \code{_inputs_} can be used as substitute for
 \code{default_statistic} in multi-step calculation if the input in "from" already contains calculated statistics.
 The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
-will be expanded and a row added. See \code{expand_statstable()}
+will be expanded and a row added. See \code{statstable_expand()}
 }
 \examples{
 # calculate LRV statisitcs

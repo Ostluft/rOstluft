@@ -1,5 +1,3 @@
-
-
 #' Factory to generate conc conversion functions
 #'
 #' @param parameter to convert
@@ -381,6 +379,3 @@ convert_set_conc_lookup <- function(lookup) {
 
   const$conc_lookup <- lookup
 }
-
-
-

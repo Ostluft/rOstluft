@@ -86,6 +86,12 @@ statstable_default <- function(expand = FALSE) {
   statstable
 }
 
+#' calculates a lot of stats
+#'
+#' @param data input data in rolf format as min10 or min30 data
+#'
+#' @return list with h1, h8gl, d1, m1, y1 data as items
+#' @export
 calculate_stats <- function(data) {
   statstable <- statstable_default()
   data <- calculate_mass_concentrations(data)

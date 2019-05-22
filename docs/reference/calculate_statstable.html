@@ -237,20 +237,20 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
 
 <span class='co'># we are only interested in the m1 and y1 results</span>
 <span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bind_rows_with_factor_columns.html'>bind_rows_with_factor_columns</a></span>(<span class='no'>stats</span>$<span class='no'>y1</span>, <span class='no'>stats</span>$<span class='no'>m1</span>)
-<span class='no'>stats</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22 x 6</span><span>
+<span class='no'>stats</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 22 x 6</span><span>
 #&gt;    starttime           site                    parameter    interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   
-#&gt; </span><span style='color: #555555;'>10</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   
-#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2017-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   
+#&gt; </span><span style='color: #949494;'># ... with 12 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -2,24 +2,24 @@
 % Please edit documentation in R/transform-projection.R
 \name{transform}
 \alias{transform}
-\alias{transfrom_LV95_to_WSG84}
-\alias{transfrom_WSG84_to_LV95}
-\alias{transfrom_LV03_to_WSG84}
-\alias{transfrom_WSG84_to_LV03}
+\alias{transform_LV95_to_WSG84}
+\alias{transform_WSG84_to_LV95}
+\alias{transform_LV03_to_WSG84}
+\alias{transform_WSG84_to_LV03}
 \title{Transform between Coordinate Reference Systems}
 \usage{
 transform(data, coord, in_crs, out_crs, append = TRUE)
 
-transfrom_LV95_to_WSG84(data, coord = c(lon = "x", lat = "y"),
+transform_LV95_to_WSG84(data, coord = c(lon = "x", lat = "y"),
   append = TRUE)
 
-transfrom_WSG84_to_LV95(data, coord = c(x = "lon", y = "lat"),
+transform_WSG84_to_LV95(data, coord = c(x = "lon", y = "lat"),
   append = TRUE)
 
-transfrom_LV03_to_WSG84(data, coord = c(lon = "x", lat = "y"),
+transform_LV03_to_WSG84(data, coord = c(lon = "x", lat = "y"),
   append = TRUE)
 
-transfrom_WSG84_to_LV03(data, coord = c(x = "lon", y = "lat"),
+transform_WSG84_to_LV03(data, coord = c(x = "lon", y = "lat"),
   append = TRUE)
 }
 \arguments{
@@ -60,6 +60,8 @@ transform(data, c(lon = "x", lat = "y"),
 
 transform(data, c(lon = "x", lat = "y"),
           sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"), append = FALSE)
+
+transfrom_LV95_to_WSG84(data)
 
 }
 \seealso{

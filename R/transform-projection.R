@@ -85,25 +85,25 @@ transform <- function(data, coord, in_crs, out_crs, append = TRUE) {
 
 #' @rdname transform
 #' @export
-transfrom_LV95_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
+transform_LV95_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
   transform(data, coord, sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"), append)
 }
 
 #' @rdname transform
 #' @export
-transfrom_WSG84_to_LV95 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
+transform_WSG84_to_LV95 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
   transform(data, coord, sp::CRS("+init=epsg:4326"), sp::CRS("+init=epsg:2056"), append)
 }
 
 #' @rdname transform
 #' @export
-transfrom_LV03_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
+transform_LV03_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
   transform(data, coord, sp::CRS("+init=epsg:21781"), sp::CRS("+init=epsg:4326"), append)
 }
 
 #' @rdname transform
 #' @export
-transfrom_WSG84_to_LV03 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
+transform_WSG84_to_LV03 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
   transform(data, coord, sp::CRS("+init=epsg:4326"), sp::CRS("+init=epsg:21781"), append)
 }
 

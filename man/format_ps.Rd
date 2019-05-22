@@ -8,7 +8,7 @@
 format_ps(tz = "Etc/GMT-1")
 }
 \arguments{
-\item{tz}{time zone used for chunking.  Default Etc/GMT-1}
+\item{tz}{time zone used for chunking/content. Default Etc/GMT-1}
 }
 \value{
 R6 class object of format_rolf
@@ -56,7 +56,7 @@ The data is chunked by the columns
 \section{Content Columns}{
 
 \itemize{
-\item year = year(withz_tz(starttime, tz))
+\item year = year(with_tz(starttime, tz))
 \item site
 \item parameter
 \item unit

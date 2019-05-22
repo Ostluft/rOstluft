@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculates CO 8 hour rolling statistics — calculate_CO_h8gl • rOstluft</title>
+<title>Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September — calculate_O3_summer • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,9 @@
 
 
 
-<meta property="og:title" content="Calculates CO 8 hour rolling statistics — calculate_CO_h8gl" />
+<meta property="og:title" content="Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September — calculate_O3_summer" />
 
-<meta property="og:description" content="This function uses openair::rollingMean to calculate the 8 hour rolling Mean. When openair cannot be loaded, an
-error is thrown.
-Statistics:
-h8gl left aligned
-max h8gl &amp;gt; y1
-" />
+<meta property="og:description" content="Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -70,7 +65,7 @@ max h8gl &amp;gt; y1
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -131,30 +126,25 @@ max h8gl &amp;gt; y1
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculates CO 8 hour rolling statistics</h1>
+    <h1>Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stats.R'><code>R/stats.R</code></a></small>
-    <div class="hidden name"><code>calculate_CO_h8gl.Rd</code></div>
+    <div class="hidden name"><code>calculate_O3_summer.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function uses openair::rollingMean to calculate the 8 hour rolling Mean. When openair cannot be loaded, an
-error is thrown.</p>
-<p>Statistics:</p><ul>
-<li><p>h8gl left aligned</p></li>
-<li><p>max h8gl &gt; y1</p></li>
-</ul>
+    <p>Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_CO_h8gl</span>(<span class='no'>data</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_O3_summer</span>(<span class='no'>data</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>input data in rolf format should contain 10min or 30min data of CO in mg/m3</p></td>
+      <td><p>input data in rolf format should contain 10min or 30min data of O3 in µg/m3</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -164,7 +154,7 @@ error is thrown.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list with h8gl and y1 stats</p>
+    <p>tibble in rolf format containing AOT40 and 7h mean</p>
     
 
   </div>

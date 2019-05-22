@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculates a lot of O3 indicators — calculate_O3 • rOstluft</title>
+<title>Pads data data to complete years — pad_year • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,21 +30,9 @@
 
 
 
-<meta property="og:title" content="Calculates a lot of O3 indicators — calculate_O3" />
+<meta property="og:title" content="Pads data data to complete years — pad_year" />
 
-<meta property="og:description" content="calculates the following direct statistics:
-h1 &amp;gt; d1: &quot;n&amp;gt;160&quot;, &quot;n&amp;gt;180&quot;, &quot;n&amp;gt;200&quot;, &quot;n&amp;gt;240&quot;, &quot;max&quot;, &quot;n&quot;
-h1 &amp;gt; m1: &quot;n&amp;gt;160&quot;, &quot;n&amp;gt;180&quot;, &quot;n&amp;gt;200&quot;, &quot;n&amp;gt;240&quot;, &quot;max&quot;, &quot;n&quot;
-h1 &amp;gt; y1: &quot;n&amp;gt;160&quot;, &quot;n&amp;gt;180&quot;, &quot;n&amp;gt;200&quot;, &quot;n&amp;gt;240&quot;, &quot;max&quot;, &quot;n&quot;
-d1 &amp;gt; m1: &quot;n&amp;gt;65&quot;
-d1 &amp;gt; y1: &quot;n&amp;gt;65&quot;
-h1 &amp;gt; m6,m4-m9: 7h mean from 9:00 - 16:00 CET, AOT40 sum ppb value &amp;gt; 40 from 8:00 - 20:00 CET
-" />
-
-<meta property="og:description" content="And following two step statistics (number of days with hour values &amp;gt; xxx):
-h1 &amp;gt; m1: O3_nb_d1_h1&amp;gt;160, O3_nb_d1_h1&amp;gt;180, O3_nb_d1_h1&amp;gt;200, O3_nb_d1_h1&amp;gt;240
-h1 &amp;gt; y1: O3_nb_d1_h1&amp;gt;160, O3_nb_d1_h1&amp;gt;180, O3_nb_d1_h1&amp;gt;200, O3_nb_d1_h1&amp;gt;240
-" />
+<meta property="og:description" content="Pads data data to complete years" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -77,7 +65,7 @@ h1 &amp;gt; y1: O3_nb_d1_h1&amp;gt;160, O3_nb_d1_h1&amp;gt;180, O3_nb_d1_h1&amp;
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -138,47 +126,31 @@ h1 &amp;gt; y1: O3_nb_d1_h1&amp;gt;160, O3_nb_d1_h1&amp;gt;180, O3_nb_d1_h1&amp;
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculates a lot of O3 indicators</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stats.R'><code>R/stats.R</code></a></small>
-    <div class="hidden name"><code>calculate_O3.Rd</code></div>
+    <h1>Pads data data to complete years</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/pad.R'><code>R/pad.R</code></a></small>
+    <div class="hidden name"><code>pad_year.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>calculates the following direct statistics:</p><ul>
-<li><p>h1 &gt; d1: "n&gt;160", "n&gt;180", "n&gt;200", "n&gt;240", "max", "n"</p></li>
-<li><p>h1 &gt; m1: "n&gt;160", "n&gt;180", "n&gt;200", "n&gt;240", "max", "n"</p></li>
-<li><p>h1 &gt; y1: "n&gt;160", "n&gt;180", "n&gt;200", "n&gt;240", "max", "n"</p></li>
-<li><p>d1 &gt; m1: "n&gt;65"</p></li>
-<li><p>d1 &gt; y1: "n&gt;65"</p></li>
-<li><p>h1 &gt; m6,m4-m9: 7h mean from 9:00 - 16:00 CET, AOT40 sum ppb value &gt; 40 from 8:00 - 20:00 CET</p></li>
-</ul>
-
-    <p>And following two step statistics (number of days with hour values &gt; xxx):</p><ul>
-<li><p>h1 &gt; m1: O3_nb_d1_h1&gt;160, O3_nb_d1_h1&gt;180, O3_nb_d1_h1&gt;200, O3_nb_d1_h1&gt;240</p></li>
-<li><p>h1 &gt; y1: O3_nb_d1_h1&gt;160, O3_nb_d1_h1&gt;180, O3_nb_d1_h1&gt;200, O3_nb_d1_h1&gt;240</p></li>
-</ul>
+    <p>Pads data data to complete years</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_O3</span>(<span class='no'>data</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>pad_year</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>input data in rolf format should contain 10min or 30min data of O3 in µg/m3</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>Instead of stopping if no parameter is found return an empty frame. Default FALSE</p></td>
+      <td><p>input data in rolf format</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list with d1, m1, y1 and</p>
+    <p>padded data in rolf format</p>
     
 
   </div>

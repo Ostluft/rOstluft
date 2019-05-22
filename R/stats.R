@@ -29,6 +29,12 @@ calculate_mass_concentrations <- function(data, keep_ppb = FALSE) {
 }
 
 
+#' Default Statstable
+#'
+#' @param expand if TRUE statstable is expanded
+#'
+#' @return statstable
+#' @export
 statstable_default <- function(expand = FALSE) {
   statstable <- tibble::tribble(
     ~parameter, ~statistic, ~from, ~to,

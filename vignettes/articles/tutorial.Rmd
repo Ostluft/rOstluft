@@ -256,8 +256,14 @@ Gegensatz zu den R Base Funktionen oder data.table::fread().
 Für ein reibungsloses Zusammenspiel mit den Stores zu garantieren muss das Format rolf eingehalten werden. rolf setzt
 einen tibble mit folgenden Spalten und Klassen voraus:
 
-| Spalte | Klasse | |-----------------|---------| | **"starttime"** | POSIXct | | **"site"** | factor | |
-**"parameter"** | factor | | **"interval"** | factor | | **"unit"** | factor | | **"value"** | double |
+| Spalte          | Klasse  |
+|-----------------|---------|
+| **"starttime"** | POSIXct |
+| **"site"**      | factor  |
+| **"parameter"** | factor  |
+| **"interval"**  | factor  |
+| **"unit"**      | factor  |
+| **"value"**     | double  |
 
 Selbst wenn in der Datei keine Einheiten enthalten sind, ist es besser die Spalte unit mit NA zu initialisieren. Ein
 weiterer Trick ist es die Spalten am Ende explizit zu selektionieren. Hier ein Beispiel, wie es in `read_smn()` gelöst
@@ -333,12 +339,12 @@ df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 Daten aus verschiedenen Quellen werden verschiedene Schemen für die Vergabe von Namen haben. MeteoSchweiz zum Beispiel
 kodiert im Parameter Namen gleichzeitig das Mittelungsinterval:
 
-| Parameter | Interval | Messgrösse |
-|-----------|---------------------------|------------------------------------------| | ta1towb0 | Bürgerliche
-Stundenmittel | Lufttemperatur, Instrument 1 | | ta1towh0 | Stundenmittel | Lufttemperatur, Instrument 1 | | ta1tows0 |
-Momentanwerte | Lufttemperatur, Instrument 1 | | fk1towz0 | Zehnminutenmittel | Windgeschwindigkeit skalar, Instrument
-1 |
-
+| Parameter | Interval                  | Messgrösse                               |
+|-----------|---------------------------|------------------------------------------| 
+| ta1towb0  | Bürgerliche Stundenmittel | Lufttemperatur, Instrument 1             | 
+| ta1towh0  | Stundenmittel             | Lufttemperatur, Instrument 1             | 
+| ta1tows0  | Momentanwerte             | Lufttemperatur, Instrument 1             | 
+| fk1towz0  | Zehnminutenmittel         | Windgeschwindigkeit skalar, Instrument 1 |
 
 Um die Bezeichnungen zu normalisieren kommt es zu einem Zusammenspiel von im Store bereitgestellte Daten und der
 Funktion `meta_apply()`. Das Store Objekt verfügt über die Funktion `$get_meta()`, welche im AWS S3 bereitgestellte
@@ -672,53 +678,15 @@ Im Allgemeinen dürfte die explizite Definition der Statistiken für jeden Param
 Definition der statstable kann auch in einer Textdatei oder Exceldatei erfolgen und dann eingelesen werden, statt im
 Code definiert werden.
 
-An dieser Stelle noch die Berechnungen aller Statistiken im aqmet Store. Aus 21 Input Grössen werden 361 Statistiken
-berechnet:
-
 ```{r include=FALSE}
-aqmet_stats <- tibble::tribble(
-  ~parameter, ~statistic, ~from, ~to,
-  "CO, NO, NOx, NO2, O3, SO2", "mean", "input", "h1,d1,m1,y1",
-  "CO, NO, NOx, NO2, O3, SO2", "max, min, n", "input", "d1,m1,y1",
-  "CO, NO, NOx, NO2, SO2", "perc95", "input", "y1",
-  "O3", "perc02, perc98", "input", "y1",
-  "O3", "max, min, n, n>120, n>160, n>180, n>200, n>240", "h1", "d1,m1,y1",
-  "NO2", "max, n, n>200", "h1", "d1,m1,y1",
-  "O3", "mean", "h1", "h8gl",
-  "CO", "mean", "h1", "h8gl",
-  "CO", "max", "h8gl", "y1",
-  "O3", "max, n>120, n>160, n>180, n>200, n>240", "h8gl", "y1",
-  "CO, NO, NOx, NO2, O3, SO2", "min, max, n", "d1", "y1",
-  "CO", "n>8", "d1", "y1",
-  "SO2", "n>100", "d1", "y1",
-  "NO2", "n>80", "d1", "y1",
-  "O3", "n>120, n>160, n>200, n>180, n>240, n>65", "d1", "y1",
-  "O3_max_h1", "n>120, n>160, n>180, n>200, n>240", "d1", "m1,y1",
-  "EC1.0, EC2.5, PM10, PM2.5, PN", "mean", "input", "h1,d1,m1,y1",
-  "EC1.0, EC2.5, PM10, PM2.5, PN", "max, min, n", "input", "d1,m1,y1",
-  "EC1.0, EC2.5, PM10, PM2.5, PN", "perc95", "input", "y1",
-  "EC1.0, EC2.5, PM10, PM2.5, PN", "min, max, n", "d1", "y1",
-  "PM10", "n>50", "d1", "y1",
-  "PM2.5", "n>25", "d1", "y1",
-  "WD", "wind.direction", "input", "h1,d1,m1,y1",
-  "WVs", "wind.speed_scalar", "input", "h1,d1,m1,y1",
-  "WVv", "wind.speed_vector", "input", "h1,d1,m1,y1",
-  "WD", "n", "input", "d1,m1,y1",
-  "WVs", "max, min, n", "input", "d1,m1,y1",
-  "WVv", "max, min, n", "input", "d1,m1,y1",
-  "Hr, p, StrGlo, T", "mean", "input", "h1,d1,m1,y1",
-  "Hr, p", "min,max", "input", "d1",
-  "T", "min, max, n", "input", "d1,m1,y1",
-  "T", "min, max", "h1", "d1,m1,y1",
-  "T", "min, max, n", "d1", "m1,y1",
-  "StrGlo", "max, n", "input", "d1,m1,y1",
-  "Hr, p", "n", "input", "d1,m1,y1",
-  "RainDur, RainSum,  SunDur", "sum", "input", "h1,d1,m1,y1",
-  "RainDur, RainSum,  SunDur", "n", "input", "d1,m1,y1",
-  "RainDur, RainSum,  SunDur", "max", "d1", "y1"
-)
+aqmet_stats <- statstable_default()
+expanded_stats <- statstable_expand(aqmet_stats)
+n_stats <- nrow(expanded_stats)
+n_inputs <- nrow(dplyr::filter(expanded_stats, from == "input") %>% dplyr::distinct(parameter))
 ```
 
+An dieser Stelle noch die Berechnungen aller Statistiken im aqmet Store. Aus `r n_inputs` Input Grössen werden 
+`r n_stats` Statistiken berechnet:
 
 ```{r include = TRUE, echo = FALSE}
 knitr::kable(aqmet_stats)
@@ -762,6 +730,59 @@ Die Funktion `calculate_mass_concentrations()` ist eine Hilfsfunktion, die aus V
 NO2, SO2 in einem tibble automatisch die Massenkonzentrationen berechnet. Mit dem Argument keep_ppb können optional
 die Volumenkonzentration behalten werden. Das Default vorgehen ist die Volumenkonzentrationen zu ersetzen.
 
+# Pluck 
+
+Die Pluck Funktionen sind Wrapper um `dplyr::filter()`. Sie ermöglichen dem Nutzer eine komfortable Filterung von Daten 
+im rolf Format. Als Beispiel nehmen wir die Daten aus dem mehrfach Meteoschweiz Export, dieser enthaltet eine Vielzahl 
+von verschiedenen Stationen, Intervalle und Parameter:
+
+```{r}
+fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data")
+data <- read_smn_multiple(fn) %>% 
+  dplyr::arrange(starttime)
+
+pluck_parameter(data, ta1towb0)
+
+# strings oder symbols
+pluck_site(data, "KLO", UEB) %>% dplyr::slice(41:46)
+
+# supported splicing mit den rlang operator !!!
+intervals = c("h1", "d1")
+pluck_interval(data, !!!intervals) %>% dplyr::slice(40:45)
+
+# pluck_year unterstützt Vektoren direkt
+pluck_year(data, 2010:2018) %>% dplyr::slice(51:56)
+
+# NA Werte werden gefiltert
+pluck_unit(data, "hPa")
+
+# Verkettbar mittels pipes
+data %>%
+  pluck_site(KLO, UEB) %>%
+  pluck_parameter(gre000z0) %>%
+  pluck_year(2010:2018) %>% 
+  dplyr::slice(1:6)
+```
+
+
+# Koordinatentransformationen
+
+Für die Darstellung von Elementen mit Koordinaten im Bezugsystem [LV95](https://epsg.io/2056) oder 
+[LV03](https://epsg.io/21781) auf Karten ist es oft notwendig diese nach [WSG84](https://epsg.io/4326) zu 
+transformieren. Die Funktionen `rOstluft::transform_LV95_to_WSG84()` und `rOstluft::transform_WSG84_to_LV95()` sind 
+Wrapper um die allgemeine Funktion `rOstluft::transform()`.
+
+```{r}
+meteoschweiz <- readRDS(fs::path(examples_path, "meta_smn.rds"))
+meteoschweiz <- dplyr::distinct(meteoschweiz, site, x, y)
+
+transform_LV95_to_WSG84(meteoschweiz) %>% head
+
+transform_crs(meteoschweiz, c(lon = "x", lat = "y"),
+          sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"),
+          append = FALSE) %>% head
+```
+
 
 # NOAA Hysplit Trajektorien
 
@@ -773,7 +794,7 @@ Beim Format hysplit wird für die Abfrage nur die `site` und das `year` benötig
 
 ```{r}
 hysplit_store <- storage_s3_rds("hysplit", format_hysplit(), "rostluft", "hysplit")
-traj <- hysplit_store$get(site = "ZH-Kaserne-hysplit", year = 2018)
+traj <- hysplit_store$get(site = "ZH_Kaserne_hysplit", year = 2018)
 
 # plotte die Daten mit openair
 openair::trajPlot(openair::selectByDate(traj, start = "2018-01-01", end = "2018-01-05"))

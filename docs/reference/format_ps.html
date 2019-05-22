@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Derive metadata (parameters, units etc) from an IAC/ETHZ meteo station file — read_ethz_iac_min10_parameters • rOstluft</title>
+<title>Format defintion for ps data with endtime instead of interval — format_ps • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Derive metadata (parameters, units etc) from an IAC/ETHZ meteo station file — read_ethz_iac_min10_parameters" />
+<meta property="og:title" content="Format defintion for ps data with endtime instead of interval — format_ps" />
 
-<meta property="og:description" content="Reads metadata from meteo station measurement files (10 minute time resolution) by the institute for atmosphere and climety at ETH Zürich.
-Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &amp;amp; Hönggerberg (see http://www.iac.ethz.ch/the-institute/weather-stations.html)" />
+<meta property="og:description" content="This format is used for non periodical data" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -66,7 +65,7 @@ Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -127,37 +126,75 @@ Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Derive metadata (parameters, units etc) from an IAC/ETHZ meteo station file</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-ethz-iac.R'><code>R/read-ethz-iac.R</code></a></small>
-    <div class="hidden name"><code>read_ethz_iac_min10_parameters.Rd</code></div>
+    <h1>Format defintion for ps data with endtime instead of interval</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/format-ps.R'><code>R/format-ps.R</code></a></small>
+    <div class="hidden name"><code>format_ps.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Reads metadata from meteo station measurement files (10 minute time resolution) by the institute for atmosphere and climety at ETH Zürich.
-Currently, two stations in Zürich are under long-term operation: CHN-Gebäude &amp; Hönggerberg (see http://www.iac.ethz.ch/the-institute/weather-stations.html)</p>
+    <p>This format is used for non periodical data</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_ethz_iac_min10_parameters</span>(<span class='no'>x</span>, <span class='kw'>site</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>format_ps</span>(<span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Either a path to a file, a connection, or literal data. see <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>site</th>
-      <td><p>Character string specifying the site of the meteo station. Needs to be exactly like in file name,
-e.g. "-Hberg" for files from Hönggerberg station. For site 'CHN Gebäude' the default of site is NULL (due to respective file naming)</p></td>
+      <th>tz</th>
+      <td><p>time zone used for chunking/content. Default Etc/GMT-1</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble in rOstluft long format structure</p>
+    <p>R6 class object of format_rolf</p>
+    
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
+
+    
+    <p>Define class of columns</p>
+    
+    <h2 class="hasAnchor" id="columns"><a class="anchor" href="#columns"></a>Columns</h2>
+
+    
+    <ul>
+<li><p><strong>starttime</strong>: POSIXct</p></li>
+<li><p><strong>endtime</strong>: POSIXct</p></li>
+<li><p><strong>site</strong>: factor/character</p></li>
+<li><p><strong>parameter</strong>: factor/character</p></li>
+<li><p><strong>unit</strong>: factor/character</p></li>
+<li><p><strong>value</strong>: double</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="series"><a class="anchor" href="#series"></a>Series</h2>
+
+    
+    <p>A serie is the unique combination of the columns:</p><ul>
+<li><p>site</p></li>
+<li><p>parameter</p></li>
+<li><p>unit</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="chunking"><a class="anchor" href="#chunking"></a>Chunking</h2>
+
+    
+    <p>The data is chunked by the columns</p><ul>
+<li><p>site</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="content-columns"><a class="anchor" href="#content-columns"></a>Content Columns</h2>
+
+    
+    <ul>
+<li><p>year = year(with_tz(starttime, tz))</p></li>
+<li><p>site</p></li>
+<li><p>parameter</p></li>
+<li><p>unit</p></li>
+<li><p>n = number of valid values</p></li>
+</ul>
     
 
   </div>
@@ -167,6 +204,16 @@ e.g. "-Hberg" for files from Hönggerberg station. For site 'CHN Gebäude' the d
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#todo">TODO</a></li>
+
+      <li><a href="#columns">Columns</a></li>
+
+      <li><a href="#series">Series</a></li>
+
+      <li><a href="#chunking">Chunking</a></li>
+
+      <li><a href="#content-columns">Content Columns</a></li>
           </ul>
 
   </div>

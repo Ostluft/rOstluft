@@ -67,7 +67,7 @@ is recommended after acquiring all needed data from s3 to use the cache as local
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -282,7 +282,7 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Rosengartenstrasse NO2       min30    ppb    39.8
 #&gt; </span><span style='color: #555555;'># ... with 104,537 more rows</span><span></div><div class='input'>
 <span class='co'>## get n data points grouped by intervall, station, parameter, year in the store</span>
-<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 146,220 x 6</span><span>
+<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 146,205 x 6</span><span>
 #&gt;     year interval site            parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h8gl     Rap_Tüchelweier CO        mg/m3    15
@@ -295,15 +295,15 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier O3        µg/m3    20
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier T         °C       19
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier WD        °        18
-#&gt; </span><span style='color: #555555;'># ... with 146,210 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 146,195 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks, show only local files</span>
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 11</span><span>
 #&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-03-30T15:~ c2aa65~ 662.57K
-#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-03-30T15:~ 638793~   1.07M
-#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2011  aqmet~ 2019-03-30T15:~ 934330~   1.07M
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2019-03-30T15:~ c78ad3~   1.07M
+#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-04-12T13:~ 4c9f03~ 662.57K
+#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-04-12T13:~ e16bf4~   1.07M
+#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2011  aqmet~ 2019-04-12T13:~ 983a73~   1.07M
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2019-04-12T13:~ 4a2112~   1.07M
 #&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
 #&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## download all data for site Zch_Rosengartenstrasse before 2016</span>
@@ -312,31 +312,31 @@ AWS_DEFAULT_REGION = "eu-central-1"
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 11</span><span>
 #&gt;    chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1~ d1       Zch_~ 2013  aqmet~ 2019-03-30T15:~ e0f92f~  19.79K
-#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1~ d1       Zch_~ 2014  aqmet~ 2019-03-30T15:~ a9dbcf~  76.65K
-#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1~ d1       Zch_~ 2015  aqmet~ 2019-03-30T15:~ 77496e~  85.91K
-#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1~ h1       Zch_~ 2013  aqmet~ 2019-03-30T15:~ cc85f1~ 112.37K
-#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1~ h1       Zch_~ 2014  aqmet~ 2019-03-30T15:~ e5c365~ 447.54K
-#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1~ h1       Zch_~ 2015  aqmet~ 2019-03-30T15:~ 0eb93b~ 567.63K
-#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhn~ h8gl     Zch_~ 2013  aqmet~ 2019-03-30T15:~ 3fd1b3~  23.56K
-#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhn~ h8gl     Zch_~ 2014  aqmet~ 2019-03-30T15:~ 8852bf~  93.13K
-#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhn~ h8gl     Zch_~ 2015  aqmet~ 2019-03-30T15:~ b77505~  92.19K
-#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1~ m1       Zch_~ 2013  aqmet~ 2019-03-30T15:~ e01163~   1.47K
-#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1~ m1       Zch_~ 2014  aqmet~ 2019-03-30T15:~ 19e51f~   3.81K
-#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1~ m1       Zch_~ 2015  aqmet~ 2019-03-30T15:~ b3d47a~   4.24K
-#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWl~ min30    Zch_~ 2013  aqmet~ 2019-03-30T15:~ 30b0e5~    168K
-#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-03-30T15:~ c2aa65~ 662.57K
-#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWl~ min30    Zch_~ 2015  aqmet~ 2019-03-30T15:~ 6c6620~ 780.05K
-#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-03-30T15:~ 638793~   1.07M
-#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWl~ min30    Zch_~ 2011  aqmet~ 2019-03-30T15:~ 934330~   1.07M
-#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2019-03-30T15:~ c78ad3~   1.07M
-#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1~ y1       Zch_~ 2014  aqmet~ 2019-03-30T15:~ 152ad7~   1.44K
-#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1~ y1       Zch_~ 2015  aqmet~ 2019-03-30T15:~ 2a29a5~   1.44K
+#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1~ d1       Zch_~ 2013  aqmet~ 2019-04-12T13:~ 870747~  19.79K
+#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1~ d1       Zch_~ 2014  aqmet~ 2019-04-12T13:~ 10b246~  76.65K
+#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1~ d1       Zch_~ 2015  aqmet~ 2019-04-12T13:~ d0ca8b~  85.91K
+#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1~ h1       Zch_~ 2013  aqmet~ 2019-04-12T13:~ d9d7ba~ 112.37K
+#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1~ h1       Zch_~ 2014  aqmet~ 2019-04-12T13:~ 78338a~ 447.54K
+#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1~ h1       Zch_~ 2015  aqmet~ 2019-04-12T13:~ c175d3~ 567.63K
+#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhn~ h8gl     Zch_~ 2013  aqmet~ 2019-04-12T13:~ f3748e~  23.56K
+#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhn~ h8gl     Zch_~ 2014  aqmet~ 2019-04-12T13:~ 4136c4~  93.13K
+#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhn~ h8gl     Zch_~ 2015  aqmet~ 2019-04-12T13:~ 20b0d6~  92.19K
+#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1~ m1       Zch_~ 2013  aqmet~ 2019-04-12T13:~ 0fdffb~   1.47K
+#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1~ m1       Zch_~ 2014  aqmet~ 2019-04-12T13:~ 9b7aff~   3.81K
+#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1~ m1       Zch_~ 2015  aqmet~ 2019-04-12T13:~ d490ae~   4.23K
+#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWl~ min30    Zch_~ 2013  aqmet~ 2019-04-12T13:~ 362236~    168K
+#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-04-12T13:~ 4c9f03~ 662.57K
+#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWl~ min30    Zch_~ 2015  aqmet~ 2019-04-12T13:~ cc2eba~ 780.05K
+#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2019-04-12T13:~ e16bf4~   1.07M
+#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWl~ min30    Zch_~ 2011  aqmet~ 2019-04-12T13:~ 983a73~   1.07M
+#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2019-04-12T13:~ 4a2112~   1.07M
+#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1~ y1       Zch_~ 2014  aqmet~ 2019-04-12T13:~ bbbf46~   1.45K
+#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1~ y1       Zch_~ 2015  aqmet~ 2019-04-12T13:~ 31ca46~   1.44K
 #&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
 #&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## get all meta data</span>
 <span class='no'>store</span>$<span class='fu'>get_meta</span>()</div><div class='output co'>#&gt; $all
-#&gt; </span><span style='color: #555555;'># A tibble: 1,824 x 12</span><span>
+#&gt; </span><span style='color: #555555;'># A tibble: 1,835 x 12</span><span>
 #&gt;    site  site_short site_long      x      y  masl parameter_origi~ parameter
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
 #&gt; </span><span style='color: #555555;'> 1</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 Hr               Hr       
@@ -349,11 +349,11 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'> 8</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 PM10             PM10     
 #&gt; </span><span style='color: #555555;'> 9</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 SO2              SO2      
 #&gt; </span><span style='color: #555555;'>10</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 StrGlo           StrGlo   
-#&gt; </span><span style='color: #555555;'># ... with 1,814 more rows, and 4 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; </span><span style='color: #555555;'># ... with 1,825 more rows, and 4 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $ecmwf
-#&gt; </span><span style='color: #555555;'># A tibble: 24 x 12</span><span>
+#&gt; </span><span style='color: #555555;'># A tibble: 35 x 12</span><span>
 #&gt;    site_short site  site_long masl  parameter_origi~ unit  interval
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
 #&gt; </span><span style='color: #555555;'> 1</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #BB0000;'>NA</span><span>    t2m              °C    h1      
@@ -366,7 +366,7 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'> 8</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #BB0000;'>NA</span><span>    tp               m     h1      
 #&gt; </span><span style='color: #555555;'> 9</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #BB0000;'>NA</span><span>    tco3             kg/m2 h1      
 #&gt; </span><span style='color: #555555;'>10</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #BB0000;'>NA</span><span>    sund             s     h1      
-#&gt; </span><span style='color: #555555;'># ... with 14 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; </span><span style='color: #555555;'># ... with 25 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $ethz
@@ -394,6 +394,23 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'>2</span><span> SG-BP-hys~ SG_B~ St. Gall~ </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    hysplit_cluster  hysplit_~ </span><span style='color: #BB0000;'>NA</span><span>   
 #&gt; </span><span style='color: #555555;'># ... with 3 more variables: interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; 
+#&gt; $hysplit_cluster_trajectories
+#&gt; </span><span style='color: #555555;'># A tibble: 1,164 x 7</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   cluster [6]</span><span>
+#&gt;    cluster hour.inc default            lat   lon date                site       
+#&gt;      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      
+#&gt; </span><span style='color: #555555;'> 1</span><span>       1      -</span><span style='color: #BB0000;'>96</span><span> 01 January 1980~  49.1 -</span><span style='color: #BB0000;'>16.5</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 2</span><span>       1      -</span><span style='color: #BB0000;'>95</span><span> 01 January 1980~  49.1 -</span><span style='color: #BB0000;'>16.2</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 3</span><span>       1      -</span><span style='color: #BB0000;'>94</span><span> 01 January 1980~  49.0 -</span><span style='color: #BB0000;'>15.9</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 4</span><span>       1      -</span><span style='color: #BB0000;'>93</span><span> 01 January 1980~  49.0 -</span><span style='color: #BB0000;'>15.5</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 5</span><span>       1      -</span><span style='color: #BB0000;'>92</span><span> 01 January 1980~  48.9 -</span><span style='color: #BB0000;'>15.2</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 6</span><span>       1      -</span><span style='color: #BB0000;'>91</span><span> 01 January 1980~  48.9 -</span><span style='color: #BB0000;'>14.9</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 7</span><span>       1      -</span><span style='color: #BB0000;'>90</span><span> 01 January 1980~  48.8 -</span><span style='color: #BB0000;'>14.6</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 8</span><span>       1      -</span><span style='color: #BB0000;'>89</span><span> 01 January 1980~  48.8 -</span><span style='color: #BB0000;'>14.2</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'> 9</span><span>       1      -</span><span style='color: #BB0000;'>88</span><span> 01 January 1980~  48.7 -</span><span style='color: #BB0000;'>13.9</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'>10</span><span>       1      -</span><span style='color: #BB0000;'>87</span><span> 01 January 1980~  48.7 -</span><span style='color: #BB0000;'>13.6</span><span> 1999-09-06 </span><span style='color: #555555;'>09:39:08</span><span> SG_Blumenb~
+#&gt; </span><span style='color: #555555;'># ... with 1,154 more rows</span><span>
 #&gt; 
 #&gt; $meteoschweiz
 #&gt; </span><span style='color: #555555;'># A tibble: 261 x 15</span><span>
@@ -494,30 +511,28 @@ AWS_DEFAULT_REGION = "eu-central-1"
 <span class='co'>## get the cache as local storage</span>
 <span class='no'>local</span> <span class='kw'>&lt;-</span> <span class='no'>store</span>$<span class='fu'>get_local_storage</span>()
 <span class='no'>local</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 7</span><span>
-#&gt;    chunk_name interval site  year 
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1~ d1       Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1~ d1       Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1~ d1       Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1~ h1       Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1~ h1       Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1~ h1       Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhn~ h8gl     Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhn~ h8gl     Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhn~ h8gl     Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1~ m1       Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1~ m1       Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1~ m1       Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWl~ min30    Zch_~ 2013 
-#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWl~ min30    Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWl~ min30    Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWl~ min30    Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWl~ min30    Zch_~ 2011 
-#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWl~ min30    Zch_~ 2012 
-#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1~ y1       Zch_~ 2014 
-#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1~ y1       Zch_~ 2015 
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
-#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
+#&gt;    chunk_name   interval site  year  local.path   local.modification~ local.size
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     19.79K
+#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     76.65K
+#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     85.91K
+#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1pj~ h1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:21</span><span>    112.37K
+#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1pj~ h1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:21</span><span>    447.54K
+#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1pj~ h1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>    567.63K
+#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     23.56K
+#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     93.13K
+#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     92.19K
+#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1pj~ m1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      1.47K
+#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1pj~ m1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      3.81K
+#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1pj~ m1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      4.23K
+#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWluM~ min30    Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>       168K
+#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:19</span><span>    662.57K
+#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWluM~ min30    Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>    780.05K
+#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:20</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWluM~ min30    Zch_~ 2011  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:16</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWluM~ min30    Zch_~ 2012  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:18</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1pj~ y1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>      1.45K
+#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1pj~ y1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>      1.44K</div><div class='input'>
 <span class='co'>## get cached data</span>
 <span class='no'>local</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit    value

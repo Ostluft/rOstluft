@@ -84,9 +84,8 @@ reference:
   contents:
   - '`bind_rows_with_factor_columns`'
   - starts_with("pluck_")
+  - starts_with("transform")
   - '`import_directory`'
   - '`meta_apply`'
   - '`rolf_apply_meta`'
   - '`rOstluft`'
-  - '`transform_projection`'
-

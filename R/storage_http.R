@@ -32,7 +32,7 @@ r6_storage_http <- R6::R6Class(
       self$read.only <- read.only
 
       if (!fs::dir_exists(self$data_path)) {
-        fs::dir_create(self$data_path, recursive = TRUE)
+        fs::dir_create(self$data_path, recurse = TRUE)
         message(sprintf("Cache for http rds store %s initialized under '%s'", self$name, self$path))
       }
       invisible(self)

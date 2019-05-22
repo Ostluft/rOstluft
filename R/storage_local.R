@@ -175,8 +175,8 @@ r6_storage_local <- R6::R6Class(
       }
 
       if (is_new) {
-        fs::dir_create(self$data_path, recursive = TRUE)
-        fs::dir_create(self$meta_path, recursive = TRUE)
+        fs::dir_create(self$data_path, recurse = TRUE)
+        fs::dir_create(self$meta_path, recurse = TRUE)
         message(sprintf("Local store %s initialized under '%s'", self$name, self$path))
       }
       invisible(self)
@@ -209,7 +209,7 @@ r6_storage_local <- R6::R6Class(
       fs::path(self$data_path, chunk_name, ext = self$ext)
     },
     list_chunks = function() {
-      chunks <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
+      chunks <- fs::dir_info(self$data_path, recurse = TRUE, type = "file")
       chunks <- dplyr::select(chunks, "path", "modification_time", "size")
       chunks <- dplyr::rename_all(chunks, .funs = dplyr::funs(paste0("local.", .)))
       chunks <- dplyr::mutate(chunks, chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
@@ -233,7 +233,7 @@ r6_storage_local <- R6::R6Class(
     },
     get_meta = function(key = NULL) {
       if (rlang::is_null(key)) {
-        meta_files <- fs::dir_ls(self$meta_path, recursive = TRUE, type = "file")
+        meta_files <- fs::dir_ls(self$meta_path, recurse = TRUE, type = "file")
         if (NROW(meta_files) > 0) {
           meta_names <- fs::path_ext_remove(fs::path_rel(meta_files, self$meta_path))
           res <- purrr::map(meta_files, self$read_function)
@@ -261,7 +261,7 @@ r6_storage_local <- R6::R6Class(
       if (NROW(args) > 0) {
         args <- tibble::enframe(args)
         args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = self$ext))
-        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recursive = TRUE)
+        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recurse = TRUE)
         purrr::map2(args$value, args$local.path, self$write_function)
       }
     },
@@ -284,7 +284,7 @@ r6_storage_local <- R6::R6Class(
         dplyr::count(chunk_data, .dots = self$format$content_columns)
       }
 
-      chunks_path <- fs::dir_ls(self$data_path, recursive = TRUE, type = "file")
+      chunks_path <- fs::dir_ls(self$data_path, recurse = TRUE, type = "file")
       chunks_content <- purrr::map(chunks_path, get_chunk_content)
       chunks_content <- bind_rows_with_factor_columns(!!!chunks_content)
       self$write_function(chunks_content, self$content_path)

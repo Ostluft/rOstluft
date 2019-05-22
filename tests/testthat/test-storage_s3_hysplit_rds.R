@@ -52,7 +52,7 @@ test_that("get from store", {
   testthat::skip_if_not(is_s3_admin(), "Skip Test: no administator rights")
   store <- storage_s3_rds(store_name, format_hysplit(), bucket, prefix = store_name)
 
-  data_files <- fs::dir_ls(store$data_path, recursive = TRUE, type = "file")
+  data_files <- fs::dir_ls(store$data_path, recurse = TRUE, type = "file")
 
   fs::file_delete(data_files[1])
   fs::file_delete(data_files[3])

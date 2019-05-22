@@ -156,11 +156,11 @@ test_that("download store", {
   store_rw$destroy("DELETE")
   store_rw <- storage_s3_rds(store_name,  format_rolf(), bucket, prefix = store_name, read.only = FALSE)
   store_rw$download(year == 2010)
-  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recursive = TRUE, type = "file")), 1)
+  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recurse = TRUE, type = "file")), 1)
   store_rw$download(site == "Zch_Stampfenbachstrasse")
-  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recursive = TRUE, type = "file")), 5)
+  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recurse = TRUE, type = "file")), 5)
   store_rw$download()
-  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recursive = TRUE, type = "file")), 7)
+  expect_equal(NROW(fs::dir_ls(store_rw$data_path, recurse = TRUE, type = "file")), 7)
 })
 
 test_that("upload store", {

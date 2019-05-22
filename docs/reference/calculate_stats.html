@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Expands compact statstable to a table with one stats per row — statstable_expand • rOstluft</title>
+<title>calculates a lot of stats — calculate_stats • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Expands compact statstable to a table with one stats per row — statstable_expand" />
+<meta property="og:title" content="calculates a lot of stats — calculate_stats" />
 
-<meta property="og:description" content="For each comma seperated value in a cell a new row is added." />
+<meta property="og:description" content="calculates a lot of stats" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,68 +126,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Expands compact statstable to a table with one stats per row</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statstable.R'><code>R/statstable.R</code></a></small>
-    <div class="hidden name"><code>statstable_expand.Rd</code></div>
+    <h1>calculates a lot of stats</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stats.R'><code>R/stats.R</code></a></small>
+    <div class="hidden name"><code>calculate_stats.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>For each comma seperated value in a cell a new row is added.</p>
+    <p>calculates a lot of stats</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>statstable_expand</span>(<span class='no'>statstable</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\\s*,\\s*"</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_stats</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>statstable</th>
-      <td><p>compact statstable</p></td>
-    </tr>
-    <tr>
-      <th>sep</th>
-      <td><p>seperator of combined values</p></td>
+      <th>data</th>
+      <td><p>input data in rolf format as min10 or min30 data</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>expanded statstable</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><ul>
-<li><p><code>tidyr::seperate_rows()</code> is used to expand the table. One call per column.</p></li>
-</ul></div>
+    <p>list with h1, h8gl, d1, m1, y1 data as items</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>statstable</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span>(
-  ~<span class='no'>parameter</span>, ~<span class='no'>statistic</span>, ~<span class='no'>from</span>, ~<span class='no'>to</span>,
-  <span class='st'>"O3, NO2"</span>, <span class='st'>"min, max"</span>, <span class='st'>"h1, d1"</span>, <span class='st'>"m1, y1"</span>
-)
-<span class='fu'>statstable_expand</span>(<span class='no'>statstable</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 16 x 4</span><span>
-#&gt;    parameter statistic from  to   
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> O3        min       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> O3        min       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> O3        min       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> O3        min       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> O3        max       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> O3        max       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> O3        max       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> O3        max       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> NO2       min       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> NO2       min       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> NO2       min       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> NO2       min       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> NO2       max       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> NO2       max       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> NO2       max       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> NO2       max       d1    y1   </div><div class='input'>
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -195,11 +160,7 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

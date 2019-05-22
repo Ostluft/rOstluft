@@ -47,15 +47,18 @@ reference:
   contents:
   - '`resample`'
   - '`pad`'
+  - '`pad_year`'
   - '`statistic_fun_factory`'
   - '`treshold_wrapper_function`'
   - '`gap_wrapper_function`'
+  - '`wmean_full_interval`'
 
 - title: Statistic calculations
   desc: Applying resampling of data to get relevant Statistics
   contents:
   - calculate_statstable
-  - expand_statstable
+  - statstable_expand
+  - statstable_default
   - starts_with("calculate_")
 
 - title: concentrations conversion
@@ -74,9 +77,6 @@ reference:
   - starts_with("read_")
   - '`split_smn`'
 
-
-
-
 - title: "Long <> Wide Format conversion"
   desc: Convert between rOstluft Long format and an openair compatible Wide format
   contents:
@@ -86,9 +86,9 @@ reference:
   desc: Some functions to make the life of a programmer easier
   contents:
   - '`bind_rows_with_factor_columns`'
+  - starts_with("pluck_")
+  - starts_with("transform")
   - '`import_directory`'
   - '`meta_apply`'
   - '`rolf_apply_meta`'
   - '`rOstluft`'
-  - '`transform_projection`'
-

@@ -85,10 +85,3 @@ test_that("read one file with alot of single exports", {
   testthat::expect_equal(length(res), number_of_chunks_in_multi)
   testthat::expect_true(all(as.logical(test)), label = "every chunk contained some data")
 })
-
-
-
-
-
-
-

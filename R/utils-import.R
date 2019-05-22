@@ -24,7 +24,7 @@
 #' store$destroy("DELETE")
 #'
 import_directory <- function(store, path, read_function, glob = NULL, regexp = NULL, recursive = TRUE, ...) {
-  files <- fs::dir_ls(path, glob = glob, regexp = regexp, recursive = recursive, type = "file")
+  files <- fs::dir_ls(path, glob = glob, regexp = regexp, recurse = recursive, type = "file")
   i <- 1
   l <- length(files)
   op <- list(digits.secs = 4, dplyr.show_progress = FALSE)

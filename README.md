@@ -1,30 +1,42 @@
 
 <img src="man/figures/logo.png" align="right" />
 
-rOstluft
-========
+# rOstluft
 
 Eine Einleitung mit was und wieso.
 
-Installation
-============
+# Installation
 
-Der Quellcode von [rOstluft](https://github.com/Ostluft/rOstluft) ist auf github gehosted. Die einfachste Variante ist die Installation mit Hilfe des Packages devtools:
+Der Quellcode von [rOstluft](https://github.com/Ostluft/rOstluft) ist
+auf github gehosted. Die einfachste Variante ist die Installation mit
+Hilfe des Packages devtools:
 
 ``` r
 #install.packages("devtools")
 devtools::install_github("Ostluft/rOstluft")
 ```
 
-Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version veraltet ist:
+Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr
+Repositorium installiert werden, weil die CRANR Version veraltet
+ist:
 
 ``` r
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
 ```
 
-Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github heruntergeladen werden (Clone or download &gt; Download as ZIP), entpackt und manuell installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.
+Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht
+möglich. Muss der Quellcode manuell von github heruntergeladen werden
+(Clone or download \> Download as ZIP), entpackt und manuell installiert
+werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN
+bereitgestellt werden. Können auch keine CRAN Packages installiert
+werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten
+installiert werden.
 
-Zusätzlich besteht noch die Github Abhängkigkeit zu [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:
+Zusätzlich besteht noch die Github Abhängkigkeit zu
+[rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses
+Packages muss auf die gleiche Weise zuerst installiert werden mit
+folgenden
+Schritten:
 
 ``` r
 download.file("https://github.com/Ostluft/rOstluft/archive/master.zip", "rOstluft-master.zip")
@@ -44,7 +56,8 @@ devtools::install_local("rOstluft.data-master.zip", dependencies = FALSE)
 devtools::install_local("rOstluft-master.zip", dependencies = FALSE)
 ```
 
-Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.
+Falls das installieren von rOstluft scheitert, fehlt vermutlich eine
+Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.
 
 Nach der Installation kann das Packages verwendet werden:
 
@@ -52,8 +65,7 @@ Nach der Installation kann das Packages verwendet werden:
 library(rOstluft)
 ```
 
-Einrichten Entwicklungsumgebung
-===============================
+# Einrichten Entwicklungsumgebung
 
 Den Quellcode mit [git](https://git-scm.com/) auschecken:
 
@@ -61,37 +73,44 @@ Den Quellcode mit [git](https://git-scm.com/) auschecken:
 git clone https://github.com/Ostluft/rOstluft.git
 ```
 
-Alternativ kann das Projekt über den New Project Wizard im RStudio initialisiert werden:
+Alternativ kann das Projekt über den New Project Wizard im RStudio
+initialisiert werden:
 
-File &gt; New Project... &gt; Version Control &gt; Git &gt; Repository URL = <https://github.com/Ostluft/rOstluft.git>
+File \> New Project… \> Version Control \> Git \> Repository URL =
+<https://github.com/Ostluft/rOstluft.git>
 
-Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole im Rstudio (wenn das Projekt geöffnet ist):
+Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole
+im Rstudio (wenn das Projekt geöffnet ist):
 
 ``` r
 #install.packages("devtools")
 devtools::install_dev_deps()
 ```
 
-Demo
-====
+# Demo
 
-Eine ausführliche Einführung ist im [Tutorial](https://ostluft.github.io/rOstluft/articles/articles/tutorial.html) zu finden.
+Eine ausführliche Einführung ist im
+[Tutorial](https://ostluft.github.io/rOstluft/articles/articles/tutorial.html)
+zu finden.
 
-Aktueller Stand
-===============
+# Aktueller Stand
 
--   Alpha Version ist erstellt
--   Mechanismen zur automatischen Erstellung einer Dokumentation sind vorhanden
--   Initialversion eines Tutorial ist vorhanden
--   Die kritischen Komponenten (resample/Statistiken/Konzentrationsumrechnungen) verfügen über umfangreiche Tests
+  - Alpha Version ist erstellt
+  - Mechanismen zur automatischen Erstellung einer Dokumentation sind
+    vorhanden
+  - Initialversion eines Tutorial ist vorhanden
+  - Die kritischen Komponenten
+    (resample/Statistiken/Konzentrationsumrechnungen) verfügen über
+    umfangreiche Tests
 
-TODO
-====
+# TODO
 
--   Aufräumen des Codes (veraltete Funktionen löschen)
--   Überarbeiten der Dokumentation der R6 Klassen
--   Travis/CI Integration?
--   Erste Anwendungen des Stores implementieren
--   utility Funktionen wie pluck\_param, pluck\_interval, pluck\_site für rolf tibbles?
--   rOstluft.plot Package?
--   Grund für Differenzen bei AOT40 und O3\_h709001600 Berechnung zwischen AIRMO und rOstluft finden
+  - Aufräumen des Codes (veraltete Funktionen löschen)
+  - Überarbeiten der Dokumentation der R6 Klassen
+  - Travis/CI Integration?
+  - Erste Anwendungen des Stores implementieren
+  - utility Funktionen wie pluck\_param, pluck\_interval, pluck\_site
+    für rolf tibbles?
+  - rOstluft.plot Package?
+  - Grund für Differenzen bei AOT40 und O3\_h709001600 Berechnung
+    zwischen AIRMO und rOstluft finden

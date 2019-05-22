@@ -178,8 +178,8 @@ r6_storage_s3 <- R6::R6Class(
       is_new <- !fs::dir_exists(self$path)
 
       if (is_new) {
-        fs::dir_create(self$data_path, recursive = TRUE)
-        fs::dir_create(self$meta_path, recursive = TRUE)
+        fs::dir_create(self$data_path, recurse = TRUE)
+        fs::dir_create(self$meta_path, recurse = TRUE)
         message(sprintf("store %s initialized under '%s'", self$name, self$path))
       }
 
@@ -253,7 +253,7 @@ r6_storage_s3 <- R6::R6Class(
       }
 
       # upload meta data
-      meta_local <- tibble::tibble(local.path = fs::dir_ls(self$meta_path, recursive = TRUE, type = "file"))
+      meta_local <- tibble::tibble(local.path = fs::dir_ls(self$meta_path, recurse = TRUE, type = "file"))
       meta_local <- dplyr::mutate(meta_local, name = fs::path_rel(.data$local.path, self$meta_path))
       meta_local <- dplyr::mutate(meta_local, s3.key = fs::path(self$meta_s3, .data$name))
       purrr::map2(meta_local$local.path, meta_local$s3.key, private$s3_put)
@@ -272,12 +272,12 @@ r6_storage_s3 <- R6::R6Class(
     list_chunks = function() {
       #TODO cache list_chunks?
       chunks_s3 <- s3_list_objects(self$bucket, self$data_s3, Inf, fixEtag = TRUE, remove_folders = TRUE)
-      chunks_s3 <- dplyr::rename_all(chunks_s3, .funs = dplyr::funs(paste0("s3.", stringi::stri_trans_tolower(.))))
+      chunks_s3 <- dplyr::rename_all(chunks_s3, .funs = dplyr::funs(paste0("s3.", stringr::str_to_lower(., NULL))))
       chunks_s3 <- dplyr::mutate(chunks_s3, chunk_name = fs::path_ext_remove(fs::path_rel(.data$s3.key, self$data_s3)),
                                  s3.size = fs::as_fs_bytes(.data$s3.size))
       chunks_s3 <- dplyr::select(chunks_s3, "chunk_name", "s3.key", "s3.lastmodified", "s3.etag", "s3.size")
 
-      chunks_local <- fs::dir_info(self$data_path, recursive = TRUE, type = "file")
+      chunks_local <- fs::dir_info(self$data_path, recurse = TRUE, type = "file")
       chunks_local <- dplyr::select(chunks_local, "path", "modification_time", "size")
       chunks_local <- dplyr::rename_all(chunks_local, .funs = dplyr::funs(paste0("local.", .)))
       chunks_local <- dplyr::mutate(chunks_local,
@@ -340,7 +340,7 @@ r6_storage_s3 <- R6::R6Class(
         args <- dplyr::mutate(args, local.path = fs::path(self$meta_path, .data$name, ext = self$ext),
                               s3.key = fs::path(self$meta_s3, .data$name, ext = self$ext))
 
-        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recursive = TRUE)
+        purrr::map(fs::path_dir(args$local.path), fs::dir_create, recurse = TRUE)
         purrr::map2(args$value, args$local.path, self$write_function)
         purrr::map2(args$local.path, args$s3.key, private$s3_put)
       }
@@ -444,8 +444,8 @@ r6_storage_s3 <- R6::R6Class(
 
 s3_fixEtag <- function(etag) {
   # fix etag surrounded by ""
-  if (stringi::stri_length(dplyr::first(etag)) == 34) {
-    stringi::stri_sub(etag, 2, -2)
+  if (stringr::str_length(dplyr::first(etag)) == 34) {
+    stringr::str_sub(etag, 2, -2)
   } else {
     etag
   }

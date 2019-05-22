@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -163,6 +163,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="format_ps.html">format_ps()</a></code> </p>
+        </td>
+        <td><p>Format defintion for ps data with endtime instead of interval</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="format_rolf.html">format_rolf()</a></code> </p>
         </td>
         <td><p>rOstluft long format (rolf)</p></td>
@@ -189,6 +195,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="pad_year.html">pad_year()</a></code> </p>
+        </td>
+        <td><p>Pads data data to complete years</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="statistic_fun_factory.html">statistic_fun_factory()</a></code> </p>
         </td>
         <td><p>Factory to generate statistical functions</p></td>
@@ -204,6 +216,12 @@
           <p><code><a href="gap_wrapper_function.html">gap_wrapper_function()</a></code> </p>
         </td>
         <td><p>wrapper function for maximum number of consecutive NA values</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="wmean_full_interval.html">wmean_full_interval()</a></code> </p>
+        </td>
+        <td><p>calculates weighted arithmetic means to match full time intervals from overlapping intervals</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -221,21 +239,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="expand_statstable.html">expand_statstable()</a></code> </p>
+          <p><code><a href="statstable_expand.html">statstable_expand()</a></code> </p>
         </td>
         <td><p>Expands compact statstable to a table with one stats per row</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="calculate_CO_h8gl.html">calculate_CO_h8gl()</a></code> </p>
+          <p><code><a href="statstable_default.html">statstable_default()</a></code> </p>
         </td>
-        <td><p>Calculates CO 8 hour rolling statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="calculate_LRV.html">calculate_LRV()</a></code> </p>
-        </td>
-        <td><p>Calculates exceedance of LRV limits</p></td>
+        <td><p>Default Statstable</p></td>
       </tr><tr>
         
         <td>
@@ -245,21 +257,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="calculate_O3.html">calculate_O3()</a></code> </p>
+          <p><code><a href="calculate_O3_summer.html">calculate_O3_summer()</a></code> </p>
         </td>
-        <td><p>Calculates a lot of O3 indicators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="calculate_O3_h8gl.html">calculate_O3_h8gl()</a></code> </p>
-        </td>
-        <td><p>Calculates O3 8 hour rolling statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="calculate_stats.html">calculate_stats()</a></code> </p>
-        </td>
-        <td><p>Calculates most common stats</p></td>
+        <td><p>Calculates AOT40 and 7h mean from 9:00 - 16:00 CET from April until September</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -327,24 +327,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="read_ethz_iac_min10.html">read_ethz_iac_min10()</a></code> </p>
-        </td>
-        <td><p>Read an IAC/ETHZ meteo station file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_ethz_iac_min10_parameters.html">read_ethz_iac_min10_parameters()</a></code> </p>
-        </td>
-        <td><p>Derive metadata (parameters, units etc) from an IAC/ETHZ meteo station file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_meteoschweiz_smn.html">read_meteoschweiz_smn()</a></code> </p>
-        </td>
-        <td><p>Read a MeteoSchweiz SwissMetNet export file</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="read_smn.html">read_smn()</a></code> </p>
         </td>
         <td><p>Reads a file from the SwissMetNet of MeteoSwiss</p></td>
@@ -403,6 +385,24 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="pluck.html">pluck_parameter()</a></code> <code><a href="pluck.html">pluck_interval()</a></code> <code><a href="pluck.html">pluck_site()</a></code> <code><a href="pluck.html">pluck_unit()</a></code> <code><a href="pluck.html">pluck_year()</a></code> </p>
+        </td>
+        <td><p>Filter data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transform_crs.html">transform_crs()</a></code> <code><a href="transform_crs.html">transform_LV95_to_WSG84()</a></code> <code><a href="transform_crs.html">transform_WSG84_to_LV95()</a></code> <code><a href="transform_crs.html">transform_LV03_to_WSG84()</a></code> <code><a href="transform_crs.html">transform_WSG84_to_LV03()</a></code> </p>
+        </td>
+        <td><p>Transform between Coordinate Reference Systems</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transform_projection.html">transform_projection()</a></code> </p>
+        </td>
+        <td><p>Map projection and datum transformation</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="import_directory.html">import_directory()</a></code> </p>
         </td>
         <td><p>Imports directory into store</p></td>
@@ -424,12 +424,6 @@
           <p><code><a href="rOstluft.html">rOstluft</a></code> </p>
         </td>
         <td><p>rOstluft: data store and utility functions for Ostluft</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_projection.html">transform_projection()</a></code> </p>
-        </td>
-        <td><p>Map projection and datum transformation</p></td>
       </tr>
     </tbody>
     </table>

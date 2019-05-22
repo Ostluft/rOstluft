@@ -208,7 +208,7 @@ meta_apply <- function(data, meta, data_src, data_dest, meta_key, meta_val, mode
   # we could check sooner, but then we wouldn't have the missing information
   if (anyDuplicated(rlang::names2(mapping))) {
     duplicated_items <- rlang::names2(mapping)[duplicated(rlang::names2(mapping))]
-    duplicated_str <- stringr::str_c(duplicated_items, collapse = ', ')
+    duplicated_str <- stringr::str_c(duplicated_items, collapse = ", ")  # nolint
     stop(msg_str("\n  Duplicated keys in meta$${meta_key}: ${duplicated_str}"))
   }
 
@@ -229,7 +229,7 @@ meta_apply <- function(data, meta, data_src, data_dest, meta_key, meta_val, mode
 
     # check all missing keys are in the replacements
     if (!all(missing %in% rlang::names2(replacements))) {
-      missing_repl <- missing[!(missing %in% rlang::names2(replacements))]
+      missing_repl <- missing[!(missing %in% rlang::names2(replacements))]  # nolint
       stop(msg_str("\n  missing names in replacements: ${stringr::str_c(missing_repl, collapse = ', ')}"))
     }
 
@@ -237,7 +237,7 @@ meta_apply <- function(data, meta, data_src, data_dest, meta_key, meta_val, mode
     names_repl <- rlang::names2(replacements)
     if (anyDuplicated(names_repl)) {
       duplicated_items <- names_repl[duplicated(names_repl)]
-      duplicated_str <- stringr::str_c(duplicated_items, collapse = ', ')
+      duplicated_str <- stringr::str_c(duplicated_items, collapse = ", ")
       stop(msg_str("\n  Duplicated names in replacements: ${duplicated_str}"))
     }
 
@@ -253,4 +253,3 @@ meta_apply <- function(data, meta, data_src, data_dest, meta_key, meta_val, mode
   # we should have checked everything and built an appropriate mapping
   data <- dplyr::mutate(data, !!sym(data_dest) := dplyr::recode(data[[data_src]], !!!mapping))
 }
-

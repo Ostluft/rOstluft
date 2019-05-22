@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>[GER] Technische Entscheidungen</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-04-02</h4>
+            <h4 class="date">2019-05-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/Technische_Entscheidungen.Rmd"><code>vignettes/Technische_Entscheidungen.Rmd</code></a></small>
       <div class="hidden name"><code>Technische_Entscheidungen.Rmd</code></div>
@@ -116,14 +116,14 @@
 <div id="style-guide" class="section level1">
 <h1 class="hasAnchor">
 <a href="#style-guide" class="anchor"></a>Style Guide</h1>
-<p>Für eine konsistente und kohärente Code Basis ist die Einhaltung eines Code Style Guide unverzichtbar. Zudem erlaubt dies den Einsatz von einem Code Linter zur automatischen Qualitätskontrolle. Für dieses Projekt wird der <a href="http://style.tidyverse.org/">tidyverse styleguide</a> verwendet. <a href="http://styler.r-lib.org/">Styler</a> und <a href="https://github.com/jimhester/lintr">lintr</a><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> können zur Unterstützund des Anwender installiert werden.</p>
+<p>Für eine konsistente und kohärente Code Basis ist die Einhaltung eines Code Style Guide unverzichtbar. Zudem erlaubt dies den Einsatz von einem Code Linter zur automatischen Qualitätskontrolle. Für dieses Projekt wird der <a href="http://style.tidyverse.org/">tidyverse styleguide</a> verwendet. <a href="http://styler.r-lib.org/">Styler</a> und <a href="https://github.com/jimhester/lintr">lintr</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> können zur Unterstützund des Anwender installiert werden.</p>
 </div>
 <div id="versionskontrolle-und-distribution" class="section level1">
 <h1 class="hasAnchor">
 <a href="#versionskontrolle-und-distribution" class="anchor"></a>Versionskontrolle und Distribution</h1>
 <p>Für die Versionkontrolle wird Git verwendet. RStudio hat eingebauten Support. Das Package wird auf github unter <a href="https://github.com/Ostluft/rOstluft">Ostluft/rOstluft</a> gehostet. Daten für Tests und Beispiele sind in unter <a href="https://github.com/Ostluft/rOstluft.data">Ostluft/rOstluft.data</a> zu finden. Dies erlaubt die Distribution mit Hilfe der devtools:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co">#install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</a></code></pre></div>
 <p>Das Package auf CRAN zu veröffentlichen ist ein relativ aufwendiger <a href="http://kbroman.org/pkg_primer/pages/cran.html">Prozess</a>, und darauf wird aufs Erste verzichtet.</p>
 </div>
 <div id="encoding" class="section level1">
@@ -135,7 +135,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <h1 class="hasAnchor">
 <a href="#importieren-von-strukturierten-daten" class="anchor"></a>Importieren von strukturierten Daten</h1>
 <p>Eine der Herausforderung beim importieren von Textdateien ist die Verwendung der korrekten Codierung. Die Input Dateien werden meistens nicht in utf-8 vorliegen sondern vermutlich in einer <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859">ISO 8859</a> oder in einer <a href="https://en.wikipedia.org/wiki/Windows_code_page">Windows Code Page</a> Variante. Folglich muss eine Konversion nach utf-8 erfolgen.</p>
-<p>Die Funktion <a href="https://www.rdocumentation.org/packages/data.table/versions/1.11.8/topics/fread">fread</a> des Packages <a href="https://www.rdocumentation.org/packages/data.table">data.table</a> ist die schnellste Funktione (ca. 2x schneller als die readr Funktionen und ca. 20x schneller als die R base Funktionen<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>) konvertiert aber den Input nicht nach utf-8:</p>
+<p>Die Funktion <a href="https://www.rdocumentation.org/packages/data.table/versions/1.11.8/topics/fread">fread</a> des Packages <a href="https://www.rdocumentation.org/packages/data.table">data.table</a> ist die schnellste Funktione (ca. 2x schneller als die readr Funktionen und ca. 20x schneller als die R base Funktionen<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>) konvertiert aber den Input nicht nach utf-8:</p>
 <blockquote>
 <p>encoding: default is “unknown”. Other possible options are “UTF-8” and “Latin-1”. Note: it is not used to re-encode the input, rather enables handling of encoded strings in their native encoding.</p>
 </blockquote>
@@ -152,7 +152,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div id="oop" class="section level1">
 <h1 class="hasAnchor">
 <a href="#oop" class="anchor"></a>OOP</h1>
-<p>Aus historischen Gründen gibt es in R mehrere Klassentypen (S3, S4, RC, R6)<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a><a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. Für unsere Zwecke eignet sich die <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html">R6</a> Implementation. Dies erlaubt uns die für eine Ablage notwendigen Konfigurationen und Funktionen in einem Objekt zu vereinigen. Alternativ kann ein reiner Prozeduraler Stil genutzt werden, in dem die notwendigen Angaben für einen store (Pfad, Zugangsdaten, etc) in einem Objekt gehalten werden und dieses Objekt immer als Argument einer Funktion übergeben wird.</p>
+<p>Aus historischen Gründen gibt es in R mehrere Klassentypen (S3, S4, RC, R6)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a><a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. Für unsere Zwecke eignet sich die <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html">R6</a> Implementation. Dies erlaubt uns die für eine Ablage notwendigen Konfigurationen und Funktionen in einem Objekt zu vereinigen. Alternativ kann ein reiner Prozeduraler Stil genutzt werden, in dem die notwendigen Angaben für einen store (Pfad, Zugangsdaten, etc) in einem Objekt gehalten werden und dieses Objekt immer als Argument einer Funktion übergeben wird.</p>
 <p>Vorteile OOP:</p>
 <ul>
 <li>Erlaubt Referenzierung Semantik (kann auch ein Nachteil sein)</li>
@@ -162,11 +162,14 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 </ul>
 <p>Nachteile OOP:</p>
 <ul>
-<li>Schlechterer Support in der IDE und Tools:</li>
+<li>Schlechterer Support in der IDE und Tools:
+<ul>
 <li>Autovervollständigung für Klassenmethoden nur wenn eine Klasseninstanz mit dem Namen der Variablen im Globalen Environment ist</li>
 <li>
 <a href="https://r6.r-lib.org/articles/Debugging.html">Debugging von R6 Methoden</a> ist aufwendiger, da RStudio keine Haltepunkte innerhalb der Methode zulässt.</li>
 <li>Erstellung von <a href="https://github.com/r-lib/R6/issues/3">Roxygen Dokumentationen für R6 Klassen</a> ist hart.</li>
+</ul>
+</li>
 </ul>
 </div>
 <div id="dokumentation" class="section level1">
@@ -248,10 +251,10 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Aktuell muss die Dev Version von Github installiert werden, damit das RStudio Addin funktioniert.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p><a href="https://github.com/tidyverse/readr/blob/master/README.md#alternatives" class="uri">https://github.com/tidyverse/readr/blob/master/README.md#alternatives</a><a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p><a href="http://adv-r.had.co.nz/OO-essentials.html">OO field guide</a><a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>[Creating Classes in R: S3, S4, R5 (RC), or R6? <a href="https://stackoverflow.com/a/27219203">closed</a><a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p>Aktuell muss die Dev Version von Github installiert werden, damit das RStudio Addin funktioniert.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://github.com/tidyverse/readr/blob/master/README.md#alternatives" class="uri">https://github.com/tidyverse/readr/blob/master/README.md#alternatives</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p><a href="http://adv-r.had.co.nz/OO-essentials.html">OO field guide</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>[Creating Classes in R: S3, S4, R5 (RC), or R6? <a href="https://stackoverflow.com/a/27219203">closed</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

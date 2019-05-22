@@ -96,5 +96,3 @@ test_that("replace", {
   testthat::expect_equal(nrow(res), 10)
   testthat::expect_equal(res, cmp)
 })
-
-

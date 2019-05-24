@@ -31,9 +31,8 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
   nrow2 <- stringr::str_which(header, "Ausgefallene Werte werden")
   parameters <- readr::read_table(fn, skip = skip2, n_max = nrow2 - skip2 - 2, col_names = TRUE,
                                   col_types = col_types, locale = locale)
-  parameters <- dplyr::mutate(parameters, Einheit = ifelse(Einheit == "-", NA, Einheit))
+  parameters <- dplyr::mutate(parameters, Einheit = ifelse(.data$Einheit == "-", NA, .data$Einheit))
   units <- rlang::set_names(parameters$Einheit, parameters$Messobjekt)
-
 
   # finally read the data  <--- not sure if right aligned is okay with read_table, ev have to use read_table2
   data <- readr::read_table(fn, skip = skip, col_names = parameters$Messobjekt,
@@ -69,14 +68,18 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
   }
 
   # wrangle data
-  data <- tidyr::gather(data, parameter, value, -starttime, na.rm = na.rm)
+  data <- tidyr::gather(data, "parameter", "value", -.data$starttime)
   data <- dplyr::mutate(data,
       site = factor(site),
       interval = factor(interval),
       parameter = forcats::as_factor(.data$parameter),
       unit = dplyr::recode(.data$parameter, !!!units),
-      value = ifelse(value == as.numeric(na_value), NA, value)
+      value = ifelse(.data$value == as.numeric(na_value), NA, .data$value)
   )
 
-  dplyr::select(data, starttime, site, parameter, interval, unit, value)
+  if (isTRUE(na.rm)) {
+    data <- dplyr::filter(data, !is.na(.data$value))
+  }
+
+  dplyr::select(data, "starttime", "site", "parameter", "interval", "unit", "value")
 }

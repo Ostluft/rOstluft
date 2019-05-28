@@ -1,11 +1,24 @@
 #' Read a file from Nabel
 #'
+#' @description
+#' Reads Exports from [National Air Pollution Monitoring Network (NABEL)](https://www.bafu.admin.ch/bafu/en/home/topics/air/state/data/national-air-pollution-monitoring-network--nabel-.html)
+#' The National Air Pollution Monitoring Network (NABEL) measures air pollution at 16 locations in Switzerland.
+#' The stations are distributed throughout the country and monitor pollution at typical locations (e.g.
+#' city-centre streets, residential areas, rural stations). The monitoring network has commenced operations in stages
+#' since 1979 and is operated by the Federal office for the environment and Empa
+#'
+#' This function reads the parameter and unit information from the header. The interval is auto detected if possible.
+#' In Addition the time information are in end time. The time is converted to start time and the time zone defined
+#' trough the argument tz.
+#' The argument time_shift provides a way to manuelly shift the time series. In this case *no* automatically shifting
+#' is applied. The provided values is directly added to information in the file.
+#'
 #' @param fn  path to input file
 #' @param encoding encoding of the data file. Default = "latin1"
-#' @param tz of the output data. Default "Etc/GMT-1"
-#' @param interval a lubridate period to add to the time. Default NULL
-#' @param time_shift optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
+#' @param tz of the data. Default "Etc/GMT-1"
+#' @param interval optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
 #'   define time_shift manuelly. lubridate::period(0) can be used for no shifting
+#' @param time_shift a lubridate period to add to the time. Default NULL
 #' @param na.rm remove na values. Default TRUE
 #'
 #' @return tibble in rolf format
@@ -34,8 +47,8 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
   parameters <- dplyr::mutate(parameters, Einheit = ifelse(.data$Einheit == "-", NA, .data$Einheit))
   units <- rlang::set_names(parameters$Einheit, parameters$Messobjekt)
 
-  # finally read the data  <--- not sure if right aligned is okay with read_table, ev have to use read_table2
-  data <- readr::read_table(fn, skip = skip, col_names = parameters$Messobjekt,
+  # finally read the data, use read_table2, read_table has problems with right aligned data
+  data <- readr::read_table2(fn, skip = skip, col_names = parameters$Messobjekt,
                             col_types = col_types, locale = locale, na = na_value)
 
   # unite the date parts and convert it to a PosixCT

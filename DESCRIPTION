@@ -29,7 +29,7 @@ Imports:
     sp,
     rlang (>= 0.3.0),
     magrittr,
-    rOstluft.data (>= 1.7),
+    rOstluft.data (>= 1.10),
     rgdal
 Suggests:
     knitr,

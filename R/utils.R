@@ -87,3 +87,23 @@ filter_keep_list <- function(data, filter_list) {
   filter_arg <- unname(purrr::imap(filter_list, create_filter_quo))
   dplyr::filter(data, !!! filter_arg)
 }
+
+#' Cuts / splits data frame in list based on condition
+#'
+#' @param data data frame to cut
+#' @param condition expression used for grouping
+#' @param mapping names for list
+#'
+#' @return list
+#' @examples
+#' \dontrun{
+#' data <- cut_on_condition(data, end_interval < endtime, c("TRUE" = "overlaps", "FALSE" = "complete"))
+#' }
+
+cut_on_condition <- function(data, condition, mapping) {
+  condition <- rlang::enexpr(condition)
+  data <- dplyr::group_by(data, condition_ = !!condition)
+  keys <- dplyr::group_keys(data)
+  data <- dplyr::group_split(data, keep = FALSE)
+  rlang::set_names(data, mapping[as.character(keys$condition_)])
+}

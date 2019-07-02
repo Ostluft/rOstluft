@@ -1,12 +1,11 @@
-#' Calculates weighted arithmetic means to converted shifted intervals to regular
+#' Calculates weighted arithmetic means from shifted time series
 #'
 #' @description
-#' Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time
-#' intervals such as starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20 Feb to 06 March) with
-#' respect to full time intervals  for mean intervals (e.g. 09:00 to 10:00 or 01 Feb to 28 Feb). To make such time
-#' series intercomparable and provide a standardized way of dealing with aggregated data, wmean_full_interval()
-#' provides a method to average a data.frame containing start- and end-time information to full time intervals based
-#' on stats::weighted.mean().
+#' Faster special case of `wmean()` for evenly spaced time series. Sometimes records (e.g. measurements from miniDOAS)
+#' provide values representative time intervals starting from odd start times to odd end times (e.g. 09:58 to 10:08 or
+#' 20 Feb to 06 March). To make such time series intercomparable and provide a standardized way of dealing with
+#' aggregated data, `wmean_shifted()` provides a method to average a data.frame containing odd start- and end-time
+#' information to standard time intervals (e.g. 10min intervals from 09:50 to 10:00) with `stats::weighted.mean()`.
 #'
 #' @section Restrictions:
 #' * input data has to contain evenly spaced time series (eg. 10min interval)
@@ -20,12 +19,15 @@
 #' @param value name of column containing values to be averaged as symbol or string
 #' @param ... columns containing values for grouping (passed to `dplyr::group_by()`) when calculating
 #'   weighted means (e.g. for different measurement parameters). Columns not explicitly passed are dropped
-#' @param interval specifying the output interval for averaging as `lubridate::Period` (e.g. lubridate::hours(1))
+#' @param interval specifying the output interval for averaging as string
 #'
 #' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
 #'   sum of weighted intervals within the averaged time interval
 #'
 #' @keywords statistics
+#'
+#' @seealso
+#' * `rOstluft::wmean()`
 #'
 #' @examples
 #' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv", package = "rOstluft.data")
@@ -36,96 +38,232 @@
 #'   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) %>%
 #'   dplyr::select(-interval)
 #'
-#' wmean_shifted(df, site, parameter, unit, interval = lubridate::hours(1))
+#' wmean_shifted(df, site, parameter, unit, interval = "h1")
 #'
-#' wmean_shifted(df, site, parameter, unit, interval = lubridate::days(1))
+#' wmean_shifted(df, site, parameter, unit, interval = "d1")
 #'
-#' wmean_shifted(df, site, parameter, unit, interval = lubridate::period(1, "month"))
+#' wmean_shifted(df, site, parameter, unit, interval = "m1")
 wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime", value = "value",
-                          interval = lubridate::hours(1)) {
+                          interval = "h1") {
 
   # symbolize arguments
   starttime <- rlang::ensym(starttime)
   endtime <- rlang::ensym(endtime)
   value <- rlang::ensym(value)
   dots <- rlang::ensyms(...)
+  interval = convert_interval(interval)
 
   # normalize naming
-  data <- dplyr::rename(data, starttime = !!starttime, endtime = !!endtime, value = !!value)
+  data <- dplyr::rename(data, starttime_ = !!starttime, endtime_ = !!endtime, value_ = !!value)
 
   data <- dplyr::mutate(data,
-    start_interval = lubridate::floor_date(.data$starttime, unit = interval),
-    end_interval = .data$start_interval + interval,
+    start_interval_ = lubridate::floor_date(.data$starttime_, unit = interval),
+    end_interval_ = .data$start_interval_ + lubridate::period(interval),
     w = 1
   )
 
   # split the overlapping measurements off
-  data <- dplyr::group_by(data, isOverlapping =  .data$end_interval < .data$endtime)
-  keys <- dplyr::group_keys(data)
-  data <- dplyr::group_split(data, keep = FALSE)
-  mapping <- list("TRUE" = "overlaps", "FALSE" = "complete")
-  data <- rlang::set_names(data, mapping[as.character(keys$isOverlapping)])
+  data <- cut_on_condition(data, end_interval_ < endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
 
   if (!is.null(data$overlaps)) {
-    measurement_seconds <- as.numeric(data$overlaps$endtime[1] - data$overlaps$starttime[1], units = "secs")
+    measurement_seconds <- as.numeric(data$overlaps$endtime_[1] - data$overlaps$starttime_[1], units = "secs")
 
     # pass the right overlapping fraction to next interval and calculate w
     data$right <- dplyr::mutate(data$overlaps,
-      start_interval = .data$end_interval,
-      end_interval = .data$start_interval + interval,
-      w = as.numeric(.data$endtime - .data$start_interval, units = "secs") / measurement_seconds
+      start_interval_ = .data$end_interval_,
+      end_interval_ = .data$start_interval_ + lubridate::period(interval),
+      w = as.numeric(.data$endtime_ - .data$start_interval_, units = "secs") /
+        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
     )
 
     # calculate w for the left side of the overlapping measurement
     data$overlaps <- dplyr::mutate(data$overlaps,
-      w = as.numeric(.data$end_interval - .data$starttime, units = "secs") / measurement_seconds
+      w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
+        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
     )
   }
 
   data <- dplyr::bind_rows(!!!data)
 
   # finally caclulate the weighted mean
-  data <- dplyr::group_by(data, .data$start_interval, .data$end_interval, !!!dots)
+  data <- dplyr::group_by(data, .data$start_interval_, .data$end_interval_, !!!dots)
   data <- dplyr::summarise(data,
-    mean = stats::weighted.mean(.data$value, .data$w, na.rm = TRUE),
+    value_ = stats::weighted.mean(.data$value_, .data$w, na.rm = TRUE),
     n = sum(.data$w, na.rm = TRUE)
   )
 
   data <- dplyr::ungroup(data)
 
   # revert naming normalization
-  dplyr::rename(data, !!starttime := .data$start_interval, !!endtime := .data$end_interval, !!value := .data$mean)
+  dplyr::rename(data, !!starttime := .data$start_interval_, !!endtime := .data$end_interval_, !!value := .data$value_)
 }
 
 
+#' Calculates weighted arithmetic means of irregular data series
+#'
+#' @description
+#' Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative irregular time
+#' intervals such as starting from odd start times to odd end times. For example 09:58 to 10:08 or 20 Feb to 06 March.
+#' This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct.
+#'
+#' @section Caution:
+#' Removes NA values
+#'
+#' @param data data.frame for averaging; df has to be in long format and contain a start- and end-time
+#'   column of class POSIXct (arbitrarily named)
+#' @param ... columns containing values for grouping (passed to `dplyr::group_by()`) when calculating
+#'   weighted means (e.g. for different measurement parameters). Columns not explicitly passed are dropped
+#' @param starttime name of starttime column as symbol or string
+#' @param endtime name of endtime column  as symbol or string
+#' @param value name of column containing values to be averaged as symbol or string
+#' @param interval specifying the output interval for averaging as string
+#'
+#' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
+#'   sum of weighted intervals within the averaged time interval (data availability, 1 = 100%)
+#'
+#' @examples
+#' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv", package = "rOstluft.data")
+#' ps_fn <- system.file("extdata", "NO2_PS.rds", package = "rOstluft.data")
+#' data <- read_airmo_csv(fn, time_shift = lubridate::period(25, "minutes"))
+#' data_ps <- readRDS(ps_fn) %>% pluck_site("Zch_Stampfenbachstrasse")
+#'
+#' df <- pluck_parameter(data, "CO") %>%
+#'   pluck_unit(unit, "ppm") %>%
+#'   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) %>%
+#'   dplyr::select(-interval)
+#'
+#' wmean(df, site, parameter, unit, interval = "min10")
+#'
+#' wmean(df, site, parameter, unit, interval = "h1")
+#'
+#' wmean(df, site, parameter, unit, interval = "m1")
+#'
+#' wmean(data_ps, site, parameter, unit, interval = "d1")
+#'
+#' wmean(data_ps, site, parameter, unit, interval = "1 week")
+#'
+#' wmean(data_ps, site, parameter, unit, interval = "m1")
+#'
+#' wmean(data_ps, site, parameter, unit, interval = "y1")
+#'
+wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value = "value",
+                          interval = "h1") {
+  # symbolize arguments
+  starttime <- rlang::ensym(starttime)
+  endtime <- rlang::ensym(endtime)
+  value <- rlang::ensym(value)
+  dots <- rlang::ensyms(...)
+  interval <- convert_interval(interval)
 
-fill_ps <- function(data, interval = "h1") {
-  interval_converted <- convert_interval(interval)
+  # normalize naming
+  data <- dplyr::rename(data, starttime_ = !!starttime, endtime_ = !!endtime, value_ = !!value)
 
   data <- dplyr::mutate(data,
-    starttime = lubridate::floor_date(.data$starttime, interval_converted),
-    endtime  = lubridate::floor_date(.data$endtime, interval_converted),
+    start_interval_ = lubridate::floor_date(.data$starttime_, unit = interval),
+    end_interval_ = .data$start_interval_ + lubridate::period(interval)
   )
 
-  data <- dplyr::group_nest(data, .data$site, .data$parameter, .data$unit, .key = "serie")
-  data <- dplyr::mutate(data, serie = purrr::map(.data$serie, fill_ps_serie, interval_converted))
-  data <- tidyr::unnest(data, .data$serie)
-  data <- dplyr::mutate(data, interval = factor(interval))
+  # split the overlapping measurements off
+  data <- cut_on_condition(data, end_interval_ < endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
 
-  dplyr::select(data, "starttime", "site", "parameter", "interval", "unit", "value")
+  # calculate the weight for measurements complete in one interval
+  if (!is.null(data$complete)) {
+    data$complete <- dplyr::mutate(data$complete,
+      w = as.numeric(.data$endtime_ - .data$starttime_, units = "secs") /
+        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+    )
+  }
+
+  if (!is.null(data$overlaps)) {
+    # we only checked if a measurements overlaps a period, not if it overlaps multiple periods.
+    # if we floor the endtime and is the same as end_interval the measurement overlaps only one measurement
+    data$overlaps <- dplyr::mutate(data$overlaps,
+      endtime_interval_ = lubridate::floor_date(.data$endtime_, unit = interval),
+    )
+    data$overlaps <- cut_on_condition(data$overlaps, endtime_interval_ == end_interval_,
+                                      c("TRUE" = "one", "FALSE" = "multi"))
+
+    # handle the measurement only overlapping one measurement and split them in left and right
+    if (!is.null(data$overlaps$one)) {
+      # calculate w for the left side of the overlapping measurement
+      data$left <- dplyr::mutate(data$overlaps$one,
+        w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
+           as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+      )
+
+      # pass the right overlapping fraction to next interval and calculate w
+      data$right <- dplyr::mutate(data$overlaps$one,
+        start_interval_ = .data$end_interval_,
+        end_interval_ = .data$start_interval_ + lubridate::period(interval),
+        w = as.numeric(.data$endtime_ - .data$start_interval_, units = "secs") /
+           as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+      )
+
+    }
+
+    if (!is.null(data$overlaps$multi)) {
+      data$multi_left <- dplyr::mutate(data$overlaps$multi,
+        w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
+           as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+      )
+
+      data$multi_right <- dplyr::mutate(data$overlaps$multi,
+        start_interval_ = .data$endtime_interval_,
+        end_interval_ = .data$start_interval_ + lubridate::period(interval),
+        w = as.numeric(.data$endtime_ - .data$start_interval_, units = "secs") /
+           as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+      )
+
+      data$mutli_middle = fill_wmean(data$overlaps$multi, !!!dots, interval = interval)
+    }
+  }
+
+  data[["overlaps"]] <- NULL
+  data <- dplyr::bind_rows(!!!data)
+
+  # finally caclulate the weighted mean
+  data <- dplyr::group_by(data, .data$start_interval_, .data$end_interval_, !!!dots)
+  data <- dplyr::filter(data, !is.na(.data$value_))
+  data <- dplyr::summarise(data,
+    value_ = stats::weighted.mean(.data$value_, .data$w, na.rm = TRUE),
+    n = sum(.data$w, na.rm = TRUE)
+  )
+
+  data <- dplyr::ungroup(data)
+
+  # revert naming normalization
+  dplyr::rename(data, !!starttime := .data$start_interval_, !!endtime := .data$end_interval_, !!value := .data$value_)
 }
 
+#' Fills (upsample) a data frame for wmean
+#'
+#' @param data input data frame
+#' @param ... grouping columns
+#' @param interval for upsampling
+#'
+#' @return upsampled data frame
+#' @keywords internal
+fill_wmean <- function(data, ..., interval) {
 
-fill_ps_serie <- function(serie, interval) {
-  purrr::pmap_dfr(serie, fill_ps_messung, interval)
+  fill_wmean_serie <- function(serie, interval) {
+    purrr::pmap_dfr(serie, fill_wmean_measurement, interval = interval)
+  }
+
+  fill_wmean_measurement<- function(end_interval_, endtime_interval_, value_, ..., interval) {
+    startime <- seq.POSIXt(end_interval_, endtime_interval_, interval)
+    startime <- utils::head(startime, -1)
+
+    tibble::tibble(
+      startime = startime,
+      start_interval_ = startime,
+      endtime_ = startime + lubridate::period(interval),
+      end_interval_ = endtime_,
+      value_ = value_,
+      w = 1
+    )
+  }
+
+  data <- dplyr::group_nest(data, ..., .key = "serie")
+  data <- dplyr::mutate(data, serie = purrr::map(.data$serie, fill_wmean_serie, interval = interval))
+  tidyr::unnest(data, .data$serie)
 }
-
-
-
-fill_ps_messung <- function(starttime, endtime, value, interval) {
-  tibble::tibble(
-    starttime = seq(starttime, endtime, interval),
-    value = value
-  ) %>% dplyr::slice(-dplyr::n())
-}
-

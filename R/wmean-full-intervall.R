@@ -1,5 +1,7 @@
 #' Calculates weighted arithmetic means from shifted time series
 #'
+#' sdfg
+#'
 #' @description
 #' Faster special case of `wmean()` for evenly spaced time series. Sometimes records (e.g. measurements from miniDOAS)
 #' provide values representative time intervals starting from odd start times to odd end times (e.g. 09:58 to 10:08 or
@@ -25,6 +27,7 @@
 #'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
 #'
 #' @keywords statistics
+#' @export
 #'
 #' @seealso
 #' * `rOstluft::wmean()`
@@ -111,6 +114,8 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #' intervals such as starting from odd start times to odd end times. For example 09:58 to 10:08 or 20 Feb to 06 March.
 #' This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct.
 #'
+#' asdfasd
+#'
 #' @section Caution:
 #' Removes NA values
 #'
@@ -125,6 +130,8 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #'
 #' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
 #'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
+#'
+#' @export
 #'
 #' @examples
 #' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv", package = "rOstluft.data")

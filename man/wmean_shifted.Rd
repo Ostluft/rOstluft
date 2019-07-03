@@ -2,10 +2,10 @@
 % Please edit documentation in R/wmean-full-intervall.R
 \name{wmean_shifted}
 \alias{wmean_shifted}
-\title{Calculates weighted arithmetic means to converted shifted intervals to regular}
+\title{Calculates weighted arithmetic means from shifted time series}
 \usage{
 wmean_shifted(data, ..., starttime = "starttime", endtime = "endtime",
-  value = "value", interval = lubridate::hours(1))
+  value = "value", interval = "h1")
 }
 \arguments{
 \item{data}{data.frame for averaging; df has to be in long format and contain a start- and end-time
@@ -20,19 +20,21 @@ weighted means (e.g. for different measurement parameters). Columns not explicit
 
 \item{value}{name of column containing values to be averaged as symbol or string}
 
-\item{interval}{specifying the output interval for averaging as \code{lubridate::Period} (e.g. lubridate::hours(1))}
+\item{interval}{specifying the output interval for averaging as string}
 }
 \value{
 tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-sum of weighted intervals within the averaged time interval
+sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
 }
 \description{
-Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time
-intervals such as starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20 Feb to 06 March) with
-respect to full time intervals  for mean intervals (e.g. 09:00 to 10:00 or 01 Feb to 28 Feb). To make such time
-series intercomparable and provide a standardized way of dealing with aggregated data, wmean_full_interval()
-provides a method to average a data.frame containing start- and end-time information to full time intervals based
-on stats::weighted.mean().
+Faster special case of \code{wmean()} for evenly spaced time series. Sometimes records (e.g. measurements from miniDOAS)
+provide values representative time intervals starting from odd start times to odd end times (e.g. 09:58 to 10:08 or
+20 Feb to 06 March). To make such time series intercomparable and provide a standardized way of dealing with
+aggregated data, \code{wmean_shifted()} provides a method to average a data.frame containing odd start- and end-time
+information to standard time intervals (e.g. 10min intervals from 09:50 to 10:00) with \code{stats::weighted.mean()}.
+}
+\details{
+sdfg
 }
 \section{Restrictions}{
 
@@ -52,10 +54,15 @@ df <- pluck_parameter(data, "CO") \%>\%
   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) \%>\%
   dplyr::select(-interval)
 
-wmean_shifted(df, site, parameter, unit, interval = lubridate::hours(1))
+wmean_shifted(df, site, parameter, unit, interval = "h1")
 
-wmean_shifted(df, site, parameter, unit, interval = lubridate::days(1))
+wmean_shifted(df, site, parameter, unit, interval = "d1")
 
-wmean_shifted(df, site, parameter, unit, interval = lubridate::period(1, "month"))
+wmean_shifted(df, site, parameter, unit, interval = "m1")
+}
+\seealso{
+\itemize{
+\item \code{rOstluft::wmean()}
+}
 }
 \keyword{statistics}

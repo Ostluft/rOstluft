@@ -95,11 +95,13 @@ filter_keep_list <- function(data, filter_list) {
 #' @param mapping names for list
 #'
 #' @return list
+#'
+#' @keywords internal
+#'
 #' @examples
 #' \dontrun{
 #' data <- cut_on_condition(data, end_interval < endtime, c("TRUE" = "overlaps", "FALSE" = "complete"))
 #' }
-
 cut_on_condition <- function(data, condition, mapping) {
   condition <- rlang::enexpr(condition)
   data <- dplyr::group_by(data, condition_ = !!condition)

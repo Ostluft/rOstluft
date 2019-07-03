@@ -22,7 +22,7 @@
 #' @param interval specifying the output interval for averaging as string
 #'
 #' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-#'   sum of weighted intervals within the averaged time interval
+#'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
 #'
 #' @keywords statistics
 #'
@@ -58,16 +58,20 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 
   data <- dplyr::mutate(data,
     start_interval_ = lubridate::floor_date(.data$starttime_, unit = interval),
-    end_interval_ = .data$start_interval_ + lubridate::period(interval),
-    w = 1
+    end_interval_ = .data$start_interval_ + lubridate::period(interval)
   )
 
   # split the overlapping measurements off
   data <- cut_on_condition(data, end_interval_ < endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
 
-  if (!is.null(data$overlaps)) {
-    measurement_seconds <- as.numeric(data$overlaps$endtime_[1] - data$overlaps$starttime_[1], units = "secs")
+  if (!is.null(data$complete)) {
+    data$complete <- dplyr::mutate(data$complete,
+      w = as.numeric(.data$endtime_ - .data$starttime_, units = "secs") /
+        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
+    )
+  }
 
+  if (!is.null(data$overlaps)) {
     # pass the right overlapping fraction to next interval and calculate w
     data$right <- dplyr::mutate(data$overlaps,
       start_interval_ = .data$end_interval_,
@@ -119,7 +123,7 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #' @param interval specifying the output interval for averaging as string
 #'
 #' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-#'   sum of weighted intervals within the averaged time interval (data availability, 1 = 100%)
+#'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
 #'
 #' @examples
 #' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv", package = "rOstluft.data")
@@ -132,11 +136,11 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #'   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) %>%
 #'   dplyr::select(-interval)
 #'
-#' wmean(df, site, parameter, unit, interval = "min10")
-#'
 #' wmean(df, site, parameter, unit, interval = "h1")
 #'
 #' wmean(df, site, parameter, unit, interval = "m1")
+#'
+#' wmean(df, site, parameter, unit, interval = "y1")
 #'
 #' wmean(data_ps, site, parameter, unit, interval = "d1")
 #'

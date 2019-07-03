@@ -62,7 +62,8 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
   )
 
   # split the overlapping measurements off
-  data <- cut_on_condition(data, end_interval_ < endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
+  data <- cut_on_condition(data, .data$end_interval_ < .data$endtime_,
+                           c("TRUE" = "overlaps", "FALSE" = "complete"))
 
   if (!is.null(data$complete)) {
     data$complete <- dplyr::mutate(data$complete,
@@ -168,7 +169,7 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
   )
 
   # split the overlapping measurements off
-  data <- cut_on_condition(data, end_interval_ < endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
+  data <- cut_on_condition(data, .data$end_interval_ < .data$endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
 
   # calculate the weight for measurements complete in one interval
   if (!is.null(data$complete)) {
@@ -184,7 +185,7 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
     data$overlaps <- dplyr::mutate(data$overlaps,
       endtime_interval_ = lubridate::floor_date(.data$endtime_, unit = interval),
     )
-    data$overlaps <- cut_on_condition(data$overlaps, endtime_interval_ == end_interval_,
+    data$overlaps <- cut_on_condition(data$overlaps, .data$endtime_interval_ == .data$end_interval_,
                                       c("TRUE" = "one", "FALSE" = "multi"))
 
     # handle the measurement only overlapping one measurement and split them in left and right
@@ -261,7 +262,7 @@ fill_wmean <- function(data, ..., interval) {
       startime = startime,
       start_interval_ = startime,
       endtime_ = startime + lubridate::period(interval),
-      end_interval_ = endtime_,
+      end_interval_ = .data$endtime_,
       value_ = value_,
       w = 1
     )

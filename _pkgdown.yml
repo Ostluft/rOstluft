@@ -41,6 +41,7 @@ reference:
   contents:
   - starts_with("r6_storage")
   - starts_with("format_")
+  - starts_with("store_")
 
 - title: Resampling data
   desc: Functions for resampling data between different intervals and applying statistical methods

@@ -34,8 +34,7 @@
 
 <meta property="og:description" content="Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative irregular time
 intervals such as starting from odd start times to odd end times. For example 09:58 to 10:08 or 20 Feb to 06 March.
-This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct.
-asdfasd" />
+This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -130,7 +129,7 @@ asdfasd" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculates weighted arithmetic means of irregular data series</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/wmean-full-intervall.R'><code>R/wmean-full-intervall.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/wmean.R'><code>R/wmean.R</code></a></small>
     <div class="hidden name"><code>wmean.Rd</code></div>
     </div>
 
@@ -139,7 +138,6 @@ asdfasd" />
     <p>Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative irregular time
 intervals such as starting from odd start times to odd end times. For example 09:58 to 10:08 or 20 Feb to 06 March.
 This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct.</p>
-<p>asdfasd</p>
     
     </div>
 
@@ -180,12 +178,15 @@ weighted means (e.g. for different measurement parameters). Columns not explicit
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100<!-- %) --></p>
+sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)</p>
     
     <h2 class="hasAnchor" id="caution"><a class="anchor" href="#caution"></a>Caution</h2>
 
     
-    <p>Removes NA values</p>
+    <ul>
+<li><p>Removes NA values to correctly calculate data availability for each interval</p></li>
+<li><p>output data isn't padded</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

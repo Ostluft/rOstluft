@@ -1,112 +1,3 @@
-#' Calculates weighted arithmetic means from shifted time series
-#'
-#' sdfg
-#'
-#' @description
-#' Faster special case of `wmean()` for evenly spaced time series. Sometimes records (e.g. measurements from miniDOAS)
-#' provide values representative time intervals starting from odd start times to odd end times (e.g. 09:58 to 10:08 or
-#' 20 Feb to 06 March). To make such time series intercomparable and provide a standardized way of dealing with
-#' aggregated data, `wmean_shifted()` provides a method to average a data.frame containing odd start- and end-time
-#' information to standard time intervals (e.g. 10min intervals from 09:50 to 10:00) with `stats::weighted.mean()`.
-#'
-#' @section Restrictions:
-#' * input data has to contain evenly spaced time series (eg. 10min interval)
-#' * the output intervals has to be greater or equal (>=) than the input interval
-#' * no handling of missing data threshold. One existing value is enough
-#'
-#' @param data data.frame for averaging; df has to be in long format and contain a start- and end-time
-#'   column of class POSIXct (arbitrarily named)
-#' @param starttime name of starttime column as symbol or string
-#' @param endtime name of endtime column  as symbol or string
-#' @param value name of column containing values to be averaged as symbol or string
-#' @param ... columns containing values for grouping (passed to `dplyr::group_by()`) when calculating
-#'   weighted means (e.g. for different measurement parameters). Columns not explicitly passed are dropped
-#' @param interval specifying the output interval for averaging as string
-#'
-#' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-#'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
-#'
-#' @keywords statistics
-#' @export
-#'
-#' @seealso
-#' * `rOstluft::wmean()`
-#'
-#' @examples
-#' fn <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv", package = "rOstluft.data")
-#' data <- read_airmo_csv(fn, time_shift = lubridate::period(20, "minutes"))
-#'
-#' df <- pluck_parameter(data, "CO") %>%
-#'   pluck_unit(unit, "ppm") %>%
-#'   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) %>%
-#'   dplyr::select(-interval)
-#'
-#' wmean_shifted(df, site, parameter, unit, interval = "h1")
-#'
-#' wmean_shifted(df, site, parameter, unit, interval = "d1")
-#'
-#' wmean_shifted(df, site, parameter, unit, interval = "m1")
-wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime", value = "value",
-                          interval = "h1") {
-
-  # symbolize arguments
-  starttime <- rlang::ensym(starttime)
-  endtime <- rlang::ensym(endtime)
-  value <- rlang::ensym(value)
-  dots <- rlang::ensyms(...)
-  interval = convert_interval(interval)
-
-  # normalize naming
-  data <- dplyr::rename(data, starttime_ = !!starttime, endtime_ = !!endtime, value_ = !!value)
-
-  data <- dplyr::mutate(data,
-    start_interval_ = lubridate::floor_date(.data$starttime_, unit = interval),
-    end_interval_ = .data$start_interval_ + lubridate::period(interval)
-  )
-
-  # split the overlapping measurements off
-  data <- cut_on_condition(data, .data$end_interval_ < .data$endtime_,
-                           c("TRUE" = "overlaps", "FALSE" = "complete"))
-
-  if (!is.null(data$complete)) {
-    data$complete <- dplyr::mutate(data$complete,
-      w = as.numeric(.data$endtime_ - .data$starttime_, units = "secs") /
-        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
-    )
-  }
-
-  if (!is.null(data$overlaps)) {
-    # pass the right overlapping fraction to next interval and calculate w
-    data$right <- dplyr::mutate(data$overlaps,
-      start_interval_ = .data$end_interval_,
-      end_interval_ = .data$start_interval_ + lubridate::period(interval),
-      w = as.numeric(.data$endtime_ - .data$start_interval_, units = "secs") /
-        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
-    )
-
-    # calculate w for the left side of the overlapping measurement
-    data$overlaps <- dplyr::mutate(data$overlaps,
-      w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
-        as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
-    )
-  }
-
-  data <- dplyr::bind_rows(!!!data)
-
-  # finally caclulate the weighted mean
-  data <- dplyr::group_by(data, .data$start_interval_, .data$end_interval_, !!!dots)
-  data <- dplyr::summarise(data,
-    value_ = stats::weighted.mean(.data$value_, .data$w, na.rm = TRUE),
-    n = sum(.data$w, na.rm = TRUE)
-  )
-
-  data <- dplyr::ungroup(data)
-
-  # revert naming normalization
-  dplyr::rename(data, !!starttime := .data$start_interval_, !!endtime := .data$end_interval_, !!value := .data$value_)
-}
-
-
 #' Calculates weighted arithmetic means of irregular data series
 #'
 #' @description
@@ -114,10 +5,9 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #' intervals such as starting from odd start times to odd end times. For example 09:58 to 10:08 or 20 Feb to 06 March.
 #' This function interpolates the irregular data on a standard interval. It handles down- and upsampling correct.
 #'
-#' asdfasd
-#'
 #' @section Caution:
-#' Removes NA values
+#' * Removes NA values to correctly calculate data availability for each interval
+#' * output data isn't padded
 #'
 #' @param data data.frame for averaging; df has to be in long format and contain a start- and end-time
 #'   column of class POSIXct (arbitrarily named)
@@ -129,7 +19,7 @@ wmean_shifted <- function(data, ..., starttime = "starttime", endtime = "endtime
 #' @param interval specifying the output interval for averaging as string
 #'
 #' @return tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-#'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100%)
+#'   sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100\%)
 #'
 #' @export
 #'

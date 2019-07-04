@@ -52,7 +52,6 @@ reference:
   - '`treshold_wrapper_function`'
   - '`gap_wrapper_function`'
   - '`wmean`'
-  - '`wmean_shifted`'
 
 - title: Statistic calculations
   desc: Applying resampling of data to get relevant Statistics

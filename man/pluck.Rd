@@ -6,7 +6,7 @@
 \alias{pluck_site}
 \alias{pluck_unit}
 \alias{pluck_year}
-\title{Filter data}
+\title{Quickly filter data}
 \usage{
 pluck_parameter(data, ...)
 
@@ -21,7 +21,7 @@ pluck_year(data, ...)
 \arguments{
 \item{data}{input data in rolf format}
 
-\item{...}{elements to get}
+\item{...}{elements to get as strings or integers}
 }
 \value{
 filtered input data
@@ -30,14 +30,21 @@ filtered input data
 All pluck funtions are wrappers around \code{dplyr::filter()}. The dots arguments are converted in a vector and then each
 function searchs the specific column with the \code{\%in\%} operator.
 }
+\section{Windows, symbols and encodings}{
+
+The first implementation supported symbols as dots arguments. On windows the symbol gets converted to the native
+encoding without the encoding mark. Is the converted symbol now compared to UTF-8 strings it doesn't match. One
+example would be strings like "°C" or "µg/m3". See \code{rlang::as_string()}
+}
+
 \examples{
 fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data")
 data <- read_smn_multiple(fn) \%>\% dplyr::arrange(starttime)
 
-pluck_parameter(data, ta1towb0)
+pluck_parameter(data, "ta1towb0")
 
 # strings or symbols
-pluck_site(data, "KLO", UEB)
+pluck_site(data, "KLO", "UEB")
 
 # supports splicing with !!!
 intervals = c("h1", "d1")
@@ -51,7 +58,7 @@ pluck_unit(data, "hPa")
 
 # pipe friendly
 data \%>\%
-  pluck_site(KLO, UEB) \%>\%
-  pluck_parameter(gre000z0) \%>\%
+  pluck_site("KLO", "UEB") \%>\%
+  pluck_parameter("gre000z0") \%>\%
   pluck_year(2010:2018)
 }

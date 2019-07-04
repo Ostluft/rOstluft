@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter data — pluck_parameter • rOstluft</title>
+<title>Quickly filter data — pluck_parameter • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Filter data — pluck_parameter" />
+<meta property="og:title" content="Quickly filter data — pluck_parameter" />
 
 <meta property="og:description" content="All pluck funtions are wrappers around dplyr::filter(). The dots arguments are converted in a vector and then each
 function searchs the specific column with the %in% operator." />
@@ -127,7 +127,7 @@ function searchs the specific column with the %in% operator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter data</h1>
+    <h1>Quickly filter data</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/pluck.R'><code>R/pluck.R</code></a></small>
     <div class="hidden name"><code>pluck.Rd</code></div>
     </div>
@@ -158,7 +158,7 @@ function searchs the specific column with the <code>%in%</code> operator.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>elements to get</p></td>
+      <td><p>elements to get as strings or integers</p></td>
     </tr>
     </table>
     
@@ -166,12 +166,19 @@ function searchs the specific column with the <code>%in%</code> operator.</p>
 
     <p>filtered input data</p>
     
+    <h2 class="hasAnchor" id="windows-symbols-and-encodings"><a class="anchor" href="#windows-symbols-and-encodings"></a>Windows, symbols and encodings</h2>
+
+    
+    <p>The first implementation supported symbols as dots arguments. On windows the symbol gets converted to the native
+encoding without the encoding mark. Is the converted symbol now compared to UTF-8 strings it doesn't match. One
+example would be strings like "°C" or "µg/m3". See <code><a href='https://rlang.r-lib.org/reference/as_string.html'>rlang::as_string()</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn_multi.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_smn_multiple.html'>read_smn_multiple</a></span>(<span class='no'>fn</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='no'>starttime</span>)
 
-<span class='fu'>pluck_parameter</span>(<span class='no'>data</span>, <span class='no'>ta1towb0</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 6</span><span>
+<span class='fu'>pluck_parameter</span>(<span class='no'>data</span>, <span class='st'>"ta1towb0"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 6</span><span>
 #&gt;   starttime           site  parameter interval unit  value
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> 2010-01-01 </span><span style='color: #949494;'>00:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.7
@@ -181,7 +188,7 @@ function searchs the specific column with the <code>%in%</code> operator.</p>
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span> 2010-01-01 </span><span style='color: #949494;'>04:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.3
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span> 2010-01-01 </span><span style='color: #949494;'>05:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.3</div><div class='input'>
 <span class='co'># strings or symbols</span>
-<span class='fu'>pluck_site</span>(<span class='no'>data</span>, <span class='st'>"KLO"</span>, <span class='no'>UEB</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 163 x 6</span><span>
+<span class='fu'>pluck_site</span>(<span class='no'>data</span>, <span class='st'>"KLO"</span>, <span class='st'>"UEB"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 163 x 6</span><span>
 #&gt;    starttime           site  parameter interval unit  value
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2010-01-01 </span><span style='color: #949494;'>00:00:00</span><span> KLO   dkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>    319  
@@ -233,8 +240,8 @@ function searchs the specific column with the <code>%in%</code> operator.</p>
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span> 2019-01-31 </span><span style='color: #949494;'>01:40:00</span><span> TAE   prestas0  min10    hPa    936.</div><div class='input'>
 <span class='co'># pipe friendly</span>
 <span class='no'>data</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pluck_site</span>(<span class='no'>KLO</span>, <span class='no'>UEB</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pluck_parameter</span>(<span class='no'>gre000z0</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pluck_site</span>(<span class='st'>"KLO"</span>, <span class='st'>"UEB"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pluck_parameter</span>(<span class='st'>"gre000z0"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>pluck_year</span>(<span class='fl'>2010</span>:<span class='fl'>2018</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 12 x 6</span><span>
 #&gt;    starttime           site  parameter interval unit  value
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -257,6 +264,8 @@ function searchs the specific column with the <code>%in%</code> operator.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#windows-symbols-and-encodings">Windows, symbols and encodings</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

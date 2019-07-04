@@ -741,10 +741,10 @@ fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data")
 data <- read_smn_multiple(fn) %>% 
   dplyr::arrange(starttime)
 
-pluck_parameter(data, ta1towb0)
+pluck_parameter(data, "ta1towb0")
 
 # strings oder symbols
-pluck_site(data, "KLO", UEB) %>% dplyr::slice(41:46)
+pluck_site(data, "KLO", "UEB") %>% dplyr::slice(41:46)
 
 # supported splicing mit den rlang operator !!!
 intervals = c("h1", "d1")
@@ -758,8 +758,8 @@ pluck_unit(data, "hPa")
 
 # Verkettbar mittels pipes
 data %>%
-  pluck_site(KLO, UEB) %>%
-  pluck_parameter(gre000z0) %>%
+  pluck_site("KLO", "UEB") %>%
+  pluck_parameter("gre000z0") %>%
   pluck_year(2010:2018) %>% 
   dplyr::slice(1:6)
 ```

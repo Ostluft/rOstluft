@@ -10,7 +10,7 @@ store_aqmet(name = "aqmet")
 store_hysplit(name = "hysplit")
 }
 \arguments{
-\item{name}{of the store (to influence caching)}
+\item{name}{of the store (to influence caching location)}
 }
 \value{
 store

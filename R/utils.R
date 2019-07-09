@@ -85,7 +85,7 @@ filter_keep_list <- function(data, filter_list) {
   }
 
   filter_arg <- unname(purrr::imap(filter_list, create_filter_quo))
-  dplyr::filter(data, !!! filter_arg)
+  dplyr::filter(data, !!!filter_arg)
 }
 
 #' Cuts / splits data frame in list based on condition

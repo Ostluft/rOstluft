@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -94,7 +91,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-05-22</h4>
+            <h4 class="date">2019-07-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -126,7 +123,7 @@
 <a class="sourceLine" id="cb3-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a>
 <a class="sourceLine" id="cb3-6" title="6"></a>
 <a class="sourceLine" id="cb3-7" title="7">deps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'dplyr'</span>, <span class="st">'tidyr'</span>, <span class="st">'lubridate'</span>, <span class="st">'R6'</span>, <span class="st">'rappdirs'</span>, <span class="st">'tibble'</span>, <span class="st">'base64url'</span>, <span class="st">'forcats'</span>,</a>
-<a class="sourceLine" id="cb3-8" title="8">          <span class="st">'fs'</span>, <span class="st">'purrr'</span>, <span class="st">'readr'</span>, <span class="st">'stringr'</span>, <span class="st">'plyr'</span>, <span class="st">'stringi'</span>, <span class="st">'sp'</span>, <span class="st">'rgdal'</span>, <span class="st">'rlang'</span>, <span class="st">'magrittr'</span>)</a>
+<a class="sourceLine" id="cb3-8" title="8">          <span class="st">'fs'</span>, <span class="st">'purrr'</span>, <span class="st">'readr'</span>, <span class="st">'stringr'</span>, <span class="st">'stringi'</span>, <span class="st">'sp'</span>, <span class="st">'rgdal'</span>, <span class="st">'rlang'</span>, <span class="st">'magrittr'</span>)</a>
 <a class="sourceLine" id="cb3-9" title="9"></a>
 <a class="sourceLine" id="cb3-10" title="10"><span class="cf">for</span> (p <span class="cf">in</span> deps) {</a>
 <a class="sourceLine" id="cb3-11" title="11">  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(p)</a>
@@ -152,8 +149,10 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden Zugriff wird nur überprüft, ob die Daten noch identisch sind.</p>
 <p>Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"tutorial"</span>, <span class="dt">format =</span> <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">bucket =</span> <span class="st">"rostluft"</span>, <span class="dt">prefix =</span> <span class="st">"aqmet"</span>)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; store tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\tutorial'</span></a></code></pre></div>
-<p><em>TODO: Beschreibung was die verschiedenen Argument bedeuten</em></p>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; store tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\tutorial'</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># oder nutze den vordefinierten store (name ist optional, default ist "aqmet")</span></a>
+<a class="sourceLine" id="cb6-5" title="5">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/stores.html">store_aqmet</a></span>(<span class="st">"tutorial"</span>)</a></code></pre></div>
 <p>Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:</p>
 <ul>
 <li>
@@ -163,7 +162,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">content &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_content</span>()</a>
 <a class="sourceLine" id="cb7-2" title="2">content</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 146,205 x 6</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 146,341 x 6</span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     year interval site            parameter unit      n</span></a>
 <a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
 <a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span></a>
@@ -176,22 +175,22 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span></a>
 <a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span></a>
 <a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span></a>
-<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 146,195 more rows</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 146,331 more rows</span></a>
 <a class="sourceLine" id="cb7-17" title="17"></a>
 <a class="sourceLine" id="cb7-18" title="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(content, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; # A tibble: 10 x 6</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;     year interval site                parameter     unit      n</span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;               &lt;fct&gt;         &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  1999 y1       Tänikon             O3_98%_min30  µg/m3     1</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2017 y1       Win_Veltheim        NO2_max_min30 µg/m3     1</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  1995 y1       Kon_Wallgutstrasse  StrGlo        W/m2      1</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  1999 y1       Zch_Schimmelstrasse SO2_min_d1    µg/m3     1</span></a>
-<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  2017 min30    Opf_Balsberg        NO2           ppb   17173</span></a>
-<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  2000 d1       Aadorf/Tänikon      T_min_h1      °C      366</span></a>
-<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  1985 m1       Pilatus             T_min_d1      °C       12</span></a>
-<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  1997 h1       Her_Wilen           WVv           m/s    7439</span></a>
-<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  2003 d1       Vad_Mühleholz       NO_nb_min30   1       358</span></a>
-<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  2011 y1       Neu_Galgenbuck      Hr_nb_min30   1         1</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;     year interval site                   parameter    unit      n</span></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                  &lt;fct&gt;        &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  2012 m1       Tänikon                O3_nb_h1&gt;120 1        11</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2017 d1       Wld_Höhenklinik        T_nb_min30   1       365</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  1997 m1       Kre_Löwenstrasse       T_nb_d1      1         9</span></a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  2011 d1       Zch_Schimmelstrasse    NO2_max_h1   µg/m3   365</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  1995 min30    Mau_Pünt               Hr           %Hr   17319</span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  2007 m1       Aadorf/Tänikon         WD_nb_min10  1        12</span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  2006 y1       Pilatus                T_max_min10  °C        1</span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  2003 m1       Kon_Wallgutstrasse     T            °C       12</span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  1997 m1       Wal_Dietlikonerstrasse T_max_min30  °C       12</span></a>
+<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  2004 m1       Opf_Balsberg           CO           mg/m3    12</span></a></code></pre></div>
 <p>Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Schimmelstrasse"</span>, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; # A tibble: 243,875 x 6</span></a>
@@ -261,11 +260,11 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div id="lokales-arbeiten-mit-den-aws-s3-daten" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lokales-arbeiten-mit-den-aws-s3-daten" class="anchor"></a>Lokales Arbeiten mit den AWS S3 Daten</h2>
-<p>Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung ob aktualisierte Daten verfügbar sind vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion, welche einen lokalen Store zurückgibt.</p>
+<p>Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung, ob aktualisierte Daten verfügbar sind, vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion, welche einen lokalen Store zurückgibt.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">lokal &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_local_storage</span>()</a></code></pre></div>
 <p>Dieser verfügt über die gleichen Funktionalität wie der S3 Store:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">lokal<span class="op">$</span><span class="kw">get_content</span>()</a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 146,205 x 6</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 146,341 x 6</span></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;     year interval site            parameter unit      n</span></a>
 <a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
 <a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span></a>
@@ -278,7 +277,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span></a>
 <a class="sourceLine" id="cb12-13" title="13"><span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span></a>
 <a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span></a>
-<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 146,195 more rows</span></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 146,331 more rows</span></a>
 <a class="sourceLine" id="cb12-16" title="16"></a>
 <a class="sourceLine" id="cb12-17" title="17">lokal<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)</a>
 <a class="sourceLine" id="cb12-18" title="18"><span class="co">#&gt; # A tibble: 51,319 x 6</span></a>
@@ -304,11 +303,11 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span></a>
 <a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span></a>
 <a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span></a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-05-22 14:45:05, 2019-05-22 14:45...</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-07-09 12:15:06, 2019-07-09 12:15...</span></a>
 <a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></a></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; Observations: 7,025</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; Observations: 7,032</span></a>
 <a class="sourceLine" id="cb14-3" title="3"><span class="co">#&gt; Variables: 11</span></a>
 <a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu01hdV9Qw7xudMK7MTk5MA", "d1/Z...</span></a>
 <a class="sourceLine" id="cb14-5" title="5"><span class="co">#&gt; $ interval                &lt;chr&gt; "d1", "d1", "d1", "d1", "d1", "d1", "d...</span></a>
@@ -354,11 +353,11 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb17-5" title="5"><span class="co">#&gt; Put data into store eigene_daten in 0.03 seconds</span></a>
 <a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 142K. File 2 of 3</span></a>
 <a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Put data into store eigene_daten in 0.07 seconds</span></a>
 <a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 258K. File 3 of 3</span></a>
 <a class="sourceLine" id="cb17-10" title="10"><span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span></a>
 <a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span></a>
-<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Finished import after 0.46 seconds</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Finished import after 0.44 seconds</span></a>
 <a class="sourceLine" id="cb17-13" title="13"></a>
 <a class="sourceLine" id="cb17-14" title="14">fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)</a>
 <a class="sourceLine" id="cb17-15" title="15">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)</a>
@@ -432,7 +431,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div id="verwende-readr-funktionen-und-definiere-die-zeichenkodierung" class="section level2">
 <h2 class="hasAnchor">
 <a href="#verwende-readr-funktionen-und-definiere-die-zeichenkodierung" class="anchor"></a>Verwende readr Funktionen und definiere die Zeichenkodierung</h2>
-<p>Ein generelles Problem beim einlesen von Textdateien ist die <a href="https://de.wikipedia.org/wiki/Zeichenkodierung">Zeichenkodierung</a>. Die meisten haben vermutlich “�” schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von <code>read_xxx()</code> Funktionen sind UTF-8 kodiert. Mit dem <a href="https://readr.tidyverse.org/index.html">readr Packages</a> wird bei korrekter Definition der <a href="https://readr.tidyverse.org/articles/locales.html#character">Locale</a> der Text automatisch zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder data.table::fread().</p>
+<p>Ein generelles Problem beim einlesen von Textdateien ist die <a href="https://de.wikipedia.org/wiki/Zeichenkodierung">Zeichenkodierung</a>. Die meisten haben vermutlich “�” schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von <code>read_xxx()</code> Funktionen sind UTF-8 kodiert. Mit dem <a href="https://readr.tidyverse.org/index.html">readr Packages</a> wird bei korrekter Definition der <a href="https://readr.tidyverse.org/articles/locales.html#character">Locale</a> der Text automatisch zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder<code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread()</a></code>.</p>
 </div>
 <div id="ausgabeformat-rolf" class="section level2">
 <h2 class="hasAnchor">
@@ -1726,7 +1725,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb45-2" title="2">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_smn_multiple.html">read_smn_multiple</a></span>(fn) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb45-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(starttime)</a>
 <a class="sourceLine" id="cb45-4" title="4"></a>
-<a class="sourceLine" id="cb45-5" title="5"><span class="kw"><a href="../../reference/pluck.html">pluck_parameter</a></span>(data, ta1towb0)</a>
+<a class="sourceLine" id="cb45-5" title="5"><span class="kw"><a href="../../reference/pluck.html">pluck_parameter</a></span>(data, <span class="st">"ta1towb0"</span>)</a>
 <a class="sourceLine" id="cb45-6" title="6"><span class="co">#&gt; # A tibble: 6 x 6</span></a>
 <a class="sourceLine" id="cb45-7" title="7"><span class="co">#&gt;   starttime           site  parameter interval unit  value</span></a>
 <a class="sourceLine" id="cb45-8" title="8"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
@@ -1737,8 +1736,8 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb45-13" title="13"><span class="co">#&gt; 5 2010-01-01 04:00:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.3</span></a>
 <a class="sourceLine" id="cb45-14" title="14"><span class="co">#&gt; 6 2010-01-01 05:00:00 UEB   ta1towb0  h1       &lt;NA&gt;    3.3</span></a>
 <a class="sourceLine" id="cb45-15" title="15"></a>
-<a class="sourceLine" id="cb45-16" title="16"><span class="co"># strings oder symbols</span></a>
-<a class="sourceLine" id="cb45-17" title="17"><span class="kw"><a href="../../reference/pluck.html">pluck_site</a></span>(data, <span class="st">"KLO"</span>, UEB) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">41</span><span class="op">:</span><span class="dv">46</span>)</a>
+<a class="sourceLine" id="cb45-16" title="16"><span class="co"># entpackt automatisch Vectors</span></a>
+<a class="sourceLine" id="cb45-17" title="17"><span class="kw"><a href="../../reference/pluck.html">pluck_site</a></span>(data, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"KLO"</span>, <span class="st">"UEB"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">41</span><span class="op">:</span><span class="dv">46</span>)</a>
 <a class="sourceLine" id="cb45-18" title="18"><span class="co">#&gt; # A tibble: 6 x 6</span></a>
 <a class="sourceLine" id="cb45-19" title="19"><span class="co">#&gt;   starttime           site  parameter interval unit  value</span></a>
 <a class="sourceLine" id="cb45-20" title="20"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
@@ -1762,7 +1761,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb45-38" title="38"><span class="co">#&gt; 5 2017-12-31 01:00:00 RHW   wkcap2d0  d1       &lt;NA&gt;   11  </span></a>
 <a class="sourceLine" id="cb45-39" title="39"><span class="co">#&gt; 6 2017-12-31 01:00:00 RHW   wkcap3d0  d1       &lt;NA&gt;   21</span></a>
 <a class="sourceLine" id="cb45-40" title="40"></a>
-<a class="sourceLine" id="cb45-41" title="41"><span class="co"># pluck_year unterstützt Vektoren direkt</span></a>
+<a class="sourceLine" id="cb45-41" title="41"><span class="co"># pluck_year mit einer sequence</span></a>
 <a class="sourceLine" id="cb45-42" title="42"><span class="kw"><a href="../../reference/pluck.html">pluck_year</a></span>(data, <span class="dv">2010</span><span class="op">:</span><span class="dv">2018</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">51</span><span class="op">:</span><span class="dv">56</span>)</a>
 <a class="sourceLine" id="cb45-43" title="43"><span class="co">#&gt; # A tibble: 6 x 6</span></a>
 <a class="sourceLine" id="cb45-44" title="44"><span class="co">#&gt;   starttime           site  parameter interval unit  value</span></a>
@@ -1788,8 +1787,8 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb45-64" title="64"></a>
 <a class="sourceLine" id="cb45-65" title="65"><span class="co"># Verkettbar mittels pipes</span></a>
 <a class="sourceLine" id="cb45-66" title="66">data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-67" title="67"><span class="st">  </span><span class="kw"><a href="../../reference/pluck.html">pluck_site</a></span>(KLO, UEB) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-68" title="68"><span class="st">  </span><span class="kw"><a href="../../reference/pluck.html">pluck_parameter</a></span>(gre000z0) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-67" title="67"><span class="st">  </span><span class="kw"><a href="../../reference/pluck.html">pluck_site</a></span>(<span class="st">"KLO"</span>, <span class="st">"UEB"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-68" title="68"><span class="st">  </span><span class="kw"><a href="../../reference/pluck.html">pluck_parameter</a></span>(<span class="st">"gre000z0"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb45-69" title="69"><span class="st">  </span><span class="kw"><a href="../../reference/pluck.html">pluck_year</a></span>(<span class="dv">2010</span><span class="op">:</span><span class="dv">2018</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb45-70" title="70"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)</a>
 <a class="sourceLine" id="cb45-71" title="71"><span class="co">#&gt; # A tibble: 6 x 6</span></a>
@@ -1805,7 +1804,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div id="koordinatentransformationen" class="section level1">
 <h1 class="hasAnchor">
 <a href="#koordinatentransformationen" class="anchor"></a>Koordinatentransformationen</h1>
-<p>Für die Darstellung von Elementen mit Koordinaten im Bezugsystem <a href="https://epsg.io/2056">LV95</a> oder <a href="https://epsg.io/21781">LV03</a> auf Karten ist es oft notwendig diese nach <a href="https://epsg.io/4326">WSG84</a> zu transformieren. Die Funktionen <code><a href="../../reference/transform_crs.html">rOstluft::transform_LV95_to_WSG84()</a></code> und <code><a href="../../reference/transform_crs.html">rOstluft::transform_WSG84_to_LV95()</a></code> sind Wrapper um die allgemeine Funktion <code><a href="https://www.rdocumentation.org/packages/base/topics/transform">rOstluft::transform()</a></code>.</p>
+<p>Für die Darstellung von Elementen mit Koordinaten im Bezugsystem <a href="https://epsg.io/2056">LV95</a> oder <a href="https://epsg.io/21781">LV03</a> auf Karten ist es oft notwendig diese nach <a href="https://epsg.io/4326">WSG84</a> zu transformieren. Die Funktionen <code><a href="../../reference/transform_crs.html">rOstluft::transform_LV95_to_WSG84()</a></code> und <code><a href="../../reference/transform_crs.html">rOstluft::transform_WSG84_to_LV95()</a></code> sind Wrapper um die allgemeine Funktion <code><a href="../../reference/transform_crs.html">rOstluft::transform_crs()</a></code>.</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">meteoschweiz &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">readRDS</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"meta_smn.rds"</span>))</a>
 <a class="sourceLine" id="cb46-2" title="2">meteoschweiz &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(meteoschweiz, site, x, y)</a>
 <a class="sourceLine" id="cb46-3" title="3"></a>
@@ -1838,12 +1837,17 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a href="#noaa-hysplit-trajektorien" class="anchor"></a>NOAA Hysplit Trajektorien</h1>
 <p>Neben dem Ostluft AWS Store aqmet existiert noch ein Store mit hysplit Trajektorien von 1980 bis zum jeweiligen Vormonat des aktuellen Datums für die Standorte Zürich Kaserne und St. Gallen Blumenbergplatz. Die Trajektorien sind jeweils für 01:00 und 13:00 UTC+1 (=Luftmassen Herkunft) gerechnet.</p>
 <p>Beim Format hysplit wird für die Abfrage nur die <code>site</code> und das <code>year</code> benötigt:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"hysplit"</span>, <span class="kw"><a href="../../reference/format_hysplit.html">format_hysplit</a></span>(), <span class="st">"rostluft"</span>, <span class="st">"hysplit"</span>)</a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="co">#&gt; store hysplit initialized under 'C:\Users\vot\AppData\Local\rOstluft\hysplit'</span></a>
-<a class="sourceLine" id="cb47-3" title="3">traj &lt;-<span class="st"> </span>hysplit_store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"ZH_Kaserne_hysplit"</span>, <span class="dt">year =</span> <span class="dv">2018</span>)</a>
-<a class="sourceLine" id="cb47-4" title="4"></a>
-<a class="sourceLine" id="cb47-5" title="5"><span class="co"># plotte die Daten mit openair</span></a>
-<a class="sourceLine" id="cb47-6" title="6">openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/trajPlot">trajPlot</a></span>(openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/selectByDate">selectByDate</a></span>(traj, <span class="dt">start =</span> <span class="st">"2018-01-01"</span>, <span class="dt">end =</span> <span class="st">"2018-01-05"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"hysplit_tutorial"</span>, <span class="kw"><a href="../../reference/format_hysplit.html">format_hysplit</a></span>(), <span class="st">"rostluft"</span>, <span class="st">"hysplit"</span>)</a>
+<a class="sourceLine" id="cb47-2" title="2"><span class="co">#&gt; store hysplit_tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\hysplit_tutorial'</span></a>
+<a class="sourceLine" id="cb47-3" title="3"></a>
+<a class="sourceLine" id="cb47-4" title="4"><span class="co"># nutze den vordefinierten store (name ist optional, default ist "hysplit")</span></a>
+<a class="sourceLine" id="cb47-5" title="5">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/stores.html">store_hysplit</a></span>(<span class="st">"hysplit_tutorial"</span>)</a>
+<a class="sourceLine" id="cb47-6" title="6"></a>
+<a class="sourceLine" id="cb47-7" title="7"><span class="co"># hole die Trakektorien für Zürich Kaserne von 2018</span></a>
+<a class="sourceLine" id="cb47-8" title="8">traj &lt;-<span class="st"> </span>hysplit_store<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/get">get</a></span>(<span class="dt">site =</span> <span class="st">"ZH_Kaserne_hysplit"</span>, <span class="dt">year =</span> <span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb47-9" title="9"></a>
+<a class="sourceLine" id="cb47-10" title="10"><span class="co"># plotte die Daten mit openair</span></a>
+<a class="sourceLine" id="cb47-11" title="11">openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/trajPlot">trajPlot</a></span>(openair<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/openair/topics/selectByDate">selectByDate</a></span>(traj, <span class="dt">start =</span> <span class="st">"2018-01-01"</span>, <span class="dt">end =</span> <span class="st">"2018-01-05"</span>))</a></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-48-1.png" width="700"></p>
 </div>
 <div id="lokale-daten-loschen" class="section level1">
@@ -1859,7 +1863,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb48-7" title="7"></a>
 <a class="sourceLine" id="cb48-8" title="8">hysplit_store<span class="op">$</span>read.only =<span class="st"> </span><span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb48-9" title="9">hysplit_store<span class="op">$</span><span class="kw">destroy</span>(<span class="st">"DELETE"</span>)</a>
-<a class="sourceLine" id="cb48-10" title="10"><span class="co">#&gt; Cache for Store hysplit destroyed</span></a></code></pre></div>
+<a class="sourceLine" id="cb48-10" title="10"><span class="co">#&gt; Cache for Store hysplit_tutorial destroyed</span></a></code></pre></div>
 </div>
 <div class="footnotes">
 <hr>

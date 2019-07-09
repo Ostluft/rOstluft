@@ -30,7 +30,7 @@
 #' data_ps <- readRDS(ps_fn) %>% pluck_site("Zch_Stampfenbachstrasse")
 #'
 #' df <- pluck_parameter(data, "CO") %>%
-#'   pluck_unit(unit, "ppm") %>%
+#'   pluck_unit("ppm") %>%
 #'   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) %>%
 #'   dplyr::select(-interval)
 #'
@@ -116,7 +116,7 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
            as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
       )
 
-      data$mutli_middle = fill_wmean(data$overlaps$multi, !!!dots, interval = interval)
+      data$mutli_middle <- fill_wmean(data$overlaps$multi, !!!dots, interval = interval)
     }
   }
 
@@ -151,7 +151,7 @@ fill_wmean <- function(data, ..., interval) {
     purrr::pmap_dfr(serie, fill_wmean_measurement, interval = interval)
   }
 
-  fill_wmean_measurement<- function(end_interval_, endtime_interval_, value_, ..., interval) {
+  fill_wmean_measurement <- function(end_interval_, endtime_interval_, value_, ..., interval) {
     startime <- seq.POSIXt(end_interval_, endtime_interval_, interval)
     startime <- utils::head(startime, -1)
 

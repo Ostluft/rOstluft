@@ -15,7 +15,7 @@ test_that("correct content", {
   testthat::expect_equal(as.character(dplyr::first(res$site)), "Dübendorf-Empa")
 
   testthat::expect_true(
-    dplyr::setequal(levels(res$parameter), c("NOx", "NO2", "PM10_ber", "TEMP", "WIRI", "WIGE","STRGLO"))
+    dplyr::setequal(levels(res$parameter), c("NOx", "NO2", "PM10_ber", "TEMP", "WIRI", "WIGE", "STRGLO"))
   )
 
   testthat::expect_true(
@@ -38,4 +38,3 @@ test_that("correct content", {
   testthat::expect_equal(as.character(res$interval[1]), "10 minutes" )
 
 })
-

@@ -91,5 +91,3 @@ reference:
   - starts_with("transform")
   - '`import_directory`'
   - '`meta_apply`'
-  - '`rolf_apply_meta`'
-  - '`rOstluft`'

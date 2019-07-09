@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Map projection and datum transformation — transform_projection • rOstluft</title>
+<title>Read a file from Nabel — read_nabel_txt • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,18 @@
 
 
 
-<meta property="og:title" content="Map projection and datum transformation — transform_projection" />
+<meta property="og:title" content="Read a file from Nabel — read_nabel_txt" />
 
-<meta property="og:description" content="Map projection and datum transformation" />
+<meta property="og:description" content="Reads Exports from National Air Pollution Monitoring Network (NABEL)
+The National Air Pollution Monitoring Network (NABEL) measures air pollution at 16 locations in Switzerland.
+The stations are distributed throughout the country and monitor pollution at typical locations (e.g.
+city-centre streets, residential areas, rural stations). The monitoring network has commenced operations in stages
+since 1979 and is operated by the Federal office for the environment and Empa
+This function reads the parameter and unit information from the header. The interval is auto detected if possible.
+In Addition the time information are in end time. The time is converted to start time and the time zone defined
+trough the argument tz.
+The argument time_shift provides a way to manuelly shift the time series. In this case no automatically shifting
+is applied. The provided values is directly added to information in the file." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +98,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -126,54 +132,62 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Map projection and datum transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/transform-projection.R'><code>R/transform-projection.R</code></a></small>
-    <div class="hidden name"><code>transform_projection.Rd</code></div>
+    <h1>Read a file from Nabel</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-nabel.R'><code>R/read-nabel.R</code></a></small>
+    <div class="hidden name"><code>read_nabel_txt.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Map projection and datum transformation</p>
+    <p>Reads Exports from <a href='https://www.bafu.admin.ch/bafu/en/home/topics/air/state/data/national-air-pollution-monitoring-network--nabel-.html'>National Air Pollution Monitoring Network (NABEL)</a>
+The National Air Pollution Monitoring Network (NABEL) measures air pollution at 16 locations in Switzerland.
+The stations are distributed throughout the country and monitor pollution at typical locations (e.g.
+city-centre streets, residential areas, rural stations). The monitoring network has commenced operations in stages
+since 1979 and is operated by the Federal office for the environment and Empa</p>
+<p>This function reads the parameter and unit information from the header. The interval is auto detected if possible.
+In Addition the time information are in end time. The time is converted to start time and the time zone defined
+trough the argument tz.
+The argument time_shift provides a way to manuelly shift the time series. In this case <em>no</em> automatically shifting
+is applied. The provided values is directly added to information in the file.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>transform_projection</span>(<span class='no'>df</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lon"</span>, <span class='st'>"lat"</span>),
-  <span class='kw'>initCRS</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
-  <span class='kw'>outCRS</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>))</pre>
+    <pre class="usage"><span class='fu'>read_nabel_txt</span>(<span class='no'>fn</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"latin1"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>,
+  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>data frame containing the coordinate information</p></td>
+      <th>fn</th>
+      <td><p>path to input file</p></td>
     </tr>
     <tr>
-      <th>coord</th>
-      <td><p>columns of the coordinates. Default <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c("lon", "lat")</a></code></p></td>
+      <th>encoding</th>
+      <td><p>encoding of the data file. Default = "latin1"</p></td>
     </tr>
     <tr>
-      <th>initCRS</th>
-      <td><p>source coordinate reference system as <a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a>. Default <code><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS("+init=epsg:4326")</a></code></p></td>
+      <th>tz</th>
+      <td><p>of the data. Default "Etc/GMT-1"</p></td>
     </tr>
     <tr>
-      <th>outCRS</th>
-      <td><p>target coordinate reference system as <a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a>. Default <code><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS("+init=epsg:2056")</a></code></p></td>
+      <th>interval</th>
+      <td><p>optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
+define time_shift manuelly. lubridate::period(0) can be used for no shifting</p></td>
+    </tr>
+    <tr>
+      <th>time_shift</th>
+      <td><p>a lubridate period to add to the time. Default NULL</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>remove na values. Default TRUE</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame containing the transformed coordinatess</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><ul>
-<li><p><code><a href='https://www.rdocumentation.org/packages/sp/topics/spTransform'>sp::spTransform()</a></code></p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/sp/topics/is.projected'>sp::proj4string()</a></code></p></li>
-<li><p><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>sp::CRS</a></p></li>
-<li><p><a href='https://proj4.org/'>PROJ4</a></p></li>
-</ul></div>
+    <p>tibble in rolf format</p>
     
 
   </div>
@@ -183,8 +197,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

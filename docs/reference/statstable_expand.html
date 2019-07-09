@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +89,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -168,25 +165,25 @@
   ~<span class='no'>parameter</span>, ~<span class='no'>statistic</span>, ~<span class='no'>from</span>, ~<span class='no'>to</span>,
   <span class='st'>"O3, NO2"</span>, <span class='st'>"min, max"</span>, <span class='st'>"h1, d1"</span>, <span class='st'>"m1, y1"</span>
 )
-<span class='fu'>statstable_expand</span>(<span class='no'>statstable</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 16 x 4</span><span>
+<span class='fu'>statstable_expand</span>(<span class='no'>statstable</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 16 x 4</span><span>
 #&gt;    parameter statistic from  to   
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> O3        min       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> O3        min       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> O3        min       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> O3        min       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> O3        max       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> O3        max       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> O3        max       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> O3        max       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> NO2       min       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> NO2       min       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> NO2       min       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> NO2       min       d1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> NO2       max       h1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> NO2       max       h1    y1   
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> NO2       max       d1    m1   
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> NO2       max       d1    y1   </div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> O3        min       h1    m1   
+#&gt; </span><span style='color: #555555;'> 2</span><span> O3        min       h1    y1   
+#&gt; </span><span style='color: #555555;'> 3</span><span> O3        min       d1    m1   
+#&gt; </span><span style='color: #555555;'> 4</span><span> O3        min       d1    y1   
+#&gt; </span><span style='color: #555555;'> 5</span><span> O3        max       h1    m1   
+#&gt; </span><span style='color: #555555;'> 6</span><span> O3        max       h1    y1   
+#&gt; </span><span style='color: #555555;'> 7</span><span> O3        max       d1    m1   
+#&gt; </span><span style='color: #555555;'> 8</span><span> O3        max       d1    y1   
+#&gt; </span><span style='color: #555555;'> 9</span><span> NO2       min       h1    m1   
+#&gt; </span><span style='color: #555555;'>10</span><span> NO2       min       h1    y1   
+#&gt; </span><span style='color: #555555;'>11</span><span> NO2       min       d1    m1   
+#&gt; </span><span style='color: #555555;'>12</span><span> NO2       min       d1    y1   
+#&gt; </span><span style='color: #555555;'>13</span><span> NO2       max       h1    m1   
+#&gt; </span><span style='color: #555555;'>14</span><span> NO2       max       h1    y1   
+#&gt; </span><span style='color: #555555;'>15</span><span> NO2       max       d1    m1   
+#&gt; </span><span style='color: #555555;'>16</span><span> NO2       max       d1    y1   </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

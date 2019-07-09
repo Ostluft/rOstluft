@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -87,9 +87,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -172,6 +169,12 @@
           <p><code><a href="format_rolf.html">format_rolf()</a></code> </p>
         </td>
         <td><p>rOstluft long format (rolf)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stores.html">store_aqmet()</a></code> <code><a href="stores.html">store_hysplit()</a></code> </p>
+        </td>
+        <td><p>Predefined stores</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -219,9 +222,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="wmean_full_interval.html">wmean_full_interval()</a></code> </p>
+          <p><code><a href="wmean.html">wmean()</a></code> </p>
         </td>
-        <td><p>calculates weighted arithmetic means to match full time intervals from overlapping intervals</p></td>
+        <td><p>Calculates weighted arithmetic means of irregular data series</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -333,6 +336,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="read_nabel_txt.html">read_nabel_txt()</a></code> </p>
+        </td>
+        <td><p>Read a file from Nabel</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="read_smn.html">read_smn()</a></code> </p>
         </td>
         <td><p>Reads a file from the SwissMetNet of MeteoSwiss</p></td>
@@ -393,19 +402,13 @@
         <td>
           <p><code><a href="pluck.html">pluck_parameter()</a></code> <code><a href="pluck.html">pluck_interval()</a></code> <code><a href="pluck.html">pluck_site()</a></code> <code><a href="pluck.html">pluck_unit()</a></code> <code><a href="pluck.html">pluck_year()</a></code> </p>
         </td>
-        <td><p>Filter data</p></td>
+        <td><p>Quickly filter data</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="transform_crs.html">transform_crs()</a></code> <code><a href="transform_crs.html">transform_LV95_to_WSG84()</a></code> <code><a href="transform_crs.html">transform_WSG84_to_LV95()</a></code> <code><a href="transform_crs.html">transform_LV03_to_WSG84()</a></code> <code><a href="transform_crs.html">transform_WSG84_to_LV03()</a></code> </p>
         </td>
         <td><p>Transform between Coordinate Reference Systems</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_projection.html">transform_projection()</a></code> </p>
-        </td>
-        <td><p>Map projection and datum transformation</p></td>
       </tr><tr>
         
         <td>
@@ -418,18 +421,6 @@
           <p><code><a href="meta_apply.html">meta_apply()</a></code> </p>
         </td>
         <td><p>Transforms data based on an other meta table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rolf_apply_meta.html">rolf_apply_meta()</a></code> </p>
-        </td>
-        <td><p>apply meta data to rolf data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rOstluft.html">rOstluft</a></code> </p>
-        </td>
-        <td><p>rOstluft: data store and utility functions for Ostluft</p></td>
       </tr>
     </tbody>
     </table>

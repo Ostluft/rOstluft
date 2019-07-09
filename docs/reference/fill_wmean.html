@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculates weighted arithmetic means to match full time intervals from overlapping intervals — wmean_full_interval • rOstluft</title>
+<title>Fills (upsample) a data frame for wmean — fill_wmean • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,9 @@
 
 
 
-<meta property="og:title" content="calculates weighted arithmetic means to match full time intervals from overlapping intervals — wmean_full_interval" />
+<meta property="og:title" content="Fills (upsample) a data frame for wmean — fill_wmean" />
 
-<meta property="og:description" content="Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time intervals such as
-starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20 Feb to 06 March) with respect to full time intervals
-for mean intervals (e.g. 09:00 to 10:00 or 01 Feb to 28 Feb). To make such time series intercomparable
-and provide a standardized way of dealing with aggregated data, wmean_full_interval() provides a method to average
-a data.frame containing start- and end-time information to full time intervals based on stats::weighted.mean()." />
+<meta property="og:description" content="Fills (upsample) a data frame for wmean" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -69,7 +65,7 @@ a data.frame containing start- and end-time information to full time intervals b
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -93,9 +89,6 @@ a data.frame containing start- and end-time information to full time intervals b
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -130,57 +123,39 @@ a data.frame containing start- and end-time information to full time intervals b
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>calculates weighted arithmetic means to match full time intervals from overlapping intervals</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/wmean-full-intervall.R'><code>R/wmean-full-intervall.R</code></a></small>
-    <div class="hidden name"><code>wmean_full_interval.Rd</code></div>
+    <h1>Fills (upsample) a data frame for wmean</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/wmean.R'><code>R/wmean.R</code></a></small>
+    <div class="hidden name"><code>fill_wmean.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative for time intervals such as
-starting from odd start times to odd end times (e.g. 09:58 to 10:08 or 20 Feb to 06 March) with respect to full time intervals
-for mean intervals (e.g. 09:00 to 10:00 or 01 Feb to 28 Feb). To make such time series intercomparable
-and provide a standardized way of dealing with aggregated data, wmean_full_interval() provides a method to average
-a data.frame containing start- and end-time information to full time intervals based on stats::weighted.mean().</p>
+    <p>Fills (upsample) a data frame for wmean</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>wmean_full_interval</span>(<span class='no'>df</span>, <span class='kw'>startinterval</span> <span class='kw'>=</span> <span class='st'>"starttime"</span>,
-  <span class='kw'>endinterval</span> <span class='kw'>=</span> <span class='st'>"endtime"</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>res</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>hours</a></span>(<span class='fl'>1</span>))</pre>
+    <pre class="usage"><span class='fu'>fill_wmean</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='no'>interval</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>data.frame for averaging; df has to be in long format and contain a start- and end-time column of class POSIXct (arbitrarily named)</p></td>
+      <th>data</th>
+      <td><p>input data frame</p></td>
     </tr>
     <tr>
-      <th>startinterval</th>
-      <td><p>string; name of start-time column</p></td>
+      <th>...</th>
+      <td><p>grouping columns</p></td>
     </tr>
     <tr>
-      <th>endinterval</th>
-      <td><p>string; name of end-time column</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>string; name of column containing values to be averaged</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>string, optional =&gt; can be NULL; name of column containing values for grouping (using dplyr::group_by()) when calculating weighted means (e.g. for different measurement parameters)</p></td>
-    </tr>
-    <tr>
-      <th>res</th>
-      <td><p>object of class "lubridate::Period" specifying the intervall for averaging (e.g. lubridate::hours(1))</p></td>
+      <th>interval</th>
+      <td><p>for upsampling</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.frame with columns for interval start-time ("start"), interval end-time ("end"), "groups" (optional), "mean", "n" (sum of weighted intervals within the averaged time interval)</p>
+    <p>upsampled data frame</p>
     
 
   </div>

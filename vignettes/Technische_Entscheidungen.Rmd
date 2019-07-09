@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 # Übersicht
 
 In diesem Dokument werden die Gründe für technische Entscheide festgehalten. Viele Probleme sind bereits von klugen 
@@ -217,9 +216,6 @@ Vignette über die Parametrisierung von [dplyr Funktionen](https://cran.r-projec
 > 
 > Fortunately, dplyr provides tools to overcome these challenges. They require a little more typing, but a small amount of 
 > upfront work is worth it because they help you save time in the long run.
-
-
-
 
 
 [^1]: Aktuell muss die Dev Version von Github installiert werden, damit das RStudio Addin funktioniert.

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adds statistics for parameters in inputs — expand_inputs • rOstluft</title>
+<title>Cuts / splits data frame in list based on condition — cut_on_condition • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Adds statistics for parameters in inputs — expand_inputs" />
+<meta property="og:title" content="Cuts / splits data frame in list based on condition — cut_on_condition" />
 
-<meta property="og:description" content="Adds statistics for parameters in inputs" />
+<meta property="og:description" content="Cuts / splits data frame in list based on condition" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -123,37 +123,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adds statistics for parameters in inputs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/statstable.R'><code>R/statstable.R</code></a></small>
-    <div class="hidden name"><code>expand_inputs.Rd</code></div>
+    <h1>Cuts / splits data frame in list based on condition</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>cut_on_condition.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Adds statistics for parameters in inputs</p>
+    <p>Cuts / splits data frame in list based on condition</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>expand_inputs</span>(<span class='no'>x</span>, <span class='no'>inputs</span>)</pre>
+    <pre class="usage"><span class='fu'>cut_on_condition</span>(<span class='no'>data</span>, <span class='no'>condition</span>, <span class='no'>mapping</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>statistic list</p></td>
+      <th>data</th>
+      <td><p>data frame to cut</p></td>
     </tr>
     <tr>
-      <th>inputs</th>
-      <td><p>parameters in input</p></td>
+      <th>condition</th>
+      <td><p>expression used for grouping</p></td>
+    </tr>
+    <tr>
+      <th>mapping</th>
+      <td><p>names for list</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>expanded statistic list</p>
+    <p>list</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>cut_on_condition</span>(<span class='no'>data</span>, <span class='no'>end_interval</span> <span class='kw'>&lt;</span> <span class='no'>endtime</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TRUE"</span> <span class='kw'>=</span> <span class='st'>"overlaps"</span>, <span class='st'>"FALSE"</span> <span class='kw'>=</span> <span class='st'>"complete"</span>))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -161,7 +169,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

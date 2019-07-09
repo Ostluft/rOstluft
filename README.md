@@ -45,8 +45,8 @@ download.file("https://github.com/Ostluft/rOstluft.data/archive/master.zip", "rO
 install.packages("devtools")
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
 
-deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats', 
-          'fs', 'purrr', 'readr', 'stringr', 'plyr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
+deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats',
+          'fs', 'purrr', 'readr', 'stringr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
 
 for (p in deps) {
   install.packages(p)
@@ -93,24 +93,7 @@ Eine ausführliche Einführung ist im
 [Tutorial](https://ostluft.github.io/rOstluft/articles/articles/tutorial.html)
 zu finden.
 
-# Aktueller Stand
+# Plots
 
-  - Alpha Version ist erstellt
-  - Mechanismen zur automatischen Erstellung einer Dokumentation sind
-    vorhanden
-  - Initialversion eines Tutorial ist vorhanden
-  - Die kritischen Komponenten
-    (resample/Statistiken/Konzentrationsumrechnungen) verfügen über
-    umfangreiche Tests
-
-# TODO
-
-  - Aufräumen des Codes (veraltete Funktionen löschen)
-  - Überarbeiten der Dokumentation der R6 Klassen
-  - Travis/CI Integration?
-  - Erste Anwendungen des Stores implementieren
-  - utility Funktionen wie pluck\_param, pluck\_interval, pluck\_site
-    für rolf tibbles?
-  - rOstluft.plot Package?
-  - Grund für Differenzen bei AOT40 und O3\_h709001600 Berechnung
-    zwischen AIRMO und rOstluft finden
+Ein Package mit standartisierten Plots ist in Entwicklung als Package
+[rOstluft.plot](https://github.com/Ostluft/rOstluft.plot)

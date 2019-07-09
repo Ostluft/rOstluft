@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>apply meta data to rolf data — rolf_apply_meta • rOstluft</title>
+<title>Predefined stores — store_aqmet • rOstluft</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="apply meta data to rolf data — rolf_apply_meta" />
+<meta property="og:title" content="Predefined stores — store_aqmet" />
 
-<meta property="og:description" content="See Tests for examples" />
+<meta property="og:description" content="
+store_aqmet() - Ostluft S3 storage containing airquality and meteo data
+store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
+" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +92,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -126,73 +126,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>apply meta data to rolf data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/meta.R'><code>R/meta.R</code></a></small>
-    <div class="hidden name"><code>rolf_apply_meta.Rd</code></div>
+    <h1>Predefined stores</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/stores.R'><code>R/stores.R</code></a></small>
+    <div class="hidden name"><code>stores.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>See Tests for examples</p>
+    <ul>
+<li><p><code>store_aqmet()</code> - Ostluft S3 storage containing airquality and meteo data</p></li>
+<li><p><code>store_hysplit()</code> - Ostluft S3 storage containing NOAA Hysplit trajectories</p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rolf_apply_meta</span>(<span class='no'>data</span>, <span class='no'>meta</span>, <span class='no'>parameter_orig</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"strict"</span>, <span class='kw'>replacement_parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>replacement_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>store_aqmet</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"aqmet"</span>)
+
+<span class='fu'>store_hysplit</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"hysplit"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>input data</p></td>
-    </tr>
-    <tr>
-      <th>meta</th>
-      <td><p>meta data</p></td>
-    </tr>
-    <tr>
-      <th>parameter_orig</th>
-      <td><p>column in meta for parameter and unit remapping</p></td>
-    </tr>
-    <tr>
-      <th>parameter</th>
-      <td><p>source column in meta for replacement of parameter_orig values in data for parameter remapping</p></td>
-    </tr>
-    <tr>
-      <th>unit</th>
-      <td><p>source column in meta for replacement of parameter_orig values in data for unit remapping</p></td>
-    </tr>
-    <tr>
-      <th>mode</th>
-      <td><p>one of strict, drop, keep, replace</p></td>
-    </tr>
-    <tr>
-      <th>replacement_parameter</th>
-      <td><p>named list of replacement values for missing parameter_orig values in meta for
-parameter remapping</p></td>
-    </tr>
-    <tr>
-      <th>replacement_unit</th>
-      <td><p>named list of replacement values for missing parameter_orig values in meta for
-unit remapping</p></td>
+      <th>name</th>
+      <td><p>of the store (to influence caching location)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>in rOstluft long format structure</p>
-    
-    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
-
-    
-    <p>write one universel function: shouldn't be too hard with nse:</p><ul>
-<li><p>source and target columns in data (parameter &gt; parameter,  parameter &gt; unit)</p></li>
-<li><p>mapping columns in meta for source ( parameter_original &gt; parameter, parameter_original &gt; unit)</p></li>
-<li><p>the worst will be the user messages</p></li>
-</ul>
-    <p>just started the wrong way. Wanted to do both remappings in one go ...</p>
+    <p>store</p>
     
 
   </div>
@@ -202,8 +165,6 @@ unit remapping</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#todo">TODO</a></li>
           </ul>
 
   </div>

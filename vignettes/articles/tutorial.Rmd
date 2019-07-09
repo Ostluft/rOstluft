@@ -62,7 +62,7 @@ install.packages("devtools")
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
 
 deps <- c('dplyr', 'tidyr', 'lubridate', 'R6', 'rappdirs', 'tibble', 'base64url', 'forcats',
-          'fs', 'purrr', 'readr', 'stringr', 'plyr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
+          'fs', 'purrr', 'readr', 'stringr', 'stringi', 'sp', 'rgdal', 'rlang', 'magrittr')
 
 for (p in deps) {
   install.packages(p)
@@ -106,9 +106,10 @@ Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folge
 
 ```{r}
 store <- storage_s3_rds("tutorial", format = format_rolf(), bucket = "rostluft", prefix = "aqmet")
-```
 
-*TODO: Beschreibung was die verschiedenen Argument bedeuten*
+# oder nutze den vordefinierten store (name ist optional, default ist "aqmet")
+store <- store_aqmet("tutorial")
+```
 
 
 Dieses store Objekt verfügt über verschiedene Methoden, zur Abfrage von Daten sind jedoch nur zwei von Bedeutung:
@@ -151,8 +152,8 @@ store$get(site = sites, year = 2014, interval = "min30", filter = parameter == "
 
 ## Lokales Arbeiten mit den AWS S3 Daten
 
-Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung ob aktualisierte
-Daten verfügbar sind vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine
+Ein Nachteil des S3 Storage ist, dass bei jeder Datenabfrage eine Internetverbindung zur Überprüfung, ob aktualisierte
+Daten verfügbar sind, vorhanden sein muss. Selbst wenn die Daten bereits lokal gespeichert sind. Nicht nur wird eine
 Internetverbindung benötigt, die Überprüfung braucht auch eine kurze Zeit. Hat man alle notwendigen Daten bereits
 herunter geladen, kann man jedoch mit einem lokalen Store arbeiten. Praktischerweise hat der S3 Store eine Funktion,
 welche einen lokalen Store zurückgibt.
@@ -248,7 +249,7 @@ Ein generelles Problem beim einlesen von Textdateien ist die
 gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von `read_xxx()` Funktionen sind UTF-8 kodiert. Mit dem
 [readr Packages](https://readr.tidyverse.org/index.html) wird bei korrekter Definition der
 [Locale](https://readr.tidyverse.org/articles/locales.html#character) der Text automatisch zu UTF-8 konvertiert. Im
-Gegensatz zu den R Base Funktionen oder data.table::fread().
+Gegensatz zu den R Base Funktionen oder` data.table::fread()`.
 
 
 ## Ausgabeformat rolf
@@ -741,16 +742,16 @@ fn <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data")
 data <- read_smn_multiple(fn) %>% 
   dplyr::arrange(starttime)
 
-pluck_parameter(data, ta1towb0)
+pluck_parameter(data, "ta1towb0")
 
-# strings oder symbols
-pluck_site(data, "KLO", UEB) %>% dplyr::slice(41:46)
+# entpackt automatisch Vectors
+pluck_site(data, c("KLO", "UEB")) %>% dplyr::slice(41:46)
 
 # supported splicing mit den rlang operator !!!
 intervals = c("h1", "d1")
 pluck_interval(data, !!!intervals) %>% dplyr::slice(40:45)
 
-# pluck_year unterstützt Vektoren direkt
+# pluck_year mit einer sequence
 pluck_year(data, 2010:2018) %>% dplyr::slice(51:56)
 
 # NA Werte werden gefiltert
@@ -758,8 +759,8 @@ pluck_unit(data, "hPa")
 
 # Verkettbar mittels pipes
 data %>%
-  pluck_site(KLO, UEB) %>%
-  pluck_parameter(gre000z0) %>%
+  pluck_site("KLO", "UEB") %>%
+  pluck_parameter("gre000z0") %>%
   pluck_year(2010:2018) %>% 
   dplyr::slice(1:6)
 ```
@@ -770,7 +771,7 @@ data %>%
 Für die Darstellung von Elementen mit Koordinaten im Bezugsystem [LV95](https://epsg.io/2056) oder 
 [LV03](https://epsg.io/21781) auf Karten ist es oft notwendig diese nach [WSG84](https://epsg.io/4326) zu 
 transformieren. Die Funktionen `rOstluft::transform_LV95_to_WSG84()` und `rOstluft::transform_WSG84_to_LV95()` sind 
-Wrapper um die allgemeine Funktion `rOstluft::transform()`.
+Wrapper um die allgemeine Funktion `rOstluft::transform_crs()`.
 
 ```{r}
 meteoschweiz <- readRDS(fs::path(examples_path, "meta_smn.rds"))
@@ -793,7 +794,12 @@ jeweils für 01:00 und 13:00 UTC+1 (=Luftmassen Herkunft) gerechnet.
 Beim Format hysplit wird für die Abfrage nur die `site` und das `year` benötigt:
 
 ```{r}
-hysplit_store <- storage_s3_rds("hysplit", format_hysplit(), "rostluft", "hysplit")
+hysplit_store <- storage_s3_rds("hysplit_tutorial", format_hysplit(), "rostluft", "hysplit")
+
+# nutze den vordefinierten store (name ist optional, default ist "hysplit")
+hysplit_store <- store_hysplit("hysplit_tutorial")
+
+# hole die Trakektorien für Zürich Kaserne von 2018
 traj <- hysplit_store$get(site = "ZH_Kaserne_hysplit", year = 2018)
 
 # plotte die Daten mit openair

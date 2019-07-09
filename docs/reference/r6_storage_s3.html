@@ -67,7 +67,7 @@ is recommended after acquiring all needed data from s3 to use the cache as local
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -91,9 +91,6 @@ is recommended after acquiring all needed data from s3 to use the cache as local
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -282,7 +279,7 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Rosengartenstrasse NO2       min30    ppb    39.8
 #&gt; </span><span style='color: #555555;'># ... with 104,537 more rows</span><span></div><div class='input'>
 <span class='co'>## get n data points grouped by intervall, station, parameter, year in the store</span>
-<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 146,205 x 6</span><span>
+<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 146,341 x 6</span><span>
 #&gt;     year interval site            parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h8gl     Rap_Tüchelweier CO        mg/m3    15
@@ -295,7 +292,7 @@ AWS_DEFAULT_REGION = "eu-central-1"
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier O3        µg/m3    20
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier T         °C       19
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>004 h1       Rap_Tüchelweier WD        °        18
-#&gt; </span><span style='color: #555555;'># ... with 146,195 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 146,331 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks, show only local files</span>
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 11</span><span>
 #&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
@@ -513,26 +510,26 @@ AWS_DEFAULT_REGION = "eu-central-1"
 <span class='no'>local</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 7</span><span>
 #&gt;    chunk_name   interval site  year  local.path   local.modification~ local.size
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     19.79K
-#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     76.65K
-#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:20</span><span>     85.91K
-#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1pj~ h1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:21</span><span>    112.37K
-#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1pj~ h1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:21</span><span>    447.54K
-#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1pj~ h1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>    567.63K
-#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     23.56K
-#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     93.13K
-#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:22</span><span>     92.19K
-#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1pj~ m1       Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      1.47K
-#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1pj~ m1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      3.81K
-#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1pj~ m1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>      4.23K
-#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWluM~ min30    Zch_~ 2013  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:23</span><span>       168K
-#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:19</span><span>    662.57K
-#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWluM~ min30    Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>    780.05K
-#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:20</span><span>      1.07M
-#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWluM~ min30    Zch_~ 2011  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:16</span><span>      1.07M
-#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWluM~ min30    Zch_~ 2012  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:43:18</span><span>      1.07M
-#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1pj~ y1       Zch_~ 2014  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>      1.45K
-#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1pj~ y1       Zch_~ 2015  C:/Users/vo~ 2019-05-22 </span><span style='color: #555555;'>14:44:24</span><span>      1.44K</div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2013  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:18</span><span>     19.79K
+#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:18</span><span>     76.65K
+#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:18</span><span>     85.91K
+#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1pj~ h1       Zch_~ 2013  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:19</span><span>    112.37K
+#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1pj~ h1       Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:19</span><span>    447.54K
+#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1pj~ h1       Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>    567.63K
+#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2013  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>     23.56K
+#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>     93.13K
+#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>     92.19K
+#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1pj~ m1       Zch_~ 2013  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>      1.47K
+#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1pj~ m1       Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>      3.81K
+#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1pj~ m1       Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>      4.23K
+#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWluM~ min30    Zch_~ 2013  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:20</span><span>       168K
+#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:13:13</span><span>    662.57K
+#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWluM~ min30    Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:21</span><span>    780.05K
+#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:13:14</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWluM~ min30    Zch_~ 2011  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:13:10</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWluM~ min30    Zch_~ 2012  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:13:11</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1pj~ y1       Zch_~ 2014  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:21</span><span>      1.45K
+#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1pj~ y1       Zch_~ 2015  C:/Users/vo~ 2019-07-09 </span><span style='color: #555555;'>12:14:21</span><span>      1.44K</div><div class='input'>
 <span class='co'>## get cached data</span>
 <span class='no'>local</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit    value

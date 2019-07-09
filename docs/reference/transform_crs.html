@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +89,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
-    </li>
-    <li>
-      <a href="../articles/resample.html">[GER] Resampling data</a>
     </li>
     <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
@@ -208,49 +205,49 @@ detailed explanation. In Short:</p>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRDS'>readRDS</a></span>(<span class='no'>fn</span>)
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span>(<span class='no'>data</span>, <span class='no'>site</span>, <span class='no'>x</span>, <span class='no'>y</span>)
 <span class='fu'>transform_crs</span>(<span class='no'>data</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>),
-          <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>), <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>))</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 22 x 5</span><span>
+          <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>), <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22 x 5</span><span>
 #&gt;    site                     x       y   lon   lat
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Aadorf/Tänikon     2</span><span style='text-decoration: underline;'>710</span><span>517 1</span><span style='text-decoration: underline;'>259</span><span>824  8.90  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Altenrhein         2</span><span style='text-decoration: underline;'>760</span><span>382 1</span><span style='text-decoration: underline;'>261</span><span>386  9.57  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> BadRagaz           2</span><span style='text-decoration: underline;'>756</span><span>910 1</span><span style='text-decoration: underline;'>209</span><span>350  9.50  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Chur               2</span><span style='text-decoration: underline;'>759</span><span>465 1</span><span style='text-decoration: underline;'>193</span><span>152  9.53  46.9
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Ebnat-Kappel       2</span><span style='text-decoration: underline;'>726</span><span>347 1</span><span style='text-decoration: underline;'>237</span><span>176  9.11  47.3
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Glarus             2</span><span style='text-decoration: underline;'>723</span><span>755 1</span><span style='text-decoration: underline;'>210</span><span>567  9.07  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Hörnli             2</span><span style='text-decoration: underline;'>713</span><span>516 1</span><span style='text-decoration: underline;'>247</span><span>756  8.94  47.4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Lägern             2</span><span style='text-decoration: underline;'>672</span><span>250 1</span><span style='text-decoration: underline;'>259</span><span>460  8.40  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Oberriet/Kriessern 2</span><span style='text-decoration: underline;'>764</span><span>170 1</span><span style='text-decoration: underline;'>249</span><span>582  9.61  47.4
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Pilatus            2</span><span style='text-decoration: underline;'>661</span><span>904 1</span><span style='text-decoration: underline;'>203</span><span>410  8.25  47.0
-#&gt; </span><span style='color: #949494;'># ... with 12 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Aadorf/Tänikon     2</span><span style='text-decoration: underline;'>710</span><span>517 1</span><span style='text-decoration: underline;'>259</span><span>824  8.90  47.5
+#&gt; </span><span style='color: #555555;'> 2</span><span> Altenrhein         2</span><span style='text-decoration: underline;'>760</span><span>382 1</span><span style='text-decoration: underline;'>261</span><span>386  9.57  47.5
+#&gt; </span><span style='color: #555555;'> 3</span><span> BadRagaz           2</span><span style='text-decoration: underline;'>756</span><span>910 1</span><span style='text-decoration: underline;'>209</span><span>350  9.50  47.0
+#&gt; </span><span style='color: #555555;'> 4</span><span> Chur               2</span><span style='text-decoration: underline;'>759</span><span>465 1</span><span style='text-decoration: underline;'>193</span><span>152  9.53  46.9
+#&gt; </span><span style='color: #555555;'> 5</span><span> Ebnat-Kappel       2</span><span style='text-decoration: underline;'>726</span><span>347 1</span><span style='text-decoration: underline;'>237</span><span>176  9.11  47.3
+#&gt; </span><span style='color: #555555;'> 6</span><span> Glarus             2</span><span style='text-decoration: underline;'>723</span><span>755 1</span><span style='text-decoration: underline;'>210</span><span>567  9.07  47.0
+#&gt; </span><span style='color: #555555;'> 7</span><span> Hörnli             2</span><span style='text-decoration: underline;'>713</span><span>516 1</span><span style='text-decoration: underline;'>247</span><span>756  8.94  47.4
+#&gt; </span><span style='color: #555555;'> 8</span><span> Lägern             2</span><span style='text-decoration: underline;'>672</span><span>250 1</span><span style='text-decoration: underline;'>259</span><span>460  8.40  47.5
+#&gt; </span><span style='color: #555555;'> 9</span><span> Oberriet/Kriessern 2</span><span style='text-decoration: underline;'>764</span><span>170 1</span><span style='text-decoration: underline;'>249</span><span>582  9.61  47.4
+#&gt; </span><span style='color: #555555;'>10</span><span> Pilatus            2</span><span style='text-decoration: underline;'>661</span><span>904 1</span><span style='text-decoration: underline;'>203</span><span>410  8.25  47.0
+#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
 <span class='fu'>transform_crs</span>(<span class='no'>data</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>),
-          <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>), <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 22 x 3</span><span>
+          <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:2056"</span>), <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 22 x 3</span><span>
 #&gt;    site                 lon   lat
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Aadorf/Tänikon      8.90  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Altenrhein          9.57  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> BadRagaz            9.50  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Chur                9.53  46.9
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Ebnat-Kappel        9.11  47.3
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Glarus              9.07  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Hörnli              8.94  47.4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Lägern              8.40  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Oberriet/Kriessern  9.61  47.4
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Pilatus             8.25  47.0
-#&gt; </span><span style='color: #949494;'># ... with 12 more rows</span><span></div><div class='input'>
-<span class='fu'>transform_LV95_to_WSG84</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 22 x 5</span><span>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Aadorf/Tänikon      8.90  47.5
+#&gt; </span><span style='color: #555555;'> 2</span><span> Altenrhein          9.57  47.5
+#&gt; </span><span style='color: #555555;'> 3</span><span> BadRagaz            9.50  47.0
+#&gt; </span><span style='color: #555555;'> 4</span><span> Chur                9.53  46.9
+#&gt; </span><span style='color: #555555;'> 5</span><span> Ebnat-Kappel        9.11  47.3
+#&gt; </span><span style='color: #555555;'> 6</span><span> Glarus              9.07  47.0
+#&gt; </span><span style='color: #555555;'> 7</span><span> Hörnli              8.94  47.4
+#&gt; </span><span style='color: #555555;'> 8</span><span> Lägern              8.40  47.5
+#&gt; </span><span style='color: #555555;'> 9</span><span> Oberriet/Kriessern  9.61  47.4
+#&gt; </span><span style='color: #555555;'>10</span><span> Pilatus             8.25  47.0
+#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
+<span class='fu'>transform_LV95_to_WSG84</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 22 x 5</span><span>
 #&gt;    site                     x       y   lon   lat
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Aadorf/Tänikon     2</span><span style='text-decoration: underline;'>710</span><span>517 1</span><span style='text-decoration: underline;'>259</span><span>824  8.90  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Altenrhein         2</span><span style='text-decoration: underline;'>760</span><span>382 1</span><span style='text-decoration: underline;'>261</span><span>386  9.57  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> BadRagaz           2</span><span style='text-decoration: underline;'>756</span><span>910 1</span><span style='text-decoration: underline;'>209</span><span>350  9.50  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Chur               2</span><span style='text-decoration: underline;'>759</span><span>465 1</span><span style='text-decoration: underline;'>193</span><span>152  9.53  46.9
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Ebnat-Kappel       2</span><span style='text-decoration: underline;'>726</span><span>347 1</span><span style='text-decoration: underline;'>237</span><span>176  9.11  47.3
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Glarus             2</span><span style='text-decoration: underline;'>723</span><span>755 1</span><span style='text-decoration: underline;'>210</span><span>567  9.07  47.0
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Hörnli             2</span><span style='text-decoration: underline;'>713</span><span>516 1</span><span style='text-decoration: underline;'>247</span><span>756  8.94  47.4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Lägern             2</span><span style='text-decoration: underline;'>672</span><span>250 1</span><span style='text-decoration: underline;'>259</span><span>460  8.40  47.5
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Oberriet/Kriessern 2</span><span style='text-decoration: underline;'>764</span><span>170 1</span><span style='text-decoration: underline;'>249</span><span>582  9.61  47.4
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Pilatus            2</span><span style='text-decoration: underline;'>661</span><span>904 1</span><span style='text-decoration: underline;'>203</span><span>410  8.25  47.0
-#&gt; </span><span style='color: #949494;'># ... with 12 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Aadorf/Tänikon     2</span><span style='text-decoration: underline;'>710</span><span>517 1</span><span style='text-decoration: underline;'>259</span><span>824  8.90  47.5
+#&gt; </span><span style='color: #555555;'> 2</span><span> Altenrhein         2</span><span style='text-decoration: underline;'>760</span><span>382 1</span><span style='text-decoration: underline;'>261</span><span>386  9.57  47.5
+#&gt; </span><span style='color: #555555;'> 3</span><span> BadRagaz           2</span><span style='text-decoration: underline;'>756</span><span>910 1</span><span style='text-decoration: underline;'>209</span><span>350  9.50  47.0
+#&gt; </span><span style='color: #555555;'> 4</span><span> Chur               2</span><span style='text-decoration: underline;'>759</span><span>465 1</span><span style='text-decoration: underline;'>193</span><span>152  9.53  46.9
+#&gt; </span><span style='color: #555555;'> 5</span><span> Ebnat-Kappel       2</span><span style='text-decoration: underline;'>726</span><span>347 1</span><span style='text-decoration: underline;'>237</span><span>176  9.11  47.3
+#&gt; </span><span style='color: #555555;'> 6</span><span> Glarus             2</span><span style='text-decoration: underline;'>723</span><span>755 1</span><span style='text-decoration: underline;'>210</span><span>567  9.07  47.0
+#&gt; </span><span style='color: #555555;'> 7</span><span> Hörnli             2</span><span style='text-decoration: underline;'>713</span><span>516 1</span><span style='text-decoration: underline;'>247</span><span>756  8.94  47.4
+#&gt; </span><span style='color: #555555;'> 8</span><span> Lägern             2</span><span style='text-decoration: underline;'>672</span><span>250 1</span><span style='text-decoration: underline;'>259</span><span>460  8.40  47.5
+#&gt; </span><span style='color: #555555;'> 9</span><span> Oberriet/Kriessern 2</span><span style='text-decoration: underline;'>764</span><span>170 1</span><span style='text-decoration: underline;'>249</span><span>582  9.61  47.4
+#&gt; </span><span style='color: #555555;'>10</span><span> Pilatus            2</span><span style='text-decoration: underline;'>661</span><span>904 1</span><span style='text-decoration: underline;'>203</span><span>410  8.25  47.0
+#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

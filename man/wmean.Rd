@@ -46,7 +46,7 @@ data <- read_airmo_csv(fn, time_shift = lubridate::period(25, "minutes"))
 data_ps <- readRDS(ps_fn) \%>\% pluck_site("Zch_Stampfenbachstrasse")
 
 df <- pluck_parameter(data, "CO") \%>\%
-  pluck_unit(unit, "ppm") \%>\%
+  pluck_unit("ppm") \%>\%
   dplyr::mutate(endtime = .data$starttime + lubridate::hours(1)) \%>\%
   dplyr::select(-interval)
 

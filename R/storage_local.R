@@ -295,7 +295,7 @@ r6_storage_local <- R6::R6Class(
     read_chunk = function(chunk_path, filter) {
       chunk <- self$read_function(chunk_path)
       if (!rlang::quo_is_null(filter)) {
-        chunk <-  dplyr::filter(chunk, !!!filter)
+        chunk <-  dplyr::filter(chunk, !!filter)
       }
       chunk
     },

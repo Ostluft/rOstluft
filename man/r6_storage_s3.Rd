@@ -28,7 +28,8 @@ R6 class object of storage_s3
 \description{
 A s3 storage with flexible file format (default rds). The data format defines the data chunks
 per file. The data is cached locally. This local cache can be used as local storage. For performance enhancement it
-is recommended after acquiring all needed data from s3 to use the cache as local storage.
+is recommended after acquiring all needed data from s3 to use the cache as local storage. See \code{\link[=storage_local_rds]{storage_local_rds()}}
+for more Informations.
 }
 \section{Fields}{
 
@@ -52,6 +53,10 @@ is recommended after acquiring all needed data from s3 to use the cache as local
 \item{\code{content_path}}{local path to the rds file containing statistics of store content}
 
 \item{\code{content_s3}}{s3 object key to the rds file containing statistics of store content}
+
+\item{\code{columns_path}}{local path to the rds file containing the exact column types of the store content}
+
+\item{\code{columns_s3}}{s3 object key to the rds file containing the exact column types of the store content}
 
 \item{\code{meta_path}}{local root of all meta data files}
 

@@ -47,6 +47,8 @@ per file.
 
 \item{\code{content_path}}{path to the rds file containing statistics of store content}
 
+\item{\code{columns_path}}{path to the rds file containing the exact column types of the store content}
+
 \item{\code{meta_path}}{root of all meta files}
 
 \item{\code{read.only}}{flag for read.only usage of store. Default TRUE}
@@ -80,6 +82,15 @@ specified key.
 
 \code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
+}
+
+\section{Column Types}{
+
+
+The first \code{$put()} saves the column types of the data in a file. All subsequents \code{$put()} calls must have the exact
+same column types: same order and classes of columns.
+
+asdf
 }
 
 \section{storage_local_tsv}{

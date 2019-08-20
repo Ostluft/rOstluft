@@ -8,6 +8,7 @@
 #' @field path root of the store
 #' @field data_path root of all chunks
 #' @field content_path path to the rds file containing statistics of store content
+#' @field columns_path path to the rds file containing the exact column types of the store content
 #' @field meta_path root of all meta files
 #' @field read.only flag for read.only usage of store. Default TRUE
 #' @field ext file extension for chunks. Default "rds"
@@ -35,6 +36,14 @@
 #'
 #' `$destroy(confirmation)` removes all files under path from the file system if "DELETE" is supplied as
 #' confirmation
+#'
+#' @section Column Types:
+#'
+#' The first `$put()` saves the column types of the data in a file. All subsequents `$put()` calls must have the exact
+#' same column types: same order and classes of columns.
+#'
+#'asdf
+#'
 #'
 #' @examples
 #' ## init store, creates directory if necessary
@@ -143,7 +152,8 @@ r6_storage_local <- R6::R6Class(
     path = NULL,
     data_path = NULL,
     content_path = NULL,
-    meta_path = NULL,
+
+    columns_path = NULL,    meta_path = NULL,
     read.only = TRUE,
     ext = NULL,
     read_function = NULL,
@@ -165,6 +175,7 @@ r6_storage_local <- R6::R6Class(
       self$write_function <- write_function
       self$data_path <- fs::path(path, "data")
       self$content_path <- fs::path(self$path, "content", ext = ext)
+      self$columns_path <- fs::path(self$path, "columns", ext = ext)
       self$meta_path <- fs::path(path, "meta")
       self$read.only <- read.only
 
@@ -179,6 +190,7 @@ r6_storage_local <- R6::R6Class(
         fs::dir_create(self$meta_path, recurse = TRUE)
         message(sprintf("Local store %s initialized under '%s'", self$name, self$path))
       }
+
       invisible(self)
     },
     put = function(data) {
@@ -187,6 +199,7 @@ r6_storage_local <- R6::R6Class(
       }
 
       if (nrow(data) > 0) {
+        private$check_columns(data[0, ])  # not sure if this is a speedup or if should just pass the whole data frame
         data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
         data <- dplyr::group_split(data, keep = TRUE)
         res <- purrr::map(data, private$merge_chunk)
@@ -211,7 +224,7 @@ r6_storage_local <- R6::R6Class(
     list_chunks = function() {
       chunks <- fs::dir_info(self$data_path, recurse = TRUE, type = "file")
       chunks <- dplyr::select(chunks, "path", "modification_time", "size")
-      chunks <- dplyr::rename_all(chunks, .funs = dplyr::funs(paste0("local.", .)))
+      chunks <- dplyr::rename_all(chunks, ~ paste0("local.", .))
       chunks <- dplyr::mutate(chunks, chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
 
       if (nrow(chunks) == 0) {
@@ -289,9 +302,33 @@ r6_storage_local <- R6::R6Class(
       chunks_content <- bind_rows_with_factor_columns(!!!chunks_content)
       self$write_function(chunks_content, self$content_path)
       chunks_content
+    },
+    get_columns = function() {
+      if (is.null(private$columns) & fs::file_exists(self$columns_path)) {
+        private$columns <- self$read_function(self$columns_path)
+      }
+      private$columns
     }
+
   ),
   private = list(
+    columns = NULL,
+    check_columns = function(data) {
+      input_columns <- dplyr::mutate_if(data[0, ], is.factor, forcats::fct_drop)
+      store_columns <- self$get_columns()
+
+      if (is.null(store_columns)) {
+        message(sprintf("First put to storage. Save columns types to %s", self$columns_path))
+        self$write_function(input_columns, self$columns_path)
+        store_columns <- input_columns
+      }
+
+      msg <- dplyr::all_equal(store_columns, input_columns, ignore_col_order = FALSE, ignore_row_order = FALSE)
+      if(!isTRUE(msg)) {
+        stop(IncompatibleColumns(self$name, msg))
+      }
+      invisible(NULL)
+    },
     read_chunk = function(chunk_path, filter) {
       chunk <- self$read_function(chunk_path)
       if (!rlang::quo_is_null(filter)) {

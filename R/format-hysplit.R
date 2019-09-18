@@ -26,7 +26,7 @@ r6_format_hysplit <- R6::R6Class(
     value_column = "value",
     serie_columns = c("site"),
     chunk_columns = c("year", "site"),
-    chunk_calc = character(),
+    chunk_calc = rlang::quos(),
     unique_columns = c("site", "date", "date2"),
     content_columns = c("year", "site"),
     tz = NULL,

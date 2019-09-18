@@ -8,6 +8,13 @@
 
 <title>Customize concentration conversion — convert_get_R • rOstluft</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -16,13 +23,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,9 +48,9 @@ frequently publish a collection of natur constants. For the molar gas constant f
 CODATA 1998  8.314472
 CODATA 2010  8.3144621
 CODATA 2014  8.3144598
-" />
 
-<meta property="og:description" content="Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
+
+Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
 customization of all used constants for the conversion. In the example is showed how to use the CODATA 2014 value
 for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) to the conversions." />
 
@@ -60,6 +69,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -76,7 +86,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -102,6 +112,9 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
     </li>
     <li>
+      <a href="../articles/resample.html">[GER] Resampling data</a>
+    </li>
+    <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
@@ -112,6 +125,9 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
      
     Tutorial
   </a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -129,6 +145,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -150,7 +167,7 @@ CODATA 2010  8.3144621
 CODATA 2014  8.3144598
 </pre>
 
-    <p>Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
+<p>Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
 customization of all used constants for the conversion. In the example is showed how to use the CODATA 2014 value
 for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) to the conversions.</p>
     
@@ -192,19 +209,23 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
     <h2 class="hasAnchor" id="lookup-table"><a class="anchor" href="#lookup-table"></a>Lookup Table</h2>
 
     
-    <p>The lookup table is used to pick to correct conversion function. The table is a tibble with the columns parameter,
+
+
+<p>The lookup table is used to pick to correct conversion function. The table is a tibble with the columns parameter,
 from, to and FUN. The <code><a href='conversion_conc_fun_factory.html'>conversion_conc_fun_factory()</a></code> uses this lookup table to create a partial function from FUN.
 The partial function gets the mol mass (as mol_mass) of the parameter and all ... arguments applied as named
 arguments. This allows to change the default values of <code><a href='mass_to_parts.html'>mass_to_parts()</a></code> and <code><a href='parts_to_mass.html'>parts_to_mass()</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><ul>
+    <div class='dont-index'>
+<ul>
 <li><p><code><a href='convert_conc.html'>convert_conc()</a></code></p></li>
 <li><p><code><a href='conversion_conc_fun_factory.html'>conversion_conc_fun_factory()</a></code></p></li>
 <li><p><code><a href='https://rlang.r-lib.org/reference/bare-type-predicates.html'>rlang::is_bare_double()</a></code></p></li>
 <li><p><code><a href='https://purrr.tidyverse.org/reference/partial.html'>purrr::partial()</a></code></p></li>
-</ul></div>
+</ul>
+</div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -257,19 +278,23 @@ arguments. This allows to change the default values of <code><a href='mass_to_pa
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

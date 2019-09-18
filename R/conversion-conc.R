@@ -373,7 +373,7 @@ convert_get_conc_lookup <- function() {
 #'
 #' @rdname convert_get_R
 convert_set_conc_lookup <- function(lookup) {
-  if (!tibble::is.tibble(lookup) && !all(tibble::has_name(lookup, c("parameter", "from", "to", "FUN")))) {
+  if (!tibble::is_tibble(lookup) && !all(tibble::has_name(lookup, c("parameter", "from", "to", "FUN")))) {
     stop("lookup has to be a tibble with the columns parameter, from, to, FUN")
   }
 

@@ -30,3 +30,14 @@ MetaKeyNotFound <- function(name, key) {
                  call = NULL),
             class = c("MetaKeyNotFound", "error", "condition"))
 }
+
+IncompatibleColumns <- function(name, columns) {
+  indent <- rep("  ", length(columns))
+  columns_str <- stringr::str_c(indent, columns, collapse = "\n")
+
+  structure(list(name = name,
+               columns = columns,
+               message = sprintf("Incompatible columns in put for store %s:\n%s", name, columns_str),
+               call = NULL),
+          class = c("IncompatibleColumns", "error", "condition"))
+}

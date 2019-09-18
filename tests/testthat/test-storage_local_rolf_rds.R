@@ -38,7 +38,10 @@ test_that("put into store", {
   expect_error(store_ro$put(df), class = "ReadOnlyStore")
 
   store_rw <- storage_local_rds("testthat", format = rolf, read.only = FALSE)
-  res <- store_rw$put(df)
+
+  # expect a message on first put, that column types are saved
+  expect_message(res <- store_rw$put(df))
+
   expect_equal(sum(res$n), n_staba)
 
   chunks <- store_rw$list_chunks()
@@ -56,9 +59,23 @@ test_that("put into store", {
   content <- store_rw$get_content()
   expect_equal(sum(content$n), n_ros + n_staba)
 
-  testthat::expect_warning(
-    store_rw$put(df[0, ])
-  )
+  expect_warning(store_rw$put(df[0, ]))
+
+  # check handling of incompatible columns
+  df <- df[1:10, ]
+
+  # wrong order
+  df1 <- dplyr::select(df, value, dplyr::everything())
+
+  # incorrect name
+  df2 <- dplyr::select(df, time = starttime, dplyr::everything())
+
+  # incorrect types
+  df3 <- dplyr::mutate_if(df, is.factor, as.character)
+
+  expect_error(store_rw$put(df1), class = "IncompatibleColumns")
+  expect_error(store_rw$put(df2), class = "IncompatibleColumns")
+  expect_error(store_rw$put(df3), class = "IncompatibleColumns")
 })
 
 test_that("get from store", {
@@ -81,7 +98,7 @@ test_that("put NA frame", {
   d1 <- system.file("extdata", "Zch_Stampfenbachstrasse_d1_2013_Jan.csv",
                     package = "rOstluft.data", mustWork = TRUE)
   airmo_d1 <- airmo_d1 <- read_airmo_csv(d1)
-  empty <- dplyr::mutate(airmo_d1, value = NA)
+  empty <- dplyr::mutate(airmo_d1, value = NA_real_)  # NA is logical => use NA_real_ or we get a incompatible column
 
   n_content <- nrow(store$get_content())
   n_chunks <- nrow(store$list_chunks())

@@ -8,6 +8,13 @@
 
 <title>Calculates stats described in a table — calculate_statstable • rOstluft</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -16,13 +23,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,9 +47,9 @@ the same data threshold for all calculations
 to h8gl: only mean from h1
 max_gap only by to y1, and definition in days
 usage of default_statistic and _inputs_ can contain suprises in the result
-" />
 
-<meta property="og:description" content="All statistics are defined in a table with the columns &quot;parameter&quot;, &quot;statistic&quot;, &quot;from&quot; and &quot;to&quot;. Each row contains
+
+All statistics are defined in a table with the columns &quot;parameter&quot;, &quot;statistic&quot;, &quot;from&quot; and &quot;to&quot;. Each row contains
 one statistic for one parameter with a basis interval (&quot;from&quot;) and the target interval (&quot;to&quot;). The rows are then
 grouped with &quot;from&quot;, then with &quot;to&quot; and then with &quot;parameter&quot;. This results in a list of statistic for each
 parameter. This list is compatible with resample(). If no default_statistic is defined,
@@ -64,6 +73,7 @@ will be expanded and a row added. See statstable_expand()" />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -80,7 +90,7 @@ will be expanded and a row added. See statstable_expand()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -106,6 +116,9 @@ will be expanded and a row added. See statstable_expand()" />
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
     </li>
     <li>
+      <a href="../articles/resample.html">[GER] Resampling data</a>
+    </li>
+    <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
@@ -116,6 +129,9 @@ will be expanded and a row added. See statstable_expand()" />
      
     Tutorial
   </a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -133,6 +149,7 @@ will be expanded and a row added. See statstable_expand()" />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -153,7 +170,7 @@ will be expanded and a row added. See statstable_expand()" />
 <li><p>usage of <code>default_statistic</code> and <code>_inputs_</code> can contain suprises in the result</p></li>
 </ul>
 
-    <p>All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
+<p>All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
 one statistic for one parameter with a basis interval ("from") and the target interval ("to"). The rows are then
 grouped with "from", then with "to" and then with "parameter". This results in a list of statistic for each
 parameter. This list is compatible with <code><a href='resample.html'>resample()</a></code>. If no <code>default_statistic</code> is defined,
@@ -166,7 +183,7 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
 
     <pre class="usage"><span class='fu'>calculate_statstable</span>(<span class='no'>data</span>, <span class='no'>statstable</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\\s*,\\s*"</span>,
   <span class='kw'>keep_input</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>))</pre>
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,7 +239,7 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
   <span class='st'>"PM10"</span>, <span class='st'>"n&gt;50"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>
 )
 
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,
                    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>)
@@ -263,19 +280,23 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

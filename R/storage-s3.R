@@ -2,7 +2,8 @@
 #'
 #' @description A s3 storage with flexible file format (default rds). The data format defines the data chunks
 #' per file. The data is cached locally. This local cache can be used as local storage. For performance enhancement it
-#' is recommended after acquiring all needed data from s3 to use the cache as local storage.
+#' is recommended after acquiring all needed data from s3 to use the cache as local storage. See [storage_local_rds()]
+#' for more Informations.
 #'
 #' @field name name of the store
 #' @field format data format of the store
@@ -14,6 +15,8 @@
 #' @field data_s3 s3 root key of all chunks
 #' @field content_path local path to the rds file containing statistics of store content
 #' @field content_s3 s3 object key to the rds file containing statistics of store content
+#' @field columns_path local path to the rds file containing the exact column types of the store content
+#' @field columns_s3 s3 object key to the rds file containing the exact column types of the store content
 #' @field meta_path local root of all meta data files
 #' @field meta_s3 s3 root key of all meta data files
 #' @field read.only flag for read.only usage of store. Default TRUE
@@ -144,6 +147,8 @@ r6_storage_s3 <- R6::R6Class(
     meta_s3 = NULL,
     content_path = NULL,
     content_s3 = NULL,
+    columns_path = NULL,
+    columns_s3 = NULL,
     read.only = TRUE,
     ext = NULL,
     read_function = NULL,
@@ -171,6 +176,8 @@ r6_storage_s3 <- R6::R6Class(
       self$data_s3 <- ifelse(is.null(prefix), "data", fs::path(prefix, "data"))
       self$content_path <- fs::path(path, "content", ext = ext)
       self$content_s3 <- ifelse(is.null(prefix), fs::path("content", ext = ext), fs::path(prefix, "content", ext = ext))
+      self$columns_path <- fs::path(self$path, "columns.rds")
+      self$columns_s3 <- ifelse(is.null(prefix), fs::path("columns.rds"), fs::path(prefix, "columns.rds"))
       self$meta_path <- fs::path(path, "meta")
       self$meta_s3 <- ifelse(is.null(prefix), "meta", fs::path(prefix, "meta"))
       self$read.only <- read.only
@@ -191,7 +198,8 @@ r6_storage_s3 <- R6::R6Class(
       }
 
       if (nrow(data) > 0) {
-        data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+        private$check_columns(data[0, ])  # not sure if this is a speedup or if should just pass the whole data frame
+        data <- dplyr::group_by(data, !!!self$format$chunk_calc, !!!rlang::syms(self$format$chunk_columns))
         data <- dplyr::group_split(data, keep = TRUE)
         res <- purrr::map(data, private$merge_chunk)
         bind_rows_with_factor_columns(!!!res)
@@ -272,14 +280,14 @@ r6_storage_s3 <- R6::R6Class(
     list_chunks = function() {
       #TODO cache list_chunks?
       chunks_s3 <- s3_list_objects(self$bucket, self$data_s3, Inf, fixEtag = TRUE, remove_folders = TRUE)
-      chunks_s3 <- dplyr::rename_all(chunks_s3, .funs = dplyr::funs(paste0("s3.", stringr::str_to_lower(., NULL))))
+      chunks_s3 <- dplyr::rename_all(chunks_s3, ~ paste0("s3.", stringr::str_to_lower(., NULL)))
       chunks_s3 <- dplyr::mutate(chunks_s3, chunk_name = fs::path_ext_remove(fs::path_rel(.data$s3.key, self$data_s3)),
                                  s3.size = fs::as_fs_bytes(.data$s3.size))
       chunks_s3 <- dplyr::select(chunks_s3, "chunk_name", "s3.key", "s3.lastmodified", "s3.etag", "s3.size")
 
       chunks_local <- fs::dir_info(self$data_path, recurse = TRUE, type = "file")
       chunks_local <- dplyr::select(chunks_local, "path", "modification_time", "size")
-      chunks_local <- dplyr::rename_all(chunks_local, .funs = dplyr::funs(paste0("local.", .)))
+      chunks_local <- dplyr::rename_all(chunks_local, ~ paste0("local.", .))
       chunks_local <- dplyr::mutate(chunks_local,
                                     chunk_name = fs::path_ext_remove(fs::path_rel(.data$local.path, self$data_path)))
       chunks <- dplyr::full_join(chunks_s3, chunks_local, by = "chunk_name")
@@ -352,9 +360,18 @@ r6_storage_s3 <- R6::R6Class(
       } else {
         warning("Store still alive: read.only store or wrong confirmation phrase")
       }
+    },
+    get_columns = function() {
+      if (is.null(private$columns)) {
+        if(isTRUE(private$download_file(self$columns_s3, self$columns_path))) {
+          private$columns <- readRDS(self$columns_path)
+        }
+      }
+      private$columns
     }
   ),
   private = list(
+    columns = NULL,
     # helper functions around aws.s3 functions to use with purrr
     s3_save = function(s3.key, local.path) {
       aws.s3::save_object(s3.key, file = local.path, bucket = self$bucket, region = self$region)
@@ -362,6 +379,25 @@ r6_storage_s3 <- R6::R6Class(
     s3_put = function(local.path, s3.key) {
       aws.s3::put_object(local.path, s3.key, self$bucket, region = self$region)
     },
+    check_columns = function(data) {
+      input_columns <- dplyr::mutate_if(data[0, ], is.factor, forcats::fct_drop)
+      store_columns <- self$get_columns()
+
+      if (is.null(store_columns)) {
+        message(sprintf("First put to storage. Save columns types to %s", self$columns_path))
+        saveRDS(input_columns, self$columns_path)
+        aws.s3::put_object(self$columns_path, self$columns_s3, self$bucket, region = self$region)
+        store_columns <- input_columns
+      }
+
+      msg <- dplyr::all_equal(store_columns, input_columns, ignore_col_order = FALSE, ignore_row_order = FALSE)
+      if(!isTRUE(msg)) {
+        stop(IncompatibleColumns(self$name, msg))
+      }
+      invisible(NULL)
+    },
+
+
     # check existance of object in s3 and compare with local version to save bandwidth
     download_file = function(s3.key, local.path) {
       resp <- aws.s3::head_object(s3.key, bucket = self$bucket, region = self$region)

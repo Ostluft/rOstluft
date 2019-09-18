@@ -176,8 +176,8 @@ r6_storage_s3 <- R6::R6Class(
       self$data_s3 <- ifelse(is.null(prefix), "data", fs::path(prefix, "data"))
       self$content_path <- fs::path(path, "content", ext = ext)
       self$content_s3 <- ifelse(is.null(prefix), fs::path("content", ext = ext), fs::path(prefix, "content", ext = ext))
-      self$columns_path <- fs::path(self$path, "columns", ext = ext)
-      self$columns_s3 <- ifelse(is.null(prefix), fs::path("columns", ext = ext), fs::path(prefix, "columns", ext = ext))
+      self$columns_path <- fs::path(self$path, "columns.rds")
+      self$columns_s3 <- ifelse(is.null(prefix), fs::path("columns.rds"), fs::path(prefix, "columns.rds"))
       self$meta_path <- fs::path(path, "meta")
       self$meta_s3 <- ifelse(is.null(prefix), "meta", fs::path(prefix, "meta"))
       self$read.only <- read.only
@@ -364,7 +364,7 @@ r6_storage_s3 <- R6::R6Class(
     get_columns = function() {
       if (is.null(private$columns)) {
         if(isTRUE(private$download_file(self$columns_s3, self$columns_path))) {
-          private$columns <- self$read_function(self$columns_path)
+          private$columns <- readRDS(self$columns_path)
         }
       }
       private$columns
@@ -385,7 +385,7 @@ r6_storage_s3 <- R6::R6Class(
 
       if (is.null(store_columns)) {
         message(sprintf("First put to storage. Save columns types to %s", self$columns_path))
-        self$write_function(input_columns, self$columns_path)
+        saveRDS(input_columns, self$columns_path)
         aws.s3::put_object(self$columns_path, self$columns_s3, self$bucket, region = self$region)
         store_columns <- input_columns
       }

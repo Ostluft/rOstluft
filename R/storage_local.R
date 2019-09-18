@@ -42,9 +42,6 @@
 #' The first `$put()` saves the column types of the data in a file. All subsequents `$put()` calls must have the exact
 #' same column types: same order and classes of columns.
 #'
-#'asdf
-#'
-#'
 #' @examples
 #' ## init store, creates directory if necessary
 #' format <- rOstluft::format_rolf()
@@ -152,8 +149,8 @@ r6_storage_local <- R6::R6Class(
     path = NULL,
     data_path = NULL,
     content_path = NULL,
-
-    columns_path = NULL,    meta_path = NULL,
+    columns_path = NULL,
+    meta_path = NULL,
     read.only = TRUE,
     ext = NULL,
     read_function = NULL,
@@ -175,7 +172,7 @@ r6_storage_local <- R6::R6Class(
       self$write_function <- write_function
       self$data_path <- fs::path(path, "data")
       self$content_path <- fs::path(self$path, "content", ext = ext)
-      self$columns_path <- fs::path(self$path, "columns", ext = ext)
+      self$columns_path <- fs::path(self$path, "columns.rds")
       self$meta_path <- fs::path(path, "meta")
       self$read.only <- read.only
 
@@ -305,7 +302,7 @@ r6_storage_local <- R6::R6Class(
     },
     get_columns = function() {
       if (is.null(private$columns) & fs::file_exists(self$columns_path)) {
-        private$columns <- self$read_function(self$columns_path)
+        private$columns <- readRDS(self$columns_path)
       }
       private$columns
     }
@@ -319,7 +316,7 @@ r6_storage_local <- R6::R6Class(
 
       if (is.null(store_columns)) {
         message(sprintf("First put to storage. Save columns types to %s", self$columns_path))
-        self$write_function(input_columns, self$columns_path)
+        saveRDS(input_columns, self$columns_path)
         store_columns <- input_columns
       }
 

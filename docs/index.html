@@ -6,9 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tools for handling air quality data by Ostluft • rOstluft</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Tools for handling air quality data by Ostluft">
 <meta property="og:description" content="This package provides function to quickly load 
     data and merge data from mulitple sources. ">
@@ -20,7 +27,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -58,6 +65,9 @@
       <a href="articles/articles/tutorial.html">[GER] Tutorial</a>
     </li>
     <li>
+      <a href="articles/resample.html">[GER] Resampling data</a>
+    </li>
+    <li>
       <a href="articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
@@ -68,6 +78,9 @@
      
     Tutorial
   </a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -86,12 +99,10 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
+      </header><div class="row">
+  <div class="contents col-md-9">
+
 <p><img src="reference/figures/logo.png" align="right"></p>
 <div id="rostluft" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -103,29 +114,29 @@
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>Der Quellcode von <a href="https://github.com/Ostluft/rOstluft">rOstluft</a> ist auf github gehosted. Die einfachste Variante ist die Installation mit Hilfe des Packages devtools:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co">#install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</a></code></pre></div>
 <p>Zusätzlich muss das Package <code>aws.s3</code> manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version veraltet ist:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a></code></pre></div>
 <p>Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github heruntergeladen werden (Clone or download &gt; Download as ZIP), entpackt und manuell installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.</p>
 <p>Zusätzlich besteht noch die Github Abhängkigkeit zu <a href="https://github.com/Ostluft/rOstluft.data">rOstluft.data</a>. Dieses Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft/archive/master.zip"</span>, <span class="st">"rOstluft-master.zip"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft.data/archive/master.zip"</span>, <span class="st">"rOstluft.data-master.zip"</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft/archive/master.zip"</span>, <span class="st">"rOstluft-master.zip"</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft.data/archive/master.zip"</span>, <span class="st">"rOstluft.data-master.zip"</span>)</a>
 <a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a>
 <a class="sourceLine" id="cb3-6" title="6"></a>
-<a class="sourceLine" id="cb3-7" title="7">deps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'dplyr'</span>, <span class="st">'tidyr'</span>, <span class="st">'lubridate'</span>, <span class="st">'R6'</span>, <span class="st">'rappdirs'</span>, <span class="st">'tibble'</span>, <span class="st">'base64url'</span>, <span class="st">'forcats'</span>,</a>
+<a class="sourceLine" id="cb3-7" title="7">deps &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'dplyr'</span>, <span class="st">'tidyr'</span>, <span class="st">'lubridate'</span>, <span class="st">'R6'</span>, <span class="st">'rappdirs'</span>, <span class="st">'tibble'</span>, <span class="st">'base64url'</span>, <span class="st">'forcats'</span>,</a>
 <a class="sourceLine" id="cb3-8" title="8">          <span class="st">'fs'</span>, <span class="st">'purrr'</span>, <span class="st">'readr'</span>, <span class="st">'stringr'</span>, <span class="st">'stringi'</span>, <span class="st">'sp'</span>, <span class="st">'rgdal'</span>, <span class="st">'rlang'</span>, <span class="st">'magrittr'</span>)</a>
 <a class="sourceLine" id="cb3-9" title="9"></a>
 <a class="sourceLine" id="cb3-10" title="10"><span class="cf">for</span> (p <span class="cf">in</span> deps) {</a>
-<a class="sourceLine" id="cb3-11" title="11">  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(p)</a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(p)</a>
 <a class="sourceLine" id="cb3-12" title="12">}</a>
 <a class="sourceLine" id="cb3-13" title="13"></a>
-<a class="sourceLine" id="cb3-14" title="14">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-15" title="15">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-14" title="14">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-15" title="15">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.</p>
 <p>Nach der Installation kann das Packages verwendet werden:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rOstluft)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rOstluft)</a></code></pre></div>
 </div>
 <div id="einrichten-entwicklungsumgebung" class="section level1">
 <h1 class="hasAnchor">
@@ -136,7 +147,7 @@
 <p>File &gt; New Project… &gt; Version Control &gt; Git &gt; Repository URL = <a href="https://github.com/Ostluft/rOstluft.git" class="uri">https://github.com/Ostluft/rOstluft.git</a></p>
 <p>Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole im Rstudio (wenn das Projekt geöffnet ist):</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">#install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb6-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_deps">install_dev_deps</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/install_deps.html">install_dev_deps</a></span>()</a></code></pre></div>
 </div>
 <div id="demo" class="section level1">
 <h1 class="hasAnchor">
@@ -148,6 +159,7 @@
 <a href="#plots" class="anchor"></a>Plots</h1>
 <p>Ein Package mit standartisierten Plots ist in Entwicklung als Package <a href="https://github.com/Ostluft/rOstluft.plot">rOstluft.plot</a></p>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -178,8 +190,7 @@
 </ul>
 </div>
 
-      </div>
-
+  </div>
 </div>
 
 
@@ -188,12 +199,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

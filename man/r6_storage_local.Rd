@@ -89,8 +89,6 @@ confirmation
 
 The first \code{$put()} saves the column types of the data in a file. All subsequents \code{$put()} calls must have the exact
 same column types: same order and classes of columns.
-
-asdf
 }
 
 \section{storage_local_tsv}{

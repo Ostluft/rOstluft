@@ -8,6 +8,13 @@
 
 <title>Imports directory into store — import_directory • rOstluft</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -16,13 +23,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,6 +56,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -91,6 +101,9 @@
       <a href="../articles/articles/tutorial.html">[GER] Tutorial</a>
     </li>
     <li>
+      <a href="../articles/resample.html">[GER] Resampling data</a>
+    </li>
+    <li>
       <a href="../articles/Technische_Entscheidungen.html">[GER] Technische Entscheidungen</a>
     </li>
   </ul>
@@ -101,6 +114,9 @@
      
     Tutorial
   </a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -118,6 +134,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -172,10 +189,10 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/format_rolf'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/r6_storage_local'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\vot\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
+    <pre class="examples"><div class='input'><span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/format_rolf.html'>format_rolf</a></span>()
+<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/r6_storage_local.html'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\vot\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
 
-<span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/import_directory'>import_directory</a></span>(<span class='no'>store</span>, <span class='no'>path</span>, <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/rOstluft/topics/read_airmo_csv'>read_airmo_csv</a></span>, <span class='kw'>glob</span> <span class='kw'>=</span> <span class='st'>"*Jan.csv"</span>)</div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.03 seconds. Got 2170 data points</span></div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/vot/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.04 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.04 seconds. Got 14116 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.08 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.10 seconds</span></div><div class='output co'>#&gt; <span class='message'>Finished import after 0.33 seconds</span></div><div class='input'>
+<span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/import_directory.html'>import_directory</a></span>(<span class='no'>store</span>, <span class='no'>path</span>, <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/rOstluft/man/read_airmo_csv.html'>read_airmo_csv</a></span>, <span class='kw'>glob</span> <span class='kw'>=</span> <span class='st'>"*Jan.csv"</span>)</div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.03 seconds. Got 2170 data points</span></div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/vot/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.04 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.09 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.08 seconds</span></div><div class='output co'>#&gt; <span class='message'>Finished import after 0.32 seconds</span></div><div class='input'>
 <span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 108 x 6</span><span>
 #&gt;     year interval site                    parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
@@ -204,19 +221,23 @@
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

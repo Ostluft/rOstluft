@@ -75,11 +75,11 @@ meta_apply <- function(data, meta, data_src, data_dest, meta_key, meta_val, mode
   }
 
   # more checks needed like data_src, data_dest, meta_key, meta_val are characters?
-  if (!(tibble::is.tibble(data) && tibble::has_name(data, data_src) && tibble::has_name(data, data_dest))) {
+  if (!(tibble::is_tibble(data) && tibble::has_name(data, data_src) && tibble::has_name(data, data_dest))) {
     stop("data must be a tibble and has the columns %s, %s", data_src, data_dest)
   }
 
-  if (!(tibble::is.tibble(meta) && tibble::has_name(meta, meta_key) && tibble::has_name(meta, meta_val))) {
+  if (!(tibble::is_tibble(meta) && tibble::has_name(meta, meta_key) && tibble::has_name(meta, meta_val))) {
     stop("data must be a tibble and has the columns %s, %s", meta_key, meta_val)
   }
 

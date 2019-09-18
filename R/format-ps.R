@@ -58,16 +58,16 @@ r6_format_ps <- R6::R6Class(
     value_column = "value",
     serie_columns = c("site", "parameter", "unit"),
     chunk_columns = c("site"),
-    chunk_calc = character(),
+    chunk_calc = rlang::quos(),
     unique_columns = c("starttime", "endtime", "site", "parameter", "unit"),
     # content columns should probably contain chunk_calc names,
     content_columns = NULL,
     tz = NULL,
     initialize = function(tz = "Etc/GMT-1") {
       self$tz <- tz
-      self$content_columns <- c(
-        "year" = rlang::parse_expr(sprintf("lubridate::year(lubridate::with_tz(starttime, '%s'))", tz)),
-        "site", "parameter", "unit"
+      self$content_columns <- rlang::quos(
+        year = lubridate::year(lubridate::with_tz(starttime, tz)),
+        site, parameter, unit
       )
     },
     sort = function(data, na.rm = TRUE) {

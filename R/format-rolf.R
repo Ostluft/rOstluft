@@ -62,8 +62,7 @@ r6_format_rolf <- R6::R6Class(
     tz = NULL,
     initialize = function(tz = "Etc/GMT-1") {
       self$tz <- tz
-      year_expr <- rlang::parse_expr(sprintf("lubridate::year(lubridate::with_tz(starttime, '%s'))", tz))
-      self$chunk_calc <- list(year = year_expr)
+      self$chunk_calc <- rlang::quos(year = lubridate::year(lubridate::with_tz(starttime, tz)))
       self$unique_columns <- c(self$index, self$serie_columns)
     },
     sort = function(data, na.rm = TRUE) {

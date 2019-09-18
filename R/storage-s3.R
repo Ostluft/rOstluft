@@ -199,7 +199,7 @@ r6_storage_s3 <- R6::R6Class(
 
       if (nrow(data) > 0) {
         private$check_columns(data[0, ])  # not sure if this is a speedup or if should just pass the whole data frame
-        data <- dplyr::group_by(data, .dots = c(self$format$chunk_calc, self$format$chunk_columns))
+        data <- dplyr::group_by(data, !!!self$format$chunk_calc, !!!rlang::syms(self$format$chunk_columns))
         data <- dplyr::group_split(data, keep = TRUE)
         res <- purrr::map(data, private$merge_chunk)
         bind_rows_with_factor_columns(!!!res)

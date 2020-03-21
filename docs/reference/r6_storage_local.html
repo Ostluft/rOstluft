@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Local storage — r6_storage_local" />
 
+<meta property="og:title" content="Local storage — r6_storage_local" />
 <meta property="og:description" content="A local storage with flexible file format (default rds). The data format defines the data chunks
 per file." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -76,7 +78,7 @@ per file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -120,7 +122,6 @@ per file." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -147,17 +148,20 @@ per file." />
     </div>
 
     <div class="ref-description">
-    
     <p>A local storage with flexible file format (default rds). The data format defines the data chunks
 per file.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>storage_local_rds</span>(<span class='no'>name</span>, <span class='no'>format</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>storage_local_tsv</span>(<span class='no'>name</span>, <span class='no'>format</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>)</pre>
-    
+<span class='fu'>storage_local_tsv</span>(
+  <span class='no'>name</span>,
+  <span class='no'>format</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -184,12 +188,11 @@ Defaults to <a href='https://rdrr.io/pkg/rappdirs/man/user_data_dir.html'>rappdi
 the input data has the same time zone. Default "Etc/GMT-1"</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>R6 class object of r6_storage_local</p>
 <p>R6 class object of r6_storage_local</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -218,7 +221,6 @@ the input data has the same time zone. Default "Etc/GMT-1"</p></td>
 <dt><code>write_function</code></dt><dd><p>function(object, file) for writing chunks to disk. Default <code><a href='https://rdrr.io/r/base/readRDS.html'>base::saveRDS()</a></code></p></dd>
 
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -236,7 +238,6 @@ specified key.</p>
 <p><code>$fix_content()</code> generates the content file from the data files</p>
 <p><code>$destroy(confirmation)</code> removes all files under path from the file system if "DELETE" is supplied as
 confirmation</p>
-    
     <h2 class="hasAnchor" id="column-types"><a class="anchor" href="#column-types"></a>Column Types</h2>
 
     
@@ -244,7 +245,6 @@ confirmation</p>
 
 <p>The first <code>$put()</code> saves the column types of the data in a file. All subsequents <code>$put()</code> calls must have the exact
 same column types: same order and classes of columns.</p>
-    
     <h2 class="hasAnchor" id="storage-local-tsv"><a class="anchor" href="#storage-local-tsv"></a>storage_local_tsv</h2>
 
     
@@ -252,17 +252,16 @@ same column types: same order and classes of columns.</p>
 
 <p>This Storage is mainly for debugging purpose or sharing data with another scripting/programming language.
 <em>Warning</em>: Slow and doesn't support logical data type.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## init store, creates directory if necessary</span>
 <span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/format_rolf.html'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/r6_storage_local.html'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\vot\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'>
+<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/r6_storage_local.html'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\tom\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'>
 <span class='co'>## read data from airmo export und put into the store</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_2010-2014.csv"</span>,
                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft/man/read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>)
-<span class='no'>store</span>$<span class='fu'>put</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/vot/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 70 x 6</span><span>
+<span class='no'>store</span>$<span class='fu'>put</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 70 x 6</span><span>
 #&gt;     year interval site                    parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 min30    Zch_Stampfenbachstrasse CO        mg/m3 </span><span style='text-decoration: underline;'>17</span><span>290
@@ -366,13 +365,13 @@ same column types: same order and classes of columns.</p>
 <span class='no'>store</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 7</span><span>
 #&gt;   chunk_name   interval site   year  local.path   local.modification~ local.size
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWluM~ min30    Zch_R~ 2013  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:39</span><span>    214.33K
-#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWluM~ min30    Zch_R~ 2014  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:39</span><span>    862.51K
-#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWluM~ min30    Zch_S~ 2014  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:38</span><span>      1.36M
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWluM~ min30    Zch_S~ 2010  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:36</span><span>      1.35M
-#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWluM~ min30    Zch_S~ 2011  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:37</span><span>      1.35M
-#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWluM~ min30    Zch_S~ 2012  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:37</span><span>      1.36M
-#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWluM~ min30    Zch_S~ 2013  C:/Users/vo~ 2019-09-18 </span><span style='color: #555555;'>14:31:38</span><span>      1.36M</div><div class='input'>
+#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWluM~ min30    Zch_R~ 2013  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:48</span><span>    214.32K
+#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWluM~ min30    Zch_R~ 2014  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:49</span><span>    862.51K
+#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWluM~ min30    Zch_S~ 2014  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:48</span><span>      1.36M
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWluM~ min30    Zch_S~ 2010  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:45</span><span>      1.35M
+#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWluM~ min30    Zch_S~ 2011  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:46</span><span>      1.35M
+#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWluM~ min30    Zch_S~ 2012  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:46</span><span>      1.36M
+#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWluM~ min30    Zch_S~ 2013  C:/Users/to~ 2020-03-21 </span><span style='color: #555555;'>21:43:47</span><span>      1.36M</div><div class='input'>
 <span class='co'>## destroy store (careful removes all files on the disk)</span>
 <span class='no'>store</span>$<span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
 ## missing examples for meta functions
@@ -383,17 +382,11 @@ same column types: same order and classes of columns.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#column-types">Column Types</a></li>
-
       <li><a href="#storage-local-tsv">storage_local_tsv</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -407,7 +400,7 @@ same column types: same order and classes of columns.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

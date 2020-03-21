@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Customize concentration conversion — convert_get_R" />
 
+<meta property="og:title" content="Customize concentration conversion — convert_get_R" />
 <meta property="og:description" content="Converting between volume and mass concentrations isn't as straightforward as you may think. The molar gas constant
 is a natur constant. As such is subject to changes if more accurate measurements are avaible.
 CODATA is a comittee appointed to
@@ -53,9 +55,9 @@ CODATA 2014  8.3144598
 Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
 customization of all used constants for the conversion. In the example is showed how to use the CODATA 2014 value
 for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) to the conversions." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -86,7 +88,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -130,7 +132,6 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -157,7 +158,6 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
     </div>
 
     <div class="ref-description">
-    
     <p>Converting between volume and mass concentrations isn't as straightforward as you may think. The molar gas constant
 is a natur constant. As such is subject to changes if more accurate measurements are avaible.
 <a href='http://www.codata.org/committees-and-groups/fundamental-physical-constants'>CODATA</a> is a comittee appointed to
@@ -170,7 +170,6 @@ CODATA 2014  8.3144598
 <p>Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
 customization of all used constants for the conversion. In the example is showed how to use the CODATA 2014 value
 for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) to the conversions.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>convert_get_R</span>()
@@ -184,7 +183,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
 <span class='fu'>convert_get_conc_lookup</span>()
 
 <span class='fu'>convert_set_conc_lookup</span>(<span class='no'>lookup</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -201,11 +200,10 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
       <td><p>new lookup table. For Details see section Lookup Table or examples</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The constants for R, mol masses or the lookup table for conversions</p>
-    
     <h2 class="hasAnchor" id="lookup-table"><a class="anchor" href="#lookup-table"></a>Lookup Table</h2>
 
     
@@ -215,7 +213,6 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
 from, to and FUN. The <code><a href='conversion_conc_fun_factory.html'>conversion_conc_fun_factory()</a></code> uses this lookup table to create a partial function from FUN.
 The partial function gets the mol mass (as mol_mass) of the parameter and all ... arguments applied as named
 arguments. This allows to change the default values of <code><a href='mass_to_parts.html'>mass_to_parts()</a></code> and <code><a href='parts_to_mass.html'>parts_to_mass()</a></code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -226,7 +223,6 @@ arguments. This allows to change the default values of <code><a href='mass_to_pa
 <li><p><code><a href='https://purrr.tidyverse.org/reference/partial.html'>purrr::partial()</a></code></p></li>
 </ul>
 </div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Update molar mas constant R to CODATA 2014 value</span>
@@ -265,13 +261,9 @@ arguments. This allows to change the default values of <code><a href='mass_to_pa
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#lookup-table">Lookup Table</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -285,7 +277,7 @@ arguments. This allows to change the default values of <code><a href='mass_to_pa
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

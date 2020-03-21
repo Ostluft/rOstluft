@@ -4,8 +4,14 @@
 \alias{openair_to_rolf}
 \title{Converts data from openair format to rolf}
 \usage{
-openair_to_rolf(data, site = NULL, interval = NULL, units = NULL,
-  ws = "WVv", wd = "WD")
+openair_to_rolf(
+  data,
+  site = NULL,
+  interval = NULL,
+  units = NULL,
+  ws = "WVv",
+  wd = "WD"
+)
 }
 \arguments{
 \item{data}{in openair format}

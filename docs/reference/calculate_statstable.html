@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Calculates stats described in a table — calculate_statstable" />
 
+<meta property="og:title" content="Calculates stats described in a table — calculate_statstable" />
 <meta property="og:description" content="Calculate a lot of statistics defined in a table with various caveats:
 series always padded to complete years
 the same data threshold for all calculations
@@ -57,9 +59,9 @@ default_statistic = &quot;drop&quot; is added. Multi-step statistics are possibl
 default_statistic in multi-step calculation if the input in &quot;from&quot; already contains calculated statistics.
 The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
 will be expanded and a row added. See statstable_expand()" />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -90,7 +92,7 @@ will be expanded and a row added. See statstable_expand()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -134,7 +136,6 @@ will be expanded and a row added. See statstable_expand()" />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -161,7 +162,6 @@ will be expanded and a row added. See statstable_expand()" />
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate a lot of statistics defined in a table with various caveats:</p><ul>
 <li><p>series always padded to complete years</p></li>
 <li><p>the same data threshold for all calculations</p></li>
@@ -178,13 +178,18 @@ parameter. This list is compatible with <code><a href='resample.html'>resample()
 <code>default_statistic</code> in multi-step calculation if the input in "from" already contains calculated statistics.
 The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
 will be expanded and a row added. See <code><a href='statstable_expand.html'>statstable_expand()</a></code></p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_statstable</span>(<span class='no'>data</span>, <span class='no'>statstable</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\\s*,\\s*"</span>,
-  <span class='kw'>keep_input</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>))</pre>
-    
+    <pre class="usage"><span class='fu'>calculate_statstable</span>(
+  <span class='no'>data</span>,
+  <span class='no'>statstable</span>,
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\\s*,\\s*"</span>,
+  <span class='kw'>keep_input</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>)
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -217,11 +222,10 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
       <td><p>defines the order of calculation in the from column</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>list with one item for every to interval</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># calculate LRV statisitcs</span>
@@ -271,9 +275,7 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -287,7 +289,7 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

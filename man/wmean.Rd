@@ -4,8 +4,14 @@
 \alias{wmean}
 \title{Calculates weighted arithmetic means of irregular data series}
 \usage{
-wmean(data, ..., starttime = "starttime", endtime = "endtime",
-  value = "value", interval = "h1")
+wmean(
+  data,
+  ...,
+  starttime = "starttime",
+  endtime = "endtime",
+  value = "value",
+  interval = "h1"
+)
 }
 \arguments{
 \item{data}{data.frame for averaging; df has to be in long format and contain a start- and end-time
@@ -24,7 +30,7 @@ weighted means (e.g. for different measurement parameters). Columns not explicit
 }
 \value{
 tibble with the starttime, endtime, value and grouping columns and additional the column "n" containing the
-sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100\%)
+sum of weighted intervals within the averaged time interval (data availability in interval, 1 = 100\\%)
 }
 \description{
 Sometimes records (e.g. measurements from passive samplers or miniDOAS) provide values representative irregular time

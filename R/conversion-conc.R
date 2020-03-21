@@ -69,7 +69,7 @@ conversion_conc_fun_factory <- function(parameter, from, to, ...)  {
 #'                      package = "rOstluft.data", mustWork = TRUE)
 #'
 #' airmo_min30 <- read_airmo_csv(min30)
-#' convert_conc(airmo_min30, "NO", "µg/m3", "ppb", method = "return")
+#' convert_conc(airmo_min30, "NO", "\u00b5g/m3", "ppb", method = "return")
 #'
 convert_conc <- function(data, parameter, from, to, method = "return", ...) {
   FUN <- conversion_conc_fun_factory(parameter, from, to, ...)  # always call the factory to be sure we throw an error
@@ -112,10 +112,10 @@ convert_conc <- function(data, parameter, from, to, method = "return", ...) {
 #' conversions <- tibble::tribble(
 #'   ~parameter, ~from, ~to,
 #'   "CO", "ppm", "mg/m3",
-#'   "NO", "ppb", "µg/m3",
-#'   "O3", "ppb", "µg/m3",
-#'   "NO2", "ppb", "µg/m3",
-#'   "SO2", "ppb", "µg/m3"
+#'   "NO", "ppb", "\u00b5g/m3",
+#'   "O3", "ppb", "\u00b5g/m3",
+#'   "NO2", "ppb", "\u00b5g/m3",
+#'   "SO2", "ppb", "\u00b5g/m3"
 #' )
 #'
 #' min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",

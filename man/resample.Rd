@@ -4,10 +4,19 @@
 \alias{resample}
 \title{Resampling data}
 \usage{
-resample(data, statistic = "mean", new_interval, data_thresh = NULL,
-  max_gap = NULL, rename_parameter = TRUE, percentile = 0.95,
-  skip_padding = FALSE, start_date = NULL, end_date = NULL,
-  drop_last = FALSE)
+resample(
+  data,
+  statistic = "mean",
+  new_interval,
+  data_thresh = NULL,
+  max_gap = NULL,
+  rename_parameter = TRUE,
+  percentile = 0.95,
+  skip_padding = FALSE,
+  start_date = NULL,
+  end_date = NULL,
+  drop_last = FALSE
+)
 }
 \arguments{
 \item{data}{A tibble in rOstluft long format}
@@ -70,8 +79,8 @@ The statistical method is a function with a numeric vector as argument and retur
 \item \code{"n"} number of valid records, renames parameter, changes unit
 \item \code{"coverage"} percentage of valid records, renames parameter, changes unit
 \item \code{"percentile"} calculates the percentile. Use the argument percentile to specify the level, renames parameter
-\item \code{"perc95"} 95% percentile, renames parameter
-\item \code{"perc98"} 98% percentile, renames parameter
+\item \code{"perc95"} 95\% percentile, renames parameter
+\item \code{"perc98"} 98\% percentile, renames parameter
 \item \code{"n>8"} number of values > 8 (CO d1 limit), renames parameter, changes unit
 \item \code{"n>50"} number of values > 50 (PM10 d1 limit), renames parameter, changes unit
 \item \code{"n>65"} number of values > 65 (O3 d1 indicator), renames parameter, changes unit

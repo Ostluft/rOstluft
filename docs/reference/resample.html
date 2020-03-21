@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Resampling data — resample" />
 
+<meta property="og:title" content="Resampling data — resample" />
 <meta property="og:description" content="Aggregate data by different time periods. Following this simple steps:
 split data in series
 pad data serie (needed for calculation of capture threshold, detection of gaps)
@@ -53,9 +55,9 @@ combine resampled series
 It is possible to supply different methods for different parameters. The argument statistic can be named list. The
 name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
 methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -86,7 +88,7 @@ methods renames the parameter and changes the unit. A list of method names can o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -130,7 +132,6 @@ methods renames the parameter and changes the unit. A list of method names can o
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -157,7 +158,6 @@ methods renames the parameter and changes the unit. A list of method names can o
     </div>
 
     <div class="ref-description">
-    
     <p>Aggregate data by different time periods. Following this simple steps:</p><ul>
 <li><p>split data in series</p><ul>
 <li><p>pad data serie (needed for calculation of capture threshold, detection of gaps)</p></li>
@@ -170,14 +170,22 @@ methods renames the parameter and changes the unit. A list of method names can o
 <p>It is possible to supply different methods for different parameters. The argument statistic can be named list. The
 name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
 methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>resample</span>(<span class='no'>data</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>new_interval</span>, <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rename_parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>skip_padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>resample</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+  <span class='no'>new_interval</span>,
+  <span class='kw'>data_thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rename_parameter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>skip_padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>drop_last</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -232,11 +240,10 @@ See section Statistical methods and examples</p></td>
 provided and max date != ceiled max date.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble with resampled data</p>
-    
     <h2 class="hasAnchor" id="statistical-methods"><a class="anchor" href="#statistical-methods"></a>Statistical methods</h2>
 
     
@@ -251,8 +258,8 @@ provided and max date != ceiled max date.</p></td>
 <li><p><code>"n"</code> number of valid records, renames parameter, changes unit</p></li>
 <li><p><code>"coverage"</code> percentage of valid records, renames parameter, changes unit</p></li>
 <li><p><code>"percentile"</code> calculates the percentile. Use the argument percentile to specify the level, renames parameter</p></li>
-<li><p><code>"perc95"</code> 95<!-- % percentile, renames parameter --></p></li>
-<li><p><code>"perc98"</code> 98<!-- % percentile, renames parameter --></p></li>
+<li><p><code>"perc95"</code> 95% percentile, renames parameter</p></li>
+<li><p><code>"perc98"</code> 98% percentile, renames parameter</p></li>
 <li><p><code>"n&gt;8"</code> number of values &gt; 8 (CO d1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;50"</code> number of values &gt; 50 (PM10 d1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;65"</code> number of values &gt; 65 (O3 d1 indicator), renames parameter, changes unit</p></li>
@@ -266,7 +273,6 @@ provided and max date != ceiled max date.</p></td>
 <li><p><code>"drop"</code> drops the parameter from the result, useful for persons too lazy to filter the input data</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="wind"><a class="anchor" href="#wind"></a>Wind</h2>
 
     
@@ -275,7 +281,6 @@ provided and max date != ceiled max date.</p></td>
 data it is necessary to specify three parameters with the methods <code>"wind.direction"</code>, <code>"wind.speed_vector"</code> and
 <code>"wind.speed_scalar"</code>. Even if scalar or vector speed isn't present. The parameter will be substituted by the other.</p>
 <p>Important: Wind calculation are standalone. It is possible to calculate multiple methods for non wind parameters.</p>
-    
     <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
 
     
@@ -285,7 +290,6 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 <li><p>some from https://github.com/davidcarslaw/openair/blob/master/R/aqStats.R?</p></li>
 </ul>
 
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>min30</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,
@@ -358,15 +362,10 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#statistical-methods">Statistical methods</a></li>
-
       <li><a href="#wind">Wind</a></li>
-
       <li><a href="#todo">TODO</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -380,7 +379,7 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

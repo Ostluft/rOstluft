@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,14 +41,14 @@
 
 
 
-<meta property="og:title" content="rOstluft long format (rolf) — format_rolf" />
 
+<meta property="og:title" content="rOstluft long format (rolf) — format_rolf" />
 <meta property="og:description" content="Data format for storing air quality data. A Serie is the combination of measurement site, interval,
 parameter and unit.
 The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters" />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -77,7 +79,7 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -121,7 +123,6 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -148,15 +149,13 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
     </div>
 
     <div class="ref-description">
-    
     <p>Data format for storing air quality data. A Serie is the combination of measurement site, interval,
 parameter and unit.</p>
 <p>The data is chunked in year of measurement, site and interval. Base64 encoding is used to avoid invalid characters</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>format_rolf</span>(<span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -165,11 +164,10 @@ parameter and unit.</p>
       <td><p>time zone used for chunking.  Default Etc/GMT-1</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>R6 class object of format_rolf</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
@@ -191,7 +189,6 @@ parameter and unit.</p>
 2018-01-01T00:00:00+0100 = 2018, 2017-12-31T23:00:00+0000 = 2017</p></dd>
 
 </dl>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -205,29 +202,23 @@ parameter and unit.</p>
 <p><code>$decode_chunk_name(chunk_name)</code> returns decoded chunk_name in tibble as columns (chunk_name, interval, site, year)</p>
 <p><code>$destroy(confirmation)</code> removes all files under path from the file system if "DELETE" is supplied as
 confirmation</p>
-    
     <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
 
     
 
 
 <p>Update Documentation is outdated</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#methods">Methods</a></li>
-
       <li><a href="#todo">TODO</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
@@ -239,7 +230,7 @@ confirmation</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

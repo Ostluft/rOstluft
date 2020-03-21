@@ -6,8 +6,14 @@
 \alias{storage_s3_rds}
 \title{s3 storage}
 \usage{
-storage_s3_rds(name, format, bucket, prefix = NULL, region = NULL,
-  read.only = TRUE)
+storage_s3_rds(
+  name,
+  format,
+  bucket,
+  prefix = NULL,
+  region = NULL,
+  read.only = TRUE
+)
 }
 \arguments{
 \item{name}{name of the store}
@@ -74,30 +80,30 @@ for more Informations.
 \section{Methods}{
 
 
-\code{$get(filter=NULL, ...)} get data from the store. The name of the arguments depend on the format. The filter
+\verb{$get(filter=NULL, ...)} get data from the store. The name of the arguments depend on the format. The filter
 argument is applied to each chunk.
 
-\code{$download(...)} downloads data from s3 to the local cache. The dots arguments are used to filter the output of
+\verb{$download(...)} downloads data from s3 to the local cache. The dots arguments are used to filter the output of
 list_chunks(). Only the matching rows will be downloaded.
 
-\code{$put(data)} puts the data into the store. Stops if store is read only
+\verb{$put(data)} puts the data into the store. Stops if store is read only
 
-\code{$upload()} uploads content, meta data and all new and changed chunks to the s3 storage. For big additions to the
+\verb{$upload()} uploads content, meta data and all new and changed chunks to the s3 storage. For big additions to the
 store the recommend way is to use a local storage to modify the cache and use this function to apply the change.
 
-\code{$get_content()} returns a tibble with the amount of data points per chunk per series
+\verb{$get_content()} returns a tibble with the amount of data points per chunk per series
 
-\code{$list_chunks()} get list of all chunks in s3 and local
+\verb{$list_chunks()} get list of all chunks in s3 and local
 
-\code{$get_meta(key=NULL)} get meta data. If key is omitted returns all the content of all files in a named list of
+\verb{$get_meta(key=NULL)} get meta data. If key is omitted returns all the content of all files in a named list of
 tibbles, with the file name without extension as name. If key is supplied as argument only the list contains only the
 specified key.
 
-\code{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
+\verb{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
 
-\code{$get_local_storage()} returns a storage to work with the cached data like a local storage
+\verb{$get_local_storage()} returns a storage to work with the cached data like a local storage
 
-\code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
+\verb{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
 }
 

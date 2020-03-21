@@ -4,9 +4,15 @@
 \alias{calculate_statstable}
 \title{Calculates stats described in a table}
 \usage{
-calculate_statstable(data, statstable, sep = "\\\\s*,\\\\s*",
-  keep_input = FALSE, data_thresh = 0.8, max_gap = 10,
-  order = c("input", "h1", "h8gl", "d1", "m1", "y1"))
+calculate_statstable(
+  data,
+  statstable,
+  sep = "\\\\s*,\\\\s*",
+  keep_input = FALSE,
+  data_thresh = 0.8,
+  max_gap = 10,
+  order = c("input", "h1", "h8gl", "d1", "m1", "y1")
+)
 }
 \arguments{
 \item{data}{input data in rolf format}
@@ -33,14 +39,14 @@ Calculate a lot of statistics defined in a table with various caveats:
 \item the same data threshold for all calculations
 \item to h8gl: only mean from h1
 \item max_gap only by to y1, and definition in \strong{days}
-\item usage of \code{default_statistic} and \code{_inputs_} can contain suprises in the result
+\item usage of \code{default_statistic} and \verb{_inputs_} can contain suprises in the result
 }
 
 All statistics are defined in a table with the columns "parameter", "statistic", "from" and "to". Each row contains
 one statistic for one parameter with a basis interval ("from") and the target interval ("to"). The rows are then
 grouped with "from", then with "to" and then with "parameter". This results in a list of statistic for each
 parameter. This list is compatible with \code{resample()}. If no \code{default_statistic} is defined,
-\code{default_statistic = "drop"} is added. Multi-step statistics are possible. \code{_inputs_} can be used as substitute for
+\code{default_statistic = "drop"} is added. Multi-step statistics are possible. \verb{_inputs_} can be used as substitute for
 \code{default_statistic} in multi-step calculation if the input in "from" already contains calculated statistics.
 The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
 will be expanded and a row added. See \code{statstable_expand()}

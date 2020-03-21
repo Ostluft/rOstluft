@@ -41,19 +41,19 @@ The data is chunked in year of measurement, site and interval. Base64 encoding i
 \section{Methods}{
 
 
-\code{$sort(data)}
+\verb{$sort(data)}
 
-\code{$merge(new_data, old_data)}
+\verb{$merge(new_data, old_data)}
 
-\code{$chunk_name(chunk_data)} returns the chunkname based on the first row of the supplied data
+\verb{$chunk_name(chunk_data)} returns the chunkname based on the first row of the supplied data
 
-\code{$get_chunk_names(interval, site, year)} returns encoded chunknames for all combinations of the supplied vectors
+\verb{$get_chunk_names(interval, site, year)} returns encoded chunknames for all combinations of the supplied vectors
 
-\code{$encode_chunk_name(interval, site, year)} returns encoded chunkname
+\verb{$encode_chunk_name(interval, site, year)} returns encoded chunkname
 
-\code{$decode_chunk_name(chunk_name)} returns decoded chunk_name in tibble as columns (chunk_name, interval, site, year)
+\verb{$decode_chunk_name(chunk_name)} returns decoded chunk_name in tibble as columns (chunk_name, interval, site, year)
 
-\code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
+\verb{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
 }
 

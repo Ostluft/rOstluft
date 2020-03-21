@@ -73,17 +73,17 @@ parts_to_mass_partial <- purrr::partial(parts_to_mass, pressure = 1013.25)
 lookup <- tibble::tribble(
   ~parameter, ~from, ~to, ~FUN,
   "CO", "ppm", "mg/m3", parts_to_mass_partial,
-  "NO", "ppb", "\\u00b5g/m3", parts_to_mass_partial,
-  "O3", "ppb", "\\u00b5g/m3", parts_to_mass_partial,
-  "NO2", "ppb", "\\u00b5g/m3", parts_to_mass_partial,
-  "SO2", "ppb", "\\u00b5g/m3", parts_to_mass_partial,
+  "NO", "ppb", "\u00b5g/m3", parts_to_mass_partial,
+  "O3", "ppb", "\u00b5g/m3", parts_to_mass_partial,
+  "NO2", "ppb", "\u00b5g/m3", parts_to_mass_partial,
+  "SO2", "ppb", "\u00b5g/m3", parts_to_mass_partial,
   "CO", "mg/m3", "ppm", mass_to_parts_partial,
-  "NO", "\\u00b5g/m3", "ppb", mass_to_parts_partial,
-  "O3", "\\u00b5g/m3", "ppb", mass_to_parts_partial,
-  "NO2", "\\u00b5g/m3", "ppb", mass_to_parts_partial,
-  "SO2", "\\u00b5g/m3", "ppb", mass_to_parts_partial,
-  "NH3", "\\u00b5g/m3", "ppb", mass_to_parts_partial,
-  "NH3", "ppb", "\\u00b5g/m3", parts_to_mass_partial,
+  "NO", "\u00b5g/m3", "ppb", mass_to_parts_partial,
+  "O3", "\u00b5g/m3", "ppb", mass_to_parts_partial,
+  "NO2", "\u00b5g/m3", "ppb", mass_to_parts_partial,
+  "SO2", "\u00b5g/m3", "ppb", mass_to_parts_partial,
+  "NH3", "\u00b5g/m3", "ppb", mass_to_parts_partial,
+  "NH3", "ppb", "\u00b5g/m3", parts_to_mass_partial,
 )
 
 convert_set_conc_lookup(lookup)

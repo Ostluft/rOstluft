@@ -1,3 +1,21 @@
+check_usage_package <- function() {
+  devtools::load_all(".")
+  codetools::checkUsagePackage(desc::desc_get("Package"))
+}
+
+check_examples <- function() {
+  devtools::run_examples()
+}
+
+build_documentation <- function() {
+  devtools::document()
+  devtools::install(quick = TRUE, reload = TRUE, dependencies = FALSE)
+  gh_md <- rmarkdown::github_document(html_preview = FALSE, toc = FALSE)
+  rmarkdown::render("README.Rmd", gh_md, encoding = "UTF-8")
+  #fs::file_delete("README.html")
+  pkgdown::clean_site()
+  pkgdown::build_site()
+}
 
 prepare_release <- function() {
   bump_ <- function(x, ver) {
@@ -37,7 +55,7 @@ prepare_release <- function() {
   )
 
   if (choice == 2) {
-    devtools::check()
+    devtools::check(encoding = "UTF-8")
   }
 
   choice <- utils::menu(
@@ -49,7 +67,7 @@ prepare_release <- function() {
   )
 
   if (choice == 2) {
-    devtools::install(quick = TRUE, reload = TRUE, dependencies = FALSE)
+    devtools::document()
     devtools::install(quick = TRUE, reload = TRUE, dependencies = FALSE)
     gh_md <- rmarkdown::github_document(html_preview = FALSE, toc = FALSE)
     rmarkdown::render("README.Rmd", gh_md, encoding = "UTF-8")

@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Converts data from rolf format to an openair compatible Format — rolf_to_openair" />
 
+<meta property="og:title" content="Converts data from rolf format to an openair compatible Format — rolf_to_openair" />
 <meta property="og:description" content="openair::openair provides Tools for the analysis of air pollution data. rOstluft focus lies in providing data
 from different sources to the user. The openair data format is described in openair::mydata. Basically it is a
 wide format with a field &quot;date&quot; as POSIXct or Date and the parameters as columns. Another convention are the fields
@@ -49,9 +51,9 @@ wind fields with the arguments wd and ws. One disadvantage of the wide format is
 Normally all parameters are in expressed in mass terms. See openair::importKCL() and openair::importAURN().
 This functions saves the parameter &amp;lt;&amp;gt; unit information in the attribute &quot;units&quot;. unfortunately attributes tend to be
 lost by data wrangling functions. But an avid user might save the information." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -82,7 +84,7 @@ lost by data wrangling functions. But an avid user might save the information." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -126,7 +128,6 @@ lost by data wrangling functions. But an avid user might save the information." 
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -153,7 +154,6 @@ lost by data wrangling functions. But an avid user might save the information." 
     </div>
 
     <div class="ref-description">
-    
     <p><a href='https://rdrr.io/pkg/openair/man/openair.html'>openair::openair</a> provides Tools for the analysis of air pollution data. rOstluft focus lies in providing data
 from different sources to the user. The openair data format is described in <a href='https://rdrr.io/pkg/openair/man/mydata.html'>openair::mydata</a>. Basically it is a
 wide format with a field "date" as POSIXct or Date and the parameters as columns. Another convention are the fields
@@ -162,12 +162,18 @@ wind fields with the arguments wd and ws. One disadvantage of the wide format is
 Normally all parameters are in expressed in mass terms. See <code><a href='https://rdrr.io/pkg/openair/man/importKCL.html'>openair::importKCL()</a></code> and <code><a href='https://rdrr.io/pkg/openair/man/importAURN.html'>openair::importAURN()</a></code>.
 This functions saves the parameter &lt;&gt; unit information in the attribute "units". unfortunately attributes tend to be
 lost by data wrangling functions. But an avid user might save the information.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>rolf_to_openair</span>(<span class='no'>data</span>, <span class='kw'>as_list</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>keep_ppb</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ws</span> <span class='kw'>=</span> <span class='st'>"WVv"</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"WD"</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>rolf_to_openair</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>as_list</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>keep_ppb</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ws</span> <span class='kw'>=</span> <span class='st'>"WVv"</span>,
+  <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"WD"</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -202,17 +208,15 @@ When FALSE drops parameters with ppb/ppm units except NOx. Default FALSE</p></td
       <td><p>renames this parameter to "wd". Default "WD". Set wd = NULL to disable renaming</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble in openair compatible format</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Some functions, for example <a href='https://rdrr.io/pkg/openair/man/timeAverage.html'>openair::timeAverage</a>, have the argument "type". This argument allows to specifiy
 columns as grouping columns. However, if type is not supplied grouping variables (character or factor) will be
 dropped. Most other functions need a mandatory assignment of the argument pollutant.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>h1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>,
@@ -240,11 +244,8 @@ dropped. Most other functions need a mandatory assignment of the argument pollut
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -258,7 +259,7 @@ dropped. Most other functions need a mandatory assignment of the argument pollut
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

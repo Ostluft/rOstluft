@@ -1,10 +1,9 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
-  person("Noël", "Rederlechner",role = c("aut")),
   person("Ostluft", role = c("cph")))
 Description: This package provides function to quickly load 
     data and merge data from mulitple sources. 
@@ -29,8 +28,10 @@ Imports:
     sp,
     rlang (>= 0.3.0),
     magrittr,
-    rOstluft.data (>= 1.10),
-    rgdal
+    rOstluft.data (>= 2.1),
+    rgdal,
+    httr,
+    jsonlite
 Suggests:
     knitr,
     rmarkdown,
@@ -43,6 +44,6 @@ Remotes:
     Ostluft/rOstluft.data
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 URL: https://github.com/Ostluft/rOstluft
 BugReports: https://github.com/Ostluft/rOstluft/issues

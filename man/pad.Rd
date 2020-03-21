@@ -7,8 +7,7 @@
 \usage{
 pad(data, start_date = NULL, end_date = NULL, drop_last = FALSE)
 
-pad_serie(serie, start_date = NULL, end_date = NULL,
-  drop_last = FALSE)
+pad_serie(serie, start_date = NULL, end_date = NULL, drop_last = FALSE)
 }
 \arguments{
 \item{data}{tibble in rOstluft long format}

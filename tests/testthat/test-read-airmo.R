@@ -30,3 +30,15 @@ test_that("read dat file", {
   testthat::expect_equal(levels(res$parameter), "CO")
   testthat::expect_equal(levels(res$unit), "ppm")
 })
+
+test_that("read web export file", {
+  fn <- rOstluft.data::f("ol_nox_covid19_2020.csv")
+  res <- read_airmo_webexport(fn, na.rm = FALSE)
+  testthat::expect_equal(dim(res), c(366 * 48 * 16, 6))  # 16 Kanäle, 366 Tage, 48 Werte pro Tag
+  testthat::expect_equal(sum(is.na(res$value)), 220172)
+  testthat::expect_equal(length(levels(res$site)), 8)
+  testthat::expect_equal(levels(res$interval), "min30")
+  testthat::expect_equal(levels(res$parameter), c("NOx", "NO2"))
+  testthat::expect_equal(levels(res$unit), "ppb")
+})
+

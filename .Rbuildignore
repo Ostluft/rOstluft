@@ -7,3 +7,4 @@
 .renviron
 prepare_release.R
 docs
+pkgdown

@@ -76,6 +76,7 @@ reference:
   desc: Read data files from different sources
   contents:
   - starts_with("read_")
+  - '`get_seepolizei`'
   - '`split_smn`'
 
 - title: "Long <> Wide Format conversion"

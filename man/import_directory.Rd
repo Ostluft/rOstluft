@@ -4,8 +4,15 @@
 \alias{import_directory}
 \title{Imports directory into store}
 \usage{
-import_directory(store, path, read_function, glob = NULL,
-  regexp = NULL, recursive = TRUE, ...)
+import_directory(
+  store,
+  path,
+  read_function,
+  glob = NULL,
+  regexp = NULL,
+  recursive = TRUE,
+  ...
+)
 }
 \arguments{
 \item{store}{instance of the store to import data into}

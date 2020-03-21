@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Converts the wide format from the files to the long format — airmo_wide_to_long • rOstluft</title>
+<title>Helper function to ensure correct string format — convert_date_seepolizei • rOstluft</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Converts the wide format from the files to the long format — airmo_wide_to_long" />
-<meta property="og:description" content="Converts the wide format from the files to the long format" />
+<meta property="og:title" content="Helper function to ensure correct string format — convert_date_seepolizei" />
+<meta property="og:description" content="Helper function to ensure correct string format" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -141,55 +141,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Converts the wide format from the files to the long format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-airmo.R'><code>R/read-airmo.R</code></a></small>
-    <div class="hidden name"><code>airmo_wide_to_long.Rd</code></div>
+    <h1>Helper function to ensure correct string format</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-seepolizei.R'><code>R/read-seepolizei.R</code></a></small>
+    <div class="hidden name"><code>convert_date_seepolizei.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Converts the wide format from the files to the long format</p>
+    <p>Helper function to ensure correct string format</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(
-  <span class='no'>header</span>,
-  <span class='no'>data</span>,
-  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>,
-  <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>convert_date_seepolizei</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>header</th>
-      <td><p>data frame containing airmo_kurzname, parameter, zeitfenster and einheit</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>data frame only containing the data from the file</p></td>
-    </tr>
-    <tr>
-      <th>tz</th>
-      <td><p>time zone of date field. Be carefull Etc/GMT + == -. Default "Etc/GMT-1"</p></td>
-    </tr>
-    <tr>
-      <th>time_shift</th>
-      <td><p>a lubridate period to add to the time. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>na.rm</th>
-      <td><p>remove na (empty) values. Default TRUE</p></td>
+      <th>x</th>
+      <td><p>date as string, POSIXct, POSIXlt or Date Object</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame in rOstluft long format</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/period.html'>lubridate::period()</a></code> - Create or parse period objects</p>
-<p><a href='https://rdrr.io/r/base/timezones.html'>base::timezones</a> - Information about time zones in R</p></div>
+    <p>string in format "%Y-%m-%d"</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -197,7 +171,6 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

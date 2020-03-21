@@ -4,8 +4,13 @@
 \alias{read_ethz_iac}
 \title{Read an IAC/ETHZ meteo station file}
 \usage{
-read_ethz_iac(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE,
-  encoding = "UTF-8")
+read_ethz_iac(
+  x,
+  tz = "Etc/GMT-1",
+  site = NULL,
+  na.rm = TRUE,
+  encoding = "UTF-8"
+)
 }
 \arguments{
 \item{x}{Either a path to a file, a connection, or literal data. see \code{\link[readr:read_delim]{readr::read_delim()}}}

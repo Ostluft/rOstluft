@@ -4,8 +4,15 @@
 \alias{read_smn}
 \title{Reads a file from the SwissMetNet of MeteoSwiss}
 \usage{
-read_smn(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL,
-  time_format = NULL, interval = NULL, na.rm = TRUE)
+read_smn(
+  fn,
+  tz = "Etc/GMT-1",
+  encoding = "UTF-8",
+  time_shift = NULL,
+  time_format = NULL,
+  interval = NULL,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{fn}{path to input file}

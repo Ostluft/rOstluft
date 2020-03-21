@@ -4,8 +4,14 @@
 \alias{read_nabel_txt}
 \title{Read a file from Nabel}
 \usage{
-read_nabel_txt(fn, encoding = "latin1", tz = "Etc/GMT-1",
-  interval = NULL, time_shift = NULL, na.rm = TRUE)
+read_nabel_txt(
+  fn,
+  encoding = "latin1",
+  tz = "Etc/GMT-1",
+  interval = NULL,
+  time_shift = NULL,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{fn}{path to input file}

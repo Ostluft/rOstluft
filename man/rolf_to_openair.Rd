@@ -4,8 +4,15 @@
 \alias{rolf_to_openair}
 \title{Converts data from rolf format to an openair compatible Format}
 \usage{
-rolf_to_openair(data, as_list = FALSE, interval = NULL,
-  keep_ppb = FALSE, keep_interval = FALSE, ws = "WVv", wd = "WD")
+rolf_to_openair(
+  data,
+  as_list = FALSE,
+  interval = NULL,
+  keep_ppb = FALSE,
+  keep_interval = FALSE,
+  ws = "WVv",
+  wd = "WD"
+)
 }
 \arguments{
 \item{data}{in rolf format}

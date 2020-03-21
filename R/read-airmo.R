@@ -96,7 +96,7 @@ read_airmo_csv <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift
 #' @export
 #' @examples
 #' input <- rOstluft.data::f("ol_nox_covid19_2020.csv")
-#' res <- read_airmo_webexport(input, na.rm = FALSE)
+#' read_airmo_webexport(input)
 read_airmo_webexport <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", time_shift = NULL, na.rm = TRUE) {
   locale <- readr::locale(encoding = encoding)
 

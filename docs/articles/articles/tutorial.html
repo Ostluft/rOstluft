@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2019-09-18</h4>
+            <h4 class="date">2020-03-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -125,7 +125,7 @@
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>Der Quellcode von <a href="https://github.com/Ostluft/rOstluft">rOstluft</a> ist auf github gehosted. Die einfachste Variante ist die Installation mit Hilfe des Packages devtools:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co">#install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</a></code></pre></div>
 <p>Zusätzlich muss das Package <code>aws.s3</code> manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version veraltet ist:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="dt">repos =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> =<span class="st"> "http://cloudyr.github.io/drat"</span>))</a></code></pre></div>
 <p>Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github heruntergeladen werden (Clone or download &gt; Download as ZIP), entpackt und manuell installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.</p>
@@ -143,8 +143,8 @@
 <a class="sourceLine" id="cb3-11" title="11">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(p)</a>
 <a class="sourceLine" id="cb3-12" title="12">}</a>
 <a class="sourceLine" id="cb3-13" title="13"></a>
-<a class="sourceLine" id="cb3-14" title="14">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-15" title="15">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-14" title="14">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-15" title="15">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, <span class="dt">dependencies =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.</p>
 <p>Nach der Installation kann das Packages verwendet werden:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rOstluft)</a></code></pre></div>
@@ -163,7 +163,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Sämtliche Daten die einmal von Amazon S3 geöffnet wurden, werden lokal auf dem Rechner gespeichert. Bei jedem folgenden Zugriff wird nur überprüft, ob die Daten noch identisch sind.</p>
 <p>Der Zugriff auf die Daten erfügt dann über ein store Objekt, welches auf folgende Art initialisiert wird:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"tutorial"</span>, <span class="dt">format =</span> <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">bucket =</span> <span class="st">"rostluft"</span>, <span class="dt">prefix =</span> <span class="st">"aqmet"</span>)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; store tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\tutorial'</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; store tutorial initialized under 'C:\Users\tom\AppData\Local\rOstluft\tutorial'</span></a>
 <a class="sourceLine" id="cb6-3" title="3"></a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="co"># oder nutze den vordefinierten store (name ist optional, default ist "aqmet")</span></a>
 <a class="sourceLine" id="cb6-5" title="5">store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/stores.html">store_aqmet</a></span>(<span class="st">"tutorial"</span>)</a></code></pre></div>
@@ -176,99 +176,99 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">content &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_content</span>()</a>
 <a class="sourceLine" id="cb7-2" title="2">content</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 167,323 x 6</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     year interval site            parameter unit      n</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  2  2004 h8gl     Rap_Tüchelweier O3        µg/m3    15</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;  3  2004 h1       Rap_Tüchelweier CO        mg/m3    20</span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;  4  2004 h1       Rap_Tüchelweier Hr        %Hr      19</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;  5  2004 h1       Rap_Tüchelweier NO2       µg/m3    20</span></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;  6  2004 h1       Rap_Tüchelweier NO        µg/m3    20</span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  7  2004 h1       Rap_Tüchelweier NOx       ppb      20</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span></a>
-<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 167,313 more rows</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 178,610 x 6</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     year interval site                parameter unit      n</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1  2013 h1       Zürich - EraInterim blh       m       730</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  2  2013 h1       Zürich - EraInterim cape      J/kg    730</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;  3  2013 h1       Zürich - EraInterim d2m       °C      730</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;  4  2013 h1       Zürich - EraInterim e         m H2O   730</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;  5  2013 h1       Zürich - EraInterim ishf      W/m2    730</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;  6  2013 h1       Zürich - EraInterim p         hPa     730</span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  7  2013 h1       Zürich - EraInterim par       J/m2    730</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8  2013 h1       Zürich - EraInterim RainSum   m       730</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9  2013 h1       Zürich - EraInterim skt       °C      730</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10  2013 h1       Zürich - EraInterim slhf      J/m2    730</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 178,600 more rows</span></a>
 <a class="sourceLine" id="cb7-17" title="17"></a>
 <a class="sourceLine" id="cb7-18" title="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(content, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; # A tibble: 10 x 6</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;     year interval site               parameter           unit      n</span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;              &lt;fct&gt;               &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  2018 m1       Oberriet/Kriessern p_nb_min10          1        12</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2003 d1       Win_Obertor        SO2_min_min30       µg/m3   359</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  2016 y1       Zch_Heubeeribüel   O3_max_h1_nb_d1&gt;120 1         1</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  2001 m1       StG_Stuelegg       O3_max_h1_nb_d1&gt;240 1        12</span></a>
-<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  1998 d1       StG_Stuelegg       StrGlo              W/m2    364</span></a>
-<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  2000 y1       Wee_Weerstein      StrGlo_nb_min30     1         1</span></a>
-<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  2001 y1       StG_Stuelegg       NO                  µg/m3     1</span></a>
-<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  2016 y1       Kre_Marktweg       O3_98%_min30        µg/m3     1</span></a>
-<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  2008 m1       Sfh_Bahntal        O3_nb_h1&gt;160        1         5</span></a>
-<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  2017 h1       ZH_Mythenquai      WD                  °      8683</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;     year interval site                      parameter      unit      n</span></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                     &lt;fct&gt;          &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  2016 y1       WeF_Berufsbildungszentrum T_min_h1       °C        1</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2005 d1       Zch_Schwamendingen        PM10_min_min30 µg/m3   356</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  2017 min30    Chu_A13                   PM10           µg/m3 17077</span></a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  2001 h1       StG_Stuelegg              StrGlo         W/m2   7012</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  1994 m1       Zch_Stampfenbachstrasse   NOx_nb_d1      1        12</span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  1994 min30    Zch_SchwamAlt             p              hPa   17127</span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  2006 y1       Neu_Galgenbuck            NO2_nb_min30   1         1</span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  2010 d1       Opf_Balsberg              O3_nb_min30    1       360</span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  2002 y1       Säntis                    T_max_h1       °C        1</span></a>
+<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  1994 y1       StG_Stuelegg              O3_min_h1      µg/m3     1</span></a></code></pre></div>
 <p>Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">store<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Schimmelstrasse"</span>, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; # A tibble: 243,875 x 6</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;    starttime           site               parameter interval unit     value</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Schimmelstras~ CO        min30    ppm    6.37e-1</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Schimmelstras~ Hr        min30    %Hr    8.74e+1</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Schimmelstras~ NO2       min30    ppb    2.81e+1</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Schimmelstras~ NO        min30    ppb    6.15e+1</span></a>
-<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Schimmelstras~ NOx       min30    ppb    8.96e+1</span></a>
-<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Schimmelstras~ O3        min30    ppb    7.98e-1</span></a>
-<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Schimmelstras~ PM10      min30    µg/m3  1.02e+2</span></a>
-<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Schimmelstras~ PN        min30    1/cm3  2.60e+4</span></a>
-<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Schimmelstras~ RainDur   min30    min    0.     </span></a>
-<a class="sourceLine" id="cb8-14" title="14"><span class="co">#&gt; 10 2014-01-01 00:00:00 Zch_Schimmelstras~ SO2       min30    ppb    2.12e+0</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;    starttime           site                parameter interval unit      value</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Schimmelstrasse CO        min30    ppm       0.637</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Schimmelstrasse Hr        min30    %Hr      87.4  </span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Schimmelstrasse NO2       min30    ppb      28.1  </span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Schimmelstrasse NO        min30    ppb      61.5  </span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Schimmelstrasse NOx       min30    ppb      89.6  </span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Schimmelstrasse O3        min30    ppb       0.798</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Schimmelstrasse PM10      min30    µg/m3   102.   </span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Schimmelstrasse PN        min30    1/cm3 25971    </span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Schimmelstrasse RainDur   min30    min       0    </span></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="co">#&gt; 10 2014-01-01 00:00:00 Zch_Schimmelstrasse SO2       min30    ppb       2.12 </span></a>
 <a class="sourceLine" id="cb8-15" title="15"><span class="co">#&gt; # ... with 243,865 more rows</span></a></code></pre></div>
 <p>Jedes der Argumente kann auch ein Vector sein mit mehreren Werte. Es wird dann Kombination aller Möglichkeiten abgefragt.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">sites &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Zch_Schimmelstrasse"</span>, <span class="st">"Zch_Rosengartenstrasse"</span>, <span class="st">"Zch_Stampfenbachstrasse"</span>)</a>
 <a class="sourceLine" id="cb9-2" title="2">data &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span><span class="op">:</span><span class="dv">2015</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)</a>
 <a class="sourceLine" id="cb9-3" title="3">data</a>
 <a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt; # A tibble: 1,287,367 x 6</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;    starttime           site                parameter interval unit    value</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstr~ Hr        min30    %Hr    92.7  </span></a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenstr~ NO2       min30    ppb    18.6  </span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenstr~ NO        min30    ppb    42.8  </span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Rosengartenstr~ NOx       min30    ppb    61.4  </span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Rosengartenstr~ O3        min30    ppb     0.776</span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Rosengartenstr~ PM10      min30    µg/m3 298.   </span></a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Rosengartenstr~ RainDur   min30    min     0    </span></a>
-<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Rosengartenstr~ T         min30    °C     -2.18 </span></a>
-<a class="sourceLine" id="cb9-15" title="15"><span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Rosengartenstr~ p         min30    hPa   966.   </span></a>
-<a class="sourceLine" id="cb9-16" title="16"><span class="co">#&gt; 10 2014-01-01 00:30:00 Zch_Rosengartenstr~ Hr        min30    %Hr    89.1  </span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;    starttime           site                   parameter interval unit    value</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstrasse Hr        min30    %Hr    92.7  </span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;  2 2014-01-01 00:00:00 Zch_Rosengartenstrasse NO2       min30    ppb    18.6  </span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;  3 2014-01-01 00:00:00 Zch_Rosengartenstrasse NO        min30    ppb    42.8  </span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt;  4 2014-01-01 00:00:00 Zch_Rosengartenstrasse NOx       min30    ppb    61.4  </span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt;  5 2014-01-01 00:00:00 Zch_Rosengartenstrasse O3        min30    ppb     0.776</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt;  6 2014-01-01 00:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 298.   </span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt;  7 2014-01-01 00:00:00 Zch_Rosengartenstrasse RainDur   min30    min     0    </span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt;  8 2014-01-01 00:00:00 Zch_Rosengartenstrasse T         min30    °C     -2.18 </span></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="co">#&gt;  9 2014-01-01 00:00:00 Zch_Rosengartenstrasse p         min30    hPa   966.   </span></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="co">#&gt; 10 2014-01-01 00:30:00 Zch_Rosengartenstrasse Hr        min30    %Hr    89.1  </span></a>
 <a class="sourceLine" id="cb9-17" title="17"><span class="co">#&gt; # ... with 1,287,357 more rows</span></a>
 <a class="sourceLine" id="cb9-18" title="18"></a>
 <a class="sourceLine" id="cb9-19" title="19">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(data, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb9-20" title="20"><span class="co">#&gt; # A tibble: 10 x 6</span></a>
-<a class="sourceLine" id="cb9-21" title="21"><span class="co">#&gt;    starttime           site                 parameter interval unit   value</span></a>
-<a class="sourceLine" id="cb9-22" title="22"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-23" title="23"><span class="co">#&gt;  1 2015-10-21 20:30:00 Zch_Schimmelstrasse  RainDur   min30    min     0   </span></a>
-<a class="sourceLine" id="cb9-24" title="24"><span class="co">#&gt;  2 2014-09-16 05:00:00 Zch_Rosengartenstra~ RainDur   min30    min     0   </span></a>
-<a class="sourceLine" id="cb9-25" title="25"><span class="co">#&gt;  3 2015-07-04 15:30:00 Zch_Rosengartenstra~ Hr        min30    %Hr    26.4 </span></a>
-<a class="sourceLine" id="cb9-26" title="26"><span class="co">#&gt;  4 2014-08-07 21:30:00 Zch_Rosengartenstra~ PM10      min30    µg/m3  14.9 </span></a>
-<a class="sourceLine" id="cb9-27" title="27"><span class="co">#&gt;  5 2015-05-30 06:00:00 Zch_Schimmelstrasse  p         min30    hPa   968.  </span></a>
-<a class="sourceLine" id="cb9-28" title="28"><span class="co">#&gt;  6 2014-02-26 11:30:00 Zch_Schimmelstrasse  SO2       min30    ppb     1.57</span></a>
-<a class="sourceLine" id="cb9-29" title="29"><span class="co">#&gt;  7 2015-05-05 17:00:00 Zch_Schimmelstrasse  T         min30    °C     19.4 </span></a>
-<a class="sourceLine" id="cb9-30" title="30"><span class="co">#&gt;  8 2015-02-07 22:30:00 Zch_Stampfenbachstr~ RainDur   min30    min     0   </span></a>
-<a class="sourceLine" id="cb9-31" title="31"><span class="co">#&gt;  9 2014-03-03 17:00:00 Zch_Schimmelstrasse  NOx       min30    ppb    35.1 </span></a>
-<a class="sourceLine" id="cb9-32" title="32"><span class="co">#&gt; 10 2015-08-27 18:30:00 Zch_Stampfenbachstr~ NO        min30    ppb     6.66</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-21" title="21"><span class="co">#&gt;    starttime           site                    parameter interval unit   value</span></a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="co">#&gt;  1 2015-11-19 09:00:00 Zch_Rosengartenstrasse  Hr        min30    %Hr    64.0 </span></a>
+<a class="sourceLine" id="cb9-24" title="24"><span class="co">#&gt;  2 2015-10-21 20:30:00 Zch_Schimmelstrasse     RainDur   min30    min     0   </span></a>
+<a class="sourceLine" id="cb9-25" title="25"><span class="co">#&gt;  3 2014-09-16 05:00:00 Zch_Rosengartenstrasse  RainDur   min30    min     0   </span></a>
+<a class="sourceLine" id="cb9-26" title="26"><span class="co">#&gt;  4 2015-07-04 15:30:00 Zch_Rosengartenstrasse  Hr        min30    %Hr    26.4 </span></a>
+<a class="sourceLine" id="cb9-27" title="27"><span class="co">#&gt;  5 2014-08-07 21:30:00 Zch_Rosengartenstrasse  PM10      min30    µg/m3  14.9 </span></a>
+<a class="sourceLine" id="cb9-28" title="28"><span class="co">#&gt;  6 2015-05-30 06:00:00 Zch_Schimmelstrasse     p         min30    hPa   968.  </span></a>
+<a class="sourceLine" id="cb9-29" title="29"><span class="co">#&gt;  7 2014-02-26 11:30:00 Zch_Schimmelstrasse     SO2       min30    ppb     1.57</span></a>
+<a class="sourceLine" id="cb9-30" title="30"><span class="co">#&gt;  8 2015-05-05 17:00:00 Zch_Schimmelstrasse     T         min30    °C     19.4 </span></a>
+<a class="sourceLine" id="cb9-31" title="31"><span class="co">#&gt;  9 2015-02-07 22:30:00 Zch_Stampfenbachstrasse RainDur   min30    min     0   </span></a>
+<a class="sourceLine" id="cb9-32" title="32"><span class="co">#&gt; 10 2014-03-03 17:00:00 Zch_Schimmelstrasse     NOx       min30    ppb    35.1</span></a></code></pre></div>
 <p>Die letzte Funktionalität von <code>$get()</code> ist die Filterung der Daten vor der Rückgabe. Mit dem Argument “filter” als <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> kompatibler Ausdruck:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">store<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)</a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt; # A tibble: 51,319 x 6</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 298. </span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="co">#&gt;  2 2014-01-01 00:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 557. </span></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt;  3 2014-01-01 01:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 308. </span></a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt;  4 2014-01-01 01:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 169. </span></a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="co">#&gt;  5 2014-01-01 02:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 128. </span></a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt;  6 2014-01-01 02:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  82.9</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt;  7 2014-01-01 03:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  38.3</span></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="co">#&gt;  8 2014-01-01 03:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  32.6</span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="co">#&gt;  9 2014-01-01 04:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  32.4</span></a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="co">#&gt; 10 2014-01-01 04:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  31.7</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;    starttime           site                   parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 298. </span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">#&gt;  2 2014-01-01 00:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 557. </span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt;  3 2014-01-01 01:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 308. </span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt;  4 2014-01-01 01:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 169. </span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="co">#&gt;  5 2014-01-01 02:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 128. </span></a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt;  6 2014-01-01 02:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  82.9</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt;  7 2014-01-01 03:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  38.3</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="co">#&gt;  8 2014-01-01 03:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  32.6</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">#&gt;  9 2014-01-01 04:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  32.4</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="co">#&gt; 10 2014-01-01 04:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  31.7</span></a>
 <a class="sourceLine" id="cb10-15" title="15"><span class="co">#&gt; # ... with 51,309 more rows</span></a></code></pre></div>
 </div>
 <div id="lokales-arbeiten-mit-den-aws-s3-daten" class="section level2">
@@ -278,101 +278,102 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">lokal &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_local_storage</span>()</a></code></pre></div>
 <p>Dieser verfügt über die gleichen Funktionalität wie der S3 Store:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">lokal<span class="op">$</span><span class="kw">get_content</span>()</a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 167,323 x 6</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;     year interval site            parameter unit      n</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;  1  2004 h8gl     Rap_Tüchelweier CO        mg/m3    15</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt;  2  2004 h8gl     Rap_Tüchelweier O3        µg/m3    15</span></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;  3  2004 h1       Rap_Tüchelweier CO        mg/m3    20</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt;  4  2004 h1       Rap_Tüchelweier Hr        %Hr      19</span></a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt;  5  2004 h1       Rap_Tüchelweier NO2       µg/m3    20</span></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt;  6  2004 h1       Rap_Tüchelweier NO        µg/m3    20</span></a>
-<a class="sourceLine" id="cb12-11" title="11"><span class="co">#&gt;  7  2004 h1       Rap_Tüchelweier NOx       ppb      20</span></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt;  8  2004 h1       Rap_Tüchelweier O3        µg/m3    20</span></a>
-<a class="sourceLine" id="cb12-13" title="13"><span class="co">#&gt;  9  2004 h1       Rap_Tüchelweier T         °C       19</span></a>
-<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; 10  2004 h1       Rap_Tüchelweier WD        °        18</span></a>
-<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 167,313 more rows</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 178,610 x 6</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;     year interval site                parameter unit      n</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;  1  2013 h1       Zürich - EraInterim blh       m       730</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt;  2  2013 h1       Zürich - EraInterim cape      J/kg    730</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;  3  2013 h1       Zürich - EraInterim d2m       °C      730</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt;  4  2013 h1       Zürich - EraInterim e         m H2O   730</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt;  5  2013 h1       Zürich - EraInterim ishf      W/m2    730</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt;  6  2013 h1       Zürich - EraInterim p         hPa     730</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">#&gt;  7  2013 h1       Zürich - EraInterim par       J/m2    730</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt;  8  2013 h1       Zürich - EraInterim RainSum   m       730</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">#&gt;  9  2013 h1       Zürich - EraInterim skt       °C      730</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; 10  2013 h1       Zürich - EraInterim slhf      J/m2    730</span></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 178,600 more rows</span></a>
 <a class="sourceLine" id="cb12-16" title="16"></a>
 <a class="sourceLine" id="cb12-17" title="17">lokal<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)</a>
 <a class="sourceLine" id="cb12-18" title="18"><span class="co">#&gt; # A tibble: 51,319 x 6</span></a>
-<a class="sourceLine" id="cb12-19" title="19"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb12-20" title="20"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-21" title="21"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 298. </span></a>
-<a class="sourceLine" id="cb12-22" title="22"><span class="co">#&gt;  2 2014-01-01 00:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 557. </span></a>
-<a class="sourceLine" id="cb12-23" title="23"><span class="co">#&gt;  3 2014-01-01 01:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 308. </span></a>
-<a class="sourceLine" id="cb12-24" title="24"><span class="co">#&gt;  4 2014-01-01 01:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 169. </span></a>
-<a class="sourceLine" id="cb12-25" title="25"><span class="co">#&gt;  5 2014-01-01 02:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3 128. </span></a>
-<a class="sourceLine" id="cb12-26" title="26"><span class="co">#&gt;  6 2014-01-01 02:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  82.9</span></a>
-<a class="sourceLine" id="cb12-27" title="27"><span class="co">#&gt;  7 2014-01-01 03:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  38.3</span></a>
-<a class="sourceLine" id="cb12-28" title="28"><span class="co">#&gt;  8 2014-01-01 03:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  32.6</span></a>
-<a class="sourceLine" id="cb12-29" title="29"><span class="co">#&gt;  9 2014-01-01 04:00:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  32.4</span></a>
-<a class="sourceLine" id="cb12-30" title="30"><span class="co">#&gt; 10 2014-01-01 04:30:00 Zch_Rosengartenstras~ PM10      min30    µg/m3  31.7</span></a>
+<a class="sourceLine" id="cb12-19" title="19"><span class="co">#&gt;    starttime           site                   parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                  &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="co">#&gt;  1 2014-01-01 00:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 298. </span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="co">#&gt;  2 2014-01-01 00:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 557. </span></a>
+<a class="sourceLine" id="cb12-23" title="23"><span class="co">#&gt;  3 2014-01-01 01:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 308. </span></a>
+<a class="sourceLine" id="cb12-24" title="24"><span class="co">#&gt;  4 2014-01-01 01:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 169. </span></a>
+<a class="sourceLine" id="cb12-25" title="25"><span class="co">#&gt;  5 2014-01-01 02:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3 128. </span></a>
+<a class="sourceLine" id="cb12-26" title="26"><span class="co">#&gt;  6 2014-01-01 02:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  82.9</span></a>
+<a class="sourceLine" id="cb12-27" title="27"><span class="co">#&gt;  7 2014-01-01 03:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  38.3</span></a>
+<a class="sourceLine" id="cb12-28" title="28"><span class="co">#&gt;  8 2014-01-01 03:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  32.6</span></a>
+<a class="sourceLine" id="cb12-29" title="29"><span class="co">#&gt;  9 2014-01-01 04:00:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  32.4</span></a>
+<a class="sourceLine" id="cb12-30" title="30"><span class="co">#&gt; 10 2014-01-01 04:30:00 Zch_Rosengartenstrasse PM10      min30    µg/m3  31.7</span></a>
 <a class="sourceLine" id="cb12-31" title="31"><span class="co">#&gt; # ... with 51,309 more rows</span></a></code></pre></div>
 <p>Dem aufmerksamen Leser ist vermutlich aufgefallen, dass die Inhaltsübersicht von <code>$get_content()</code> nicht dem lokalen Inhalt entspricht. Es ist immer noch die Übersicht welche Daten in S3 verfügbar wären. Will man wissen welche Daten lokal verfügbar sind, hilft einem die Funktion <code>$list_chunks()</code> weiter.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(lokal<span class="op">$</span><span class="kw">list_chunks</span>())</a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt; Observations: 6</span></a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt; Variables: 7</span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; $ chunk_name              &lt;chr&gt; "min30/bWluMzDCu1pjaF9Sb3NlbmdhcnRlbnN...</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="co">#&gt; $ interval                &lt;chr&gt; "min30", "min30", "min30", "min30", "m...</span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosenga...</span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014"...</span></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/vot/AppData/Local/rOstl...</span></a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2019-09-18 14:35:08, 2019-09-18 14:35...</span></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.57K, 780.05K, 1.07M, 1.07M, ...</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; $ chunk_name              &lt;chr&gt; "min30/bWluMzDCu1pjaF9Sb3NlbmdhcnRlbnN0cmFz...</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">#&gt; $ interval                &lt;chr&gt; "min30", "min30", "min30", "min30", "min30"...</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosengartens...</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014", "2015"</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/tom/AppData/Local/rOstluft/t...</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2020-03-21 21:47:17, 2020-03-21 21:47:17, ...</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.71K, 780.21K, 1.08M, 1.07M, 1.08M...</span></a></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; Observations: 12,716</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; Observations: 13,295</span></a>
 <a class="sourceLine" id="cb14-3" title="3"><span class="co">#&gt; Variables: 11</span></a>
-<a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu01hdV9Qw7xudMK7MTk5MA", "d1/Z...</span></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="co">#&gt; $ interval                &lt;chr&gt; "d1", "d1", "d1", "d1", "d1", "d1", "d...</span></a>
-<a class="sourceLine" id="cb14-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Mau_Pünt", "Mau_Pünt", "Mau_Pünt", "M...</span></a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "1990", "1991", "1992", "1993", "1994"...</span></a>
-<a class="sourceLine" id="cb14-8" title="8"><span class="co">#&gt; $ s3.key                  &lt;chr&gt; "aqmet/data/d1/ZDHCu01hdV9Qw7xudMK7MTk...</span></a>
-<a class="sourceLine" id="cb14-9" title="9"><span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2019-07-15T18:24:27.000Z", "2019-07-1...</span></a>
-<a class="sourceLine" id="cb14-10" title="10"><span class="co">#&gt; $ s3.etag                 &lt;chr&gt; "dad867ae6a819788027070ae6d929c07", "a...</span></a>
-<a class="sourceLine" id="cb14-11" title="11"><span class="co">#&gt; $ s3.size                 &lt;fs::bytes&gt; 15.7K, 27.02K, 29.17K, 28.24K, 1...</span></a>
-<a class="sourceLine" id="cb14-12" title="12"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a>
-<a class="sourceLine" id="cb14-13" title="13"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a>
-<a class="sourceLine" id="cb14-14" title="14"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; NA, NA, NA, NA, NA, NA, NA, NA, ...</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt; $ chunk_name              &lt;chr&gt; "d1/ZDHCu01hdV9Qw7xudMK7MTk5MA", "d1/ZDHCu0...</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co">#&gt; $ interval                &lt;chr&gt; "d1", "d1", "d1", "d1", "d1", "d1", "d1", "...</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Mau_Pünt", "Mau_Pünt", "Mau_Pünt", "Mau_Pü...</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "1990", "1991", "1992", "1993", "1994", "19...</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="co">#&gt; $ s3.key                  &lt;chr&gt; "aqmet/data/d1/ZDHCu01hdV9Qw7xudMK7MTk5MA.r...</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="co">#&gt; $ s3.lastmodified         &lt;chr&gt; "2020-03-20T18:06:04.000Z", "2020-03-20T18:...</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="co">#&gt; $ s3.etag                 &lt;chr&gt; "4d357b0954a7c44ad13a2ce146fed821", "57847e...</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="co">#&gt; $ s3.size                 &lt;fs::bytes&gt; 15.78K, 27.11K, 29.25K, 28.32K, 16.95...</span></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a></code></pre></div>
 <p>Im normal Fall ist Nutzung von <code>$get_content()</code> über <code>$list_chunks()</code> zu bevorzugen. Die Rückgabe von <code>$get_content()</code> enthält die gemessen Parameter und die Anzahl der gültigen Punkte. Bei <code>$list_chunks()</code> hingegen sind einige interne Informationen über den Store enthalten.</p>
 <p>Um die Vorbereitung um mit einem lokalen Store zu arbeiten zu vereinfachen verfügt der S3 Store über die Funktion <code>$download(...)</code>. Die dot Argumente werden als Filter auf die Rückgabe von <code>$list_chunks()</code> angewendet. Ohne Argumente wird der komplette Store heruntergeladen. Folgendes Beispiel lädt samtliche 30 Minutenmittelwerte für die Station Rosengartenstrasse nach dem Jahr 2015 (Achtung == verwenden, es sind Filter Ausdrücke!):</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">store<span class="op">$</span><span class="kw">download</span>(site <span class="op">==</span><span class="st"> "Zch_Rosengartenstrasse"</span>, interval <span class="op">==</span><span class="st"> "min30"</span>, year <span class="op">&gt;</span><span class="st"> </span><span class="dv">2015</span>)</a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; list()</span></a>
 <a class="sourceLine" id="cb15-3" title="3"></a>
 <a class="sourceLine" id="cb15-4" title="4">lokal<span class="op">$</span><span class="kw">list_chunks</span>() <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="st">"site"</span>, <span class="st">"year"</span>, <span class="st">"interval"</span>)</a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="co">#&gt;   site                    year  interval</span></a>
-<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt;   &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;   </span></a>
-<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt; 1 Zch_Rosengartenstrasse  2017  min30   </span></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt; 2 Zch_Rosengartenstrasse  2018  min30   </span></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt; 3 Zch_Rosengartenstrasse  2014  min30   </span></a>
-<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt; 4 Zch_Rosengartenstrasse  2015  min30   </span></a>
-<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt; 5 Zch_Rosengartenstrasse  2016  min30   </span></a>
-<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt; 6 Zch_Stampfenbachstrasse 2014  min30   </span></a>
-<a class="sourceLine" id="cb15-14" title="14"><span class="co">#&gt; 7 Zch_Stampfenbachstrasse 2015  min30   </span></a>
-<a class="sourceLine" id="cb15-15" title="15"><span class="co">#&gt; 8 Zch_Schimmelstrasse     2014  min30   </span></a>
-<a class="sourceLine" id="cb15-16" title="16"><span class="co">#&gt; 9 Zch_Schimmelstrasse     2015  min30</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt; # A tibble: 10 x 3</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">#&gt;    site                    year  interval</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt;    &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;   </span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt;  1 Zch_Rosengartenstrasse  2017  min30   </span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt;  2 Zch_Rosengartenstrasse  2018  min30   </span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt;  3 Zch_Rosengartenstrasse  2019  min30   </span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt;  4 Zch_Rosengartenstrasse  2014  min30   </span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt;  5 Zch_Rosengartenstrasse  2015  min30   </span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt;  6 Zch_Rosengartenstrasse  2016  min30   </span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="co">#&gt;  7 Zch_Stampfenbachstrasse 2014  min30   </span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="co">#&gt;  8 Zch_Stampfenbachstrasse 2015  min30   </span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="co">#&gt;  9 Zch_Schimmelstrasse     2014  min30   </span></a>
+<a class="sourceLine" id="cb15-17" title="17"><span class="co">#&gt; 10 Zch_Schimmelstrasse     2015  min30</span></a></code></pre></div>
 </div>
 <div id="eigene-daten-in-einem-lokalen-store" class="section level2">
 <h2 class="hasAnchor">
 <a href="#eigene-daten-in-einem-lokalen-store" class="anchor"></a>Eigene Daten in einem lokalen Store</h2>
 <p>Der aqmet S3 Store enthält nur bereinigte Daten von abgeschlossenen Jahren. Werden Daten benötigt, die nicht in S3 vorhanden sind, bietet sich die Nutzung eines seperaten lokalen Stores an:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">my_store =<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_local.html">storage_local_rds</a></span>(<span class="st">"eigene_daten"</span>, <span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>(), <span class="dt">read.only =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\vot\AppData\Local\rOstluft\eigene_daten'</span></a></code></pre></div>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; Local store eigene_daten initialized under 'C:\Users\tom\AppData\Local\rOstluft\eigene_daten'</span></a></code></pre></div>
 <p>In diesen kann man nun Daten mit der Store Funktion <code>$put()</code> oder der Hilfsfunktion <code><a href="../../reference/import_directory.html">import_directory()</a></code> importieren:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)</a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)</a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.20 seconds. Got 2170 data points</span></a>
-<a class="sourceLine" id="cb17-5" title="5"><span class="co">#&gt; First put to storage. Save columns types to C:/Users/vot/AppData/Local/rOstluft/eigene_daten/columns.rds</span></a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt; Put data into store eigene_daten in 0.04 seconds</span></a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.03 seconds. Got 14116 data points</span></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span></a>
-<a class="sourceLine" id="cb17-10" title="10"><span class="co">#&gt; Importing 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></a>
-<a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; Read 'C:/Users/vot/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.04 seconds. Got 28234 data points</span></a>
-<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Put data into store eigene_daten in 0.11 seconds</span></a>
-<a class="sourceLine" id="cb17-13" title="13"><span class="co">#&gt; Finished import after 0.51 seconds</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.25 seconds. Got 2170 data points</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="co">#&gt; First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/eigene_daten/columns.rds</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt; Put data into store eigene_daten in 0.05 seconds</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.06 seconds. Got 14116 data points</span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.06 seconds. Got 28234 data points</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="co">#&gt; Finished import after 0.63 seconds</span></a>
 <a class="sourceLine" id="cb17-14" title="14"></a>
 <a class="sourceLine" id="cb17-15" title="15">fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)</a>
 <a class="sourceLine" id="cb17-16" title="16">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)</a>
@@ -418,18 +419,18 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb18-17" title="17">my_store<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Stampfenbachstrasse"</span>, <span class="dt">interval =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"d1"</span>, <span class="st">"h1"</span>), <span class="dt">year =</span> <span class="dv">2013</span>)  <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-18" title="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime, .data<span class="op">$</span>parameter)</a>
 <a class="sourceLine" id="cb18-19" title="19"><span class="co">#&gt; # A tibble: 16,286 x 6</span></a>
-<a class="sourceLine" id="cb18-20" title="20"><span class="co">#&gt;    starttime           site               parameter   interval unit   value</span></a>
-<a class="sourceLine" id="cb18-21" title="21"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb18-22" title="22"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO          d1       mg/m3  0.381</span></a>
-<a class="sourceLine" id="cb18-23" title="23"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO          d1       ppm    0.327</span></a>
-<a class="sourceLine" id="cb18-24" title="24"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO          h1       mg/m3  0.805</span></a>
-<a class="sourceLine" id="cb18-25" title="25"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO          h1       ppm    0.692</span></a>
-<a class="sourceLine" id="cb18-26" title="26"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO_max_min~ d1       mg/m3  0.966</span></a>
-<a class="sourceLine" id="cb18-27" title="27"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO_min_min~ d1       mg/m3  0.190</span></a>
-<a class="sourceLine" id="cb18-28" title="28"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachs~ CO_nb_min30 d1       1     48    </span></a>
-<a class="sourceLine" id="cb18-29" title="29"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachs~ Hr          d1       %Hr   76.0  </span></a>
-<a class="sourceLine" id="cb18-30" title="30"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachs~ Hr          h1       %Hr   82.9  </span></a>
-<a class="sourceLine" id="cb18-31" title="31"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachs~ Hr_max_min~ d1       %Hr   88.4  </span></a>
+<a class="sourceLine" id="cb18-20" title="20"><span class="co">#&gt;    starttime           site                    parameter   interval unit   value</span></a>
+<a class="sourceLine" id="cb18-21" title="21"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb18-22" title="22"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO          d1       mg/m3  0.381</span></a>
+<a class="sourceLine" id="cb18-23" title="23"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO          d1       ppm    0.327</span></a>
+<a class="sourceLine" id="cb18-24" title="24"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO          h1       mg/m3  0.805</span></a>
+<a class="sourceLine" id="cb18-25" title="25"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO          h1       ppm    0.692</span></a>
+<a class="sourceLine" id="cb18-26" title="26"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_max_min~ d1       mg/m3  0.966</span></a>
+<a class="sourceLine" id="cb18-27" title="27"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_min_min~ d1       mg/m3  0.190</span></a>
+<a class="sourceLine" id="cb18-28" title="28"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_nb_min30 d1       1     48    </span></a>
+<a class="sourceLine" id="cb18-29" title="29"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr          d1       %Hr   76.0  </span></a>
+<a class="sourceLine" id="cb18-30" title="30"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr          h1       %Hr   82.9  </span></a>
+<a class="sourceLine" id="cb18-31" title="31"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_max_min~ d1       %Hr   88.4  </span></a>
 <a class="sourceLine" id="cb18-32" title="32"><span class="co">#&gt; # ... with 16,276 more rows</span></a></code></pre></div>
 </div>
 </div>
@@ -446,7 +447,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div id="verwende-readr-funktionen-und-definiere-die-zeichenkodierung" class="section level2">
 <h2 class="hasAnchor">
 <a href="#verwende-readr-funktionen-und-definiere-die-zeichenkodierung" class="anchor"></a>Verwende readr Funktionen und definiere die Zeichenkodierung</h2>
-<p>Ein generelles Problem beim einlesen von Textdateien ist die <a href="https://de.wikipedia.org/wiki/Zeichenkodierung">Zeichenkodierung</a>. Die meisten haben vermutlich “�” schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von <code>read_xxx()</code> Funktionen sind UTF-8 kodiert. Mit dem <a href="https://readr.tidyverse.org/index.html">readr Packages</a> wird bei korrekter Definition der <a href="https://readr.tidyverse.org/articles/locales.html#character">Locale</a> der Text automatisch zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder<code><a href="https://rdrr.io/pkg/data.table/man/fread.html">data.table::fread()</a></code>.</p>
+<p>Ein generelles Problem beim einlesen von Textdateien ist die <a href="https://de.wikipedia.org/wiki/Zeichenkodierung">Zeichenkodierung</a>. Die meisten haben vermutlich “�” schon in Texten gesehen. Alle Daten im aqmet Store und alle Rückgabewerte von <code>read_xxx()</code> Funktionen sind UTF-8 kodiert. Mit dem <a href="https://readr.tidyverse.org/index.html">readr Packages</a> wird bei korrekter Definition der <a href="https://readr.tidyverse.org/articles/locales.html#character">Locale</a> der Text automatisch zu UTF-8 konvertiert. Im Gegensatz zu den R Base Funktionen oder<code><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread()</a></code>.</p>
 </div>
 <div id="ausgabeformat-rolf" class="section level2">
 <h2 class="hasAnchor">
@@ -495,27 +496,27 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Mit dem <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select</a></code> am Ende ist man sicher nur die Spalten in der Rückgabe zu haben die man haben will und es ist einfach noch Spalten umzubenennen und die Reihenfolge zu ändern.</p>
 </div>
 </div>
-<div id="zusammenfugen-von-daten-im-rolf-format" class="section level1">
+<div id="zusammenfügen-von-daten-im-rolf-format" class="section level1">
 <h1 class="hasAnchor">
-<a href="#zusammenfugen-von-daten-im-rolf-format" class="anchor"></a>Zusammenfügen von Daten im rolf Format</h1>
+<a href="#zusammenf%C3%BCgen-von-daten-im-rolf-format" class="anchor"></a>Zusammenfügen von Daten im rolf Format</h1>
 <p>Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese- und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_rows</a></code> wird die Factoren in Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind. Die Funktion <code><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns()</a></code> führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem <a href="https://rlang.r-lib.org/reference/quasiquotation.html">Quasiquotation</a> von rlang<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Somit kann auch eine grosse Liste von tibbles im rolf Format komfortable aneinander gefügt werden:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">df1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>))</a>
 <a class="sourceLine" id="cb20-2" title="2">df2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Stampfenbachstrasse_d1_2013_Jan.csv"</span>))</a>
 <a class="sourceLine" id="cb20-3" title="3">df_comb &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns</a></span>(df1, df2)</a>
 <a class="sourceLine" id="cb20-4" title="4">df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime, .data<span class="op">$</span>parameter)</a>
 <a class="sourceLine" id="cb20-5" title="5"><span class="co">#&gt; # A tibble: 16,286 x 6</span></a>
-<a class="sourceLine" id="cb20-6" title="6"><span class="co">#&gt;    starttime           site                 parameter interval unit   value</span></a>
-<a class="sourceLine" id="cb20-7" title="7"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb20-8" title="8"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        h1       mg/m3  0.805</span></a>
-<a class="sourceLine" id="cb20-9" title="9"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        h1       ppm    0.692</span></a>
-<a class="sourceLine" id="cb20-10" title="10"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        d1       mg/m3  0.381</span></a>
-<a class="sourceLine" id="cb20-11" title="11"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        d1       ppm    0.327</span></a>
-<a class="sourceLine" id="cb20-12" title="12"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ Hr        h1       %Hr   82.9  </span></a>
-<a class="sourceLine" id="cb20-13" title="13"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ Hr        d1       %Hr   76.0  </span></a>
-<a class="sourceLine" id="cb20-14" title="14"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        h1       µg/m3 80.5  </span></a>
-<a class="sourceLine" id="cb20-15" title="15"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        h1       ppb   64.6  </span></a>
-<a class="sourceLine" id="cb20-16" title="16"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        d1       µg/m3 17.6  </span></a>
-<a class="sourceLine" id="cb20-17" title="17"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        d1       ppb   14.1  </span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">#&gt;    starttime           site                    parameter interval unit   value</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        h1       mg/m3  0.805</span></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        h1       ppm    0.692</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3  0.381</span></a>
+<a class="sourceLine" id="cb20-11" title="11"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        d1       ppm    0.327</span></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr        h1       %Hr   82.9  </span></a>
+<a class="sourceLine" id="cb20-13" title="13"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr        d1       %Hr   76.0  </span></a>
+<a class="sourceLine" id="cb20-14" title="14"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        h1       µg/m3 80.5  </span></a>
+<a class="sourceLine" id="cb20-15" title="15"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        h1       ppb   64.6  </span></a>
+<a class="sourceLine" id="cb20-16" title="16"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        d1       µg/m3 17.6  </span></a>
+<a class="sourceLine" id="cb20-17" title="17"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        d1       ppb   14.1  </span></a>
 <a class="sourceLine" id="cb20-18" title="18"><span class="co">#&gt; # ... with 16,276 more rows</span></a>
 <a class="sourceLine" id="cb20-19" title="19"></a>
 <a class="sourceLine" id="cb20-20" title="20"><span class="co"># liste mit 20+ tibbles</span></a>
@@ -546,36 +547,36 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb21-5" title="5">df_comb &lt;-<span class="st"> </span>store<span class="op">$</span>format<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(df1, df2)</a>
 <a class="sourceLine" id="cb21-6" title="6">df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime, .data<span class="op">$</span>parameter)</a>
 <a class="sourceLine" id="cb21-7" title="7"><span class="co">#&gt; # A tibble: 2,170 x 6</span></a>
-<a class="sourceLine" id="cb21-8" title="8"><span class="co">#&gt;    starttime           site                parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb21-9" title="9"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb21-10" title="10"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO          d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-11" title="11"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO          d1       ppm    NA  </span></a>
-<a class="sourceLine" id="cb21-12" title="12"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_max_min~ d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-13" title="13"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_min_min~ d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-14" title="14"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_nb_min30 d1       1      NA  </span></a>
-<a class="sourceLine" id="cb21-15" title="15"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr          d1       %Hr    76.0</span></a>
-<a class="sourceLine" id="cb21-16" title="16"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_max_min~ d1       %Hr    88.4</span></a>
-<a class="sourceLine" id="cb21-17" title="17"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_min_min~ d1       %Hr    50.3</span></a>
-<a class="sourceLine" id="cb21-18" title="18"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_nb_min30 d1       1      48  </span></a>
-<a class="sourceLine" id="cb21-19" title="19"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachst~ NO          d1       µg/m3  17.6</span></a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="co">#&gt;    starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb21-9" title="9"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO           d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-11" title="11"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO           d1       ppm    NA  </span></a>
+<a class="sourceLine" id="cb21-12" title="12"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_max_min30 d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-13" title="13"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_min_min30 d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-14" title="14"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_nb_min30  d1       1      NA  </span></a>
+<a class="sourceLine" id="cb21-15" title="15"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr           d1       %Hr    76.0</span></a>
+<a class="sourceLine" id="cb21-16" title="16"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_max_min30 d1       %Hr    88.4</span></a>
+<a class="sourceLine" id="cb21-17" title="17"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_min_min30 d1       %Hr    50.3</span></a>
+<a class="sourceLine" id="cb21-18" title="18"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_nb_min30  d1       1      48  </span></a>
+<a class="sourceLine" id="cb21-19" title="19"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO           d1       µg/m3  17.6</span></a>
 <a class="sourceLine" id="cb21-20" title="20"><span class="co">#&gt; # ... with 2,160 more rows</span></a>
 <a class="sourceLine" id="cb21-21" title="21"></a>
 <a class="sourceLine" id="cb21-22" title="22">rolf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/format_rolf.html">format_rolf</a></span>()</a>
 <a class="sourceLine" id="cb21-23" title="23">df_comb &lt;-<span class="st"> </span>rolf<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(df1, df2)</a>
 <a class="sourceLine" id="cb21-24" title="24">df_comb <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime, .data<span class="op">$</span>parameter)</a>
 <a class="sourceLine" id="cb21-25" title="25"><span class="co">#&gt; # A tibble: 2,170 x 6</span></a>
-<a class="sourceLine" id="cb21-26" title="26"><span class="co">#&gt;    starttime           site                parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb21-27" title="27"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb21-28" title="28"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO          d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-29" title="29"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO          d1       ppm    NA  </span></a>
-<a class="sourceLine" id="cb21-30" title="30"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_max_min~ d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-31" title="31"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_min_min~ d1       mg/m3  NA  </span></a>
-<a class="sourceLine" id="cb21-32" title="32"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO_nb_min30 d1       1      NA  </span></a>
-<a class="sourceLine" id="cb21-33" title="33"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr          d1       %Hr    76.0</span></a>
-<a class="sourceLine" id="cb21-34" title="34"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_max_min~ d1       %Hr    88.4</span></a>
-<a class="sourceLine" id="cb21-35" title="35"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_min_min~ d1       %Hr    50.3</span></a>
-<a class="sourceLine" id="cb21-36" title="36"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr_nb_min30 d1       1      48  </span></a>
-<a class="sourceLine" id="cb21-37" title="37"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachst~ NO          d1       µg/m3  17.6</span></a>
+<a class="sourceLine" id="cb21-26" title="26"><span class="co">#&gt;    starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb21-27" title="27"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb21-28" title="28"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO           d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-29" title="29"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO           d1       ppm    NA  </span></a>
+<a class="sourceLine" id="cb21-30" title="30"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_max_min30 d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-31" title="31"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_min_min30 d1       mg/m3  NA  </span></a>
+<a class="sourceLine" id="cb21-32" title="32"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO_nb_min30  d1       1      NA  </span></a>
+<a class="sourceLine" id="cb21-33" title="33"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr           d1       %Hr    76.0</span></a>
+<a class="sourceLine" id="cb21-34" title="34"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_max_min30 d1       %Hr    88.4</span></a>
+<a class="sourceLine" id="cb21-35" title="35"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_min_min30 d1       %Hr    50.3</span></a>
+<a class="sourceLine" id="cb21-36" title="36"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse Hr_nb_min30  d1       1      48  </span></a>
+<a class="sourceLine" id="cb21-37" title="37"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO           d1       µg/m3  17.6</span></a>
 <a class="sourceLine" id="cb21-38" title="38"><span class="co">#&gt; # ... with 2,160 more rows</span></a></code></pre></div>
 <p>Die <code>$merge()</code> Funktion unterstützt nur 2 Argumente. Muss eine Liste von tibbles gemerget werden muss man <code><a href="https://purrr.tidyverse.org/reference/reduce.html">purrr::reduce()</a></code> benützen. Mit Hilfe des Argument <code>.dir</code> kann man die Priosierung setzen. Mit “forward”" haben die Daten die zuerst in der Liste auftauchen Priorität, mit “backward” die Letzten.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">df_comb &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/reduce.html">reduce</a></span>(df_list, rolf<span class="op">$</span>merge, <span class="dt">.dir =</span> <span class="st">"forward"</span>)</a>
@@ -788,22 +789,22 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb30-3" title="3">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(wide)</a>
 <a class="sourceLine" id="cb30-4" title="4"><span class="co">#&gt; Observations: 87,626</span></a>
 <a class="sourceLine" id="cb30-5" title="5"><span class="co">#&gt; Variables: 16</span></a>
-<a class="sourceLine" id="cb30-6" title="6"><span class="co">#&gt; $ date    &lt;dttm&gt; 2010-01-01 00:00:00, 2010-01-01 00:30:00, 2010-01-01 ...</span></a>
-<a class="sourceLine" id="cb30-7" title="7"><span class="co">#&gt; $ site    &lt;fct&gt; Zch_Stampfenbachstrasse, Zch_Stampfenbachstrasse, Zch_...</span></a>
-<a class="sourceLine" id="cb30-8" title="8"><span class="co">#&gt; $ CO      &lt;dbl&gt; 0.513, 0.609, 0.822, 1.063, 0.861, 0.760, 0.633, 0.666...</span></a>
-<a class="sourceLine" id="cb30-9" title="9"><span class="co">#&gt; $ NO      &lt;dbl&gt; 9.50, 26.85, 59.95, 85.55, 72.04, 49.74, 26.50, 36.18,...</span></a>
-<a class="sourceLine" id="cb30-10" title="10"><span class="co">#&gt; $ NO2     &lt;dbl&gt; 37.0, 46.5, 54.6, 60.5, 58.8, 52.9, 49.0, 50.9, 56.3, ...</span></a>
-<a class="sourceLine" id="cb30-11" title="11"><span class="co">#&gt; $ NOx     &lt;dbl&gt; 26.9, 45.8, 76.6, 100.2, 88.5, 67.5, 46.9, 55.6, 77.8,...</span></a>
-<a class="sourceLine" id="cb30-12" title="12"><span class="co">#&gt; $ O3      &lt;dbl&gt; 11.812, 7.989, 2.111, 1.410, 2.517, 2.416, 3.606, 1.61...</span></a>
-<a class="sourceLine" id="cb30-13" title="13"><span class="co">#&gt; $ PM10    &lt;dbl&gt; 49.7, 82.3, 152.9, 169.2, 190.1, 158.9, 93.0, 54.9, 58...</span></a>
-<a class="sourceLine" id="cb30-14" title="14"><span class="co">#&gt; $ SO2     &lt;dbl&gt; 2.36, 3.13, 4.19, 4.60, 3.97, 2.71, 2.29, 2.46, 2.86, ...</span></a>
-<a class="sourceLine" id="cb30-15" title="15"><span class="co">#&gt; $ Hr      &lt;dbl&gt; 87.9, 88.6, 91.1, 91.8, 92.0, 92.4, 92.8, 92.0, 90.4, ...</span></a>
-<a class="sourceLine" id="cb30-16" title="16"><span class="co">#&gt; $ p       &lt;dbl&gt; 942, 942, 942, 942, 942, 942, 941, 941, 941, 941, 940,...</span></a>
-<a class="sourceLine" id="cb30-17" title="17"><span class="co">#&gt; $ RainDur &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</span></a>
-<a class="sourceLine" id="cb30-18" title="18"><span class="co">#&gt; $ StrGlo  &lt;dbl&gt; 0.00749, 0.00727, 0.01020, 0.00781, 0.01215, 0.01573, ...</span></a>
-<a class="sourceLine" id="cb30-19" title="19"><span class="co">#&gt; $ T       &lt;dbl&gt; 5.61, 5.57, 5.35, 5.39, 5.11, 4.81, 4.58, 4.80, 5.38, ...</span></a>
-<a class="sourceLine" id="cb30-20" title="20"><span class="co">#&gt; $ wd      &lt;dbl&gt; 159.6, 147.9, 258.2, 2.9, 27.7, 35.4, 40.2, 164.1, 182...</span></a>
-<a class="sourceLine" id="cb30-21" title="21"><span class="co">#&gt; $ ws      &lt;dbl&gt; 0.904, 0.314, 0.630, 0.625, 1.905, 2.281, 2.245, 0.846...</span></a></code></pre></div>
+<a class="sourceLine" id="cb30-6" title="6"><span class="co">#&gt; $ date    &lt;dttm&gt; 2010-01-01 00:00:00, 2010-01-01 00:30:00, 2010-01-01 01:00...</span></a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="co">#&gt; $ site    &lt;fct&gt; Zch_Stampfenbachstrasse, Zch_Stampfenbachstrasse, Zch_Stamp...</span></a>
+<a class="sourceLine" id="cb30-8" title="8"><span class="co">#&gt; $ CO      &lt;dbl&gt; 0.513, 0.609, 0.822, 1.063, 0.861, 0.760, 0.633, 0.666, 0.7...</span></a>
+<a class="sourceLine" id="cb30-9" title="9"><span class="co">#&gt; $ NO      &lt;dbl&gt; 9.50, 26.85, 59.95, 85.55, 72.04, 49.74, 26.50, 36.18, 60.3...</span></a>
+<a class="sourceLine" id="cb30-10" title="10"><span class="co">#&gt; $ NO2     &lt;dbl&gt; 37.0, 46.5, 54.6, 60.5, 58.8, 52.9, 49.0, 50.9, 56.3, 48.8,...</span></a>
+<a class="sourceLine" id="cb30-11" title="11"><span class="co">#&gt; $ NOx     &lt;dbl&gt; 26.9, 45.8, 76.6, 100.2, 88.5, 67.5, 46.9, 55.6, 77.8, 72.6...</span></a>
+<a class="sourceLine" id="cb30-12" title="12"><span class="co">#&gt; $ O3      &lt;dbl&gt; 11.812, 7.989, 2.111, 1.410, 2.517, 2.416, 3.606, 1.617, 2....</span></a>
+<a class="sourceLine" id="cb30-13" title="13"><span class="co">#&gt; $ PM10    &lt;dbl&gt; 49.7, 82.3, 152.9, 169.2, 190.1, 158.9, 93.0, 54.9, 58.7, 8...</span></a>
+<a class="sourceLine" id="cb30-14" title="14"><span class="co">#&gt; $ SO2     &lt;dbl&gt; 2.36, 3.13, 4.19, 4.60, 3.97, 2.71, 2.29, 2.46, 2.86, 3.36,...</span></a>
+<a class="sourceLine" id="cb30-15" title="15"><span class="co">#&gt; $ Hr      &lt;dbl&gt; 87.9, 88.6, 91.1, 91.8, 92.0, 92.4, 92.8, 92.0, 90.4, 91.5,...</span></a>
+<a class="sourceLine" id="cb30-16" title="16"><span class="co">#&gt; $ p       &lt;dbl&gt; 942, 942, 942, 942, 942, 942, 941, 941, 941, 941, 940, 940,...</span></a>
+<a class="sourceLine" id="cb30-17" title="17"><span class="co">#&gt; $ RainDur &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...</span></a>
+<a class="sourceLine" id="cb30-18" title="18"><span class="co">#&gt; $ StrGlo  &lt;dbl&gt; 7.49e-03, 7.27e-03, 1.02e-02, 7.81e-03, 1.22e-02, 1.57e-02,...</span></a>
+<a class="sourceLine" id="cb30-19" title="19"><span class="co">#&gt; $ T       &lt;dbl&gt; 5.61, 5.57, 5.35, 5.39, 5.11, 4.81, 4.58, 4.80, 5.38, 5.12,...</span></a>
+<a class="sourceLine" id="cb30-20" title="20"><span class="co">#&gt; $ wd      &lt;dbl&gt; 159.57, 147.91, 258.24, 2.90, 27.75, 35.41, 40.24, 164.05, ...</span></a>
+<a class="sourceLine" id="cb30-21" title="21"><span class="co">#&gt; $ ws      &lt;dbl&gt; 0.904, 0.314, 0.630, 0.625, 1.905, 2.281, 2.245, 0.846, 0.3...</span></a></code></pre></div>
 <p>Diese Daten können nun direkt in openair verwendet werden:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">openair<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/openair/man/windRose.html">windRose</a></span>(wide)</a></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
@@ -812,18 +813,18 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p><code><a href="../../reference/openair_to_rolf.html">openair_to_rolf()</a></code> konventiert Daten zurück ins rolf Format. Der Nutzer muss die fehlenden Informationen bereitstellen:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw"><a href="../../reference/openair_to_rolf.html">openair_to_rolf</a></span>(wide, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">units =</span> <span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(wide, <span class="st">"units"</span>))</a>
 <a class="sourceLine" id="cb33-2" title="2"><span class="co">#&gt; # A tibble: 1,226,764 x 6</span></a>
-<a class="sourceLine" id="cb33-3" title="3"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb33-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb33-5" title="5"><span class="co">#&gt;  1 2010-01-01 00:00:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.513</span></a>
-<a class="sourceLine" id="cb33-6" title="6"><span class="co">#&gt;  2 2010-01-01 00:30:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.609</span></a>
-<a class="sourceLine" id="cb33-7" title="7"><span class="co">#&gt;  3 2010-01-01 01:00:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.822</span></a>
-<a class="sourceLine" id="cb33-8" title="8"><span class="co">#&gt;  4 2010-01-01 01:30:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 1.06 </span></a>
-<a class="sourceLine" id="cb33-9" title="9"><span class="co">#&gt;  5 2010-01-01 02:00:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.861</span></a>
-<a class="sourceLine" id="cb33-10" title="10"><span class="co">#&gt;  6 2010-01-01 02:30:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.760</span></a>
-<a class="sourceLine" id="cb33-11" title="11"><span class="co">#&gt;  7 2010-01-01 03:00:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.633</span></a>
-<a class="sourceLine" id="cb33-12" title="12"><span class="co">#&gt;  8 2010-01-01 03:30:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.666</span></a>
-<a class="sourceLine" id="cb33-13" title="13"><span class="co">#&gt;  9 2010-01-01 04:00:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.780</span></a>
-<a class="sourceLine" id="cb33-14" title="14"><span class="co">#&gt; 10 2010-01-01 04:30:00 Zch_Stampfenbachstra~ CO        min30    mg/m3 0.654</span></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="co">#&gt;    starttime           site                    parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb33-5" title="5"><span class="co">#&gt;  1 2010-01-01 00:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.513</span></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="co">#&gt;  2 2010-01-01 00:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.609</span></a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="co">#&gt;  3 2010-01-01 01:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.822</span></a>
+<a class="sourceLine" id="cb33-8" title="8"><span class="co">#&gt;  4 2010-01-01 01:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 1.06 </span></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="co">#&gt;  5 2010-01-01 02:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.861</span></a>
+<a class="sourceLine" id="cb33-10" title="10"><span class="co">#&gt;  6 2010-01-01 02:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.760</span></a>
+<a class="sourceLine" id="cb33-11" title="11"><span class="co">#&gt;  7 2010-01-01 03:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.633</span></a>
+<a class="sourceLine" id="cb33-12" title="12"><span class="co">#&gt;  8 2010-01-01 03:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.666</span></a>
+<a class="sourceLine" id="cb33-13" title="13"><span class="co">#&gt;  9 2010-01-01 04:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.780</span></a>
+<a class="sourceLine" id="cb33-14" title="14"><span class="co">#&gt; 10 2010-01-01 04:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3 0.654</span></a>
 <a class="sourceLine" id="cb33-15" title="15"><span class="co">#&gt; # ... with 1,226,754 more rows</span></a></code></pre></div>
 <p><code><a href="../../reference/rolf_to_openair_single.html">rolf_to_openair_single()</a></code> bietet die Möglichkeit einen bestimmten Parameter rauszupicken:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="kw"><a href="../../reference/rolf_to_openair_single.html">rolf_to_openair_single</a></span>(data, <span class="st">"NO2"</span>, <span class="dt">unit =</span> <span class="st">"µg/m3"</span>, <span class="dt">keep_interval =</span> <span class="ot">TRUE</span>)</a>
@@ -880,80 +881,80 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb35-15" title="15"><span class="co"># Monatsmittelwerte</span></a>
 <a class="sourceLine" id="cb35-16" title="16"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"m1"</span>)</a>
 <a class="sourceLine" id="cb35-17" title="17"><span class="co">#&gt; # A tibble: 9 x 6</span></a>
-<a class="sourceLine" id="cb35-18" title="18"><span class="co">#&gt;   starttime           site               parameter   interval unit    value</span></a>
-<a class="sourceLine" id="cb35-19" title="19"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb35-20" title="20"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          m1       µg/m3 2.12e+1</span></a>
-<a class="sourceLine" id="cb35-21" title="21"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ m1       µg/m3 6.44e+1</span></a>
-<a class="sourceLine" id="cb35-22" title="22"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 m1       1     1.49e+3</span></a>
-<a class="sourceLine" id="cb35-23" title="23"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ m1       µg/m3 1.04e+0</span></a>
-<a class="sourceLine" id="cb35-24" title="24"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ m1       µg/m3 7.67e+1</span></a>
-<a class="sourceLine" id="cb35-25" title="25"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     m1       min   6.26e+3</span></a>
-<a class="sourceLine" id="cb35-26" title="26"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         m1       m/s   1.69e+0</span></a>
-<a class="sourceLine" id="cb35-27" title="27"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         m1       m/s   4.57e-1</span></a>
-<a class="sourceLine" id="cb35-28" title="28"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          m1       °     2.58e+2</span></a>
+<a class="sourceLine" id="cb35-18" title="18"><span class="co">#&gt;   starttime           site                   parameter    interval unit    value</span></a>
+<a class="sourceLine" id="cb35-19" title="19"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                  &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb35-20" title="20"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3           m1       µg/m3 2.12e+1</span></a>
+<a class="sourceLine" id="cb35-21" title="21"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_95%_min30 m1       µg/m3 6.44e+1</span></a>
+<a class="sourceLine" id="cb35-22" title="22"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_nb_min30  m1       1     1.49e+3</span></a>
+<a class="sourceLine" id="cb35-23" title="23"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_min_min30 m1       µg/m3 1.04e+0</span></a>
+<a class="sourceLine" id="cb35-24" title="24"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_max_min30 m1       µg/m3 7.67e+1</span></a>
+<a class="sourceLine" id="cb35-25" title="25"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstras~ RainDur      m1       min   6.26e+3</span></a>
+<a class="sourceLine" id="cb35-26" title="26"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WVs          m1       m/s   1.69e+0</span></a>
+<a class="sourceLine" id="cb35-27" title="27"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WVv          m1       m/s   4.57e-1</span></a>
+<a class="sourceLine" id="cb35-28" title="28"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WD           m1       °     2.58e+2</span></a>
 <a class="sourceLine" id="cb35-29" title="29"></a>
 <a class="sourceLine" id="cb35-30" title="30"><span class="co"># Tagesmittelwerte</span></a>
 <a class="sourceLine" id="cb35-31" title="31"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"d1"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb35-32" title="32"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)</a>
 <a class="sourceLine" id="cb35-33" title="33"><span class="co">#&gt; # A tibble: 279 x 6</span></a>
-<a class="sourceLine" id="cb35-34" title="34"><span class="co">#&gt;    starttime           site               parameter   interval unit   value</span></a>
-<a class="sourceLine" id="cb35-35" title="35"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb35-36" title="36"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          d1       µg/m3  42.9 </span></a>
-<a class="sourceLine" id="cb35-37" title="37"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ d1       µg/m3  70.3 </span></a>
-<a class="sourceLine" id="cb35-38" title="38"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 d1       1      48   </span></a>
-<a class="sourceLine" id="cb35-39" title="39"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ d1       µg/m3   2.58</span></a>
-<a class="sourceLine" id="cb35-40" title="40"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ d1       µg/m3  74.1 </span></a>
-<a class="sourceLine" id="cb35-41" title="41"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     d1       min   495.  </span></a>
-<a class="sourceLine" id="cb35-42" title="42"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         d1       m/s     2.22</span></a>
-<a class="sourceLine" id="cb35-43" title="43"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         d1       m/s     1.98</span></a>
-<a class="sourceLine" id="cb35-44" title="44"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          d1       °     227.  </span></a>
-<a class="sourceLine" id="cb35-45" title="45"><span class="co">#&gt; 10 2013-01-02 00:00:00 Zch_Stampfenbachs~ O3          d1       µg/m3  36.0 </span></a>
+<a class="sourceLine" id="cb35-34" title="34"><span class="co">#&gt;    starttime           site                    parameter   interval unit   value</span></a>
+<a class="sourceLine" id="cb35-35" title="35"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb35-36" title="36"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3          d1       µg/m3  42.9 </span></a>
+<a class="sourceLine" id="cb35-37" title="37"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_95%_min~ d1       µg/m3  70.3 </span></a>
+<a class="sourceLine" id="cb35-38" title="38"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_nb_min30 d1       1      48   </span></a>
+<a class="sourceLine" id="cb35-39" title="39"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_min_min~ d1       µg/m3   2.58</span></a>
+<a class="sourceLine" id="cb35-40" title="40"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_max_min~ d1       µg/m3  74.1 </span></a>
+<a class="sourceLine" id="cb35-41" title="41"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse RainDur     d1       min   495.  </span></a>
+<a class="sourceLine" id="cb35-42" title="42"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVs         d1       m/s     2.22</span></a>
+<a class="sourceLine" id="cb35-43" title="43"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVv         d1       m/s     1.98</span></a>
+<a class="sourceLine" id="cb35-44" title="44"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WD          d1       °     227.  </span></a>
+<a class="sourceLine" id="cb35-45" title="45"><span class="co">#&gt; 10 2013-01-02 00:00:00 Zch_Stampfenbachstrasse O3          d1       µg/m3  36.0 </span></a>
 <a class="sourceLine" id="cb35-46" title="46"><span class="co">#&gt; # ... with 269 more rows</span></a></code></pre></div>
 <p><code><a href="../../reference/resample.html">resample()</a></code> verfügt über die Funktionalität Datenverfügbarkeit und Lücken mit den Argumenten <code>data_thresh</code> und <code>max_gap</code> zu berücksichtigen:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="co"># Jahresmittelwerte nur mit Daten vom Januar</span></a>
 <a class="sourceLine" id="cb36-2" title="2"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>)</a>
 <a class="sourceLine" id="cb36-3" title="3"><span class="co">#&gt; # A tibble: 9 x 6</span></a>
-<a class="sourceLine" id="cb36-4" title="4"><span class="co">#&gt;   starttime           site               parameter   interval unit    value</span></a>
-<a class="sourceLine" id="cb36-5" title="5"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;              &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb36-6" title="6"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3          y1       µg/m3 2.12e+1</span></a>
-<a class="sourceLine" id="cb36-7" title="7"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_95%_min~ y1       µg/m3 6.44e+1</span></a>
-<a class="sourceLine" id="cb36-8" title="8"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_nb_min30 y1       1     1.49e+3</span></a>
-<a class="sourceLine" id="cb36-9" title="9"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_min_min~ y1       µg/m3 1.04e+0</span></a>
-<a class="sourceLine" id="cb36-10" title="10"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachs~ O3_max_min~ y1       µg/m3 7.67e+1</span></a>
-<a class="sourceLine" id="cb36-11" title="11"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachs~ RainDur     y1       min   6.26e+3</span></a>
-<a class="sourceLine" id="cb36-12" title="12"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVs         y1       m/s   1.69e+0</span></a>
-<a class="sourceLine" id="cb36-13" title="13"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachs~ WVv         y1       m/s   4.57e-1</span></a>
-<a class="sourceLine" id="cb36-14" title="14"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachs~ WD          y1       °     2.58e+2</span></a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="co">#&gt;   starttime           site                   parameter    interval unit    value</span></a>
+<a class="sourceLine" id="cb36-5" title="5"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                  &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3           y1       µg/m3 2.12e+1</span></a>
+<a class="sourceLine" id="cb36-7" title="7"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_95%_min30 y1       µg/m3 6.44e+1</span></a>
+<a class="sourceLine" id="cb36-8" title="8"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_nb_min30  y1       1     1.49e+3</span></a>
+<a class="sourceLine" id="cb36-9" title="9"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_min_min30 y1       µg/m3 1.04e+0</span></a>
+<a class="sourceLine" id="cb36-10" title="10"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstras~ O3_max_min30 y1       µg/m3 7.67e+1</span></a>
+<a class="sourceLine" id="cb36-11" title="11"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstras~ RainDur      y1       min   6.26e+3</span></a>
+<a class="sourceLine" id="cb36-12" title="12"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WVs          y1       m/s   1.69e+0</span></a>
+<a class="sourceLine" id="cb36-13" title="13"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WVv          y1       m/s   4.57e-1</span></a>
+<a class="sourceLine" id="cb36-14" title="14"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstras~ WD           y1       °     2.58e+2</span></a>
 <a class="sourceLine" id="cb36-15" title="15"></a>
 <a class="sourceLine" id="cb36-16" title="16"><span class="co"># Jahresmittelwerte 80% Datenverfügbarkeit =&gt; all NA</span></a>
 <a class="sourceLine" id="cb36-17" title="17"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>, <span class="dt">data_thresh =</span> <span class="fl">0.8</span>)</a>
 <a class="sourceLine" id="cb36-18" title="18"><span class="co">#&gt; # A tibble: 9 x 6</span></a>
-<a class="sourceLine" id="cb36-19" title="19"><span class="co">#&gt;   starttime           site                 parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb36-20" title="20"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb36-21" title="21"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3          y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-22" title="22"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_95%_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-23" title="23"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_nb_min30 y1       1        NA</span></a>
-<a class="sourceLine" id="cb36-24" title="24"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_min_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-25" title="25"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_max_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-26" title="26"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ RainDur     y1       min      NA</span></a>
-<a class="sourceLine" id="cb36-27" title="27"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVs         y1       m/s      NA</span></a>
-<a class="sourceLine" id="cb36-28" title="28"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVv         y1       m/s      NA</span></a>
-<a class="sourceLine" id="cb36-29" title="29"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WD          y1       °        NA</span></a>
+<a class="sourceLine" id="cb36-19" title="19"><span class="co">#&gt;   starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb36-20" title="20"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb36-21" title="21"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3           y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-22" title="22"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_95%_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-23" title="23"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_nb_min30  y1       1        NA</span></a>
+<a class="sourceLine" id="cb36-24" title="24"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-25" title="25"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-26" title="26"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse RainDur      y1       min      NA</span></a>
+<a class="sourceLine" id="cb36-27" title="27"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVs          y1       m/s      NA</span></a>
+<a class="sourceLine" id="cb36-28" title="28"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVv          y1       m/s      NA</span></a>
+<a class="sourceLine" id="cb36-29" title="29"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WD           y1       °        NA</span></a>
 <a class="sourceLine" id="cb36-30" title="30"></a>
 <a class="sourceLine" id="cb36-31" title="31"><span class="co"># Jahresmittelwerte 10 Tage Lücke = 48' 30min Werte =&gt; all NA</span></a>
 <a class="sourceLine" id="cb36-32" title="32"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"y1"</span>, <span class="dt">max_gap =</span> <span class="dv">480</span>)</a>
 <a class="sourceLine" id="cb36-33" title="33"><span class="co">#&gt; # A tibble: 9 x 6</span></a>
-<a class="sourceLine" id="cb36-34" title="34"><span class="co">#&gt;   starttime           site                 parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb36-35" title="35"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb36-36" title="36"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3          y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-37" title="37"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_95%_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-38" title="38"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_nb_min30 y1       1        NA</span></a>
-<a class="sourceLine" id="cb36-39" title="39"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_min_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-40" title="40"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3_max_min~ y1       µg/m3    NA</span></a>
-<a class="sourceLine" id="cb36-41" title="41"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ RainDur     y1       min      NA</span></a>
-<a class="sourceLine" id="cb36-42" title="42"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVs         y1       m/s      NA</span></a>
-<a class="sourceLine" id="cb36-43" title="43"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WVv         y1       m/s      NA</span></a>
-<a class="sourceLine" id="cb36-44" title="44"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ WD          y1       °        NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb36-34" title="34"><span class="co">#&gt;   starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb36-35" title="35"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb36-36" title="36"><span class="co">#&gt; 1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3           y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-37" title="37"><span class="co">#&gt; 2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_95%_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-38" title="38"><span class="co">#&gt; 3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_nb_min30  y1       1        NA</span></a>
+<a class="sourceLine" id="cb36-39" title="39"><span class="co">#&gt; 4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-40" title="40"><span class="co">#&gt; 5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    NA</span></a>
+<a class="sourceLine" id="cb36-41" title="41"><span class="co">#&gt; 6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse RainDur      y1       min      NA</span></a>
+<a class="sourceLine" id="cb36-42" title="42"><span class="co">#&gt; 7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVs          y1       m/s      NA</span></a>
+<a class="sourceLine" id="cb36-43" title="43"><span class="co">#&gt; 8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WVv          y1       m/s      NA</span></a>
+<a class="sourceLine" id="cb36-44" title="44"><span class="co">#&gt; 9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse WD           y1       °        NA</span></a></code></pre></div>
 <div id="default_statistic" class="section level3">
 <h3 class="hasAnchor">
 <a href="#default_statistic" class="anchor"></a><code>default_statistic</code>
@@ -969,23 +970,23 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb37-8" title="8"></a>
 <a class="sourceLine" id="cb37-9" title="9"><span class="kw"><a href="../../reference/resample.html">resample</a></span>(data, statistics, <span class="st">"m1"</span>)</a>
 <a class="sourceLine" id="cb37-10" title="10"><span class="co">#&gt; # A tibble: 11 x 6</span></a>
-<a class="sourceLine" id="cb37-11" title="11"><span class="co">#&gt;    starttime           site            parameter     interval unit    value</span></a>
-<a class="sourceLine" id="cb37-12" title="12"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;           &lt;fct&gt;         &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb37-13" title="13"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenba~ CO            m1       mg/m3 4.36e-1</span></a>
-<a class="sourceLine" id="cb37-14" title="14"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenba~ Hr            m1       %Hr   7.97e+1</span></a>
-<a class="sourceLine" id="cb37-15" title="15"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenba~ NO            m1       µg/m3 2.41e+1</span></a>
-<a class="sourceLine" id="cb37-16" title="16"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenba~ NO2           m1       µg/m3 4.04e+1</span></a>
-<a class="sourceLine" id="cb37-17" title="17"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenba~ O3            m1       µg/m3 2.12e+1</span></a>
-<a class="sourceLine" id="cb37-18" title="18"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenba~ p             m1       hPa   9.64e+2</span></a>
-<a class="sourceLine" id="cb37-19" title="19"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenba~ PM10          m1       µg/m3 2.63e+1</span></a>
-<a class="sourceLine" id="cb37-20" title="20"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenba~ RainDur       m1       min   6.26e+3</span></a>
-<a class="sourceLine" id="cb37-21" title="21"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenba~ SO2           m1       µg/m3 2.54e+0</span></a>
-<a class="sourceLine" id="cb37-22" title="22"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenba~ StrGlo_max_m~ m1       W/m2  5.12e+2</span></a>
-<a class="sourceLine" id="cb37-23" title="23"><span class="co">#&gt; 11 2013-01-01 00:00:00 Zch_Stampfenba~ T             m1       °C    2.12e+0</span></a></code></pre></div>
+<a class="sourceLine" id="cb37-11" title="11"><span class="co">#&gt;    starttime           site                parameter      interval unit    value</span></a>
+<a class="sourceLine" id="cb37-12" title="12"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;          &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb37-13" title="13"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachst~ CO             m1       mg/m3 4.36e-1</span></a>
+<a class="sourceLine" id="cb37-14" title="14"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachst~ Hr             m1       %Hr   7.97e+1</span></a>
+<a class="sourceLine" id="cb37-15" title="15"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachst~ NO             m1       µg/m3 2.41e+1</span></a>
+<a class="sourceLine" id="cb37-16" title="16"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachst~ NO2            m1       µg/m3 4.04e+1</span></a>
+<a class="sourceLine" id="cb37-17" title="17"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachst~ O3             m1       µg/m3 2.12e+1</span></a>
+<a class="sourceLine" id="cb37-18" title="18"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachst~ p              m1       hPa   9.64e+2</span></a>
+<a class="sourceLine" id="cb37-19" title="19"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachst~ PM10           m1       µg/m3 2.63e+1</span></a>
+<a class="sourceLine" id="cb37-20" title="20"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachst~ RainDur        m1       min   6.26e+3</span></a>
+<a class="sourceLine" id="cb37-21" title="21"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachst~ SO2            m1       µg/m3 2.54e+0</span></a>
+<a class="sourceLine" id="cb37-22" title="22"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachst~ StrGlo_max_mi~ m1       W/m2  5.12e+2</span></a>
+<a class="sourceLine" id="cb37-23" title="23"><span class="co">#&gt; 11 2013-01-01 00:00:00 Zch_Stampfenbachst~ T              m1       °C    2.12e+0</span></a></code></pre></div>
 </div>
-<div id="automatismen-und-einschrankungen" class="section level3">
+<div id="automatismen-und-einschränkungen" class="section level3">
 <h3 class="hasAnchor">
-<a href="#automatismen-und-einschrankungen" class="anchor"></a>Automatismen und Einschränkungen</h3>
+<a href="#automatismen-und-einschr%C3%A4nkungen" class="anchor"></a>Automatismen und Einschränkungen</h3>
 <p>Die Funktion benennt für die meisten Statistiken den Parameter gemäss dem AIRMO Schema<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> um. Die Statistiken mean, median, sum, sd, percentile benennen den Paremeter nicht um und sind somit nicht kombinierbar.</p>
 <p>Das Auffüllen der Lücken kann mittels des Argument <code>skip_padding</code> übersprungen werden. Zusätzlich kann mittels <code>start_date</code>, <code>end_date</code> und <code>drop_last</code> das Füllen kontrolliert werden. Normalerweise nimmt die Funktion das letzte Datum und füllt bis zum letzten neuen Intervall auf. Werden zum Beispiel Tagesmittelwerte berechnet und es sind nur Daten bis zum 22. Dezember 2017 10:00 Uhr vorhanden, wird der letzte Wert in der Serie 2017-12-22 00:00 sein. Wird eine komplette Jahresreihe benötigt, kann entweder das <code>end_date</code> auf 2017-12-31 oder auf 2018-01-01 und <code>drop_last</code> auf TRUE gesetzt werden.</p>
 </div>
@@ -1101,66 +1102,66 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb40-7" title="7">stats</a>
 <a class="sourceLine" id="cb40-8" title="8"><span class="co">#&gt; $y1</span></a>
 <a class="sourceLine" id="cb40-9" title="9"><span class="co">#&gt; # A tibble: 10 x 6</span></a>
-<a class="sourceLine" id="cb40-10" title="10"><span class="co">#&gt;    starttime           site                parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb40-11" title="11"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb40-12" title="12"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2         y1       µg/m3 30.4 </span></a>
-<a class="sourceLine" id="cb40-13" title="13"><span class="co">#&gt;  2 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2_95%_mi~ y1       µg/m3 68.8 </span></a>
-<a class="sourceLine" id="cb40-14" title="14"><span class="co">#&gt;  3 2017-01-01 00:00:00 Zch_Stampfenbachst~ PM10        y1       µg/m3 15.9 </span></a>
-<a class="sourceLine" id="cb40-15" title="15"><span class="co">#&gt;  4 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2         y1       µg/m3  1.05</span></a>
-<a class="sourceLine" id="cb40-16" title="16"><span class="co">#&gt;  5 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2_95%_mi~ y1       µg/m3  2.17</span></a>
-<a class="sourceLine" id="cb40-17" title="17"><span class="co">#&gt;  6 2017-01-01 00:00:00 Zch_Stampfenbachst~ O3_nb_h1&gt;1~ y1       1     81   </span></a>
-<a class="sourceLine" id="cb40-18" title="18"><span class="co">#&gt;  7 2017-01-01 00:00:00 Zch_Stampfenbachst~ CO_nb_d1&gt;8  y1       1      0   </span></a>
-<a class="sourceLine" id="cb40-19" title="19"><span class="co">#&gt;  8 2017-01-01 00:00:00 Zch_Stampfenbachst~ NO2_nb_d1&gt;~ y1       1      1   </span></a>
-<a class="sourceLine" id="cb40-20" title="20"><span class="co">#&gt;  9 2017-01-01 00:00:00 Zch_Stampfenbachst~ PM10_nb_d1~ y1       1      8   </span></a>
-<a class="sourceLine" id="cb40-21" title="21"><span class="co">#&gt; 10 2017-01-01 00:00:00 Zch_Stampfenbachst~ SO2_nb_d1&gt;~ y1       1      0   </span></a>
+<a class="sourceLine" id="cb40-10" title="10"><span class="co">#&gt;    starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb40-11" title="11"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb40-12" title="12"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 </span></a>
+<a class="sourceLine" id="cb40-13" title="13"><span class="co">#&gt;  2 2017-01-01 00:00:00 Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 </span></a>
+<a class="sourceLine" id="cb40-14" title="14"><span class="co">#&gt;  3 2017-01-01 00:00:00 Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 </span></a>
+<a class="sourceLine" id="cb40-15" title="15"><span class="co">#&gt;  4 2017-01-01 00:00:00 Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05</span></a>
+<a class="sourceLine" id="cb40-16" title="16"><span class="co">#&gt;  5 2017-01-01 00:00:00 Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17</span></a>
+<a class="sourceLine" id="cb40-17" title="17"><span class="co">#&gt;  6 2017-01-01 00:00:00 Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   </span></a>
+<a class="sourceLine" id="cb40-18" title="18"><span class="co">#&gt;  7 2017-01-01 00:00:00 Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   </span></a>
+<a class="sourceLine" id="cb40-19" title="19"><span class="co">#&gt;  8 2017-01-01 00:00:00 Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   </span></a>
+<a class="sourceLine" id="cb40-20" title="20"><span class="co">#&gt;  9 2017-01-01 00:00:00 Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   </span></a>
+<a class="sourceLine" id="cb40-21" title="21"><span class="co">#&gt; 10 2017-01-01 00:00:00 Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   </span></a>
 <a class="sourceLine" id="cb40-22" title="22"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb40-23" title="23"><span class="co">#&gt; $m1</span></a>
 <a class="sourceLine" id="cb40-24" title="24"><span class="co">#&gt; # A tibble: 12 x 6</span></a>
-<a class="sourceLine" id="cb40-25" title="25"><span class="co">#&gt;    starttime           site                parameter   interval unit  value</span></a>
-<a class="sourceLine" id="cb40-26" title="26"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;               &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb40-27" title="27"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  62.5</span></a>
-<a class="sourceLine" id="cb40-28" title="28"><span class="co">#&gt;  2 2017-02-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  79.3</span></a>
-<a class="sourceLine" id="cb40-29" title="29"><span class="co">#&gt;  3 2017-03-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  94.4</span></a>
-<a class="sourceLine" id="cb40-30" title="30"><span class="co">#&gt;  4 2017-04-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 105. </span></a>
-<a class="sourceLine" id="cb40-31" title="31"><span class="co">#&gt;  5 2017-05-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 128. </span></a>
-<a class="sourceLine" id="cb40-32" title="32"><span class="co">#&gt;  6 2017-06-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 134. </span></a>
-<a class="sourceLine" id="cb40-33" title="33"><span class="co">#&gt;  7 2017-07-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 113. </span></a>
-<a class="sourceLine" id="cb40-34" title="34"><span class="co">#&gt;  8 2017-08-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3 109. </span></a>
-<a class="sourceLine" id="cb40-35" title="35"><span class="co">#&gt;  9 2017-09-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  82.6</span></a>
-<a class="sourceLine" id="cb40-36" title="36"><span class="co">#&gt; 10 2017-10-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  74.9</span></a>
-<a class="sourceLine" id="cb40-37" title="37"><span class="co">#&gt; 11 2017-11-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  67.6</span></a>
-<a class="sourceLine" id="cb40-38" title="38"><span class="co">#&gt; 12 2017-12-01 00:00:00 Zch_Stampfenbachst~ O3_98%_min~ m1       µg/m3  71.8</span></a>
+<a class="sourceLine" id="cb40-25" title="25"><span class="co">#&gt;    starttime           site                    parameter    interval unit  value</span></a>
+<a class="sourceLine" id="cb40-26" title="26"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb40-27" title="27"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  62.5</span></a>
+<a class="sourceLine" id="cb40-28" title="28"><span class="co">#&gt;  2 2017-02-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  79.3</span></a>
+<a class="sourceLine" id="cb40-29" title="29"><span class="co">#&gt;  3 2017-03-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  94.4</span></a>
+<a class="sourceLine" id="cb40-30" title="30"><span class="co">#&gt;  4 2017-04-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3 105. </span></a>
+<a class="sourceLine" id="cb40-31" title="31"><span class="co">#&gt;  5 2017-05-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3 128. </span></a>
+<a class="sourceLine" id="cb40-32" title="32"><span class="co">#&gt;  6 2017-06-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3 134. </span></a>
+<a class="sourceLine" id="cb40-33" title="33"><span class="co">#&gt;  7 2017-07-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3 113. </span></a>
+<a class="sourceLine" id="cb40-34" title="34"><span class="co">#&gt;  8 2017-08-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3 109. </span></a>
+<a class="sourceLine" id="cb40-35" title="35"><span class="co">#&gt;  9 2017-09-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  82.6</span></a>
+<a class="sourceLine" id="cb40-36" title="36"><span class="co">#&gt; 10 2017-10-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  74.9</span></a>
+<a class="sourceLine" id="cb40-37" title="37"><span class="co">#&gt; 11 2017-11-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  67.6</span></a>
+<a class="sourceLine" id="cb40-38" title="38"><span class="co">#&gt; 12 2017-12-01 00:00:00 Zch_Stampfenbachstrasse O3_98%_min30 m1       µg/m3  71.8</span></a>
 <a class="sourceLine" id="cb40-39" title="39"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb40-40" title="40"><span class="co">#&gt; $h1</span></a>
 <a class="sourceLine" id="cb40-41" title="41"><span class="co">#&gt; # A tibble: 8,760 x 6</span></a>
-<a class="sourceLine" id="cb40-42" title="42"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb40-43" title="43"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb40-44" title="44"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.45</span></a>
-<a class="sourceLine" id="cb40-45" title="45"><span class="co">#&gt;  2 2017-01-01 01:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.35</span></a>
-<a class="sourceLine" id="cb40-46" title="46"><span class="co">#&gt;  3 2017-01-01 02:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.02</span></a>
-<a class="sourceLine" id="cb40-47" title="47"><span class="co">#&gt;  4 2017-01-01 03:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  1.54</span></a>
-<a class="sourceLine" id="cb40-48" title="48"><span class="co">#&gt;  5 2017-01-01 04:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.41</span></a>
-<a class="sourceLine" id="cb40-49" title="49"><span class="co">#&gt;  6 2017-01-01 05:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.14</span></a>
-<a class="sourceLine" id="cb40-50" title="50"><span class="co">#&gt;  7 2017-01-01 06:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.41</span></a>
-<a class="sourceLine" id="cb40-51" title="51"><span class="co">#&gt;  8 2017-01-01 07:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  2.67</span></a>
-<a class="sourceLine" id="cb40-52" title="52"><span class="co">#&gt;  9 2017-01-01 08:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  3.74</span></a>
-<a class="sourceLine" id="cb40-53" title="53"><span class="co">#&gt; 10 2017-01-01 09:00:00 Zch_Stampfenbachstra~ O3        h1       µg/m3  6.52</span></a>
+<a class="sourceLine" id="cb40-42" title="42"><span class="co">#&gt;    starttime           site                    parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb40-43" title="43"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb40-44" title="44"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  1.45</span></a>
+<a class="sourceLine" id="cb40-45" title="45"><span class="co">#&gt;  2 2017-01-01 01:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  1.35</span></a>
+<a class="sourceLine" id="cb40-46" title="46"><span class="co">#&gt;  3 2017-01-01 02:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  1.02</span></a>
+<a class="sourceLine" id="cb40-47" title="47"><span class="co">#&gt;  4 2017-01-01 03:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  1.54</span></a>
+<a class="sourceLine" id="cb40-48" title="48"><span class="co">#&gt;  5 2017-01-01 04:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  2.41</span></a>
+<a class="sourceLine" id="cb40-49" title="49"><span class="co">#&gt;  6 2017-01-01 05:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  2.14</span></a>
+<a class="sourceLine" id="cb40-50" title="50"><span class="co">#&gt;  7 2017-01-01 06:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  2.41</span></a>
+<a class="sourceLine" id="cb40-51" title="51"><span class="co">#&gt;  8 2017-01-01 07:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  2.67</span></a>
+<a class="sourceLine" id="cb40-52" title="52"><span class="co">#&gt;  9 2017-01-01 08:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  3.74</span></a>
+<a class="sourceLine" id="cb40-53" title="53"><span class="co">#&gt; 10 2017-01-01 09:00:00 Zch_Stampfenbachstrasse O3        h1       µg/m3  6.52</span></a>
 <a class="sourceLine" id="cb40-54" title="54"><span class="co">#&gt; # ... with 8,750 more rows</span></a>
 <a class="sourceLine" id="cb40-55" title="55"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb40-56" title="56"><span class="co">#&gt; $d1</span></a>
 <a class="sourceLine" id="cb40-57" title="57"><span class="co">#&gt; # A tibble: 1,460 x 6</span></a>
-<a class="sourceLine" id="cb40-58" title="58"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb40-59" title="59"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb40-60" title="60"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.381</span></a>
-<a class="sourceLine" id="cb40-61" title="61"><span class="co">#&gt;  2 2017-01-02 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.339</span></a>
-<a class="sourceLine" id="cb40-62" title="62"><span class="co">#&gt;  3 2017-01-03 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.349</span></a>
-<a class="sourceLine" id="cb40-63" title="63"><span class="co">#&gt;  4 2017-01-04 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.248</span></a>
-<a class="sourceLine" id="cb40-64" title="64"><span class="co">#&gt;  5 2017-01-05 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.278</span></a>
-<a class="sourceLine" id="cb40-65" title="65"><span class="co">#&gt;  6 2017-01-06 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.282</span></a>
-<a class="sourceLine" id="cb40-66" title="66"><span class="co">#&gt;  7 2017-01-07 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.378</span></a>
-<a class="sourceLine" id="cb40-67" title="67"><span class="co">#&gt;  8 2017-01-08 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.349</span></a>
-<a class="sourceLine" id="cb40-68" title="68"><span class="co">#&gt;  9 2017-01-09 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.388</span></a>
-<a class="sourceLine" id="cb40-69" title="69"><span class="co">#&gt; 10 2017-01-10 00:00:00 Zch_Stampfenbachstra~ CO        d1       mg/m3 0.314</span></a>
+<a class="sourceLine" id="cb40-58" title="58"><span class="co">#&gt;    starttime           site                    parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb40-59" title="59"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb40-60" title="60"><span class="co">#&gt;  1 2017-01-01 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.381</span></a>
+<a class="sourceLine" id="cb40-61" title="61"><span class="co">#&gt;  2 2017-01-02 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.339</span></a>
+<a class="sourceLine" id="cb40-62" title="62"><span class="co">#&gt;  3 2017-01-03 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.349</span></a>
+<a class="sourceLine" id="cb40-63" title="63"><span class="co">#&gt;  4 2017-01-04 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.248</span></a>
+<a class="sourceLine" id="cb40-64" title="64"><span class="co">#&gt;  5 2017-01-05 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.278</span></a>
+<a class="sourceLine" id="cb40-65" title="65"><span class="co">#&gt;  6 2017-01-06 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.282</span></a>
+<a class="sourceLine" id="cb40-66" title="66"><span class="co">#&gt;  7 2017-01-07 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.378</span></a>
+<a class="sourceLine" id="cb40-67" title="67"><span class="co">#&gt;  8 2017-01-08 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.349</span></a>
+<a class="sourceLine" id="cb40-68" title="68"><span class="co">#&gt;  9 2017-01-09 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.388</span></a>
+<a class="sourceLine" id="cb40-69" title="69"><span class="co">#&gt; 10 2017-01-10 00:00:00 Zch_Stampfenbachstrasse CO        d1       mg/m3 0.314</span></a>
 <a class="sourceLine" id="cb40-70" title="70"><span class="co">#&gt; # ... with 1,450 more rows</span></a></code></pre></div>
 <p>Nur die m1 und y1 sind für die LRV relevant:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">lrv &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/bind_rows_with_factor_columns.html">bind_rows_with_factor_columns</a></span>(stats<span class="op">$</span>y1, stats<span class="op">$</span>m1)</a></code></pre></div>
@@ -1371,16 +1372,16 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb42-11" title="11">stats &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_statstable.html">calculate_statstable</a></span>(O3, statstable, <span class="dt">data_thresh =</span> <span class="dv">0</span>, <span class="dt">max_gap =</span> <span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb42-12" title="12">stats<span class="op">$</span>y1</a>
 <a class="sourceLine" id="cb42-13" title="13"><span class="co">#&gt; # A tibble: 8 x 6</span></a>
-<a class="sourceLine" id="cb42-14" title="14"><span class="co">#&gt;   starttime           site           parameter      interval unit     value</span></a>
-<a class="sourceLine" id="cb42-15" title="15"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;          &lt;fct&gt;          &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb42-16" title="16"><span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenb~ O3             y1       µg/m3  4.53e+1</span></a>
-<a class="sourceLine" id="cb42-17" title="17"><span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenb~ O3_nb_min30    y1       1      1.75e+4</span></a>
-<a class="sourceLine" id="cb42-18" title="18"><span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenb~ O3_min_min30   y1       µg/m3  2.44e-1</span></a>
-<a class="sourceLine" id="cb42-19" title="19"><span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_min30   y1       µg/m3  1.54e+2</span></a>
-<a class="sourceLine" id="cb42-20" title="20"><span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_d1      y1       µg/m3  1.16e+2</span></a>
-<a class="sourceLine" id="cb42-21" title="21"><span class="co">#&gt; 6 2017-01-01 00:00:00 Zch_Stampfenb~ O3_nb_min30_m~ y1       1      4.80e+1</span></a>
-<a class="sourceLine" id="cb42-22" title="22"><span class="co">#&gt; 7 2017-01-01 00:00:00 Zch_Stampfenb~ O3_min_min30_~ y1       µg/m3  9.00e+1</span></a>
-<a class="sourceLine" id="cb42-23" title="23"><span class="co">#&gt; 8 2017-01-01 00:00:00 Zch_Stampfenb~ O3_max_min30_~ y1       µg/m3  1.54e+2</span></a></code></pre></div>
+<a class="sourceLine" id="cb42-14" title="14"><span class="co">#&gt;   starttime           site              parameter        interval unit     value</span></a>
+<a class="sourceLine" id="cb42-15" title="15"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;             &lt;fct&gt;            &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb42-16" title="16"><span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenbach~ O3               y1       µg/m3  4.53e+1</span></a>
+<a class="sourceLine" id="cb42-17" title="17"><span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_nb_min30      y1       1      1.75e+4</span></a>
+<a class="sourceLine" id="cb42-18" title="18"><span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_min_min30     y1       µg/m3  2.44e-1</span></a>
+<a class="sourceLine" id="cb42-19" title="19"><span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_min30     y1       µg/m3  1.54e+2</span></a>
+<a class="sourceLine" id="cb42-20" title="20"><span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_d1        y1       µg/m3  1.16e+2</span></a>
+<a class="sourceLine" id="cb42-21" title="21"><span class="co">#&gt; 6 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_nb_min30_max~ y1       1      4.80e+1</span></a>
+<a class="sourceLine" id="cb42-22" title="22"><span class="co">#&gt; 7 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_min_min30_ma~ y1       µg/m3  9.00e+1</span></a>
+<a class="sourceLine" id="cb42-23" title="23"><span class="co">#&gt; 8 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_min30_ma~ y1       µg/m3  1.54e+2</span></a></code></pre></div>
 <p>Wird für die Berechnung des maximalen Tagesmittelwert des Jahres <code>_inputs_</code> statt <code>default_statistic</code> verwendet, werden nur die Statistiken für Parameter berechnet die in den Input Daten enthalten sind.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">statstable &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(</a>
 <a class="sourceLine" id="cb43-2" title="2">  <span class="op">~</span>parameter, <span class="op">~</span>statistic, <span class="op">~</span>from, <span class="op">~</span>to,</a>
@@ -1392,13 +1393,13 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb43-8" title="8">stats &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/calculate_statstable.html">calculate_statstable</a></span>(O3, statstable, <span class="dt">data_thresh =</span> <span class="dv">0</span>, <span class="dt">max_gap =</span> <span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb43-9" title="9">stats<span class="op">$</span>y1</a>
 <a class="sourceLine" id="cb43-10" title="10"><span class="co">#&gt; # A tibble: 5 x 6</span></a>
-<a class="sourceLine" id="cb43-11" title="11"><span class="co">#&gt;   starttime           site              parameter   interval unit     value</span></a>
-<a class="sourceLine" id="cb43-12" title="12"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;             &lt;fct&gt;       &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb43-13" title="13"><span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenbach~ O3          y1       µg/m3  4.53e+1</span></a>
-<a class="sourceLine" id="cb43-14" title="14"><span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_nb_min30 y1       1      1.75e+4</span></a>
-<a class="sourceLine" id="cb43-15" title="15"><span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_min_min~ y1       µg/m3  2.44e-1</span></a>
-<a class="sourceLine" id="cb43-16" title="16"><span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_min~ y1       µg/m3  1.54e+2</span></a>
-<a class="sourceLine" id="cb43-17" title="17"><span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenbach~ O3_max_d1   y1       µg/m3  1.16e+2</span></a></code></pre></div>
+<a class="sourceLine" id="cb43-11" title="11"><span class="co">#&gt;   starttime           site                  parameter    interval unit     value</span></a>
+<a class="sourceLine" id="cb43-12" title="12"><span class="co">#&gt;   &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;        &lt;fct&gt;    &lt;fct&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb43-13" title="13"><span class="co">#&gt; 1 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3           y1       µg/m3  4.53e+1</span></a>
+<a class="sourceLine" id="cb43-14" title="14"><span class="co">#&gt; 2 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3_nb_min30  y1       1      1.75e+4</span></a>
+<a class="sourceLine" id="cb43-15" title="15"><span class="co">#&gt; 3 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3_min_min30 y1       µg/m3  2.44e-1</span></a>
+<a class="sourceLine" id="cb43-16" title="16"><span class="co">#&gt; 4 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3_max_min30 y1       µg/m3  1.54e+2</span></a>
+<a class="sourceLine" id="cb43-17" title="17"><span class="co">#&gt; 5 2017-01-01 00:00:00 Zch_Stampfenbachstra~ O3_max_d1    y1       µg/m3  1.16e+2</span></a></code></pre></div>
 <p>Im Allgemeinen dürfte die explizite Definition der Statistiken für jeden Parameter gegenüber der Verwendung von <code>default_statistic</code> und <code>_inputs_</code> vorzuziehen. Ansonsten kann das Resultat unerwartete Ergebnisse enthalten. Die Definition der statstable kann auch in einer Textdatei oder Exceldatei erfolgen und dann eingelesen werden, statt im Code definiert werden.</p>
 <p>An dieser Stelle noch die Berechnungen aller Statistiken im aqmet Store. Aus 21 Input Grössen werden 419 Statistiken berechnet:</p>
 <table class="table">
@@ -1658,18 +1659,18 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb44-5" title="5"></a>
 <a class="sourceLine" id="cb44-6" title="6"><span class="kw"><a href="../../reference/convert_conc.html">convert_conc</a></span>(data, <span class="st">"NO"</span>, <span class="st">"ppb"</span>, <span class="st">"µg/m3"</span>, <span class="dt">method =</span> <span class="st">"return"</span>)</a>
 <a class="sourceLine" id="cb44-7" title="7"><span class="co">#&gt; # A tibble: 1,484 x 6</span></a>
-<a class="sourceLine" id="cb44-8" title="8"><span class="co">#&gt;    starttime           site                  parameter interval unit  value</span></a>
-<a class="sourceLine" id="cb44-9" title="9"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                 &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb44-10" title="10"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  79.3</span></a>
-<a class="sourceLine" id="cb44-11" title="11"><span class="co">#&gt;  2 2013-01-01 00:30:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  81.8</span></a>
-<a class="sourceLine" id="cb44-12" title="12"><span class="co">#&gt;  3 2013-01-01 01:00:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  75.6</span></a>
-<a class="sourceLine" id="cb44-13" title="13"><span class="co">#&gt;  4 2013-01-01 01:30:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  81.2</span></a>
-<a class="sourceLine" id="cb44-14" title="14"><span class="co">#&gt;  5 2013-01-01 02:00:00 Zch_Stampfenbachstra~ NO        min30    µg/m3 101. </span></a>
-<a class="sourceLine" id="cb44-15" title="15"><span class="co">#&gt;  6 2013-01-01 02:30:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  61.4</span></a>
-<a class="sourceLine" id="cb44-16" title="16"><span class="co">#&gt;  7 2013-01-01 03:00:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  63.6</span></a>
-<a class="sourceLine" id="cb44-17" title="17"><span class="co">#&gt;  8 2013-01-01 03:30:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  61.0</span></a>
-<a class="sourceLine" id="cb44-18" title="18"><span class="co">#&gt;  9 2013-01-01 04:00:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  63.6</span></a>
-<a class="sourceLine" id="cb44-19" title="19"><span class="co">#&gt; 10 2013-01-01 04:30:00 Zch_Stampfenbachstra~ NO        min30    µg/m3  70.7</span></a>
+<a class="sourceLine" id="cb44-8" title="8"><span class="co">#&gt;    starttime           site                    parameter interval unit  value</span></a>
+<a class="sourceLine" id="cb44-9" title="9"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb44-10" title="10"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  79.3</span></a>
+<a class="sourceLine" id="cb44-11" title="11"><span class="co">#&gt;  2 2013-01-01 00:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  81.8</span></a>
+<a class="sourceLine" id="cb44-12" title="12"><span class="co">#&gt;  3 2013-01-01 01:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  75.6</span></a>
+<a class="sourceLine" id="cb44-13" title="13"><span class="co">#&gt;  4 2013-01-01 01:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  81.2</span></a>
+<a class="sourceLine" id="cb44-14" title="14"><span class="co">#&gt;  5 2013-01-01 02:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 101. </span></a>
+<a class="sourceLine" id="cb44-15" title="15"><span class="co">#&gt;  6 2013-01-01 02:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  61.4</span></a>
+<a class="sourceLine" id="cb44-16" title="16"><span class="co">#&gt;  7 2013-01-01 03:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  63.6</span></a>
+<a class="sourceLine" id="cb44-17" title="17"><span class="co">#&gt;  8 2013-01-01 03:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  61.0</span></a>
+<a class="sourceLine" id="cb44-18" title="18"><span class="co">#&gt;  9 2013-01-01 04:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  63.6</span></a>
+<a class="sourceLine" id="cb44-19" title="19"><span class="co">#&gt; 10 2013-01-01 04:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3  70.7</span></a>
 <a class="sourceLine" id="cb44-20" title="20"><span class="co">#&gt; # ... with 1,474 more rows</span></a>
 <a class="sourceLine" id="cb44-21" title="21"></a>
 <a class="sourceLine" id="cb44-22" title="22">conversions &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(</a>
@@ -1683,52 +1684,52 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb44-30" title="30"><span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"return"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb44-31" title="31"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)</a>
 <a class="sourceLine" id="cb44-32" title="32"><span class="co">#&gt; # A tibble: 7,424 x 6</span></a>
-<a class="sourceLine" id="cb44-33" title="33"><span class="co">#&gt;    starttime           site                 parameter interval unit   value</span></a>
-<a class="sourceLine" id="cb44-34" title="34"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb44-35" title="35"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        min30    mg/m3  0.782</span></a>
-<a class="sourceLine" id="cb44-36" title="36"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 79.3  </span></a>
-<a class="sourceLine" id="cb44-37" title="37"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.48 </span></a>
-<a class="sourceLine" id="cb44-38" title="38"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO2       min30    µg/m3 63.0  </span></a>
-<a class="sourceLine" id="cb44-39" title="39"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ SO2       min30    µg/m3 11.7  </span></a>
-<a class="sourceLine" id="cb44-40" title="40"><span class="co">#&gt;  6 2013-01-01 00:30:00 Zch_Stampfenbachstr~ CO        min30    mg/m3  0.828</span></a>
-<a class="sourceLine" id="cb44-41" title="41"><span class="co">#&gt;  7 2013-01-01 00:30:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 81.8  </span></a>
-<a class="sourceLine" id="cb44-42" title="42"><span class="co">#&gt;  8 2013-01-01 00:30:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.40 </span></a>
-<a class="sourceLine" id="cb44-43" title="43"><span class="co">#&gt;  9 2013-01-01 00:30:00 Zch_Stampfenbachstr~ NO2       min30    µg/m3 64.7  </span></a>
-<a class="sourceLine" id="cb44-44" title="44"><span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstr~ SO2       min30    µg/m3 12.2  </span></a>
+<a class="sourceLine" id="cb44-33" title="33"><span class="co">#&gt;    starttime           site                    parameter interval unit   value</span></a>
+<a class="sourceLine" id="cb44-34" title="34"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb44-35" title="35"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3  0.782</span></a>
+<a class="sourceLine" id="cb44-36" title="36"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 79.3  </span></a>
+<a class="sourceLine" id="cb44-37" title="37"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3        min30    µg/m3  3.48 </span></a>
+<a class="sourceLine" id="cb44-38" title="38"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO2       min30    µg/m3 63.0  </span></a>
+<a class="sourceLine" id="cb44-39" title="39"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse SO2       min30    µg/m3 11.7  </span></a>
+<a class="sourceLine" id="cb44-40" title="40"><span class="co">#&gt;  6 2013-01-01 00:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3  0.828</span></a>
+<a class="sourceLine" id="cb44-41" title="41"><span class="co">#&gt;  7 2013-01-01 00:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 81.8  </span></a>
+<a class="sourceLine" id="cb44-42" title="42"><span class="co">#&gt;  8 2013-01-01 00:30:00 Zch_Stampfenbachstrasse O3        min30    µg/m3  3.40 </span></a>
+<a class="sourceLine" id="cb44-43" title="43"><span class="co">#&gt;  9 2013-01-01 00:30:00 Zch_Stampfenbachstrasse NO2       min30    µg/m3 64.7  </span></a>
+<a class="sourceLine" id="cb44-44" title="44"><span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstrasse SO2       min30    µg/m3 12.2  </span></a>
 <a class="sourceLine" id="cb44-45" title="45"><span class="co">#&gt; # ... with 7,414 more rows</span></a>
 <a class="sourceLine" id="cb44-46" title="46"></a>
 <a class="sourceLine" id="cb44-47" title="47"><span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"append"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb44-48" title="48"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)</a>
 <a class="sourceLine" id="cb44-49" title="49"><span class="co">#&gt; # A tibble: 16,332 x 6</span></a>
-<a class="sourceLine" id="cb44-50" title="50"><span class="co">#&gt;    starttime           site                 parameter interval unit   value</span></a>
-<a class="sourceLine" id="cb44-51" title="51"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb44-52" title="52"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        min30    ppm    0.672</span></a>
-<a class="sourceLine" id="cb44-53" title="53"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        min30    ppb   63.6  </span></a>
-<a class="sourceLine" id="cb44-54" title="54"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO2       min30    ppb   33.0  </span></a>
-<a class="sourceLine" id="cb44-55" title="55"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NOx       min30    ppb   96.5  </span></a>
-<a class="sourceLine" id="cb44-56" title="56"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3        min30    ppb    1.75 </span></a>
-<a class="sourceLine" id="cb44-57" title="57"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ SO2       min30    ppb    4.41 </span></a>
-<a class="sourceLine" id="cb44-58" title="58"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        min30    mg/m3  0.782</span></a>
-<a class="sourceLine" id="cb44-59" title="59"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 79.3  </span></a>
-<a class="sourceLine" id="cb44-60" title="60"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.48 </span></a>
-<a class="sourceLine" id="cb44-61" title="61"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO2       min30    µg/m3 63.0  </span></a>
+<a class="sourceLine" id="cb44-50" title="50"><span class="co">#&gt;    starttime           site                    parameter interval unit   value</span></a>
+<a class="sourceLine" id="cb44-51" title="51"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb44-52" title="52"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        min30    ppm    0.672</span></a>
+<a class="sourceLine" id="cb44-53" title="53"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        min30    ppb   63.6  </span></a>
+<a class="sourceLine" id="cb44-54" title="54"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO2       min30    ppb   33.0  </span></a>
+<a class="sourceLine" id="cb44-55" title="55"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NOx       min30    ppb   96.5  </span></a>
+<a class="sourceLine" id="cb44-56" title="56"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3        min30    ppb    1.75 </span></a>
+<a class="sourceLine" id="cb44-57" title="57"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse SO2       min30    ppb    4.41 </span></a>
+<a class="sourceLine" id="cb44-58" title="58"><span class="co">#&gt;  7 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3  0.782</span></a>
+<a class="sourceLine" id="cb44-59" title="59"><span class="co">#&gt;  8 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 79.3  </span></a>
+<a class="sourceLine" id="cb44-60" title="60"><span class="co">#&gt;  9 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3        min30    µg/m3  3.48 </span></a>
+<a class="sourceLine" id="cb44-61" title="61"><span class="co">#&gt; 10 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO2       min30    µg/m3 63.0  </span></a>
 <a class="sourceLine" id="cb44-62" title="62"><span class="co">#&gt; # ... with 16,322 more rows</span></a>
 <a class="sourceLine" id="cb44-63" title="63"></a>
 <a class="sourceLine" id="cb44-64" title="64"><span class="kw"><a href="../../reference/convert_conc.html">convert_conc_multiple</a></span>(data, conversions, <span class="dt">method =</span> <span class="st">"replace"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb44-65" title="65"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(.data<span class="op">$</span>starttime)</a>
 <a class="sourceLine" id="cb44-66" title="66"><span class="co">#&gt; # A tibble: 8,908 x 6</span></a>
-<a class="sourceLine" id="cb44-67" title="67"><span class="co">#&gt;    starttime           site                 parameter interval unit   value</span></a>
-<a class="sourceLine" id="cb44-68" title="68"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb44-69" title="69"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NOx       min30    ppb   96.5  </span></a>
-<a class="sourceLine" id="cb44-70" title="70"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstr~ CO        min30    mg/m3  0.782</span></a>
-<a class="sourceLine" id="cb44-71" title="71"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 79.3  </span></a>
-<a class="sourceLine" id="cb44-72" title="72"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.48 </span></a>
-<a class="sourceLine" id="cb44-73" title="73"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstr~ NO2       min30    µg/m3 63.0  </span></a>
-<a class="sourceLine" id="cb44-74" title="74"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstr~ SO2       min30    µg/m3 11.7  </span></a>
-<a class="sourceLine" id="cb44-75" title="75"><span class="co">#&gt;  7 2013-01-01 00:30:00 Zch_Stampfenbachstr~ NOx       min30    ppb   99.4  </span></a>
-<a class="sourceLine" id="cb44-76" title="76"><span class="co">#&gt;  8 2013-01-01 00:30:00 Zch_Stampfenbachstr~ CO        min30    mg/m3  0.828</span></a>
-<a class="sourceLine" id="cb44-77" title="77"><span class="co">#&gt;  9 2013-01-01 00:30:00 Zch_Stampfenbachstr~ NO        min30    µg/m3 81.8  </span></a>
-<a class="sourceLine" id="cb44-78" title="78"><span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstr~ O3        min30    µg/m3  3.40 </span></a>
+<a class="sourceLine" id="cb44-67" title="67"><span class="co">#&gt;    starttime           site                    parameter interval unit   value</span></a>
+<a class="sourceLine" id="cb44-68" title="68"><span class="co">#&gt;    &lt;dttm&gt;              &lt;fct&gt;                   &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb44-69" title="69"><span class="co">#&gt;  1 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NOx       min30    ppb   96.5  </span></a>
+<a class="sourceLine" id="cb44-70" title="70"><span class="co">#&gt;  2 2013-01-01 00:00:00 Zch_Stampfenbachstrasse CO        min30    mg/m3  0.782</span></a>
+<a class="sourceLine" id="cb44-71" title="71"><span class="co">#&gt;  3 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 79.3  </span></a>
+<a class="sourceLine" id="cb44-72" title="72"><span class="co">#&gt;  4 2013-01-01 00:00:00 Zch_Stampfenbachstrasse O3        min30    µg/m3  3.48 </span></a>
+<a class="sourceLine" id="cb44-73" title="73"><span class="co">#&gt;  5 2013-01-01 00:00:00 Zch_Stampfenbachstrasse NO2       min30    µg/m3 63.0  </span></a>
+<a class="sourceLine" id="cb44-74" title="74"><span class="co">#&gt;  6 2013-01-01 00:00:00 Zch_Stampfenbachstrasse SO2       min30    µg/m3 11.7  </span></a>
+<a class="sourceLine" id="cb44-75" title="75"><span class="co">#&gt;  7 2013-01-01 00:30:00 Zch_Stampfenbachstrasse NOx       min30    ppb   99.4  </span></a>
+<a class="sourceLine" id="cb44-76" title="76"><span class="co">#&gt;  8 2013-01-01 00:30:00 Zch_Stampfenbachstrasse CO        min30    mg/m3  0.828</span></a>
+<a class="sourceLine" id="cb44-77" title="77"><span class="co">#&gt;  9 2013-01-01 00:30:00 Zch_Stampfenbachstrasse NO        min30    µg/m3 81.8  </span></a>
+<a class="sourceLine" id="cb44-78" title="78"><span class="co">#&gt; 10 2013-01-01 00:30:00 Zch_Stampfenbachstrasse O3        min30    µg/m3  3.40 </span></a>
 <a class="sourceLine" id="cb44-79" title="79"><span class="co">#&gt; # ... with 8,898 more rows</span></a></code></pre></div>
 <p>Die Funktion <code><a href="../../reference/calculate_mass_concentrations.html">calculate_mass_concentrations()</a></code> ist eine Hilfsfunktion, die aus Volumenkonzentrationen für CO, NO, NO2, NO2, SO2 in einem tibble automatisch die Massenkonzentrationen berechnet. Mit dem Argument keep_ppb können optional die Volumenkonzentration behalten werden. Das Default vorgehen ist die Volumenkonzentrationen zu ersetzen.</p>
 </div>
@@ -1853,7 +1854,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <p>Neben dem Ostluft AWS Store aqmet existiert noch ein Store mit hysplit Trajektorien von 1980 bis zum jeweiligen Vormonat des aktuellen Datums für die Standorte Zürich Kaserne und St. Gallen Blumenbergplatz. Die Trajektorien sind jeweils für 01:00 und 13:00 UTC+1 (=Luftmassen Herkunft) gerechnet.</p>
 <p>Beim Format hysplit wird für die Abfrage nur die <code>site</code> und das <code>year</code> benötigt:</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/r6_storage_s3.html">storage_s3_rds</a></span>(<span class="st">"hysplit_tutorial"</span>, <span class="kw"><a href="../../reference/format_hysplit.html">format_hysplit</a></span>(), <span class="st">"rostluft"</span>, <span class="st">"hysplit"</span>)</a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="co">#&gt; store hysplit_tutorial initialized under 'C:\Users\vot\AppData\Local\rOstluft\hysplit_tutorial'</span></a>
+<a class="sourceLine" id="cb47-2" title="2"><span class="co">#&gt; store hysplit_tutorial initialized under 'C:\Users\tom\AppData\Local\rOstluft\hysplit_tutorial'</span></a>
 <a class="sourceLine" id="cb47-3" title="3"></a>
 <a class="sourceLine" id="cb47-4" title="4"><span class="co"># nutze den vordefinierten store (name ist optional, default ist "hysplit")</span></a>
 <a class="sourceLine" id="cb47-5" title="5">hysplit_store &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/stores.html">store_hysplit</a></span>(<span class="st">"hysplit_tutorial"</span>)</a>
@@ -1865,9 +1866,9 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb47-11" title="11">openair<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/openair/man/trajPlot.html">trajPlot</a></span>(openair<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/openair/man/selectByDate.html">selectByDate</a></span>(traj, <span class="dt">start =</span> <span class="st">"2018-01-01"</span>, <span class="dt">end =</span> <span class="st">"2018-01-05"</span>))</a></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-48-1.png" width="700"></p>
 </div>
-<div id="lokale-daten-loschen" class="section level1">
+<div id="lokale-daten-löschen" class="section level1">
 <h1 class="hasAnchor">
-<a href="#lokale-daten-loschen" class="anchor"></a>Lokale Daten löschen</h1>
+<a href="#lokale-daten-l%C3%B6schen" class="anchor"></a>Lokale Daten löschen</h1>
 <p>Werden die Daten lokal nicht mehr benötigt, kann mit der Funktion <code>$destroy()</code> des Store Objektes die Daten gelöscht werden. Zu beachten ist, dass der AWS S3 Store als read only initialisiert wurde. Um ihn löschen zu können muss dies geändert werden. Um ein versehentliches löschen durch Autocomplete zu verhindern, muss der String “DELETE” als Argument übergeben werden</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">store<span class="op">$</span>read.only =<span class="st"> </span><span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb48-2" title="2">store<span class="op">$</span><span class="kw">destroy</span>(<span class="st">"DELETE"</span>)</a>
@@ -1891,6 +1892,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -1910,7 +1912,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
       <li><a href="#ausgabeformat-rolf">Ausgabeformat rolf</a></li>
       </ul>
 </li>
-      <li><a href="#zusammenfugen-von-daten-im-rolf-format">Zusammenfügen von Daten im rolf Format</a></li>
+      <li><a href="#zusammenf%C3%BCgen-von-daten-im-rolf-format">Zusammenfügen von Daten im rolf Format</a></li>
       <li><a href="#metadaten">Metadaten</a></li>
       <li><a href="#openair-kompatibles-wide-format">openair kompatibles Wide Format</a></li>
       <li>
@@ -1924,7 +1926,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
       <li><a href="#pluck">Pluck</a></li>
       <li><a href="#koordinatentransformationen">Koordinatentransformationen</a></li>
       <li><a href="#noaa-hysplit-trajektorien">NOAA Hysplit Trajektorien</a></li>
-      <li><a href="#lokale-daten-loschen">Lokale Daten löschen</a></li>
+      <li><a href="#lokale-daten-l%C3%B6schen">Lokale Daten löschen</a></li>
       </ul>
 </div>
       </div>
@@ -1938,7 +1940,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

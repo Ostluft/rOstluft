@@ -17,8 +17,7 @@ devtools::install_github("Ostluft/rOstluft")
 ```
 
 Zusätzlich muss das Package `aws.s3` manuell aus dem cloudyr
-Repositorium installiert werden, weil die CRANR Version veraltet
-ist:
+Repositorium installiert werden, weil die CRANR Version veraltet ist:
 
 ``` r
 install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
@@ -35,8 +34,7 @@ installiert werden.
 Zusätzlich besteht noch die Github Abhängkigkeit zu
 [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses
 Packages muss auf die gleiche Weise zuerst installiert werden mit
-folgenden
-Schritten:
+folgenden Schritten:
 
 ``` r
 download.file("https://github.com/Ostluft/rOstluft/archive/master.zip", "rOstluft-master.zip")

@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,16 +41,16 @@
 
 
 
-<meta property="og:title" content="Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports — read_smn_multiple" />
 
+<meta property="og:title" content="Reads a file from the SwissMetNet of MeteoSwiss containing multiple Exports — read_smn_multiple" />
 <meta property="og:description" content="One peculiarity of MeteoSwiss is to provide multiple exports concatenated in one file, starting with a line
 containing a single space and seperated by two newlines. This function reads the whole file into the memory, splits
 the part and applies the read function to each part. Is the file too big for the available memory, the function
 split_smn() can split the file into multiple files each containing one part. On Linux the commandline tool csplit
 is another probably faster tool." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -79,7 +81,7 @@ is another probably faster tool." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -123,7 +125,6 @@ is another probably faster tool." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -150,17 +151,15 @@ is another probably faster tool." />
     </div>
 
     <div class="ref-description">
-    
     <p>One peculiarity of MeteoSwiss is to provide multiple exports concatenated in one file, starting with a line
 containing a single space and seperated by two newlines. This function reads the whole file into the memory, splits
 the part and applies the read function to each part. Is the file too big for the available memory, the function
 <code><a href='split_smn.html'>split_smn()</a></code> can split the file into multiple files each containing one part. On Linux the commandline tool csplit
 is another probably faster tool.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>read_smn_multiple</span>(<span class='no'>fn</span>, <span class='kw'>as_list</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -181,11 +180,10 @@ is another probably faster tool.</p>
       <td><p>parameters passed to <code><a href='read_smn.html'>read_smn()</a></code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble or list of tibbles in rOstluft long format structure</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -196,7 +194,6 @@ is another probably faster tool.</p>
 lines</p></li>
 </ul>
 </div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn_multi.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -646,11 +643,8 @@ lines</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -664,7 +658,7 @@ lines</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

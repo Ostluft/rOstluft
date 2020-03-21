@@ -9,8 +9,13 @@
 \usage{
 storage_local_rds(name, format, path = NULL, read.only = TRUE)
 
-storage_local_tsv(name, format, path = NULL, read.only = TRUE,
-  tz = "Etc/GMT-1")
+storage_local_tsv(
+  name,
+  format,
+  path = NULL,
+  read.only = TRUE,
+  tz = "Etc/GMT-1"
+)
 }
 \arguments{
 \item{name}{name of the store}
@@ -63,31 +68,31 @@ per file.
 \section{Methods}{
 
 
-\code{$get(filter=NULL, ...)} get data from the store. The name of the arguments depend on the format. The filter
+\verb{$get(filter=NULL, ...)} get data from the store. The name of the arguments depend on the format. The filter
 argument is applied to each chunk.
 
-\code{$put(data)} puts the data into the store. Stops if store is read only
+\verb{$put(data)} puts the data into the store. Stops if store is read only
 
-\code{$get_content()} returns a tibble with the amount of data points per chunk per series
+\verb{$get_content()} returns a tibble with the amount of data points per chunk per series
 
-\code{$list_chunks()} get list of all chunks
+\verb{$list_chunks()} get list of all chunks
 
-\code{$get_meta(key=NULL)} get meta data. If key is omitted returns all the content of all files in a named list of
+\verb{$get_meta(key=NULL)} get meta data. If key is omitted returns all the content of all files in a named list of
 tibbles, with the file name without extension as name. If key is supplied as argument only the list contains only the
 specified key.
 
-\code{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
+\verb{$put_meta(...)} puts meta data into the store. the name of the argument is used as file name and the value as data.
 
-\code{$fix_content()} generates the content file from the data files
+\verb{$fix_content()} generates the content file from the data files
 
-\code{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
+\verb{$destroy(confirmation)} removes all files under path from the file system if "DELETE" is supplied as
 confirmation
 }
 
 \section{Column Types}{
 
 
-The first \code{$put()} saves the column types of the data in a file. All subsequents \code{$put()} calls must have the exact
+The first \verb{$put()} saves the column types of the data in a file. All subsequents \verb{$put()} calls must have the exact
 same column types: same order and classes of columns.
 }
 

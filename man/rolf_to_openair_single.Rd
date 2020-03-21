@@ -4,8 +4,13 @@
 \alias{rolf_to_openair_single}
 \title{Converts one parameter in a rolf data frame to an openair compatible format}
 \usage{
-rolf_to_openair_single(data, parameter = NULL, unit = NULL,
-  interval = NULL, keep_interval = FALSE)
+rolf_to_openair_single(
+  data,
+  parameter = NULL,
+  unit = NULL,
+  interval = NULL,
+  keep_interval = FALSE
+)
 }
 \arguments{
 \item{data}{containing the parameter in rolf format}
@@ -30,6 +35,6 @@ h1 <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv",
                    package = "rOstluft.data", mustWork = TRUE)
 
 airmo_h1 <- read_airmo_csv(h1)
-rolf_to_openair_single(airmo_h1, "NO2", unit = "µg/m3", keep_interval = TRUE)
+rolf_to_openair_single(airmo_h1, "NO2", unit = "Âµg/m3", keep_interval = TRUE)
 
 }

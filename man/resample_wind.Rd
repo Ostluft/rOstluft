@@ -4,9 +4,17 @@
 \alias{resample_wind}
 \title{Resamples wind data}
 \usage{
-resample_wind(data, statistic, new_interval = "d1", data_thresh = NULL,
-  skip_padding = FALSE, start_date = NULL, end_date = NULL,
-  drop_last = FALSE, max_gap = NULL)
+resample_wind(
+  data,
+  statistic,
+  new_interval = "d1",
+  data_thresh = NULL,
+  skip_padding = FALSE,
+  start_date = NULL,
+  end_date = NULL,
+  drop_last = FALSE,
+  max_gap = NULL
+)
 }
 \value{
 tibble with resampled wind data

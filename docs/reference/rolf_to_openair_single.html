@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Converts one parameter in a rolf data frame to an openair compatible format — rolf_to_openair_single" />
 
+<meta property="og:title" content="Converts one parameter in a rolf data frame to an openair compatible format — rolf_to_openair_single" />
 <meta property="og:description" content="This function plucks the data for one parameter. If multiple combinations of parameter, unit and interval exists it
 is necessary to specify which unit and/or interval to pluck." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -76,7 +78,7 @@ is necessary to specify which unit and/or interval to pluck." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -120,7 +122,6 @@ is necessary to specify which unit and/or interval to pluck." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -147,15 +148,18 @@ is necessary to specify which unit and/or interval to pluck." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function plucks the data for one parameter. If multiple combinations of parameter, unit and interval exists it
 is necessary to specify which unit and/or interval to pluck.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>rolf_to_openair_single</span>(<span class='no'>data</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>rolf_to_openair_single</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -180,40 +184,25 @@ is necessary to specify which unit and/or interval to pluck.</p>
       <td><p>Optional: keep interval column. Default FALSE</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble with one parameter in openair compatible format including unit, site and optional interval column</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>h1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>,
                    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='no'>airmo_h1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>h1</span>)
-<span class='fu'>rolf_to_openair_single</span>(<span class='no'>airmo_h1</span>, <span class='st'>"NO2"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"µg/m3"</span>, <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 742 x 5</span><span>
-#&gt;    date                site                    interval unit    NO2
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  63.9
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  61.6
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-01 </span><span style='color: #555555;'>02:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  60.9
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-01 </span><span style='color: #555555;'>03:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  56.7
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-01 </span><span style='color: #555555;'>04:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  59.2
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-01 </span><span style='color: #555555;'>05:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.9
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-01 </span><span style='color: #555555;'>06:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  46.5
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-01 </span><span style='color: #555555;'>07:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  44.2
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.2
-#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> Zch_Stampfenbachstrasse h1       µg/m3  21.1
-#&gt; </span><span style='color: #555555;'># ... with 732 more rows</span><span></div><div class='input'>
+<span class='fu'>rolf_to_openair_single</span>(<span class='no'>airmo_h1</span>, <span class='st'>"NO2"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"Âµg/m3"</span>, <span class='kw'>keep_interval</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `parameter` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `unit` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `interval` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 0 x 4</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 4 variables: date </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, site </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span style='color: #555555;'>, unit </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -227,7 +216,7 @@ is necessary to specify which unit and/or interval to pluck.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

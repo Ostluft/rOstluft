@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reads a file from the SwissMetNet of MeteoSwiss — read_smn • rOstluft</title>
+<title>Reads historic data files  of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station. — read_seepolizei • rOstluft</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,16 +42,8 @@
 
 
 
-<meta property="og:title" content="Reads a file from the SwissMetNet of MeteoSwiss — read_smn" />
-<meta property="og:description" content="SwissMetNet,
-the automatic monitoring network of MeteoSwiss the Federal Office for
-Meteorology and Climatology, comprises about 160 automatic monitoring stations. These stations deliver a multitude
-of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
-by automatic precipitation stations.
-This Function autodetects the delimeter and tries to find the interval. In Addition the time information in the
-files is utc and end time. The time is converted to start time and the time zone defined trough the argument tz.
-The argument time_shift provides a way to manuelly shift the time series. In this case no automatically shifting
-is applied. The provided values is directly added to information in the file." />
+<meta property="og:title" content="Reads historic data files  of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station. — read_seepolizei" />
+<meta property="og:description" content="Reads historic data files  of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -149,30 +141,20 @@ is applied. The provided values is directly added to information in the file." /
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reads a file from the SwissMetNet of MeteoSwiss</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-smn.R'><code>R/read-smn.R</code></a></small>
-    <div class="hidden name"><code>read_smn.Rd</code></div>
+    <h1>Reads historic data files  of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-seepolizei.R'><code>R/read-seepolizei.R</code></a></small>
+    <div class="hidden name"><code>read_seepolizei.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.meteoswiss.admin.ch/home/measurement-and-forecasting-systems/land-based-stations/automatisches-messnetz.html'>SwissMetNet</a>,
-the automatic monitoring network of <a href='https://www.meteoschweiz.admin.ch'>MeteoSwiss</a> the Federal Office for
-Meteorology and Climatology, comprises about 160 automatic monitoring stations. These stations deliver a multitude
-of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented
-by automatic precipitation stations.</p>
-<p>This Function autodetects the delimeter and tries to find the interval. In Addition the time information in the
-files is utc and end time. The time is converted to start time and the time zone defined trough the argument tz.
-The argument time_shift provides a way to manuelly shift the time series. In this case <em>no</em> automatically shifting
-is applied. The provided values is directly added to information in the file.</p>
+    <p>Reads historic data files  of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_smn</span>(
+    <pre class="usage"><span class='fu'>read_seepolizei</span>(
   <span class='no'>fn</span>,
+  <span class='kw'>site</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ZH_Mythenquai"</span>, <span class='st'>"ZH_Tiefenbrunnen"</span>),
   <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>,
   <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
@@ -181,56 +163,74 @@ is applied. The provided values is directly added to information in the file.</p
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fn</th>
-      <td><p>path to input file</p></td>
+      <td><p>file name containing historic data</p></td>
+    </tr>
+    <tr>
+      <th>site</th>
+      <td><p>measurement site of data. Should be "ZH_Mythenquai" or "ZH_Tiefenbrunnen"</p></td>
     </tr>
     <tr>
       <th>tz</th>
-      <td><p>of the output data. Default "Etc/GMT-1"</p></td>
-    </tr>
-    <tr>
-      <th>encoding</th>
-      <td><p>encoding of the data file. Default = "UTF-8"</p></td>
+      <td><p>Output time zone. The file content is in CET. Detault "Etc/GMT-1"</p></td>
     </tr>
     <tr>
       <th>time_shift</th>
       <td><p>a lubridate period to add to the time. Default NULL</p></td>
     </tr>
     <tr>
-      <th>time_format</th>
-      <td><p>optional time_format. Use if auto detect fails. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>interval</th>
-      <td><p>optional interval of the data. Use if auto detect fails. Default NULL. If used it is necessary to
-define time_shift manuelly. lubridate::period(0) can be used for no shifting</p></td>
-    </tr>
-    <tr>
       <th>na.rm</th>
-      <td><p>remove na values. Default TRUE</p></td>
+      <td><p>remove na (empty) values. Default TRUE</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble in rOstluft long format structure</p>
+    <p>data frame in rOstluft long format</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>read_smn</span>(<span class='no'>input</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 54 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>01:00:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    209  
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>01:10:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    216  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>01:20:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    227  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>01:30:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    212  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>01:40:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    200  
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   fkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>01:00:00</span><span> CHU   fkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      1.9
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>01:10:00</span><span> CHU   fkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      2  
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>01:20:00</span><span> CHU   fkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      2.6
-#&gt; </span><span style='color: #555555;'># ... with 44 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft.data</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft.data/man/f.html'>f</a></span>(<span class='st'>"messwerte_tiefenbrunnen_2007-2019.csv"</span>)
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>read_seepolizei</span>(<span class='no'>input</span>, <span class='st'>"ZH_Tiefenbrunnen"</span>)
+
+<span class='co'># normalize data with meta informations</span>
+<span class='no'>meta_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='kw pkg'>rOstluft.data</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft.data/man/f.html'>f</a></span>(<span class='st'>"meta_seepolizei.rds"</span>))
+
+<span class='co'># add units</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta_apply.html'>meta_apply</a></span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>,
+  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='no'>meta_data</span>,
+  <span class='kw'>data_src</span> <span class='kw'>=</span> <span class='st'>"parameter"</span>,
+  <span class='kw'>data_dest</span> <span class='kw'>=</span> <span class='st'>"unit"</span>,
+  <span class='kw'>meta_key</span> <span class='kw'>=</span> <span class='st'>"parameter_original"</span>,
+  <span class='kw'>meta_val</span> <span class='kw'>=</span> <span class='st'>"unit"</span>,
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"strict"</span>
+)
+
+<span class='co'># rename parameters to Ostluft Conventions</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta_apply.html'>meta_apply</a></span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>,
+  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='no'>meta_data</span>,
+  <span class='kw'>data_src</span> <span class='kw'>=</span> <span class='st'>"parameter"</span>,
+  <span class='kw'>data_dest</span> <span class='kw'>=</span> <span class='st'>"parameter"</span>,
+  <span class='kw'>meta_key</span> <span class='kw'>=</span> <span class='st'>"parameter_original"</span>,
+  <span class='kw'>meta_val</span> <span class='kw'>=</span> <span class='st'>"parameter"</span>,
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"strict"</span>
+)
+
+<span class='co'># show normalized data</span>
+<span class='no'>data</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 750 x 6</span><span>
+#&gt;    starttime           site             parameter interval unit  value
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 2007-04-15 </span><span style='color: #555555;'>10:20:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17.4
+#&gt; </span><span style='color: #555555;'> 2</span><span> 2007-04-15 </span><span style='color: #555555;'>10:30:00</span><span> ZH_Tiefenbrunnen T         min10    °C     16.7
+#&gt; </span><span style='color: #555555;'> 3</span><span> 2007-04-15 </span><span style='color: #555555;'>10:40:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17  
+#&gt; </span><span style='color: #555555;'> 4</span><span> 2007-04-15 </span><span style='color: #555555;'>10:50:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17  
+#&gt; </span><span style='color: #555555;'> 5</span><span> 2007-04-15 </span><span style='color: #555555;'>11:00:00</span><span> ZH_Tiefenbrunnen T         min10    °C     16.8
+#&gt; </span><span style='color: #555555;'> 6</span><span> 2007-04-15 </span><span style='color: #555555;'>11:10:00</span><span> ZH_Tiefenbrunnen T         min10    °C     16.6
+#&gt; </span><span style='color: #555555;'> 7</span><span> 2007-04-15 </span><span style='color: #555555;'>11:20:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17  
+#&gt; </span><span style='color: #555555;'> 8</span><span> 2007-04-15 </span><span style='color: #555555;'>11:30:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17.3
+#&gt; </span><span style='color: #555555;'> 9</span><span> 2007-04-15 </span><span style='color: #555555;'>11:40:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17.3
+#&gt; </span><span style='color: #555555;'>10</span><span> 2007-04-15 </span><span style='color: #555555;'>11:50:00</span><span> ZH_Tiefenbrunnen T         min10    °C     17.6
+#&gt; </span><span style='color: #555555;'># ... with 740 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

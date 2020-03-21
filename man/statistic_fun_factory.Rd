@@ -4,14 +4,18 @@
 \alias{statistic_fun_factory}
 \title{Factory to generate statistical functions}
 \usage{
-statistic_fun_factory(statistic, percentile = 0.95, threshold = NULL,
-  max_gap = NULL)
+statistic_fun_factory(
+  statistic,
+  percentile = 0.95,
+  threshold = NULL,
+  max_gap = NULL
+)
 }
 \arguments{
 \item{statistic}{Statistical method to generate function. Can be a name or function with one argument. See
 section Statistical methods in the documention of \code{\link[=resample]{resample()}} for more details.}
 
-\item{percentile}{The percentile level in \% used when statistic = "percentile". The default is 0.95.}
+\item{percentile}{The percentile level in \verb{\%} used when statistic = "percentile". The default is 0.95.}
 
 \item{threshold}{optional minimum data capture threshold 0 - 1.0 to use}
 

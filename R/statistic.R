@@ -1,11 +1,11 @@
-#' Factory to generate statistical functions
+#' @title Factory to generate statistical functions
 #'
-#' This factory adds wrapper around statistical methods to handle na values. Additional it provides a simple
+#' @description This factory adds wrapper around statistical methods to handle na values. Additional it provides a simple
 #' way to apply a minimum required data capture rate to any function.
 #'
 #' @param statistic Statistical method to generate function. Can be a name or function with one argument. See
 #'   section Statistical methods in the documention of [resample()] for more details.
-#' @param percentile The percentile level in \% used when statistic = "percentile". The default is 0.95.
+#' @param percentile The percentile level in `%` used when statistic = "percentile". The default is 0.95.
 #' @param threshold optional minimum data capture threshold 0 - 1.0 to use
 #' @param max_gap optional maxium Number of consecutive NA values
 #'

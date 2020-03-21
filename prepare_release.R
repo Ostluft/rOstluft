@@ -55,7 +55,7 @@ prepare_release <- function() {
   )
 
   if (choice == 2) {
-    devtools::check()
+    devtools::check(encoding = "UTF-8")
   }
 
   choice <- utils::menu(

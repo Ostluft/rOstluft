@@ -10,17 +10,13 @@
 \usage{
 transform_crs(data, coord, in_crs, out_crs, append = TRUE)
 
-transform_LV95_to_WSG84(data, coord = c(lon = "x", lat = "y"),
-  append = TRUE)
+transform_LV95_to_WSG84(data, coord = c(lon = "x", lat = "y"), append = TRUE)
 
-transform_WSG84_to_LV95(data, coord = c(x = "lon", y = "lat"),
-  append = TRUE)
+transform_WSG84_to_LV95(data, coord = c(x = "lon", y = "lat"), append = TRUE)
 
-transform_LV03_to_WSG84(data, coord = c(lon = "x", lat = "y"),
-  append = TRUE)
+transform_LV03_to_WSG84(data, coord = c(lon = "x", lat = "y"), append = TRUE)
 
-transform_WSG84_to_LV03(data, coord = c(x = "lon", y = "lat"),
-  append = TRUE)
+transform_WSG84_to_LV03(data, coord = c(x = "lon", y = "lat"), append = TRUE)
 }
 \arguments{
 \item{data}{input data}

@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,12 +41,12 @@
 
 
 
+
 <meta property="og:title" content="Transform between Coordinate Reference Systems — transform_crs" />
-
 <meta property="og:description" content="Transform between Coordinate Reference Systems" />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -75,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -119,7 +121,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Ostluft/rOstluft">
@@ -146,25 +147,19 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Transform between Coordinate Reference Systems</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>transform_crs</span>(<span class='no'>data</span>, <span class='no'>coord</span>, <span class='no'>in_crs</span>, <span class='no'>out_crs</span>, <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>transform_LV95_to_WSG84</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>),
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>transform_LV95_to_WSG84</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>transform_WSG84_to_LV95</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"lon"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"lat"</span>),
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>transform_WSG84_to_LV95</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"lon"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"lat"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>transform_LV03_to_WSG84</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>),
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>transform_LV03_to_WSG84</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>lon</span> <span class='kw'>=</span> <span class='st'>"x"</span>, <span class='kw'>lat</span> <span class='kw'>=</span> <span class='st'>"y"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>transform_WSG84_to_LV03</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"lon"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"lat"</span>),
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+<span class='fu'>transform_WSG84_to_LV03</span>(<span class='no'>data</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"lon"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"lat"</span>), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -189,11 +184,10 @@
       <td><p>append data in new Columns</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>tibble with transformed coordinates</p>
-    
     <h2 class="hasAnchor" id="wsg-epsg-vs-web-pseudo-mercator-epsg-"><a class="anchor" href="#wsg-epsg-vs-web-pseudo-mercator-epsg-"></a>WSG84 (EPSG 4326) vs Web Pseudo Mercator (EPSG 3857)</h2>
 
     
@@ -203,8 +197,7 @@ detailed explanation. In Short:</p>
 <p>EPSG:4326 uses a coordinate system on the surface of a sphere or ellipsoid of reference.</p>
 <p>EPSG:3857 uses a coordinate system PROJECTED from the surface of the sphere or ellipsoid to a flat surface.</p>
 <p>Usually Packages and Webservices expects coordinates for Elements in EPSG:4326, one Exception is
-<code><a href='https://rdrr.io/pkg/leaflet/man/addRasterImage.html'>leaflet::addRasterImage()</a></code></p>
-    
+<code>leaflet::addRasterImage()</code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -218,7 +211,6 @@ detailed explanation. In Short:</p>
 <li><p><a href='https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/'>Tiles à la Google Maps</a></p></li>
 </ul>
 </div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"meta_smn.rds"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
@@ -274,13 +266,9 @@ detailed explanation. In Short:</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#wsg-epsg-vs-web-pseudo-mercator-epsg-">WSG84 (EPSG 4326) vs Web Pseudo Mercator (EPSG 3857)</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -294,7 +282,7 @@ detailed explanation. In Short:</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

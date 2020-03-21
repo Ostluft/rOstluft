@@ -4,8 +4,16 @@
 \alias{meta_apply}
 \title{Transforms data based on an other meta table}
 \usage{
-meta_apply(data, meta, data_src, data_dest, meta_key, meta_val,
-  mode = "strict", replacements = NULL)
+meta_apply(
+  data,
+  meta,
+  data_src,
+  data_dest,
+  meta_key,
+  meta_val,
+  mode = "strict",
+  replacements = NULL
+)
 }
 \arguments{
 \item{data}{Input data as tibble}

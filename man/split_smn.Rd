@@ -4,8 +4,7 @@
 \alias{split_smn}
 \title{Splits a file from the SwissMetNet of MeteoSwiss containing multiple Exports}
 \usage{
-split_smn(fn, out_dir = NULL, suffix = "\%03d.part",
-  encoding = "UTF-8")
+split_smn(fn, out_dir = NULL, suffix = "\%03d.part", encoding = "UTF-8")
 }
 \arguments{
 \item{fn}{path to input file}

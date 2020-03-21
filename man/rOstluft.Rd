@@ -3,8 +3,7 @@
 \docType{package}
 \name{rOstluft}
 \alias{rOstluft}
-\alias{rOstluft-package}
 \title{rOstluft: data store and utility functions for Ostluft}
 \description{
-rOstluft: data store and utility functions for Ostluft
+This package provides function to quickly load data and merge data from mulitple sources.
 }

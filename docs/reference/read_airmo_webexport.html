@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Converts the wide format from the files to the long format — airmo_wide_to_long • rOstluft</title>
+<title>Reads an AIRMO Export in CSV Webexport Format — read_airmo_webexport • rOstluft</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Converts the wide format from the files to the long format — airmo_wide_to_long" />
-<meta property="og:description" content="Converts the wide format from the files to the long format" />
+<meta property="og:title" content="Reads an AIRMO Export in CSV Webexport Format — read_airmo_webexport" />
+<meta property="og:description" content="Reads the data from a AIRMO Webexport CSV file and returns it as a data frame in rOstluft long format" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -141,18 +141,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Converts the wide format from the files to the long format</h1>
+    <h1>Reads an AIRMO Export in CSV Webexport Format</h1>
     <small class="dont-index">Source: <a href='https://github.com/Ostluft/rOstluft/blob/master/R/read-airmo.R'><code>R/read-airmo.R</code></a></small>
-    <div class="hidden name"><code>airmo_wide_to_long.Rd</code></div>
+    <div class="hidden name"><code>read_airmo_webexport.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Converts the wide format from the files to the long format</p>
+    <p>Reads the data from a AIRMO Webexport CSV file and returns it as a data frame in rOstluft long format</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airmo_wide_to_long</span>(
-  <span class='no'>header</span>,
-  <span class='no'>data</span>,
+    <pre class="usage"><span class='fu'>read_airmo_webexport</span>(
+  <span class='no'>fn</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"latin1"</span>,
   <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>,
   <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
@@ -162,12 +162,12 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>header</th>
-      <td><p>data frame containing airmo_kurzname, parameter, zeitfenster and einheit</p></td>
+      <th>fn</th>
+      <td><p>CSV file name, can be relative to current directory or absolut</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>data frame only containing the data from the file</p></td>
+      <th>encoding</th>
+      <td><p>CSV file encoding. Default "latin1"</p></td>
     </tr>
     <tr>
       <th>tz</th>
@@ -191,6 +191,22 @@
     <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/period.html'>lubridate::period()</a></code> - Create or parse period objects</p>
 <p><a href='https://rdrr.io/r/base/timezones.html'>base::timezones</a> - Information about time zones in R</p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft.data</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rOstluft.data/man/f.html'>f</a></span>(<span class='st'>"ol_nox_covid19_2020.csv"</span>)
+<span class='fu'>read_airmo_webexport</span>(<span class='no'>input</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 60,916 x 6</span><span>
+#&gt;    starttime           site         parameter interval unit  value
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2020-01-01 </span><span style='color: #949494;'>00:00:00</span><span> Opf_Balsberg NOx       min30    ppb    20.0
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 2020-01-01 </span><span style='color: #949494;'>00:30:00</span><span> Opf_Balsberg NOx       min30    ppb    21.5
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2020-01-01 </span><span style='color: #949494;'>01:00:00</span><span> Opf_Balsberg NOx       min30    ppb    26.1
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 2020-01-01 </span><span style='color: #949494;'>01:30:00</span><span> Opf_Balsberg NOx       min30    ppb    21.5
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2020-01-01 </span><span style='color: #949494;'>02:00:00</span><span> Opf_Balsberg NOx       min30    ppb    27.3
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 2020-01-01 </span><span style='color: #949494;'>02:30:00</span><span> Opf_Balsberg NOx       min30    ppb    19.9
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 2020-01-01 </span><span style='color: #949494;'>03:00:00</span><span> Opf_Balsberg NOx       min30    ppb    17.7
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2020-01-01 </span><span style='color: #949494;'>03:30:00</span><span> Opf_Balsberg NOx       min30    ppb    17.9
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2020-01-01 </span><span style='color: #949494;'>04:00:00</span><span> Opf_Balsberg NOx       min30    ppb    19.7
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2020-01-01 </span><span style='color: #949494;'>04:30:00</span><span> Opf_Balsberg NOx       min30    ppb    23.2
+#&gt; </span><span style='color: #949494;'># ... with 60,906 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -198,6 +214,7 @@
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
@@ -206,7 +223,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
+  <p>Developed by Thomas von Allmen, Jörg Sintermann.</p>
 </div>
 
 <div class="pkgdown">

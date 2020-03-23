@@ -1,3 +1,12 @@
+# rOstluft 1.3.0
+
+* New `store_aqmet_public()` public access for airquality and meteo data
+
+* New statistics 'n>10' and 'n>25' for PM2.5 limits for resampling data
+
+* Fixed `get_seepolizei()` returning values as character
+
+
 # rOstluft 1.2.0
 
 * New `read_seepolizei()` to read historic meteorological data from 

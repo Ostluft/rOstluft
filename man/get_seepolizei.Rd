@@ -24,6 +24,7 @@ Uses the \href{https://tecdottir.herokuapp.com/docs/}{Tecdottir API} from Stefan
 \examples{
 get_seepolizei(as.Date("2020-03-01"), lubridate::dmy("02.03.2020"))
 
+
 data <- get_seepolizei("2020-03-20", "2020-03-22", "mythenquai")
 
 # normalize data with meta informations

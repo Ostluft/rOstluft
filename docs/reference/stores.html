@@ -46,6 +46,7 @@
 <meta property="og:description" content="
 
 store_aqmet() - Ostluft S3 storage containing airquality and meteo data
+store_aqmet_public() - Public Ostluft S3 storage containing airquality and meteo data.
 store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
 
 " />
@@ -82,7 +83,7 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -155,6 +156,7 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
     
 <ul>
 <li><p><code>store_aqmet()</code> - Ostluft S3 storage containing airquality and meteo data</p></li>
+<li><p><code>store_aqmet_public()</code> - Public Ostluft S3 storage containing airquality and meteo data.</p></li>
 <li><p><code>store_hysplit()</code> - Ostluft S3 storage containing NOAA Hysplit trajectories</p></li>
 </ul>
 
@@ -162,7 +164,9 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
 
     <pre class="usage"><span class='fu'>store_aqmet</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"aqmet"</span>)
 
-<span class='fu'>store_hysplit</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"hysplit"</span>)</pre>
+<span class='fu'>store_hysplit</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"hysplit"</span>)
+
+<span class='fu'>store_aqmet_public</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"aqmet_public"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,6 +180,36 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>store</p>
+    <h2 class="hasAnchor" id="store-aqmet-public"><a class="anchor" href="#store-aqmet-public"></a>store_aqmet_public</h2>
+
+    
+
+<p>This store contains data from following sources:</p><h3><a href='https://www.ostluft.ch/'>Ostluft</a></h3>
+
+
+<p>Ostluft is a inter cantonal measurement network of eastern switzerland and the Principality of Liechtenstein.</p>
+
+<h3><a href='http://www.iac.ethz.ch/the-institute/weather-stations.html'>ETHZ IAC</a></h3>
+
+
+<p>Institute for Atmosheric and Climate Science (IAC), ETH Zurich</p>
+<p>This data can be used freely for scientific analysis.
+The user agrees to cite IAC ETH Zurich as source of the data and to consult IAC ETH Zurich before data is used for publication.</p>
+<p>Please note that we do not take any guarantee for the correctness and completeness of the available data.</p>
+
+<h3><a href='https://www.bafu.admin.ch/bafu/en/home/topics/air/state/data/national-air-pollution-monitoring-network--nabel-.html'>National Air Pollution Monitoring Network (NABEL)</a></h3>
+
+
+<p>The National Air Pollution Monitoring Network (NABEL) measures air pollution at 16 locations in Switzerland.
+The stations are distributed throughout the country and monitor pollution at typical locations (e.g.
+city-centre streets, residential areas, rural stations). The monitoring network has commenced operations in stages
+since 1979 and is operated by the Federal office for the environment and Empa.</p>
+
+<h3><a href='https://data.stadt-zuerich.ch/dataset/sid_wapo_wetterstationen'>Water police Zuerich</a></h3>
+
+
+<p>The water police Zuerich operates two meteo station. The locations are Tiefenbrunnen and Mythenquai.</p>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -183,6 +217,7 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#store-aqmet-public">store_aqmet_public</a></li>
     </ul>
 
   </div>
@@ -191,7 +226,7 @@ store_hysplit() - Ostluft S3 storage containing NOAA Hysplit trajectories
 
       <footer>
       <div class="copyright">
-  <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
+  <p>Developed by Thomas von Allmen, Jörg Sintermann.</p>
 </div>
 
 <div class="pkgdown">

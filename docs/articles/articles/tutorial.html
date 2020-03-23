@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
       <h1>[GER] Tutorial</h1>
                         <h4 class="author">Thomas von Allmen</h4>
             
-            <h4 class="date">2020-03-21</h4>
+            <h4 class="date">2020-03-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ostluft/rOstluft/blob/master/vignettes/articles/tutorial.Rmd"><code>vignettes/articles/tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>tutorial.Rmd</code></div>
@@ -176,35 +176,35 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">content &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_content</span>()</a>
 <a class="sourceLine" id="cb7-2" title="2">content</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 178,610 x 6</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     year interval site                parameter unit      n</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1  2013 h1       Zürich - EraInterim blh       m       730</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  2  2013 h1       Zürich - EraInterim cape      J/kg    730</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;  3  2013 h1       Zürich - EraInterim d2m       °C      730</span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;  4  2013 h1       Zürich - EraInterim e         m H2O   730</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;  5  2013 h1       Zürich - EraInterim ishf      W/m2    730</span></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;  6  2013 h1       Zürich - EraInterim p         hPa     730</span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  7  2013 h1       Zürich - EraInterim par       J/m2    730</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8  2013 h1       Zürich - EraInterim RainSum   m       730</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9  2013 h1       Zürich - EraInterim skt       °C      730</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10  2013 h1       Zürich - EraInterim slhf      J/m2    730</span></a>
-<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 178,600 more rows</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 178,611 x 6</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     year interval site             parameter            unit      n</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;            &lt;fct&gt;                &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1  2020 min10    ZH_Tiefenbrunnen dew_point            °C    10222</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  2  2020 min10    ZH_Tiefenbrunnen Hr                   %     10222</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;  3  2020 min10    ZH_Tiefenbrunnen p                    hPa   10222</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;  4  2020 min10    ZH_Tiefenbrunnen T                    °C    10222</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;  5  2020 min10    ZH_Tiefenbrunnen water_temperature    °C    10222</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;  6  2020 min10    ZH_Tiefenbrunnen WD                   °     10222</span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  7  2020 min10    ZH_Tiefenbrunnen wind_force_avg_10min bft   10222</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8  2020 min10    ZH_Tiefenbrunnen windchill            °C    10222</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9  2020 min10    ZH_Tiefenbrunnen WVs                  m/s   10222</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10  2020 min10    ZH_Tiefenbrunnen WVs_max              m/s   10222</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 178,601 more rows</span></a>
 <a class="sourceLine" id="cb7-17" title="17"></a>
 <a class="sourceLine" id="cb7-18" title="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(content, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; # A tibble: 10 x 6</span></a>
 <a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;     year interval site                      parameter      unit      n</span></a>
 <a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;                     &lt;fct&gt;          &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  2016 y1       WeF_Berufsbildungszentrum T_min_h1       °C        1</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2005 d1       Zch_Schwamendingen        PM10_min_min30 µg/m3   356</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  2017 min30    Chu_A13                   PM10           µg/m3 17077</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  2001 h1       StG_Stuelegg              StrGlo         W/m2   7012</span></a>
-<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  1994 m1       Zch_Stampfenbachstrasse   NOx_nb_d1      1        12</span></a>
-<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  1994 min30    Zch_SchwamAlt             p              hPa   17127</span></a>
-<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  2006 y1       Neu_Galgenbuck            NO2_nb_min30   1         1</span></a>
-<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  2010 d1       Opf_Balsberg              O3_nb_min30    1       360</span></a>
-<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  2002 y1       Säntis                    T_max_h1       °C        1</span></a>
-<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  1994 y1       StG_Stuelegg              O3_min_h1      µg/m3     1</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;  1  2016 y1       WeF_Berufsbildungszentrum O3_nb_h1&gt;240   1         1</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt;  2  2005 d1       Zch_Schwamendingen        PM10_max_min30 µg/m3   356</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;  3  2017 min30    Chu_A13                   NO2            ppb   16697</span></a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  4  2001 h1       StG_Stuelegg              O3             µg/m3  8526</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  5  1994 m1       Zch_Stampfenbachstrasse   NOx_max_d1     ppb      12</span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  6  1994 min30    Zch_SchwamAlt             WVs            m/s   17127</span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  7  2006 y1       Neu_Galgenbuck            NO2_min_min30  µg/m3     1</span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  8  2010 d1       Opf_Balsberg              O3_min_min30   µg/m3   360</span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt;  9  2002 y1       Säntis                    T_min_h1       °C        1</span></a>
+<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 10  1994 y1       StG_Stuelegg              O3_max_h1      µg/m3     1</span></a></code></pre></div>
 <p>Eine Datenabfrage holt immer die Daten von einem komplettem Jahr einer Station für einen bestimmten Mittelungszeitraum:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">store<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> <span class="st">"Zch_Schimmelstrasse"</span>, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; # A tibble: 243,875 x 6</span></a>
@@ -278,20 +278,20 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">lokal &lt;-<span class="st"> </span>store<span class="op">$</span><span class="kw">get_local_storage</span>()</a></code></pre></div>
 <p>Dieser verfügt über die gleichen Funktionalität wie der S3 Store:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">lokal<span class="op">$</span><span class="kw">get_content</span>()</a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 178,610 x 6</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;     year interval site                parameter unit      n</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;               &lt;fct&gt;     &lt;fct&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;  1  2013 h1       Zürich - EraInterim blh       m       730</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt;  2  2013 h1       Zürich - EraInterim cape      J/kg    730</span></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;  3  2013 h1       Zürich - EraInterim d2m       °C      730</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt;  4  2013 h1       Zürich - EraInterim e         m H2O   730</span></a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt;  5  2013 h1       Zürich - EraInterim ishf      W/m2    730</span></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt;  6  2013 h1       Zürich - EraInterim p         hPa     730</span></a>
-<a class="sourceLine" id="cb12-11" title="11"><span class="co">#&gt;  7  2013 h1       Zürich - EraInterim par       J/m2    730</span></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt;  8  2013 h1       Zürich - EraInterim RainSum   m       730</span></a>
-<a class="sourceLine" id="cb12-13" title="13"><span class="co">#&gt;  9  2013 h1       Zürich - EraInterim skt       °C      730</span></a>
-<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; 10  2013 h1       Zürich - EraInterim slhf      J/m2    730</span></a>
-<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 178,600 more rows</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; # A tibble: 178,611 x 6</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;     year interval site             parameter            unit      n</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;            &lt;fct&gt;                &lt;fct&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;  1  2020 min10    ZH_Tiefenbrunnen dew_point            °C    10222</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt;  2  2020 min10    ZH_Tiefenbrunnen Hr                   %     10222</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;  3  2020 min10    ZH_Tiefenbrunnen p                    hPa   10222</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt;  4  2020 min10    ZH_Tiefenbrunnen T                    °C    10222</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt;  5  2020 min10    ZH_Tiefenbrunnen water_temperature    °C    10222</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt;  6  2020 min10    ZH_Tiefenbrunnen WD                   °     10222</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">#&gt;  7  2020 min10    ZH_Tiefenbrunnen wind_force_avg_10min bft   10222</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt;  8  2020 min10    ZH_Tiefenbrunnen windchill            °C    10222</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">#&gt;  9  2020 min10    ZH_Tiefenbrunnen WVs                  m/s   10222</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; 10  2020 min10    ZH_Tiefenbrunnen WVs_max              m/s   10222</span></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">#&gt; # ... with 178,601 more rows</span></a>
 <a class="sourceLine" id="cb12-16" title="16"></a>
 <a class="sourceLine" id="cb12-17" title="17">lokal<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="dt">site =</span> sites, <span class="dt">year =</span> <span class="dv">2014</span>, <span class="dt">interval =</span> <span class="st">"min30"</span>, <span class="dt">filter =</span> parameter <span class="op">==</span><span class="st"> "PM10"</span>)</a>
 <a class="sourceLine" id="cb12-18" title="18"><span class="co">#&gt; # A tibble: 51,319 x 6</span></a>
@@ -317,7 +317,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; $ site                    &lt;chr&gt; "Zch_Rosengartenstrasse", "Zch_Rosengartens...</span></a>
 <a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt; $ year                    &lt;chr&gt; "2014", "2015", "2014", "2015", "2014", "2015"</span></a>
 <a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt; $ local.path              &lt;fs::path&gt; "C:/Users/tom/AppData/Local/rOstluft/t...</span></a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2020-03-21 21:47:17, 2020-03-21 21:47:17, ...</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; $ local.modification_time &lt;dttm&gt; 2020-03-23 11:30:31, 2020-03-23 11:30:32, ...</span></a>
 <a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; $ local.size              &lt;fs::bytes&gt; 662.71K, 780.21K, 1.08M, 1.07M, 1.08M...</span></a></code></pre></div>
 <p>Auch der S3 Store verfügt über die <code>$list_chunks()</code> Funktion.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(store<span class="op">$</span><span class="kw">list_chunks</span>())</a>
@@ -364,16 +364,16 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">examples_path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"rOstluft.data"</span>)</a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="kw"><a href="../../reference/import_directory.html">import_directory</a></span>(my_store, examples_path, read_airmo_csv, <span class="dt">glob =</span> <span class="st">"*Jan.csv"</span>)</a>
 <a class="sourceLine" id="cb17-3" title="3"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.25 seconds. Got 2170 data points</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.24 seconds. Got 2170 data points</span></a>
 <a class="sourceLine" id="cb17-5" title="5"><span class="co">#&gt; First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/eigene_daten/columns.rds</span></a>
 <a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt; Put data into store eigene_daten in 0.05 seconds</span></a>
 <a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.06 seconds. Got 14116 data points</span></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.05 seconds. Got 14116 data points</span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; Put data into store eigene_daten in 0.08 seconds</span></a>
 <a class="sourceLine" id="cb17-10" title="10"><span class="co">#&gt; Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></a>
-<a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.06 seconds. Got 28234 data points</span></a>
-<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Put data into store eigene_daten in 0.10 seconds</span></a>
-<a class="sourceLine" id="cb17-13" title="13"><span class="co">#&gt; Finished import after 0.63 seconds</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.07 seconds. Got 28234 data points</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; Put data into store eigene_daten in 0.09 seconds</span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="co">#&gt; Finished import after 0.59 seconds</span></a>
 <a class="sourceLine" id="cb17-14" title="14"></a>
 <a class="sourceLine" id="cb17-15" title="15">fn &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/path.html">path</a></span>(examples_path, <span class="st">"Zch_Rosengartenstrasse_2010-2014.csv"</span>)</a>
 <a class="sourceLine" id="cb17-16" title="16">data &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/read_airmo_csv.html">read_airmo_csv</a></span>(fn)</a>
@@ -1936,7 +1936,7 @@ AWS_DEFAULT_REGION = "eu-central-1"</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Thomas von Allmen, Jörg Sintermann, Noël Rederlechner.</p>
+  <p>Developed by Thomas von Allmen, Jörg Sintermann.</p>
 </div>
 
 <div class="pkgdown">

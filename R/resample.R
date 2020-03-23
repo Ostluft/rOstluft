@@ -27,6 +27,8 @@
 #' * `"perc95"` 95% percentile, renames parameter
 #' * `"perc98"` 98% percentile, renames parameter
 #' * `"n>8"` number of values > 8 (CO d1 limit), renames parameter, changes unit
+#' * `"n>10"` number of values > 10 (PM2.5 y1 limit), renames parameter, changes unit
+#' * `"n>25"` number of values > 25 (PM2.5 d1 limit), renames parameter, changes unit
 #' * `"n>50"` number of values > 50 (PM10 d1 limit), renames parameter, changes unit
 #' * `"n>65"` number of values > 65 (O3 d1 indicator), renames parameter, changes unit
 #' * `"n>80"` number of values > 80 (NO2 d1 limit), renames parameter, changes unit

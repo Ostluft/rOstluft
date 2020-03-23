@@ -118,6 +118,7 @@ convert_date_seepolizei <- function(x) {
 #' @examples
 #' get_seepolizei(as.Date("2020-03-01"), lubridate::dmy("02.03.2020"))
 #'
+#'
 #' data <- get_seepolizei("2020-03-20", "2020-03-22", "mythenquai")
 #'
 #' # normalize data with meta informations
@@ -198,8 +199,13 @@ get_seepolizei <- function(start, end, site = c("tiefenbrunnen", "mythenquai")) 
   values <- dplyr::mutate(values,
     interval = as.factor("min10"),
     site = as.factor(.data$site),
-    unit = dplyr::recode(.data$parameter, !!!units)
+    unit = dplyr::recode(.data$parameter, !!!units),
   )
+
+  # some times value are doubles and some times characters ..
+  if (is.character(values$value)) {
+    values <- dplyr::mutate(values, value = readr::parse_double(.data$value))
+  }
 
   # reorder columns
   dplyr::select(values, "starttime", "site", "parameter", "interval", "unit", "value")

@@ -67,15 +67,16 @@ statistic_fun_factory <- function(statistic, percentile = 0.95, threshold = NULL
 #'
 #' @param statistic_fun statistic function to apply if minimum capture threshold is meet
 #' @param threshold  minimum data capture threshold 0 - 1.0 to use
+#' @param ... Additional arguments passed on to the statistic function
 #'
 #' @return wrapped function
 #'
 #' @export
-treshold_wrapper_function <- function(statistic_fun, threshold) {
+treshold_wrapper_function <- function(statistic_fun, threshold, ...) {
   function(x) {
     limit <- 1 - threshold
     if (sum(is.na(x)) / length(x) <= limit) {
-      statistic_fun(x)
+      statistic_fun(x, ...)
     } else {
       NA
     }
@@ -87,14 +88,15 @@ treshold_wrapper_function <- function(statistic_fun, threshold) {
 #'
 #' @param statistic_fun statistic function to apply if max gap criterium is meet
 #' @param max_gap maxium Number of consecutive NA values
+#' @param ... Additional arguments passed on to the statistic function
 #'
 #' @return wrapped function
 #'
 #' @export
-gap_wrapper_function <- function(statistic_fun, max_gap) {
+gap_wrapper_function <- function(statistic_fun, max_gap, ...) {
   function(x) {
     if (get_gap_in_vector(x) <= max_gap) {
-      statistic_fun(x)
+      statistic_fun(x, ...)
     } else {
       NA
     }

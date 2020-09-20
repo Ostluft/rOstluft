@@ -380,7 +380,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data_t
 cut_wind_data <- function(data, wind_parameters = c("WD", "WVv")) {
   data <- dplyr::group_by(data, isWind = .data$parameter %in% wind_parameters)
   keys <- dplyr::group_keys(data)
-  data <- dplyr::group_split(data, keep = FALSE)
+  data <- dplyr::group_split(data, .keep = FALSE)
   mapping <- list("TRUE" = "wind", "FALSE" = "others")
   rlang::set_names(data, mapping[as.character(keys$isWind)])  # nolint
 }

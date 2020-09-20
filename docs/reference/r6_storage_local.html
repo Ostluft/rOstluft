@@ -81,7 +81,7 @@ per file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -155,14 +155,14 @@ per file." />
 per file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>storage_local_rds</span>(<span class='no'>name</span>, <span class='no'>format</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>storage_local_rds</span>(<span class='kw'>name</span>, <span class='kw'>format</span>, path = <span class='kw'>NULL</span>, read.only = <span class='fl'>TRUE</span>)
 
 <span class='fu'>storage_local_tsv</span>(
-  <span class='no'>name</span>,
-  <span class='no'>format</span>,
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Etc/GMT-1"</span>
+  <span class='kw'>name</span>,
+  <span class='kw'>format</span>,
+  path = <span class='kw'>NULL</span>,
+  read.only = <span class='fl'>TRUE</span>,
+  tz = <span class='st'>"Etc/GMT-1"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -200,7 +200,7 @@ the input data has the same time zone. Default "Etc/GMT-1"</p></td>
 
     
 
-<dl'>
+<dl>
 <dt><code>name</code></dt><dd><p>name of the store</p></dd>
 
 <dt><code>format</code></dt><dd><p>data format of the store</p></dd>
@@ -258,13 +258,15 @@ same column types: same order and classes of columns.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## init store, creates directory if necessary</span>
-<span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'>storage_local_rds</span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\tom\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'>
+<span class='kw'>format</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
+<span class='kw'>store</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'>storage_local_rds</span>(<span class='st'>"example_rOstluft"</span>, <span class='kw'>format</span>, read.only = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\tom\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'>
 <span class='co'>## read data from airmo export und put into the store</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_2010-2014.csv"</span>,
-                  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>)
-<span class='no'>store</span>$<span class='fu'>put</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 70 x 6</span><span>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_2010-2014.csv"</span>,
+                  package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
+<span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='kw'>fn</span>)
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>put</span>(<span class='kw'>df</span>)
+</div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 70 x 6</span><span>
 #&gt;     year interval site                    parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 min30    Zch_Stampfenbachstrasse CO        mg/m3 </span><span style='text-decoration: underline;'>17</span><span>290
@@ -278,10 +280,11 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 min30    Zch_Stampfenbachstrasse p         hPa   </span><span style='text-decoration: underline;'>17</span><span>461
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 min30    Zch_Stampfenbachstrasse RainDur   min   </span><span style='text-decoration: underline;'>17</span><span>502
 #&gt; </span><span style='color: #555555;'># ... with 60 more rows</span><span></div><div class='input'>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Rosengartenstrasse_2010-2014.csv"</span>,
-                  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>)
-<span class='no'>store</span>$<span class='fu'>put</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 18 x 6</span><span>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Rosengartenstrasse_2010-2014.csv"</span>,
+                  package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
+<span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='kw'>fn</span>)
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>put</span>(<span class='kw'>df</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 18 x 6</span><span>
 #&gt;     year interval site                   parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Rosengartenstrasse NO        µg/m3  </span><span style='text-decoration: underline;'>4</span><span>269
@@ -303,7 +306,8 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'>17</span><span>  </span><span style='text-decoration: underline;'>2</span><span>014 min30    Zch_Rosengartenstrasse RainDur   min   </span><span style='text-decoration: underline;'>17</span><span>519
 #&gt; </span><span style='color: #555555;'>18</span><span>  </span><span style='text-decoration: underline;'>2</span><span>014 min30    Zch_Rosengartenstrasse T         °C    </span><span style='text-decoration: underline;'>17</span><span>517</div><div class='input'>
 <span class='co'>## get all data min30 for 2011 and 2012</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(site = <span class='st'>"Zch_Stampfenbachstrasse"</span>, interval = <span class='st'>"min30"</span>, year = <span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2012</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit    value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO        min30    mg/m3   0.611
@@ -318,8 +322,9 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse RainDur   min30    min     0    
 #&gt; </span><span style='color: #555555;'># ... with 488,312 more rows</span><span></div><div class='input'>
 <span class='co'>## get only data for O3</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>, <span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
-          <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>==</span> <span class='st'>"O3"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 34,996 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(year = <span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2012</span>, site = <span class='st'>"Zch_Stampfenbachstrasse"</span>, interval = <span class='st'>"min30"</span>,
+          filter = <span class='kw'>parameter</span> <span class='op'>==</span> <span class='st'>"O3"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 34,996 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit  value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3  2.19
@@ -334,8 +339,9 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>04:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    µg/m3 37.3 
 #&gt; </span><span style='color: #555555;'># ... with 34,986 more rows</span><span></div><div class='input'>
 <span class='co'>## get NOx data from multiple stations</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='st'>"Zch_Rosengartenstrasse"</span>), <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
-          <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2014</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"NOx"</span>, <span class='st'>"NO"</span>, <span class='st'>"NO2"</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 104,547 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(site = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='st'>"Zch_Rosengartenstrasse"</span>), interval = <span class='st'>"min30"</span>,
+          year = <span class='fl'>2014</span>, filter = <span class='kw'>parameter</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"NOx"</span>, <span class='st'>"NO"</span>, <span class='st'>"NO2"</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 104,547 x 6</span><span>
 #&gt;    starttime           site                   parameter interval unit  value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3  53.3
@@ -350,7 +356,8 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Rosengartenstrasse NO        min30    µg/m3 131. 
 #&gt; </span><span style='color: #555555;'># ... with 104,537 more rows</span><span></div><div class='input'>
 <span class='co'>## get n data points grouped by intervall, station, parameter, year in the store</span>
-<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 88 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_content</span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 88 x 6</span><span>
 #&gt;     year interval site                   parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>014 min30    Zch_Rosengartenstrasse NO        µg/m3 </span><span style='text-decoration: underline;'>17</span><span>415
@@ -365,19 +372,21 @@ same column types: same order and classes of columns.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Rosengartenstrasse NO        µg/m3  </span><span style='text-decoration: underline;'>4</span><span>269
 #&gt; </span><span style='color: #555555;'># ... with 78 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks</span>
-<span class='no'>store</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 7</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>list_chunks</span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 7</span><span>
 #&gt;   chunk_name   interval site   year  local.path   local.modification~ local.size
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWluM~ min30    Zch_R~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:20</span><span>    214.32K
-#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWluM~ min30    Zch_R~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:20</span><span>    862.51K
-#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWluM~ min30    Zch_S~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:19</span><span>      1.36M
-#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWluM~ min30    Zch_S~ 2010  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:17</span><span>      1.35M
-#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWluM~ min30    Zch_S~ 2011  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:18</span><span>      1.35M
-#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWluM~ min30    Zch_S~ 2012  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:18</span><span>      1.36M
-#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWluM~ min30    Zch_S~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:19</span><span>      1.36M</div><div class='input'>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> min30/bWluM~ min30    Zch_R~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:15</span><span>    214.32K
+#&gt; </span><span style='color: #555555;'>2</span><span> min30/bWluM~ min30    Zch_R~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:15</span><span>    862.51K
+#&gt; </span><span style='color: #555555;'>3</span><span> min30/bWluM~ min30    Zch_S~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:14</span><span>      1.36M
+#&gt; </span><span style='color: #555555;'>4</span><span> min30/bWluM~ min30    Zch_S~ 2010  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:12</span><span>      1.35M
+#&gt; </span><span style='color: #555555;'>5</span><span> min30/bWluM~ min30    Zch_S~ 2011  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:13</span><span>      1.35M
+#&gt; </span><span style='color: #555555;'>6</span><span> min30/bWluM~ min30    Zch_S~ 2012  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:13</span><span>      1.36M
+#&gt; </span><span style='color: #555555;'>7</span><span> min30/bWluM~ min30    Zch_S~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:14</span><span>      1.36M</div><div class='input'>
 <span class='co'>## destroy store (careful removes all files on the disk)</span>
-<span class='no'>store</span>$<span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
-## missing examples for meta functions
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
+<span class='co'>## missing examples for meta functions</span>
 
 </div></span></pre>
   </div>
@@ -395,7 +404,7 @@ same column types: same order and classes of columns.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

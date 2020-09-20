@@ -75,7 +75,7 @@ convert_conc <- function(data, parameter, from, to, method = "return", ...) {
   FUN <- conversion_conc_fun_factory(parameter, from, to, ...)  # always call the factory to be sure we throw an error
   groups <- cut_conversion_data(data, parameter, from)
 
-  if (!is.null(groups$convert)) {
+  if (rlang::has_name(groups, "convert")) {
     converted <- dplyr::mutate(groups$convert, unit = forcats::as_factor(to),  value = FUN(.data$value))
   } else {
     converted <- data[0, ]
@@ -86,9 +86,9 @@ convert_conc <- function(data, parameter, from, to, method = "return", ...) {
   } else if (method == "append") {
     return(bind_rows_with_factor_columns(data, converted))
   } else if (method == "replace") {
-    if (is.null(groups$others)) {
+    if (!rlang::has_name(groups, "others")) {
       return(converted)
-    } else if (is.null(groups$convert)) {
+    } else if (!rlang::has_name(groups, "convert")) {
       return(groups$others)
     } else {
       return(bind_rows_with_factor_columns(groups$others, converted))
@@ -204,7 +204,7 @@ apply_convert_conc <- function(data, args, ...) {
 cut_conversion_data <- function(data, parameter, unit) {
   data <- dplyr::group_by(data, condition = .data$parameter == !!parameter & .data$unit == !!unit )
   keys <- dplyr::group_keys(data)
-  data <- dplyr::group_split(data, keep = FALSE)
+  data <- dplyr::group_split(data, .keep = FALSE)
   mapping <- list("TRUE" = "convert", "FALSE" = "others")
   rlang::set_names(data, mapping[as.character(keys$condition)])  # FALSE before TRUE, order don't matters
 }

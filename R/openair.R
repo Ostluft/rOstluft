@@ -104,7 +104,7 @@ rolf_to_openair <- function(data, as_list = FALSE, interval = NULL, keep_ppb = F
 #'                    package = "rOstluft.data", mustWork = TRUE)
 #'
 #' airmo_h1 <- read_airmo_csv(h1)
-#' rolf_to_openair_single(airmo_h1, "NO2", unit = "µg/m3", keep_interval = TRUE)
+#' rolf_to_openair_single(airmo_h1, "NO2", unit = "\u00b5g/m3", keep_interval = TRUE)
 #'
 rolf_to_openair_single <- function(data, parameter = NULL, unit = NULL, interval = NULL, keep_interval = FALSE) {
   filter_list <- purrr::compact(list(parameter = parameter, unit = unit, interval = interval))

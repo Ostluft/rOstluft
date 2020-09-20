@@ -1,8 +1,8 @@
 pandoc: 2.9.2.1
-pkgdown: 1.5.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  tutorial: articles/tutorial.html
+  articles/tutorial: tutorial.html
   Technische_Entscheidungen: Technische_Entscheidungen.html
-last_built: 2020-09-13T14:20Z
+last_built: 2020-09-20T21:02Z
 

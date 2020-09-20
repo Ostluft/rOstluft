@@ -11,6 +11,13 @@
 #' Usually Packages and Webservices expects coordinates for Elements in EPSG:4326, one Exception is
 #' [leaflet::addRasterImage()]
 #'
+#' @section Known Issues:
+#' R spatial is migrating to PROJ6+ and gdal3+. At the moment the sp::spTransform isn't converted to
+#' use the WKT comments, and rgdal raises some Warnings. The transformation are done correctly.
+#' * [R spatial follows GDAL and PROJ development](https://www.r-spatial.org/r/2020/03/17/wkt.html)
+#' * [Migration to PROJ6/GDAL3](http://rgdal.r-forge.r-project.org/articles/PROJ6_GDAL3.html#impacts-of-gdal-barnraising-on-sp-workflows-1)
+#' * [rOstluft Issue](https://github.com/Ostluft/rOstluft/issues/7)
+#'
 #' @param data input data
 #' @param coord mappping of columns for Conversion
 #' @param in_crs source coordinate reference system as [sp::CRS]
@@ -33,11 +40,20 @@
 #' fn <- system.file("extdata", "meta_smn.rds", package = "rOstluft.data")
 #' data <- readRDS(fn)
 #' data <- dplyr::distinct(data, site, x, y)
-#' transform_crs(data, c(lon = "x", lat = "y"),
-#'           sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"))
+#' transform_crs(
+#'   data = data,
+#'   coord = c(lon = "x", lat = "y"),
+#'   in_crs = sp::CRS(SRS_string = "EPSG:2056"),
+#'   out_crs = sp::CRS(SRS_string = "EPSG:4326")
+#' )
 #'
-#' transform_crs(data, c(lon = "x", lat = "y"),
-#'           sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"), append = FALSE)
+#' transform_crs(
+#'   data = data,
+#'   coord = c(lon = "x", lat = "y"),
+#'   in_crs = sp::CRS(SRS_string = "EPSG:2056"),
+#'   out_crs = sp::CRS(SRS_string = "EPSG:4326"),
+#'   append = FALSE
+#' )
 #'
 #' transform_LV95_to_WSG84(data)
 #'
@@ -61,23 +77,23 @@ transform_crs <- function(data, coord, in_crs, out_crs, append = TRUE) {
 #' @rdname transform_crs
 #' @export
 transform_LV95_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS("+init=epsg:2056"), sp::CRS("+init=epsg:4326"), append)
+  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:2056"), sp::CRS(SRS_string = "EPSG:4326"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_WSG84_to_LV95 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS("+init=epsg:4326"), sp::CRS("+init=epsg:2056"), append)
+  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:4326"), sp::CRS(SRS_string = "EPSG:2056"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_LV03_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS("+init=epsg:21781"), sp::CRS("+init=epsg:4326"), append)
+  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:21781"), sp::CRS(SRS_string = "EPSG:4326"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_WSG84_to_LV03 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS("+init=epsg:4326"), sp::CRS("+init=epsg:21781"), append)
+  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:4326"), sp::CRS(SRS_string = "EPSG:21781"), append)
 }

@@ -69,14 +69,14 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
   data <- cut_on_condition(data, .data$end_interval_ < .data$endtime_, c("TRUE" = "overlaps", "FALSE" = "complete"))
 
   # calculate the weight for measurements complete in one interval
-  if (!is.null(data$complete)) {
+  if (rlang::has_name(data, "complete")) {
     data$complete <- dplyr::mutate(data$complete,
       w = as.numeric(.data$endtime_ - .data$starttime_, units = "secs") /
         as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")
     )
   }
 
-  if (!is.null(data$overlaps)) {
+  if (rlang::has_name(data, "overlaps")) {
     # we only checked if a measurements overlaps a period, not if it overlaps multiple periods.
     # if we floor the endtime and is the same as end_interval the measurement overlaps only one measurement
     data$overlaps <- dplyr::mutate(data$overlaps,
@@ -86,7 +86,8 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
                                       c("TRUE" = "one", "FALSE" = "multi"))
 
     # handle the measurement only overlapping one measurement and split them in left and right
-    if (!is.null(data$overlaps$one)) {
+
+    if (rlang::has_name(data$overlaps, "one")) {
       # calculate w for the left side of the overlapping measurement
       data$left <- dplyr::mutate(data$overlaps$one,
         w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
@@ -103,7 +104,7 @@ wmean <- function(data, ..., starttime = "starttime", endtime = "endtime", value
 
     }
 
-    if (!is.null(data$overlaps$multi)) {
+    if (rlang::has_name(data$overlaps, "multi")) {
       data$multi_left <- dplyr::mutate(data$overlaps$multi,
         w = as.numeric(.data$end_interval_ - .data$starttime_, units = "secs") /
            as.numeric(.data$end_interval_ - .data$start_interval_, units = "secs")

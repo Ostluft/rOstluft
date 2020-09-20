@@ -1,3 +1,17 @@
+# rOstluft 1.4.0
+
+Some minor changes because of updated dependencies.
+
+## Updated dependencies
+  * dplyr from 0.8.0 to 1.0.0.
+  * sp to 1.4.0
+  * gdal to 1.5.8
+    
+## Known Issues
+
+Warnings by transform_crs functions but functions are working as intented. See Issue (#7)
+
+
 # rOstluft 1.3.1
 
 * Extended `read_smn()` to handle the latest format changes (columns renamed "stn" => "Sta.", "time" => "Date").

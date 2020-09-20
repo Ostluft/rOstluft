@@ -82,7 +82,7 @@ This function interpolates the irregular data on a standard interval. It handles
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -158,12 +158,12 @@ This function interpolates the irregular data on a standard interval. It handles
     </div>
 
     <pre class="usage"><span class='fu'>wmean</span>(
-  <span class='no'>data</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>starttime</span> <span class='kw'>=</span> <span class='st'>"starttime"</span>,
-  <span class='kw'>endtime</span> <span class='kw'>=</span> <span class='st'>"endtime"</span>,
-  <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
-  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"h1"</span>
+  <span class='kw'>data</span>,
+  <span class='kw'>...</span>,
+  starttime = <span class='st'>"starttime"</span>,
+  endtime = <span class='st'>"endtime"</span>,
+  value = <span class='st'>"value"</span>,
+  interval = <span class='st'>"h1"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -212,17 +212,18 @@ sum of weighted intervals within the averaged time interval (data availability i
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
-<span class='no'>ps_fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"NO2_PS.rds"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='no'>fn</span>, <span class='kw'>time_shift</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>period</a></span>(<span class='fl'>25</span>, <span class='st'>"minutes"</span>))
-<span class='no'>data_ps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='no'>ps_fn</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='pluck.html'>pluck_site</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_h1_2013_Jan.csv"</span>, package = <span class='st'>"rOstluft.data"</span>)
+<span class='kw'>ps_fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"NO2_PS.rds"</span>, package = <span class='st'>"rOstluft.data"</span>)
+<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='kw'>fn</span>, time_shift = <span class='kw'>lubridate</span>::<span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>period</a></span>(<span class='fl'>25</span>, <span class='st'>"minutes"</span>))
+<span class='kw'>data_ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='kw'>ps_fn</span>) <span class='op'>%&gt;%</span> <span class='fu'><a href='pluck_parameter.html'>pluck_site</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>)
 
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pluck.html'>pluck_parameter</a></span>(<span class='no'>data</span>, <span class='st'>"CO"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pluck.html'>pluck_unit</a></span>(<span class='st'>"ppm"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>endtime</span> <span class='kw'>=</span> <span class='no'>.data</span>$<span class='no'>starttime</span> + <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>hours</a></span>(<span class='fl'>1</span>)) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>interval</span>)
+<span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pluck_parameter.html'>pluck_parameter</a></span>(<span class='kw'>data</span>, <span class='st'>"CO"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='pluck_parameter.html'>pluck_unit</a></span>(<span class='st'>"ppm"</span>) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(endtime = <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>starttime</span> <span class='op'>+</span> <span class='kw'>lubridate</span>::<span class='fu'><a href='http://lubridate.tidyverse.org/reference/period.html'>hours</a></span>(<span class='fl'>1</span>)) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='op'>-</span><span class='kw'>interval</span>)
 
-<span class='fu'>wmean</span>(<span class='no'>df</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"h1"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 744 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>df</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"h1"</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 744 x 7</span><span>
 #&gt;    starttime           endtime             site      parameter unit  value     n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stam~ CO        ppm   0.692 0.583
@@ -236,16 +237,19 @@ sum of weighted intervals within the averaged time interval (data availability i
 #&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> Zch_Stam~ CO        ppm   0.332 1    
 #&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> 2013-01-01 </span><span style='color: #555555;'>10:00:00</span><span> Zch_Stam~ CO        ppm   0.262 1    
 #&gt; </span><span style='color: #555555;'># ... with 734 more rows</span><span></div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>df</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"m1"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>df</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"m1"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 7</span><span>
 #&gt;   starttime           endtime             site     parameter unit  value       n
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 2013-02-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Sta~ CO        ppm   0.375 9.97</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
 #&gt; </span><span style='color: #555555;'>2</span><span> 2013-02-01 </span><span style='color: #555555;'>00:00:00</span><span> 2013-03-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Sta~ CO        ppm   0.161 6.20</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-4</span><span></div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>df</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"y1"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>df</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"y1"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
 #&gt;   starttime           endtime             site      parameter unit  value      n
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ CO        ppm   0.375 0.084</span><span style='text-decoration: underline;'>7</span><span></div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>data_ps</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"d1"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 324 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>data_ps</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"d1"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 324 x 7</span><span>
 #&gt;    starttime           endtime             site      parameter unit  value     n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-03 </span><span style='color: #555555;'>00:00:00</span><span> 2018-01-04 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  29.2 0.431
@@ -259,7 +263,8 @@ sum of weighted intervals within the averaged time interval (data availability i
 #&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-11 </span><span style='color: #555555;'>00:00:00</span><span> 2018-01-12 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  29.2 1    
 #&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-12 </span><span style='color: #555555;'>00:00:00</span><span> 2018-01-13 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  29.2 1    
 #&gt; </span><span style='color: #555555;'># ... with 314 more rows</span><span></div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>data_ps</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"1 week"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 49 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>data_ps</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"1 week"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 49 x 7</span><span>
 #&gt;    starttime           endtime             site      parameter unit  value     n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2017-12-31 </span><span style='color: #555555;'>00:00:00</span><span> 2018-01-07 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  29.2 0.490
@@ -273,7 +278,8 @@ sum of weighted intervals within the averaged time interval (data availability i
 #&gt; </span><span style='color: #555555;'> 9</span><span> 2018-02-25 </span><span style='color: #555555;'>00:00:00</span><span> 2018-03-04 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  33.8 1    
 #&gt; </span><span style='color: #555555;'>10</span><span> 2018-03-04 </span><span style='color: #555555;'>00:00:00</span><span> 2018-03-11 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  35.4 1    
 #&gt; </span><span style='color: #555555;'># ... with 39 more rows</span><span></div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>data_ps</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"m1"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 12 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>data_ps</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"m1"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 12 x 7</span><span>
 #&gt;    starttime           endtime             site      parameter unit  value     n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 2018-02-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  27.2 0.917
@@ -288,7 +294,8 @@ sum of weighted intervals within the averaged time interval (data availability i
 #&gt; </span><span style='color: #555555;'>10</span><span> 2018-10-01 </span><span style='color: #555555;'>00:00:00</span><span> 2018-11-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  37.2 1    
 #&gt; </span><span style='color: #555555;'>11</span><span> 2018-11-01 </span><span style='color: #555555;'>00:00:00</span><span> 2018-12-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  30.2 0.536
 #&gt; </span><span style='color: #555555;'>12</span><span> 2018-12-01 </span><span style='color: #555555;'>00:00:00</span><span> 2019-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stam~ NO2_PS    µg/m3  28.5 0.560</div><div class='input'>
-<span class='fu'>wmean</span>(<span class='no'>data_ps</span>, <span class='no'>site</span>, <span class='no'>parameter</span>, <span class='no'>unit</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"y1"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
+<span class='fu'>wmean</span>(<span class='kw'>data_ps</span>, <span class='kw'>site</span>, <span class='kw'>parameter</span>, <span class='kw'>unit</span>, interval = <span class='st'>"y1"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
 #&gt;   starttime           endtime             site       parameter unit  value     n
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 2019-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stamp~ NO2_PS    µg/m3  28.2 0.879</div><div class='input'>
@@ -308,7 +315,7 @@ sum of weighted intervals within the averaged time interval (data availability i
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

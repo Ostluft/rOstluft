@@ -4,12 +4,14 @@
 \alias{treshold_wrapper_function}
 \title{Wrapper function for minimum capture threshold}
 \usage{
-treshold_wrapper_function(statistic_fun, threshold)
+treshold_wrapper_function(statistic_fun, threshold, ...)
 }
 \arguments{
 \item{statistic_fun}{statistic function to apply if minimum capture threshold is meet}
 
 \item{threshold}{minimum data capture threshold 0 - 1.0 to use}
+
+\item{...}{Additional arguments passed on to the statistic function}
 }
 \value{
 wrapped function

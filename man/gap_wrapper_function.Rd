@@ -4,12 +4,14 @@
 \alias{gap_wrapper_function}
 \title{wrapper function for maximum number of consecutive NA values}
 \usage{
-gap_wrapper_function(statistic_fun, max_gap)
+gap_wrapper_function(statistic_fun, max_gap, ...)
 }
 \arguments{
 \item{statistic_fun}{statistic function to apply if max gap criterium is meet}
 
 \item{max_gap}{maxium Number of consecutive NA values}
+
+\item{...}{Additional arguments passed on to the statistic function}
 }
 \value{
 wrapped function

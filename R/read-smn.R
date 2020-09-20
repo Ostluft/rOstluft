@@ -41,7 +41,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
 
   # smn files tend to have different headers, but there are always the col name starting mit stn
   header <- readr::read_lines(fn, n_max = 20)
-  start_line <- purrr::detect_index(header, ~ stringr::str_starts(., "stn"))
+  start_line <- purrr::detect_index(header, ~ any(stringr::str_detect(., c("stn", "Sta."))))
 
   if (start_line == 0) {
     stop("couldn't find a line starting with stn")
@@ -75,6 +75,18 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
   } else {
     stop("couldn't detect delimiter")
   }
+
+  # check for empty columnes
+  empty_cols <- which(col_names == "")
+  if(length(empty_cols) != 0) {
+    col_names<- col_names[-empty_cols]
+    data <- dplyr::select(data, -!!empty_cols)
+  }
+
+  # normalize col_names
+  col_names[stringr::str_detect(col_names, "Sta.")] <- "stn"
+  col_names[stringr::str_detect(col_names, "Date")] <- "time"
+
 
   data <- rlang::set_names(data, col_names)
 
@@ -159,7 +171,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
 read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
   data <- readr::read_file(fn, readr::locale(encoding = encoding))
   data <- stringr::str_split(data, "\r\n\r\n|\n\n")            # line end conversion happens
-  data <- purrr::keep(data[[1]], ~ stringr::str_detect(., "stn")) # remove empty and chunks with only a space
+  data <- purrr::keep(data[[1]], ~ any(stringr::str_detect(., c("stn", "Sta.")))) # remove empty and chunks with only a space
   data <- purrr::map(data, read_smn, encoding = encoding, ...)
 
   if (isFALSE(as_list)) {

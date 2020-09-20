@@ -1,3 +1,10 @@
+# rOstluft 1.3.1
+
+* Extended `read_smn()` to handle the latest format changes (columns renamed "stn" => "Sta.", "time" => "Date").
+
+* Added `...` to `treshold_wrapper_function()` and `gap_wrapper_function()` to allow passing of additional arguments to the statistic function.
+
+
 # rOstluft 1.3.0
 
 * New `store_aqmet_public()` public access for airquality and meteo data

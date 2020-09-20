@@ -4,10 +4,11 @@ single <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork 
 unit <- system.file("extdata", "smn_unit.txt", package = "rOstluft.data", mustWork = TRUE)
 multi <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", mustWork = TRUE)
 web <- system.file("extdata", "smn_VQHA80.txt", package = "rOstluft.data", mustWork = TRUE)
+new <- system.file("extdata", "smn_neues_format.txt", package = "rOstluft.data", mustWork = TRUE)
 
 
 
-number_of_chunks_in_multi <- 26
+number_of_chunks_in_multi <- 28
 
 setup({
   tempdir(check = TRUE)
@@ -47,6 +48,11 @@ test_that("correct content", {
   # read the web export from https://data.geo.admin.ch/ch.meteoschweiz.messwerte-aktuell/info/VQHA80_de.txt
   res <- read_smn(web, interval = "min10", time_shift = lubridate::period(-10, "min"), na.rm = FALSE)
   testthat::expect_equal(dim(res), c(3180, 6))
+
+  res <- read_smn(new, na.rm = FALSE)
+  testthat::expect_equal(dim(res), c(10*16, 6))
+  testthat::expect_equal(sum(is.na(res$value)), 16)
+
 
   # probably should check columns and classes but the check should be implemented in the format class
 })

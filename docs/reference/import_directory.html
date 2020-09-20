@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -154,13 +154,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>import_directory</span>(
-  <span class='no'>store</span>,
-  <span class='no'>path</span>,
-  <span class='no'>read_function</span>,
-  <span class='kw'>glob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>regexp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>store</span>,
+  <span class='kw'>path</span>,
+  <span class='kw'>read_function</span>,
+  glob = <span class='kw'>NULL</span>,
+  regexp = <span class='kw'>NULL</span>,
+  recursive = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -198,11 +198,14 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='r6_storage_local.html'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='no'>format</span>, <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\tom\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rOstluft.data"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>format</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
+<span class='kw'>store</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='r6_storage_local.html'>storage_local_rds</a></span>(<span class='st'>"example_rOstluft"</span>, <span class='kw'>format</span>, read.only = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Local store example_rOstluft initialized under 'C:\Users\tom\AppData\Local\rOstluft\example_rOstluft'</span></div><div class='input'><span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, package = <span class='st'>"rOstluft.data"</span>)
 
-<span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'>import_directory</span>(<span class='no'>store</span>, <span class='no'>path</span>, <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='no'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>, <span class='kw'>glob</span> <span class='kw'>=</span> <span class='st'>"*Jan.csv"</span>)</div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.06 seconds. Got 2170 data points</span></div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.05 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.06 seconds. Got 14116 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.09 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.06 seconds. Got 28234 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.10 seconds</span></div><div class='output co'>#&gt; <span class='message'>Finished import after 0.42 seconds</span></div><div class='input'>
-<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 108 x 6</span><span>
+<span class='kw'>rOstluft</span>::<span class='fu'>import_directory</span>(<span class='kw'>store</span>, <span class='kw'>path</span>, <span class='kw'>rOstluft</span>::<span class='kw'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>, glob = <span class='st'>"*Jan.csv"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' with size 25.5K. File 1 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_d1_2013_Jan.csv' in 0.07 seconds. Got 2170 data points</span></div><div class='output co'>#&gt; <span class='message'>First put to storage. Save columns types to C:/Users/tom/AppData/Local/rOstluft/example_rOstluft/columns.rds</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.10 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' with size 143K. File 2 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_h1_2013_Jan.csv' in 0.06 seconds. Got 14116 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.13 seconds</span></div><div class='output co'>#&gt; <span class='message'>Importing 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' with size 259K. File 3 of 3</span></div><div class='output co'>#&gt; <span class='message'>Read 'D:/tom/Documents/R/win-library/3.6/rOstluft.data/extdata/Zch_Stampfenbachstrasse_min30_2013_Jan.csv' in 0.07 seconds. Got 28234 data points</span></div><div class='output co'>#&gt; <span class='message'>Put data into store example_rOstluft in 0.13 seconds</span></div><div class='output co'>#&gt; <span class='message'>Finished import after 0.56 seconds</span></div><div class='input'>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_content</span>()
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 108 x 6</span><span>
 #&gt;     year interval site                    parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Stampfenbachstrasse CO        mg/m3  </span><span style='text-decoration: underline;'>1</span><span>484
@@ -216,7 +219,8 @@
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Stampfenbachstrasse O3        µg/m3  </span><span style='text-decoration: underline;'>1</span><span>488
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 min30    Zch_Stampfenbachstrasse O3        ppb    </span><span style='text-decoration: underline;'>1</span><span>488
 #&gt; </span><span style='color: #555555;'># ... with 98 more rows</span><span></div><div class='input'>
-<span class='no'>store</span>$<span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Store example_rOstluft destroyed</span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -233,7 +237,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

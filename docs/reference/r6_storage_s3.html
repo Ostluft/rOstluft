@@ -83,7 +83,7 @@ for more Informations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -160,12 +160,12 @@ for more Informations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>storage_s3_rds</span>(
-  <span class='no'>name</span>,
-  <span class='no'>format</span>,
-  <span class='no'>bucket</span>,
-  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>read.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>name</span>,
+  <span class='kw'>format</span>,
+  <span class='kw'>bucket</span>,
+  prefix = <span class='kw'>NULL</span>,
+  region = <span class='kw'>NULL</span>,
+  read.only = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,7 +204,7 @@ for more Informations.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>name</code></dt><dd><p>name of the store</p></dd>
 
 <dt><code>format</code></dt><dd><p>data format of the store</p></dd>
@@ -270,17 +270,20 @@ confirmation</p>
 
 <p>See the documentation of <a href='https://github.com/cloudyr/aws.signature/'>aws.signature</a> for ways to provide the
 necessary informations. The simplest way is to use environment variables defined in a <code>.Renviron</code> file in the
-root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID</span> <span class='kw'>=</span> <span class='st'>"xxxxxxxxxxxxxxxxxx"</span>
-<span class='no'>AWS_SECRET_ACCESS_KEY</span> <span class='kw'>=</span> <span class='st'>"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>
-<span class='no'>AWS_DEFAULT_REGION</span> <span class='kw'>=</span> <span class='st'>"eu-central-1"</span></pre>
+root directory of a RStudio Project:</p><pre><span class='kw'>AWS_ACCESS_KEY_ID</span> <span class='op'>=</span> <span class='st'>"xxxxxxxxxxxxxxxxxx"</span>
+<span class='kw'>AWS_SECRET_ACCESS_KEY</span> <span class='op'>=</span> <span class='st'>"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>
+<span class='kw'>AWS_DEFAULT_REGION</span> <span class='op'>=</span> <span class='st'>"eu-central-1"</span>
+</pre>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## init store, creates directory if necessary</span>
-<span class='no'>format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
-<span class='no'>store</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rOstluft</span><span class='kw ns'>::</span><span class='fu'>storage_s3_rds</span>(<span class='st'>"s3_example"</span>, <span class='no'>format</span>, <span class='st'>"rostluft"</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"aqmet"</span>)</div><div class='output co'>#&gt; <span class='message'>store s3_example initialized under 'C:\Users\tom\AppData\Local\rOstluft\s3_example'</span></div><div class='input'>
+<span class='kw'>format</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'><a href='format_rolf.html'>format_rolf</a></span>()
+<span class='kw'>store</span> <span class='op'>&lt;-</span> <span class='kw'>rOstluft</span>::<span class='fu'>storage_s3_rds</span>(<span class='st'>"s3_example"</span>, <span class='kw'>format</span>, <span class='st'>"rostluft"</span>, prefix = <span class='st'>"aqmet"</span>)
+</div><div class='output co'>#&gt; <span class='message'>store s3_example initialized under 'C:\Users\tom\AppData\Local\rOstluft\s3_example'</span></div><div class='input'>
 <span class='co'>## get all data min30 for 2011 and 2012</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(site = <span class='st'>"Zch_Stampfenbachstrasse"</span>, interval = <span class='st'>"min30"</span>, year = <span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2012</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit    value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO        min30    ppm    0.525 
@@ -295,8 +298,9 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse StrGlo    min30    W/m2   0.010</span><span style='text-decoration: underline;'>4</span><span>
 #&gt; </span><span style='color: #555555;'># ... with 488,312 more rows</span><span></div><div class='input'>
 <span class='co'>## get only data for O3</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>, <span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
-          <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>==</span> <span class='st'>"O3"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 34,996 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(year = <span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2012</span>, site = <span class='st'>"Zch_Stampfenbachstrasse"</span>, interval = <span class='st'>"min30"</span>,
+          filter = <span class='kw'>parameter</span> <span class='op'>==</span> <span class='st'>"O3"</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 34,996 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit   value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3        min30    ppb    1.10 
@@ -311,8 +315,9 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>04:30:00</span><span> Zch_Stampfenbachstrasse O3        min30    ppb   18.7  
 #&gt; </span><span style='color: #555555;'># ... with 34,986 more rows</span><span></div><div class='input'>
 <span class='co'>## get NOx data from multiple stations</span>
-<span class='no'>store</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='st'>"Zch_Rosengartenstrasse"</span>), <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>,
-          <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2014</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='no'>parameter</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"NOx"</span>, <span class='st'>"NO"</span>, <span class='st'>"NO2"</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 104,547 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(site = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='st'>"Zch_Rosengartenstrasse"</span>), interval = <span class='st'>"min30"</span>,
+          year = <span class='fl'>2014</span>, filter = <span class='kw'>parameter</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"NOx"</span>, <span class='st'>"NO"</span>, <span class='st'>"NO2"</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 104,547 x 6</span><span>
 #&gt;    starttime           site                   parameter interval unit  value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2014-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Rosengartenstrasse NO2       min30    ppb    18.6
@@ -327,7 +332,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>10</span><span> 2014-01-01 </span><span style='color: #555555;'>01:30:00</span><span> Zch_Rosengartenstrasse NO2       min30    ppb    39.8
 #&gt; </span><span style='color: #555555;'># ... with 104,537 more rows</span><span></div><div class='input'>
 <span class='co'>## get n data points grouped by intervall, station, parameter, year in the store</span>
-<span class='no'>store</span>$<span class='fu'>get_content</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 179,019 x 6</span><span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_content</span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 179,019 x 6</span><span>
 #&gt;     year interval site                parameter unit      n
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 h1       Zürich - EraInterim blh       m       730
@@ -342,21 +348,24 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 h1       Zürich - EraInterim slhf      J/m2    730
 #&gt; </span><span style='color: #555555;'># ... with 179,009 more rows</span><span></div><div class='input'>
 <span class='co'>## get list of all chunks, show only local files</span>
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 11</span><span>
+<span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>store</span><span class='op'>$</span><span class='fu'>list_chunks</span>(), <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>local.path</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 11</span><span>
 #&gt;   chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2020-03-20T15:~ 491c11~ 662.71K
 #&gt; </span><span style='color: #555555;'>2</span><span> min30/bWl~ min30    Zch_~ 2014  aqmet~ 2020-03-20T15:~ 87d75d~   1.08M
 #&gt; </span><span style='color: #555555;'>3</span><span> min30/bWl~ min30    Zch_~ 2011  aqmet~ 2020-03-20T15:~ 682f88~   1.07M
 #&gt; </span><span style='color: #555555;'>4</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2020-03-20T15:~ 9d405f~   1.07M
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
-#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## download all data for site Zch_Rosengartenstrasse before 2016</span>
-<span class='no'>store</span>$<span class='fu'>download</span>(<span class='no'>site</span> <span class='kw'>==</span> <span class='st'>"Zch_Rosengartenstrasse"</span>, <span class='no'>year</span> <span class='kw'>&lt;</span> <span class='fl'>2016</span>)</div><div class='output co'>#&gt; list()</div><div class='input'>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>download</span>(<span class='kw'>site</span> <span class='op'>==</span> <span class='st'>"Zch_Rosengartenstrasse"</span>, <span class='kw'>year</span> <span class='op'>&lt;</span> <span class='fl'>2016</span>)
+</div><div class='output co'>#&gt; list()</div><div class='input'>
 <span class='co'>## now there should be 2 more local files</span>
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>store</span>$<span class='fu'>list_chunks</span>(), !<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>local.path</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 11</span><span>
+<span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>store</span><span class='op'>$</span><span class='fu'>list_chunks</span>(), <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>local.path</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 11</span><span>
 #&gt;    chunk_name interval site  year  s3.key s3.lastmodified s3.etag s3.size
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fs::b&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1~ d1       Zch_~ 2013  aqmet~ 2020-03-20T18:~ e47911~  19.88K
 #&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1~ d1       Zch_~ 2014  aqmet~ 2020-03-20T18:~ 7c1774~   76.8K
 #&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1~ d1       Zch_~ 2015  aqmet~ 2020-03-20T18:~ a9715d~  86.07K
@@ -377,10 +386,11 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>18</span><span> min30/bWl~ min30    Zch_~ 2012  aqmet~ 2020-03-20T15:~ 9d405f~   1.07M
 #&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1~ y1       Zch_~ 2014  aqmet~ 2020-03-20T18:~ ad2711~   1.57K
 #&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1~ y1       Zch_~ 2015  aqmet~ 2020-03-20T18:~ 96f4f3~   1.56K
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,
-#&gt; #   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: local.path </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   local.modification_time </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, local.size </span><span style='color: #555555;font-style: italic;'>&lt;fs::bytes&gt;</span><span></div><div class='input'>
 <span class='co'>## get all meta data</span>
-<span class='no'>store</span>$<span class='fu'>get_meta</span>()</div><div class='output co'>#&gt; $all
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_meta</span>()
+</div><div class='output co'>#&gt; $all
 #&gt; </span><span style='color: #555555;'># A tibble: 1,959 x 12</span><span>
 #&gt;    site  site_short site_long      x      y  masl parameter_origi~ parameter
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
@@ -394,8 +404,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 PM10             PM10     
 #&gt; </span><span style='color: #555555;'> 9</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 SO2              SO2      
 #&gt; </span><span style='color: #555555;'>10</span><span> Arb_~ ARBS       Arbon St~ 2.75</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   407 StrGlo           StrGlo   
-#&gt; </span><span style='color: #555555;'># ... with 1,949 more rows, and 4 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 1,949 more rows, and 4 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $ecmwf
 #&gt; </span><span style='color: #555555;'># A tibble: 35 x 14</span><span>
@@ -411,8 +421,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>         8.25  47.2 </span><span style='color: #BB0000;'>NA</span><span>    tp               m     h1      
 #&gt; </span><span style='color: #555555;'> 9</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>         8.25  47.2 </span><span style='color: #BB0000;'>NA</span><span>    tco3             kg/m2 h1      
 #&gt; </span><span style='color: #555555;'>10</span><span> ZH_EraI    Züri~ </span><span style='color: #BB0000;'>NA</span><span>         8.25  47.2 </span><span style='color: #BB0000;'>NA</span><span>    sund             s     h1      
-#&gt; </span><span style='color: #555555;'># ... with 25 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 25 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $ethz
 #&gt; </span><span style='color: #555555;'># A tibble: 28 x 14</span><span>
@@ -428,8 +438,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span> wspd_scl         m/s   ETHZ_CHN   </span><span style='color: #BB0000;'>NA</span><span>        ETHZ~  8.55  47.4   510 min10   
 #&gt; </span><span style='color: #555555;'> 9</span><span> wdir             °     ETHZ_CHN   </span><span style='color: #BB0000;'>NA</span><span>        ETHZ~  8.55  47.4   510 min10   
 #&gt; </span><span style='color: #555555;'>10</span><span> wspd_pk          m/s   ETHZ_CHN   </span><span style='color: #BB0000;'>NA</span><span>        ETHZ~  8.55  47.4   510 min10   
-#&gt; </span><span style='color: #555555;'># ... with 18 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 18 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $hysplit
 #&gt; </span><span style='color: #555555;'># A tibble: 2 x 12</span><span>
@@ -437,8 +447,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> ZH-Kasern~ ZH_K~ Zürich_K~ </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    hysplit_cluster  hysplit_~ </span><span style='color: #BB0000;'>NA</span><span>   
 #&gt; </span><span style='color: #555555;'>2</span><span> SG-BP-hys~ SG_B~ St. Gall~ </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>    hysplit_cluster  hysplit_~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $hysplit_cluster_trajectories
 #&gt; </span><span style='color: #555555;'># A tibble: 1,164 x 7</span><span>
@@ -471,8 +481,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span> TAE        Aado~ 8°54' 47°29' 2.71</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   539 sre000z0         Meteo~
 #&gt; </span><span style='color: #555555;'> 9</span><span> TAE        Aado~ 8°54' 47°29' 2.71</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   539 sre000z0         Meteo~
 #&gt; </span><span style='color: #555555;'>10</span><span> TAE        Aado~ 8°54' 47°29' 2.71</span><span style='color: #555555;'>e</span><span>6 1.26</span><span style='color: #555555;'>e</span><span>6   539 gre000z0         Meteo~
-#&gt; </span><span style='color: #555555;'># ... with 253 more rows, and 6 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, Beschreibung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, site_long </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 253 more rows, and 6 more variables: unit </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, Beschreibung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, site_long </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $meteotest
 #&gt; </span><span style='color: #555555;'># A tibble: 2 x 12</span><span>
@@ -480,8 +490,8 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> SMA_23m    </span><span style='color: #BB0000;'>NA</span><span>        Züri~ </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>      581 ta1tows0         T         °C   
 #&gt; </span><span style='color: #555555;'>2</span><span> ZUEberg    </span><span style='color: #BB0000;'>NA</span><span>        Züri~ </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>      729 ta1tows0         T         °C   
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 3 more variables: interval </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $nabel
 #&gt; </span><span style='color: #555555;'># A tibble: 406 x 32</span><span>
@@ -497,14 +507,14 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>1</span><span>084 Züri~ </span><span style='color: #BB0000;'>NA</span><span>         Zürich-Ka~ Zürich-K~ ZH    Züri~ NABEL            1
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>1</span><span>084 Züri~ </span><span style='color: #BB0000;'>NA</span><span>         Zürich-Ka~ Zürich-K~ ZH    Züri~ NABEL            1
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>1</span><span>084 Züri~ </span><span style='color: #BB0000;'>NA</span><span>         Zürich-Ka~ Zürich-K~ ZH    Züri~ NABEL            1
-#&gt; </span><span style='color: #555555;'># ... with 396 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 396 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $ostluft
 #&gt; </span><span style='color: #555555;'># A tibble: 1,524 x 32</span><span>
@@ -520,14 +530,14 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
 #&gt; </span><span style='color: #555555;'> 9</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
 #&gt; </span><span style='color: #555555;'>10</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
-#&gt; </span><span style='color: #555555;'># ... with 1,514 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 1,514 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $seepolizei
 #&gt; </span><span style='color: #555555;'># A tibble: 28 x 14</span><span>
@@ -543,11 +553,12 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span> barometric_pres~ hPa   mythenquai </span><span style='color: #BB0000;'>NA</span><span>        ZH_M~  8.54  47.4   407 min10   
 #&gt; </span><span style='color: #555555;'> 9</span><span> precipitation    mm    mythenquai </span><span style='color: #BB0000;'>NA</span><span>        ZH_M~  8.54  47.4   407 min10   
 #&gt; </span><span style='color: #555555;'>10</span><span> dew_point        °C    mythenquai </span><span style='color: #BB0000;'>NA</span><span>        ZH_M~  8.54  47.4   407 min10   
-#&gt; </span><span style='color: #555555;'># ... with 18 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 18 more rows, and 5 more variables: timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </div><div class='input'>
 <span class='co'>## or a specific meta file</span>
-<span class='no'>store</span>$<span class='fu'>get_meta</span>(<span class='st'>"ostluft"</span>)</div><div class='output co'>#&gt; $ostluft
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_meta</span>(<span class='st'>"ostluft"</span>)
+</div><div class='output co'>#&gt; $ostluft
 #&gt; </span><span style='color: #555555;'># A tibble: 1,524 x 32</span><span>
 #&gt;     msID site  site_short msNameKurz site_long msKT  msOrt msOrtsteil msNABEL
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
@@ -561,42 +572,44 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'> 8</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
 #&gt; </span><span style='color: #555555;'> 9</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
 #&gt; </span><span style='color: #555555;'>10</span><span>     1 Arb_~ ARBS       Arbon Sta~ Arbon St~ TG    Arbon Stadthaus        2
-#&gt; </span><span style='color: #555555;'># ... with 1,514 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 1,514 more rows, and 23 more variables: scDTV </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scDTVJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLKWProzent </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scStrassenabstand </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scEinwohner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, scEinwohnerJahr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scVerkehrslage </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scSiedlungsgroesse </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scLagerelativSiedlung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scIDBStandorttyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBStationstyp </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, scIDBBebauung </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   scIDBVerkehr </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, x </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, y </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, masl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, spBisDatum </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   parameter </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, msmmBeginn </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, msmmEnde </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </div><div class='input'>
 <span class='co'>## get the cache as local storage</span>
-<span class='no'>local</span> <span class='kw'>&lt;-</span> <span class='no'>store</span>$<span class='fu'>get_local_storage</span>()
-<span class='no'>local</span>$<span class='fu'>list_chunks</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 7</span><span>
+<span class='kw'>local</span> <span class='op'>&lt;-</span> <span class='kw'>store</span><span class='op'>$</span><span class='fu'>get_local_storage</span>()
+<span class='kw'>local</span><span class='op'>$</span><span class='fu'>list_chunks</span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 7</span><span>
 #&gt;    chunk_name   interval site  year  local.path   local.modification~ local.size
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>     19.88K
-#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>      76.8K
-#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>     86.07K
-#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1pj~ h1       Zch_~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>    112.51K
-#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1pj~ h1       Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>    447.67K
-#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1pj~ h1       Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>    567.77K
-#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>     23.66K
-#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>     93.29K
-#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>     92.35K
-#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1pj~ m1       Zch_~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>      2.17K
-#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1pj~ m1       Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>      5.72K
-#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1pj~ m1       Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>       6.1K
-#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWluM~ min30    Zch_~ 2013  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>    168.13K
-#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:22</span><span>    662.71K
-#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWluM~ min30    Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>    780.21K
-#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:22</span><span>      1.08M
-#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWluM~ min30    Zch_~ 2011  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:21</span><span>      1.07M
-#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWluM~ min30    Zch_~ 2012  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:21:22</span><span>      1.07M
-#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1pj~ y1       Zch_~ 2014  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:34</span><span>      1.57K
-#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1pj~ y1       Zch_~ 2015  C:/Users/to~ 2020-09-13 </span><span style='color: #555555;'>16:23:35</span><span>      1.56K</div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fs::path&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fs::byte&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:20</span><span>     19.88K
+#&gt; </span><span style='color: #555555;'> 2</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:20</span><span>      76.8K
+#&gt; </span><span style='color: #555555;'> 3</span><span> d1/ZDHCu1pj~ d1       Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:20</span><span>     86.07K
+#&gt; </span><span style='color: #555555;'> 4</span><span> h1/aDHCu1pj~ h1       Zch_~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:20</span><span>    112.51K
+#&gt; </span><span style='color: #555555;'> 5</span><span> h1/aDHCu1pj~ h1       Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:20</span><span>    447.67K
+#&gt; </span><span style='color: #555555;'> 6</span><span> h1/aDHCu1pj~ h1       Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>    567.77K
+#&gt; </span><span style='color: #555555;'> 7</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>     23.66K
+#&gt; </span><span style='color: #555555;'> 8</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>     93.29K
+#&gt; </span><span style='color: #555555;'> 9</span><span> h8gl/aDhnbM~ h8gl     Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>     92.35K
+#&gt; </span><span style='color: #555555;'>10</span><span> m1/bTHCu1pj~ m1       Zch_~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>      2.17K
+#&gt; </span><span style='color: #555555;'>11</span><span> m1/bTHCu1pj~ m1       Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>      5.72K
+#&gt; </span><span style='color: #555555;'>12</span><span> m1/bTHCu1pj~ m1       Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>       6.1K
+#&gt; </span><span style='color: #555555;'>13</span><span> min30/bWluM~ min30    Zch_~ 2013  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>    168.13K
+#&gt; </span><span style='color: #555555;'>14</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:17</span><span>    662.71K
+#&gt; </span><span style='color: #555555;'>15</span><span> min30/bWluM~ min30    Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>    780.21K
+#&gt; </span><span style='color: #555555;'>16</span><span> min30/bWluM~ min30    Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:17</span><span>      1.08M
+#&gt; </span><span style='color: #555555;'>17</span><span> min30/bWluM~ min30    Zch_~ 2011  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:16</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>18</span><span> min30/bWluM~ min30    Zch_~ 2012  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:03:16</span><span>      1.07M
+#&gt; </span><span style='color: #555555;'>19</span><span> y1/eTHCu1pj~ y1       Zch_~ 2014  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>      1.57K
+#&gt; </span><span style='color: #555555;'>20</span><span> y1/eTHCu1pj~ y1       Zch_~ 2015  C:/Users/to~ 2020-09-20 </span><span style='color: #555555;'>23:07:21</span><span>      1.56K</div><div class='input'>
 <span class='co'>## get cached data</span>
-<span class='no'>local</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='kw'>site</span> <span class='kw'>=</span> <span class='st'>"Zch_Stampfenbachstrasse"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"min30"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>:<span class='fl'>2012</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
+<span class='kw'>local</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(site = <span class='st'>"Zch_Stampfenbachstrasse"</span>, interval = <span class='st'>"min30"</span>, year = <span class='fl'>2011</span><span class='op'>:</span><span class='fl'>2012</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 488,322 x 6</span><span>
 #&gt;    starttime           site                    parameter interval unit    value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO        min30    ppm    0.525 
@@ -611,9 +624,10 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 #&gt; </span><span style='color: #555555;'>10</span><span> 2011-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse StrGlo    min30    W/m2   0.010</span><span style='text-decoration: underline;'>4</span><span>
 #&gt; </span><span style='color: #555555;'># ... with 488,312 more rows</span><span></div><div class='input'>
 <span class='co'>## destroy store (careful removes all files on the disk)</span>
-<span class='no'>store</span>$<span class='no'>read.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-<span class='no'>store</span>$<span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)</div><div class='output co'>#&gt; <span class='message'>Cache for Store s3_example destroyed</span></div><div class='input'>
-## No examples for write operations
+<span class='kw'>store</span><span class='op'>$</span><span class='kw'>read.only</span> <span class='op'>=</span> <span class='fl'>FALSE</span>
+<span class='kw'>store</span><span class='op'>$</span><span class='fu'>destroy</span>(<span class='st'>"DELETE"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Cache for Store s3_example destroyed</span></div><div class='input'>
+<span class='co'>## No examples for write operations</span>
 
 </div></span></pre>
   </div>
@@ -631,7 +645,7 @@ root directory of a RStudio Project:</p><pre><span class='no'>AWS_ACCESS_KEY_ID<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

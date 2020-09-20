@@ -62,7 +62,7 @@ per file.
 
 \item{\code{read_function}}{function(file) for reading chunks from disk. Default \code{\link[base:readRDS]{base::readRDS()}}}
 
-\item{\code{write_function}}{function(object, file) for writing chunks to disk. Default \code{\link[base:saveRDS]{base::saveRDS()}}}
+\item{\code{write_function}}{function(object, file) for writing chunks to disk. Default \code{\link[base:readRDS]{base::saveRDS()}}}
 }}
 
 \section{Methods}{

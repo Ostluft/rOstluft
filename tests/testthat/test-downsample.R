@@ -31,10 +31,18 @@ airmo_y1 <-  read_airmo_csv(y1, na.rm = FALSE)
 airmo_min30_y1 <- read_airmo_csv(min30_y1)
 
 
+print_fun <- function(x, ...) {
+  print("\n")
+  print(x, ...)
+
+}
+
+
 expect_equal_values <- function(input, output, parameter) {
-  testthat::expect_equal(
+  testthat::expect_equivalent(
     dplyr::filter(input, .data$parameter == !!parameter)$value,
-    dplyr::filter(output, .data$parameter == !!parameter)$value
+    dplyr::filter(output, .data$parameter == !!parameter)$value,
+    label = parameter
   )
 }
 
@@ -108,6 +116,7 @@ test_that("to y1", {
   O3_h1 <- resample(O3_min30, "mean", "h1", data_thresh = 0.8)
   O3_d1 <- resample(O3_min30, "mean", "d1", data_thresh = 0.8)
 
+
   res_O3_min30 <- resample(O3_min30, min30_statistics, "y1", data_thresh = 0.8, max_gap = 480)
   res_O3_h1 <- resample(O3_h1, h1_statistics, "y1")
   res_O3_d1 <- resample(O3_d1, d1_statistics, "y1")
@@ -122,7 +131,7 @@ test_that("to y1", {
   }
 
   # check percentile manually
-  testthat::expect_equal(
+  testthat::expect_equivalent(
     dplyr::filter(res, .data$parameter == "O3_98%_min30")$value,
     dplyr::filter(airmo_y1, .data$parameter == "O3_98%")$value
   )

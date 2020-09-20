@@ -35,6 +35,6 @@ h1 <- system.file("extdata", "Zch_Stampfenbachstrasse_h1_2013_Jan.csv",
                    package = "rOstluft.data", mustWork = TRUE)
 
 airmo_h1 <- read_airmo_csv(h1)
-rolf_to_openair_single(airmo_h1, "NO2", unit = "Âµg/m3", keep_interval = TRUE)
+rolf_to_openair_single(airmo_h1, "NO2", unit = "\u00b5g/m3", keep_interval = TRUE)
 
 }

@@ -93,7 +93,7 @@ convert_set_conc_lookup(lookup)
 \itemize{
 \item \code{\link[=convert_conc]{convert_conc()}}
 \item \code{\link[=conversion_conc_fun_factory]{conversion_conc_fun_factory()}}
-\item \code{\link[rlang:is_bare_double]{rlang::is_bare_double()}}
+\item \code{\link[rlang:bare-type-predicates]{rlang::is_bare_double()}}
 \item \code{\link[purrr:partial]{purrr::partial()}}
 }
 }

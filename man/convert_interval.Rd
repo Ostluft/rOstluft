@@ -10,7 +10,7 @@ convert_interval(interval)
 \item{interval}{string with AIRMO Zeitfenster}
 }
 \value{
-string with valid string for \code{\link[base:seq.Date]{base::seq.Date()}} or \code{\link[lubridate:floor_date]{lubridate::floor_date()}}
+string with valid string for \code{\link[base:seq.Date]{base::seq.Date()}} or \code{\link[lubridate:round_date]{lubridate::floor_date()}}
 }
 \description{
 This function is far from perfect but works with the non offseting, shifting Zeitfenster

@@ -87,7 +87,7 @@ test_that("a lot of stats", {
   }
 
 
-  testthat::expect_equal(
+  testthat::expect_equivalent(
     res$value,
     res$value.AIRMO,
     tolerance = 1e-6

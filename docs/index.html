@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -113,23 +113,38 @@
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>Der Quellcode von <a href="https://github.com/Ostluft/rOstluft">rOstluft</a> ist auf github gehosted. Die einfachste Variante ist die Installation mit Hilfe des Packages devtools:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co">#install.packages("devtools")
-</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co">#install.packages("devtools")</span>
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"Ostluft/rOstluft"</span>)
+</pre></div>
 <p>Zusätzlich muss das Package <code>aws.s3</code> manuell aus dem cloudyr Repositorium installiert werden, weil die CRANR Version veraltet ist:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, <span class="kw">repos</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> <span class="kw">=</span> <span class="st">"http://cloudyr.github.io/drat"</span>))</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, repos = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> = <span class="st">"http://cloudyr.github.io/drat"</span>))
+</pre></div>
 <p>Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht möglich. Muss der Quellcode manuell von github heruntergeladen werden (Clone or download &gt; Download as ZIP), entpackt und manuell installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN bereitgestellt werden. Können auch keine CRAN Packages installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten installiert werden.</p>
 <p>Zusätzlich besteht noch die Github Abhängkigkeit zu <a href="https://github.com/Ostluft/rOstluft.data">rOstluft.data</a>. Dieses Packages muss auf die gleiche Weise zuerst installiert werden mit folgenden Schritten:</p>
-<div class="sourceCode" id="cb3"><pre class="r">download.file("https://github.com/Ostluft/rOstluft/archive/master.zip", "rOstluft-master.zip")
-download.file("https://github.com/Ostluft/rOstluft.data/archive/master.zip", "rOstluft.data-master.zip")
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft/archive/master.zip"</span>, <span class="st">"rOstluft-master.zip"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="st">"https://github.com/Ostluft/rOstluft.data/archive/master.zip"</span>, <span class="st">"rOstluft.data-master.zip"</span>)
 
-install.packages("devtools")
-install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"))
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"aws.s3"</span>, repos = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cloudyr"</span> = <span class="st">"http://cloudyr.github.io/drat"</span>))
 
-deps </pre></div>
+<span class="kw">deps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'dplyr'</span>, <span class="st">'tidyr'</span>, <span class="st">'lubridate'</span>, <span class="st">'R6'</span>, <span class="st">'rappdirs'</span>, <span class="st">'tibble'</span>, <span class="st">'base64url'</span>, <span class="st">'forcats'</span>,
+          <span class="st">'fs'</span>, <span class="st">'purrr'</span>, <span class="st">'readr'</span>, <span class="st">'stringr'</span>, <span class="st">'stringi'</span>, <span class="st">'sp'</span>, <span class="st">'rgdal'</span>, <span class="st">'rlang'</span>, <span class="st">'magrittr'</span>)
+
+<span class="co">for</span> (<span class="kw">p</span> <span class="co">in</span> <span class="kw">deps</span>) {
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="kw">p</span>)
+}
+
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_local</a></span>(<span class="st">"rOstluft.data-master.zip"</span>, dependencies = <span class="fl">FALSE</span>)
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_local</a></span>(<span class="st">"rOstluft-master.zip"</span>, dependencies = <span class="fl">FALSE</span>)
+</pre></div>
 <p>Falls das installieren von rOstluft scheitert, fehlt vermutlich eine Abhängigkeit. Welche das ist, kann der Fehlermeldung entnommen werden.</p>
 <p>Nach der Installation kann das Packages verwendet werden:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rOstluft</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Ostluft/rOstluft">rOstluft</a></span>)
+</pre></div>
 </div>
 <div id="einrichten-entwicklungsumgebung" class="section level1">
 <h1 class="hasAnchor">
@@ -139,9 +154,10 @@ deps </pre></div>
 <p>Alternativ kann das Projekt über den New Project Wizard im RStudio initialisiert werden:</p>
 <p>File &gt; New Project… &gt; Version Control &gt; Git &gt; Repository URL = <a href="https://github.com/Ostluft/rOstluft.git" class="uri">https://github.com/Ostluft/rOstluft.git</a></p>
 <p>Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole im Rstudio (wenn das Projekt geöffnet ist):</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co">#install.packages("devtools")
-</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/install_deps.html">install_dev_deps</a></span>()</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co">#install.packages("devtools")</span>
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/install_deps.html">install_dev_deps</a></span>()
+</pre></div>
 </div>
 <div id="demo" class="section level1">
 <h1 class="hasAnchor">
@@ -192,7 +208,7 @@ deps </pre></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

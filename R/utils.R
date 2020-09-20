@@ -106,6 +106,10 @@ cut_on_condition <- function(data, condition, mapping) {
   condition <- rlang::enexpr(condition)
   data <- dplyr::group_by(data, condition_ = !!condition)
   keys <- dplyr::group_keys(data)
-  data <- dplyr::group_split(data, keep = FALSE)
-  rlang::set_names(data, mapping[as.character(keys$condition_)])
+  data <- dplyr::group_split(data, .keep = FALSE)
+  data <- rlang::set_names(data, mapping[as.character(keys$condition_)])
+
+  # with dplyr 1.0 the package vctrs is used and the returned data is list of tbl_df (list<tbl_df[,8]> )
+  # this interferes with later usage, so we cast it to a plain list
+  as.list(data)
 }

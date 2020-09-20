@@ -13,7 +13,7 @@ bind_rows_with_factor_columns(...)
 combined data frame
 }
 \description{
-\code{\link[dplyr:bind_rows]{dplyr::bind_rows()}} coerces factors to characters. This function use the \code{\link[forcats:fct_c]{forcats::fct_c()}}
+\code{\link[dplyr:bind]{dplyr::bind_rows()}} coerces factors to characters. This function use the \code{\link[forcats:fct_c]{forcats::fct_c()}}
 to combine the factor columns.
 }
 \details{

@@ -56,7 +56,7 @@ Aggregate data by different time periods. Following this simple steps:
 \item split data in series
 \itemize{
 \item pad data serie (needed for calculation of capture threshold, detection of gaps)
-\item group serie by new interval with \code{\link[lubridate:floor_date]{lubridate::floor_date()}}
+\item group serie by new interval with \code{\link[lubridate:round_date]{lubridate::floor_date()}}
 \item apply statistical method or user provides function (user can provide list per parameter)
 }
 \item combine resampled series

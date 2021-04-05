@@ -1,4 +1,3 @@
-context("apply meta data universal")
 
 fn <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
 meta_fn <- system.file("extdata", "meta_smn.rds", package = "rOstluft.data", mustWork = TRUE)

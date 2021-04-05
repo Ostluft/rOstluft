@@ -25,11 +25,11 @@ install.packages("aws.s3", repos = c("cloudyr" = "http://cloudyr.github.io/drat"
 
 Ist dies wegen Einschränkungen durch Firewalls oder Proxies nicht
 möglich. Muss der Quellcode manuell von github heruntergeladen werden
-(Clone or download \> Download as ZIP), entpackt und manuell installiert
-werden. Allerdings bestehen Abhängigkeiten zu Packages die auf CRAN
-bereitgestellt werden. Können auch keine CRAN Packages installiert
-werden, müssen zuerst alle CRAN Abhängkigkeiten und deren Abhängigkeiten
-installiert werden.
+(Clone or download &gt; Download as ZIP), entpackt und manuell
+installiert werden. Allerdings bestehen Abhängigkeiten zu Packages die
+auf CRAN bereitgestellt werden. Können auch keine CRAN Packages
+installiert werden, müssen zuerst alle CRAN Abhängkigkeiten und deren
+Abhängigkeiten installiert werden.
 
 Zusätzlich besteht noch die Github Abhängkigkeit zu
 [rOstluft.data](https://github.com/Ostluft/rOstluft.data). Dieses
@@ -74,8 +74,8 @@ git clone https://github.com/Ostluft/rOstluft.git
 Alternativ kann das Projekt über den New Project Wizard im RStudio
 initialisiert werden:
 
-File \> New Project… \> Version Control \> Git \> Repository URL =
-<https://github.com/Ostluft/rOstluft.git>
+File &gt; New Project… &gt; Version Control &gt; Git &gt; Repository URL
+= <https://github.com/Ostluft/rOstluft.git>
 
 Als nächstes installiert man die R Abhängigkeiten mit Hilfe der Konsole
 im Rstudio (wenn das Projekt geöffnet ist):

@@ -84,14 +84,14 @@ convert_conc <- function(data, parameter, from, to, method = "return", ...) {
   if (method == "return") {
     return(converted)
   } else if (method == "append") {
-    return(bind_rows_with_factor_columns(data, converted))
+    return(dplyr::bind_rows(data, converted))
   } else if (method == "replace") {
     if (!rlang::has_name(groups, "others")) {
       return(converted)
     } else if (!rlang::has_name(groups, "convert")) {
       return(groups$others)
     } else {
-      return(bind_rows_with_factor_columns(groups$others, converted))
+      return(dplyr::bind_rows(groups$others, converted))
     }
   } else {
     stop(sprintf('Invalid value (%s) for argument method. Should be one of "return", "append", "replace"', method))
@@ -131,10 +131,10 @@ convert_conc_multiple <- function(data, conversions, method = "return", ...) {
 
   if (method == "return") {
     converted <- purrr::pmap(conversions, convert_conc, data = data, method = "return", ...)
-    return(bind_rows_with_factor_columns(!!!converted))
+    return(dplyr::bind_rows(!!!converted))
   } else if (method == "append") {
     converted <- purrr::pmap(conversions, convert_conc, data = data, method = "return", ...)
-    return(bind_rows_with_factor_columns(data, !!!converted))
+    return(dplyr::bind_rows(data, !!!converted))
   } else if (method == "replace") {
     conversions_list <- purrr::transpose(conversions)
     return(purrr::reduce(conversions_list, apply_convert_conc,  method = "replace", ..., .init = data))

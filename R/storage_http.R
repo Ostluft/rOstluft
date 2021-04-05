@@ -59,7 +59,7 @@ r6_storage_http <- R6::R6Class(
       files <- dplyr::filter(files, .data$exists == TRUE)
 
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      purrr::invoke(bind_rows_with_factor_columns, .x = chunks)
+      purrr::invoke(dplyr::bind_rows, .x = chunks)
     },
     download_chunk = function(chunk_name) {
       chunk_url <- self$get_chunk_url(chunk_name)

@@ -137,7 +137,7 @@ resample <- function(data, statistic = "mean", new_interval, data_thresh = NULL,
 
     data <- cut_wind_data(data, names(wind_parameters))
 
-    if (!is.null(data$wind)) {
+    if (rlang::has_name(data, "wind")) {
       wind.data <- resample_wind(data$wind, wind_parameters, new_interval = new_interval, data_thresh = data_thresh,
                                  max_gap = max_gap, skip_padding = skip_padding, start_date = start_date,
                                  end_date = end_date, drop_last = drop_last)
@@ -160,7 +160,7 @@ resample <- function(data, statistic = "mean", new_interval, data_thresh = NULL,
                          drop_last = drop_last)
   }
 
-  bind_rows_with_factor_columns(!!!data, !!!wind.data)
+  dplyr::bind_rows(!!!data, !!!wind.data)
 }
 
 #' @title resampling a serie
@@ -205,7 +205,7 @@ resample_series <- function(serie, statistic = "mean", new_interval = "d1", data
                         old_interval = old_interval, data_thresh = data_thresh, rename_parameter = rename_parameter,
                         percentile = percentile, max_gap = max_gap)
 
-    serie <- bind_rows_with_factor_columns(!!!serie)
+    serie <- dplyr::bind_rows(!!!serie)
   } else if (rlang::is_character(statistic) && statistic == "drop") {
     serie <- dplyr::ungroup(serie)[0, ]
   } else {
@@ -361,7 +361,7 @@ resample_wind_site <- function(data.site, statistic, new_interval = "d1", data_t
     ws <- data.site[0, ]
   }
 
-  bind_rows_with_factor_columns(ws, wv, wd)
+  dplyr::bind_rows(ws, wv, wd)
 }
 
 

@@ -1,4 +1,3 @@
-context("read swiss meteo network")
 
 single <- system.file("extdata", "smn.txt", package = "rOstluft.data", mustWork = TRUE)
 unit <- system.file("extdata", "smn_unit.txt", package = "rOstluft.data", mustWork = TRUE)
@@ -6,18 +5,9 @@ multi <- system.file("extdata", "smn_multi.txt", package = "rOstluft.data", must
 web <- system.file("extdata", "smn_VQHA80.txt", package = "rOstluft.data", mustWork = TRUE)
 new <- system.file("extdata", "smn_neues_format.txt", package = "rOstluft.data", mustWork = TRUE)
 
-
-
 number_of_chunks_in_multi <- 28
 
-setup({
-  tempdir(check = TRUE)
-})
 
-teardown({
-  tmp_files <- fs::dir_ls(tempdir(), regexp = fs::path_file(multi))
-  purrr::map(tmp_files, fs::file_delete)
-})
 
 
 test_that("correct content", {
@@ -61,9 +51,14 @@ test_that("correct content", {
 test_that("split file", {
   tmp_dir <- tempdir()
 
-  testthat::expect_message(
-    split_smn(multi, tmp_dir),
-    regexp = sprintf("Finished file with %2d chunks", number_of_chunks_in_multi)
+  # split_smn generates a message for each chunk
+  # suppress this messages
+  suppressMessages(
+    # and a message at the end with the total number of chunks, we check this number
+    testthat::expect_message(
+      split_smn(multi, tmp_dir),
+      regexp = sprintf("Finished file with %2d chunks", number_of_chunks_in_multi)
+    )
   )
 
   chunk_files <- fs::dir_ls(tempdir(), regexp = fs::path_file(multi))
@@ -90,4 +85,12 @@ test_that("read one file with alot of single exports", {
   test <- purrr::map(res, ~ tibble::is_tibble(.) && nrow(.) > 0)
   testthat::expect_equal(length(res), number_of_chunks_in_multi)
   testthat::expect_true(all(as.logical(test)), label = "every chunk contained some data")
+})
+
+test_that("Delete Temp Files", {
+  tmp_files <- fs::dir_ls(tempdir(), regexp = fs::path_file(multi))
+  testthat::expect_length(
+    purrr::map(tmp_files, fs::file_delete),
+    number_of_chunks_in_multi
+  )
 })

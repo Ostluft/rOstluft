@@ -1,22 +1,8 @@
-context("storage_local_rolf_rds")
-
-#TODO smaller test files
+ #TODO smaller test files
 #TODO test meta functions
 
 # just to be sure, there is nothing before and after the tests
-setup({
-  path <- rappdirs::user_data_dir(appname = "testthat", appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-})
-
-teardown({
-  path <- rappdirs::user_data_dir(appname = "testthat", appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-})
+local_cleanup_storage()
 
 test_that("creating store", {
   expect_error(storage_local_rds("testthat",  format_rolf()), class = "LocalNotFound")
@@ -49,6 +35,8 @@ test_that("put into store", {
 
   df <- read_airmo_csv(ros)
   expect_equal(nrow(df), n_ros)
+
+#  attributes(df$value) = list("a" = "test")
 
   res <- store_rw$put(df)
   expect_equal(sum(res$n), n_ros)

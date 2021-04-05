@@ -287,26 +287,25 @@ einfach noch Spalten umzubenennen und die Reihenfolge zu ändern.
 # Zusammenfügen von Daten im rolf Format
 
 Die Verwendung von Factoren im rolf Format hat seine Vor- und Nachteile. Der Hauptvorteil liegt bei schnelleren Lese-
-und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. `dplyr::bind_rows` wird die Factoren in
-Characters umwandeln, wenn unterschiedliche Levels in den Daten vorhanden sind.  Die Funktion
-`bind_rows_with_factor_columns()` führt das Zusammenfügen korrekt aus. Sie unterstützt ausserdem
+und Schreiboperation, der grösste Nachteil beim Zusammenfügen der Daten. Jedoch unterstützt seit dplyr v1.0.0 `dplyr::bind_rows` 
+das Zusammenfügen von Factor Spalten. Diese Funktion unterstützt ausserdem
 [Quasiquotation](https://rlang.r-lib.org/reference/quasiquotation.html) von rlang[^1]. Somit kann auch eine grosse
 Liste von tibbles im rolf Format komfortable aneinander gefügt werden:
 
 ```{r}
 df1 <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_h1_2013_Jan.csv"))
 df2 <- read_airmo_csv(fs::path(examples_path, "Zch_Stampfenbachstrasse_d1_2013_Jan.csv"))
-df_comb <- bind_rows_with_factor_columns(df1, df2)
+df_comb <- dplyr::bind_rows(df1, df2)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 
 # liste mit 20+ tibbles
 df_list <- read_smn_multiple(fs::path(examples_path, "smn_multi.txt"), as_list = TRUE)
 length(df_list)
-df_comb <- bind_rows_with_factor_columns(!!!df_list)
+df_comb <- dplyr::bind_rows(!!!df_list)
 df_comb %>% dplyr::arrange(.data$starttime, .data$parameter)
 ```
 
-`bind_rows_with_factor_columns()` entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach
+`dplyr::bind_rows()` entfernt jedoch keine Duplikate aus den Daten. Es hängt die Daten einfach
 aneinander. Möchte man Duplikate entfernen, bzw. Daten aktualisieren mit neueren Daten muss man die Funktion
 `$merge()` des Format Objekts benützen. Dieses wurde beim Erzeugen des Store direkt initialisiert und ist als Feld
 `$format` verfügbar. Alternativ kann ein seperates Format Objekt erzeugt werden. Die Daten im ersten Datenframe werden
@@ -629,7 +628,7 @@ stats
 Nur die m1 und y1 sind für die LRV relevant:
 
 ```{r}
-lrv <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+lrv <- dplyr::bind_rows(stats$y1, stats$m1)
 ```
 
 ```{r include = TRUE, echo = FALSE}

@@ -161,7 +161,7 @@ expand_inputs <- function(x, inputs) {
 #' stats <- calculate_statstable(data, lrv_table)
 #'
 #' # we are only interested in the m1 and y1 results
-#' stats <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+#' stats <- dplyr::bind_rows(stats$y1, stats$m1)
 #' stats
 #'
 calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE, data_thresh = 0.8,
@@ -192,7 +192,7 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
       if (from != "h1") {
         stop("h8gl can only calculated from h1")
       }
-      if (isFALSE(requireNamespace("openair"))) {
+      if (isFALSE(suppressMessages(requireNamespace("openair")))) {
         stop("Package openair is needed to calculate rollings means")
       }
       # need to remove the automatic added default_statistics
@@ -200,12 +200,12 @@ calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input
       # it would be better to filter first, then loop over roolingMean only
       parameters <- purrr::keep(rlang::names2(stats), ~ .x != "default_statistic")
       result <- purrr::map(parameters, calc_h8gl, data[[from]])
-      result <- bind_rows_with_factor_columns(!!!result)
+      result <- dplyr::bind_rows(!!!result)
     } else {
       result <- resample(data[[from]], stats, to,  skip_padding = TRUE, data_thresh = data_thresh)
     }
 
-    data[[to]] <- bind_rows_with_factor_columns(data[[to]], result)
+    data[[to]] <- dplyr::bind_rows(data[[to]], result)
     data
   }
 

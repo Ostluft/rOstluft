@@ -116,6 +116,6 @@ r6_format_rolf <- R6::R6Class(
 )
 
 format_merge <- function(new_data, old_data, unique_columns) {
-  xy <- bind_rows_with_factor_columns(new_data, old_data)
+  xy <- dplyr::bind_rows(new_data, old_data)
   dplyr::distinct(xy, !!!rlang::syms(unique_columns), .keep_all = TRUE)
 }

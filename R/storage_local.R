@@ -200,7 +200,7 @@ r6_storage_local <- R6::R6Class(
         data <- dplyr::group_by(data, !!!self$format$chunk_calc, !!!rlang::syms(self$format$chunk_columns))
         data <- dplyr::group_split(data, .keep = TRUE)
         res <- purrr::map(data, private$merge_chunk)
-        bind_rows_with_factor_columns(!!!res)
+        dplyr::bind_rows(!!!res)
       } else {
         warning("argument data is empty")
         invisible(NULL)
@@ -213,7 +213,7 @@ r6_storage_local <- R6::R6Class(
       files <- dplyr::mutate(files, exists = fs::file_exists(.data$chunk_path))
       files <- dplyr::filter(files, .data$exists == TRUE)
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      bind_rows_with_factor_columns(!!!chunks)
+      dplyr::bind_rows(!!!chunks)
     },
     get_chunk_path = function(chunk_name) {
       fs::path(self$data_path, chunk_name, ext = self$ext)
@@ -291,12 +291,12 @@ r6_storage_local <- R6::R6Class(
       get_chunk_content <- function(chunk_path) {
         chunk_data <- self$read_function(chunk_path)
         chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
-        dplyr::count(chunk_data, .dots = self$format$content_columns)
+        dplyr::count(chunk_data, !!!vars(!!!self$format$content_columns)) ####
       }
 
       chunks_path <- fs::dir_ls(self$data_path, recurse = TRUE, type = "file")
       chunks_content <- purrr::map(chunks_path, get_chunk_content)
-      chunks_content <- bind_rows_with_factor_columns(!!!chunks_content)
+      chunks_content <- dplyr::bind_rows(!!!chunks_content)
       self$write_function(chunks_content, self$content_path)
       chunks_content
     },
@@ -339,7 +339,7 @@ r6_storage_local <- R6::R6Class(
         # filter lines from current chunk from old content, only way to remove deleted content
         old_content <- filter_remove_list(old_content, chunk_vars)
         # now we can simply append the rows
-        new_content <- bind_rows_with_factor_columns(new_content, old_content)
+        new_content <- dplyr::bind_rows(new_content, old_content)
       }
       self$write_function(new_content, self$content_path)
       new_content
@@ -349,10 +349,10 @@ r6_storage_local <- R6::R6Class(
       data_content <- self$format$na.omit(data)
 
       if (nrow(data_content) > 0) {
-        data_content <- dplyr::count(data_content, .dots = self$format$content_columns)
+        data_content <- dplyr::count(data_content, !!!vars(!!!self$format$content_columns)) ####
       } else {
         # we need an empty tibble in the correct form. simplest way is to count the NA ..
-        data_content <- dplyr::count(data, .dots = self$format$content_columns)
+        data_content <- dplyr::count(data, !!!vars(!!!self$format$content_columns)) ####
         data_content <- data_content[0, ]
       }
 
@@ -376,7 +376,7 @@ r6_storage_local <- R6::R6Class(
         self$write_function(droplevels(chunk_data), chunk_path)
         # we need to calculate the chunk columns again before counting
         chunk_data <- dplyr::mutate(chunk_data, !!!self$format$chunk_calc)
-        chunk_content <- dplyr::count(chunk_data, .dots = self$format$content_columns)
+        chunk_content <- dplyr::count(chunk_data, !!!vars(!!!self$format$content_columns)) ####
       } else {
         if (fs::file_exists(chunk_path)) {
           fs::file_delete(chunk_path)

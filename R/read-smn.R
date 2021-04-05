@@ -175,7 +175,7 @@ read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
   data <- purrr::map(data, read_smn, encoding = encoding, ...)
 
   if (isFALSE(as_list)) {
-    data <- bind_rows_with_factor_columns(!!!data)
+    data <- dplyr::bind_rows(!!!data)
   }
   data
 }
@@ -207,7 +207,7 @@ split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-
   fs::dir_create(out_dir)
   con_out <- file(out_fn, open = "w", encoding = encoding)
 
-  message("start splitting")
+  #message("start splitting")
 
   # read first line. drop it if whitespace, else keep it.
   # without an additional chunk is genereated with files starting space\n\n

@@ -1,5 +1,3 @@
-context("read nabel txt file")
-
 # minimalistic testing
 #
 

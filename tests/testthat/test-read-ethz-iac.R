@@ -1,5 +1,3 @@
-context("read ethz iac")
-
 test_that("read files", {
   chn_fn <- system.file("extdata", "IAC-Met_2010-12-03.dat", package = "rOstluft.data", mustWork = TRUE)
   hberg_fn <- system.file("extdata", "IAC-Met-HBerg_2012-06-20.dat", package = "rOstluft.data", mustWork = TRUE)

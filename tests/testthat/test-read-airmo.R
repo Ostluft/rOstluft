@@ -1,4 +1,3 @@
-context("read airmo files")
 
 test_that("read csv file", {
   d1 <- system.file("extdata", "Zch_Stampfenbachstrasse_d1_2013_Jan.csv", package = "rOstluft.data", mustWork = TRUE)

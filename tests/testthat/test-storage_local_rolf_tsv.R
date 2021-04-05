@@ -1,23 +1,9 @@
-context("storage_local_rolf_tsv")
-
 #TODO smaller test files
 
 store_name <- "testthat_tsv"
 
 # just to be sure, there is nothing before and after the tests
-setup({
-  path <- rappdirs::user_data_dir(appname = store_name, appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-})
-
-teardown({
-  path <- rappdirs::user_data_dir(appname = store_name, appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-})
+local_cleanup_storage(store_name)
 
 test_that("creating store", {
   expect_message(store <- storage_local_tsv(store_name,  r6_format_rolf$new(), read.only = F))
@@ -32,7 +18,7 @@ test_that("put into store", {
   expect_error(store_ro$put(df), class = "ReadOnlyStore")
 
   store_rw <- storage_local_tsv(store_name, format = rolf, read.only = FALSE)
-  res <- store_rw$put(df)
+  expect_message(res <- store_rw$put(df))
 
 })
 

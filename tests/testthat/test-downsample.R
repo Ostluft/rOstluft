@@ -1,4 +1,3 @@
-context("downsample")
 
 min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",
                      package = "rOstluft.data", mustWork = TRUE)
@@ -31,18 +30,12 @@ airmo_y1 <-  read_airmo_csv(y1, na.rm = FALSE)
 airmo_min30_y1 <- read_airmo_csv(min30_y1)
 
 
-print_fun <- function(x, ...) {
-  print("\n")
-  print(x, ...)
-
-}
-
-
 expect_equal_values <- function(input, output, parameter) {
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     dplyr::filter(input, .data$parameter == !!parameter)$value,
     dplyr::filter(output, .data$parameter == !!parameter)$value,
-    label = parameter
+    label = parameter,
+    ignore_attr = TRUE
   )
 }
 
@@ -121,7 +114,7 @@ test_that("to y1", {
   res_O3_h1 <- resample(O3_h1, h1_statistics, "y1")
   res_O3_d1 <- resample(O3_d1, d1_statistics, "y1")
 
-  res <- bind_rows_with_factor_columns(res_O3_min30, res_O3_h1, res_O3_d1)
+  res <- dplyr::bind_rows(res_O3_min30, res_O3_h1, res_O3_d1)
 
   pars <- levels(droplevels(res$parameter))
   pars <- purrr::discard(pars, ~.x == "O3_98%_min30")  # airmo omits basis interval when renaming percentile ...
@@ -131,9 +124,10 @@ test_that("to y1", {
   }
 
   # check percentile manually
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     dplyr::filter(res, .data$parameter == "O3_98%_min30")$value,
-    dplyr::filter(airmo_y1, .data$parameter == "O3_98%")$value
+    dplyr::filter(airmo_y1, .data$parameter == "O3_98%")$value,
+    ignore_attr = TRUE
   )
 })
 

@@ -145,7 +145,11 @@ resample <- function(data, statistic = "mean", new_interval, data_thresh = NULL,
       wind.data <- NULL
     }
 
-    data <- data$others
+    if (rlang::has_name(data, "others")) {
+      data <- data$others
+    } else {
+      data <- NULL
+    }
   }
 
   # treat skalar data as intended

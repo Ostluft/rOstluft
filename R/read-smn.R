@@ -64,7 +64,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     if (!is.null(units)) {
       units <- stringr::str_split(units, "\\s+")[[1]]
     }
-    data <- readr::read_table2(fn, FALSE, col_types, locale, "-", skip, skip_empty_rows = TRUE)
+    data <- readr::read_table(fn, FALSE, col_types, locale, "-", skip, skip_empty_rows = TRUE)
   } else if (stringr::str_count(col_names, ";") >= 2) {
     col_names <- stringr::str_split(col_names, ";")[[1]]
     if (!is.null(units)) {
@@ -172,10 +172,11 @@ read_smn_multiple <- function(fn, as_list = FALSE, encoding = "UTF-8", ...) {
   data <- readr::read_file(fn, readr::locale(encoding = encoding))
   data <- stringr::str_split(data, "\r\n\r\n|\n\n")            # line end conversion happens
   data <- purrr::keep(data[[1]], ~ any(stringr::str_detect(., c("stn", "Sta.")))) # remove empty and chunks with only a space
+  data <- purrr::map(data, ~I(.))
   data <- purrr::map(data, read_smn, encoding = encoding, ...)
 
   if (isFALSE(as_list)) {
-    data <- bind_rows_with_factor_columns(!!!data)
+    data <- dplyr::bind_rows(!!!data)
   }
   data
 }
@@ -207,7 +208,7 @@ split_smn <- function(fn, out_dir = NULL, suffix = "%03d.part", encoding = "UTF-
   fs::dir_create(out_dir)
   con_out <- file(out_fn, open = "w", encoding = encoding)
 
-  message("start splitting")
+  #message("start splitting")
 
   # read first line. drop it if whitespace, else keep it.
   # without an additional chunk is genereated with files starting space\n\n

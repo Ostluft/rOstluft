@@ -1,5 +1,3 @@
-context("read nabel txt file")
-
 # minimalistic testing
 #
 
@@ -29,7 +27,7 @@ test_that("correct content", {
 
   # manual interval, makes manual shifting necessary
   testthat::expect_error(
-    res <- read_nabel_txt(due, interval = "10 minutes", na.rm = FALSE)
+    suppressWarnings(res <- read_nabel_txt(due, interval = "10 minutes", na.rm = FALSE))
   )
 
 

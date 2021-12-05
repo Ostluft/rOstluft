@@ -91,7 +91,7 @@ methods renames the parameter and changes the unit. A list of method names can o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@ methods renames the parameter and changes the unit. A list of method names can o
     <p>Aggregate data by different time periods. Following this simple steps:</p><ul>
 <li><p>split data in series</p><ul>
 <li><p>pad data serie (needed for calculation of capture threshold, detection of gaps)</p></li>
-<li><p>group serie by new interval with <code><a href='http://lubridate.tidyverse.org/reference/round_date.html'>lubridate::floor_date()</a></code></p></li>
+<li><p>group serie by new interval with <code><a href='https://lubridate.tidyverse.org/reference/round_date.html'>lubridate::floor_date()</a></code></p></li>
 <li><p>apply statistical method or user provides function (user can provide list per parameter)</p></li>
 </ul></li>
 <li><p>combine resampled series</p></li>
@@ -175,19 +175,19 @@ name stands for the parameter. The value can be a function to apply, a name of m
 methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>resample</span>(
-  <span class='kw'>data</span>,
-  statistic = <span class='st'>"mean"</span>,
-  <span class='kw'>new_interval</span>,
-  data_thresh = <span class='kw'>NULL</span>,
-  max_gap = <span class='kw'>NULL</span>,
-  rename_parameter = <span class='fl'>TRUE</span>,
-  percentile = <span class='fl'>0.95</span>,
-  skip_padding = <span class='fl'>FALSE</span>,
-  start_date = <span class='kw'>NULL</span>,
-  end_date = <span class='kw'>NULL</span>,
-  drop_last = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>resample</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  statistic <span class='op'>=</span> <span class='st'>"mean"</span>,
+  <span class='va'>new_interval</span>,
+  data_thresh <span class='op'>=</span> <span class='cn'>NULL</span>,
+  max_gap <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rename_parameter <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  percentile <span class='op'>=</span> <span class='fl'>0.95</span>,
+  skip_padding <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  start_date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  end_date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  drop_last <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -297,74 +297,77 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>min30</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,
-                     package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
-
-<span class='kw'>airmo_min30</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='kw'>min30</span>)
-
-<span class='co'># filter volume concenctrations, only use mass concentrations</span>
-<span class='kw'>airmo_min30</span> <span class='op'>&lt;-</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>airmo_min30</span>, <span class='op'>!</span>(<span class='kw'>.data</span><span class='op'>$</span><span class='kw'>unit</span> <span class='op'>==</span> <span class='st'>"ppb"</span> <span class='op'>|</span> <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>unit</span> <span class='op'>==</span> <span class='st'>"ppm"</span>))
-
-<span class='kw'>d1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"default_statistic"</span> = <span class='st'>"drop"</span>,
-  <span class='st'>"Hr"</span> = <span class='st'>"mean"</span>,
-  <span class='st'>"RainDur"</span> = <span class='st'>"sum"</span>,
-  <span class='st'>"O3"</span> = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"mean"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>, <span class='st'>"n"</span>)
-)
-<span class='fu'>resample</span>(<span class='kw'>airmo_min30</span>, <span class='kw'>d1_statistics</span>, <span class='st'>"d1"</span>, data_thresh = <span class='fl'>0.8</span>)
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 186 x 6</span><span>
-#&gt;    starttime           site                    parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    76.0
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-02 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-03 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    78.0
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-04 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-05 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.8
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-06 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    82.3
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-07 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    84.9
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-08 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    79.0
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-09 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.4
-#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-10 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.6
-#&gt; </span><span style='color: #555555;'># ... with 176 more rows</span><span></div><div class='input'>
-<span class='co'># Note: wind parameters don't support multiple methods via list!</span>
-<span class='kw'>h1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"default_statistic"</span> = <span class='st'>"drop"</span>,
-  <span class='st'>"WD"</span> = <span class='st'>"wind.direction"</span>,
-  <span class='st'>"WVs"</span> = <span class='st'>"wind.speed_scalar"</span>,
-  <span class='st'>"WVv"</span> = <span class='st'>"wind.speed_vector"</span>,
-  <span class='st'>"RainDur"</span> = <span class='st'>"sum"</span>,
-  <span class='st'>"NO"</span> = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"coverage"</span>, <span class='st'>"mean"</span>)
-)
-<span class='fu'>resample</span>(<span class='kw'>airmo_min30</span>, <span class='kw'>h1_statistics</span>, <span class='st'>"h1"</span>, data_thresh = <span class='fl'>0.8</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4,464 x 6</span><span>
-#&gt;    starttime           site                  parameter      interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2013-01-01 </span><span style='color: #555555;'>01:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2013-01-01 </span><span style='color: #555555;'>02:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2013-01-01 </span><span style='color: #555555;'>03:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2013-01-01 </span><span style='color: #555555;'>04:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2013-01-01 </span><span style='color: #555555;'>05:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2013-01-01 </span><span style='color: #555555;'>06:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2013-01-01 </span><span style='color: #555555;'>07:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2013-01-01 </span><span style='color: #555555;'>08:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'>10</span><span> 2013-01-01 </span><span style='color: #555555;'>09:00:00</span><span> Zch_Stampfenbachstra~ NO_valid%_min~ h1       %       100
-#&gt; </span><span style='color: #555555;'># ... with 4,454 more rows</span><span></div><div class='input'>
-<span class='co'># Note: all resulting values should be NA -&gt; gap is to big (480 * min30 = 10 days)</span>
-<span class='kw'>y1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"default_statistic"</span> = <span class='st'>"drop"</span>,
-  <span class='st'>"O3"</span> = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"mean"</span>, <span class='st'>"perc98"</span>, <span class='st'>"n"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>)
-)
-<span class='fu'>resample</span>(<span class='kw'>airmo_min30</span>, <span class='kw'>y1_statistics</span>, <span class='st'>"y1"</span>, max_gap = <span class='fl'>480</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 6</span><span>
-#&gt;   starttime           site                    parameter    interval unit  value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3           y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_98%_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_min30  y1       1        </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>4</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> 2013-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    </span><span style='color: #BB0000;'>NA</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>min30</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,</span>
+<span class='r-in'>                     package <span class='op'>=</span> <span class='st'>"rOstluft.data"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>airmo_min30</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span><span class='op'>(</span><span class='va'>min30</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># filter volume concenctrations, only use mass concentrations</span></span>
+<span class='r-in'><span class='va'>airmo_min30</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>airmo_min30</span>, <span class='op'>!</span><span class='op'>(</span><span class='va'>.data</span><span class='op'>$</span><span class='va'>unit</span> <span class='op'>==</span> <span class='st'>"ppb"</span> <span class='op'>|</span> <span class='va'>.data</span><span class='op'>$</span><span class='va'>unit</span> <span class='op'>==</span> <span class='st'>"ppm"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>d1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"default_statistic"</span> <span class='op'>=</span> <span class='st'>"drop"</span>,</span>
+<span class='r-in'>  <span class='st'>"Hr"</span> <span class='op'>=</span> <span class='st'>"mean"</span>,</span>
+<span class='r-in'>  <span class='st'>"RainDur"</span> <span class='op'>=</span> <span class='st'>"sum"</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>, <span class='st'>"n"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>resample</span><span class='op'>(</span><span class='va'>airmo_min30</span>, <span class='va'>d1_statistics</span>, <span class='st'>"d1"</span>, data_thresh <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 186 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site                    parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    76.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2013-01-02 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2013-01-03 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    78.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2013-01-04 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2013-01-05 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    83.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2013-01-06 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    82.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2013-01-07 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    84.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2013-01-08 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    79.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2013-01-09 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2013-01-10 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 176 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note: wind parameters don't support multiple methods via list!</span></span>
+<span class='r-in'><span class='va'>h1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"default_statistic"</span> <span class='op'>=</span> <span class='st'>"drop"</span>,</span>
+<span class='r-in'>  <span class='st'>"WD"</span> <span class='op'>=</span> <span class='st'>"wind.direction"</span>,</span>
+<span class='r-in'>  <span class='st'>"WVs"</span> <span class='op'>=</span> <span class='st'>"wind.speed_scalar"</span>,</span>
+<span class='r-in'>  <span class='st'>"WVv"</span> <span class='op'>=</span> <span class='st'>"wind.speed_vector"</span>,</span>
+<span class='r-in'>  <span class='st'>"RainDur"</span> <span class='op'>=</span> <span class='st'>"sum"</span>,</span>
+<span class='r-in'>  <span class='st'>"NO"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"coverage"</span>, <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>resample</span><span class='op'>(</span><span class='va'>airmo_min30</span>, <span class='va'>h1_statistics</span>, <span class='st'>"h1"</span>, data_thresh <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 4,464 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site                    parameter    interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2013-01-01 <span style='color: #949494;'>01:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2013-01-01 <span style='color: #949494;'>02:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2013-01-01 <span style='color: #949494;'>03:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2013-01-01 <span style='color: #949494;'>04:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2013-01-01 <span style='color: #949494;'>05:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2013-01-01 <span style='color: #949494;'>06:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2013-01-01 <span style='color: #949494;'>07:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2013-01-01 <span style='color: #949494;'>08:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2013-01-01 <span style='color: #949494;'>09:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 4,454 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note: all resulting values should be NA -&gt; gap is to big (480 * min30 = 10 days)</span></span>
+<span class='r-in'><span class='va'>y1_statistics</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"default_statistic"</span> <span class='op'>=</span> <span class='st'>"drop"</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"perc98"</span>, <span class='st'>"n"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>resample</span><span class='op'>(</span><span class='va'>airmo_min30</span>, <span class='va'>y1_statistics</span>, <span class='st'>"y1"</span>, max_gap <span class='op'>=</span> <span class='fl'>480</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 5 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   starttime           site                    parameter    interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3           y1       µg/m3    <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3_98%_min30 y1       µg/m3    <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3_nb_min30  y1       1        <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 2013-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    <span style='color: #BB0000;'>NA</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

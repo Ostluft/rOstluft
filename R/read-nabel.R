@@ -42,13 +42,17 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
   # find and parse parameter table
   skip2 <- stringr::str_which(header, "Bezeichnung der Datenkolonnen:")
   nrow2 <- stringr::str_which(header, "Ausgefallene Werte werden")
-  parameters <- readr::read_table(fn, skip = skip2, n_max = nrow2 - skip2 - 2, col_names = TRUE,
-                                  col_types = col_types, locale = locale)
+  widths <- c(3, 13, 6, 9, 10, NA)
+  nms <- c("Kol", "Messobjekt", "MSNR","Einheit","Position","Text")
+  parameters <- readr::read_fwf(fn, col_positions = readr::fwf_widths(widths, nms),
+                                skip = skip2+1, n_max = nrow2 - skip2 - 2,
+                                col_types = readr::cols(), locale = locale)
+
   parameters <- dplyr::mutate(parameters, Einheit = ifelse(.data$Einheit == "-", NA, .data$Einheit))
   units <- rlang::set_names(parameters$Einheit, parameters$Messobjekt)
 
   # finally read the data, use read_table2, read_table has problems with right aligned data
-  data <- readr::read_table2(fn, skip = skip, col_names = parameters$Messobjekt,
+  data <- readr::read_table(fn, skip = skip, col_names = parameters$Messobjekt,
                             col_types = col_types, locale = locale, na = na_value)
 
   # unite the date parts and convert it to a PosixCT

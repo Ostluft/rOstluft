@@ -81,7 +81,7 @@ function searchs the specific column with the %in% operator." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -152,18 +152,18 @@ function searchs the specific column with the %in% operator." />
 
     <div class="ref-description">
     <p>All pluck funtions are wrappers around <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>. The dots arguments are converted in a vector and then each
-function searchs the specific column with the <code><a href='https://rdrr.io/r/base/match.html'>%in%</a></code> operator.</p>
+function searchs the specific column with the <code>%in%</code> operator.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pluck_parameter</span>(<span class='kw'>data</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>pluck_parameter</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>pluck_interval</span>(<span class='kw'>data</span>, <span class='kw'>...</span>)
+<span class='fu'>pluck_interval</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>pluck_site</span>(<span class='kw'>data</span>, <span class='kw'>...</span>)
+<span class='fu'>pluck_site</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>pluck_unit</span>(<span class='kw'>data</span>, <span class='kw'>...</span>)
+<span class='fu'>pluck_unit</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>pluck_year</span>(<span class='kw'>data</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>pluck_year</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,94 +190,100 @@ encoding without the encoding mark. Is the converted symbol now compared to UTF-
 example would be strings like "°C" or "µg/m3". See <code><a href='https://rlang.r-lib.org/reference/as_string.html'>rlang::as_string()</a></code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn_multi.txt"</span>, package = <span class='st'>"rOstluft.data"</span>)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_smn_multiple.html'>read_smn_multiple</a></span>(<span class='kw'>fn</span>) <span class='op'>%&gt;%</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='kw'>starttime</span>)
-
-<span class='fu'>pluck_parameter</span>(<span class='kw'>data</span>, <span class='st'>"ta1towb0"</span>)
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 6</span><span>
-#&gt;   starttime           site  parameter interval unit  value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.7
-#&gt; </span><span style='color: #555555;'>2</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.5
-#&gt; </span><span style='color: #555555;'>3</span><span> 2010-01-01 </span><span style='color: #555555;'>02:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.2
-#&gt; </span><span style='color: #555555;'>4</span><span> 2010-01-01 </span><span style='color: #555555;'>03:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.1
-#&gt; </span><span style='color: #555555;'>5</span><span> 2010-01-01 </span><span style='color: #555555;'>04:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.3
-#&gt; </span><span style='color: #555555;'>6</span><span> 2010-01-01 </span><span style='color: #555555;'>05:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.3</div><div class='input'>
-<span class='co'># strings or symbols</span>
-<span class='fu'>pluck_site</span>(<span class='kw'>data</span>, <span class='st'>"KLO"</span>, <span class='st'>"UEB"</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 267 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   dkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>    319  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   fkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.5
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   gre000b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   tre200b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      2.3
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   dk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>    249  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   fk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.7
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   dkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>    317  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   fkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'>10</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   gre000b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'># ... with 257 more rows</span><span></div><div class='input'>
-<span class='co'># supports splicing with !!!</span>
-<span class='kw'>intervals</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"h1"</span>, <span class='st'>"d1"</span>)
-<span class='fu'>pluck_interval</span>(<span class='kw'>data</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>intervals</span>) <span class='op'>%&gt;%</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>40</span><span class='op'>:</span><span class='fl'>45</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 6</span><span>
-#&gt;   starttime           site  parameter interval unit  value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2010-01-01 </span><span style='color: #555555;'>05:00:00</span><span> UEB   dk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>    129  
-#&gt; </span><span style='color: #555555;'>2</span><span> 2010-01-01 </span><span style='color: #555555;'>05:00:00</span><span> UEB   fk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.9
-#&gt; </span><span style='color: #555555;'>3</span><span> 2010-01-01 </span><span style='color: #555555;'>05:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.3
-#&gt; </span><span style='color: #555555;'>4</span><span> 2017-12-31 </span><span style='color: #555555;'>01:00:00</span><span> RHW   wkcap1d0  d1       </span><span style='color: #BB0000;'>NA</span><span>      2  
-#&gt; </span><span style='color: #555555;'>5</span><span> 2017-12-31 </span><span style='color: #555555;'>01:00:00</span><span> RHW   wkcap2d0  d1       </span><span style='color: #BB0000;'>NA</span><span>     11  
-#&gt; </span><span style='color: #555555;'>6</span><span> 2017-12-31 </span><span style='color: #555555;'>01:00:00</span><span> RHW   wkcap3d0  d1       </span><span style='color: #BB0000;'>NA</span><span>     21  </div><div class='input'>
-<span class='co'># pluck_year supports vector</span>
-<span class='fu'>pluck_year</span>(<span class='kw'>data</span>, <span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2012</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 42 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   dkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>    319  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   fkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.5
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   gre000b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> KLO   tre200b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      2.3
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   dk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>    249  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   fk1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2010-01-01 </span><span style='color: #555555;'>00:00:00</span><span> UEB   ta1towb0  h1       </span><span style='color: #BB0000;'>NA</span><span>      3.7
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   dkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>    317  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   fkl010b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'>10</span><span> 2010-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   gre000b0  h1       </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'># ... with 32 more rows</span><span></div><div class='input'>
-<span class='co'># NAs in data aren't a problem</span>
-<span class='fu'>pluck_unit</span>(<span class='kw'>data</span>, <span class='st'>"hPa"</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 6</span><span>
-#&gt;   starttime           site  parameter interval unit  value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2019-01-31 </span><span style='color: #555555;'>00:50:00</span><span> TAE   prestas0  min10    hPa    936.
-#&gt; </span><span style='color: #555555;'>2</span><span> 2019-01-31 </span><span style='color: #555555;'>01:00:00</span><span> TAE   prestas0  min10    hPa    936 
-#&gt; </span><span style='color: #555555;'>3</span><span> 2019-01-31 </span><span style='color: #555555;'>01:10:00</span><span> TAE   prestas0  min10    hPa    936.
-#&gt; </span><span style='color: #555555;'>4</span><span> 2019-01-31 </span><span style='color: #555555;'>01:20:00</span><span> TAE   prestas0  min10    hPa    936.
-#&gt; </span><span style='color: #555555;'>5</span><span> 2019-01-31 </span><span style='color: #555555;'>01:30:00</span><span> TAE   prestas0  min10    hPa    936.
-#&gt; </span><span style='color: #555555;'>6</span><span> 2019-01-31 </span><span style='color: #555555;'>01:40:00</span><span> TAE   prestas0  min10    hPa    936.</div><div class='input'>
-<span class='co'># pipe friendly</span>
-<span class='kw'>data</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>pluck_site</span>(<span class='st'>"KLO"</span>, <span class='st'>"UEB"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>pluck_parameter</span>(<span class='st'>"gre000z0"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>pluck_year</span>(<span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2018</span>)
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 12 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        1
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        3
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>01:00:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        1
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>01:00:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        3
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>01:10:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        1
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>01:10:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        2
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>01:20:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        2
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>01:20:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        2
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>01:30:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        3
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>01:30:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        2
-#&gt; </span><span style='color: #555555;'>11</span><span> 2018-01-01 </span><span style='color: #555555;'>01:40:00</span><span> KLO   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        4
-#&gt; </span><span style='color: #555555;'>12</span><span> 2018-01-01 </span><span style='color: #555555;'>01:40:00</span><span> UEB   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>        2</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"smn_multi.txt"</span>, package <span class='op'>=</span> <span class='st'>"rOstluft.data"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_smn_multiple.html'>read_smn_multiple</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>starttime</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>pluck_parameter</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"ta1towb0"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> 2010-01-01 <span style='color: #949494;'>02:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 2010-01-01 <span style='color: #949494;'>03:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 2010-01-01 <span style='color: #949494;'>04:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> 2010-01-01 <span style='color: #949494;'>05:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.3</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># strings or symbols</span></span>
+<span class='r-in'><span class='fu'>pluck_site</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"KLO"</span>, <span class='st'>"UEB"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 267 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   dkl010b0  h1       <span style='color: #BB0000;'>NA</span>    319  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   fkl010b0  h1       <span style='color: #BB0000;'>NA</span>      1.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   gre000b0  h1       <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   tre200b0  h1       <span style='color: #BB0000;'>NA</span>      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   dk1towb0  h1       <span style='color: #BB0000;'>NA</span>    249  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   fk1towb0  h1       <span style='color: #BB0000;'>NA</span>      1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   dkl010b0  h1       <span style='color: #BB0000;'>NA</span>    317  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   fkl010b0  h1       <span style='color: #BB0000;'>NA</span>      1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   gre000b0  h1       <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 257 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># supports splicing with !!!</span></span>
+<span class='r-in'><span class='va'>intervals</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h1"</span>, <span class='st'>"d1"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>pluck_interval</span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>intervals</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>40</span><span class='op'>:</span><span class='fl'>45</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 2010-01-01 <span style='color: #949494;'>05:00:00</span> UEB   dk1towb0  h1       <span style='color: #BB0000;'>NA</span>    129  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> 2010-01-01 <span style='color: #949494;'>05:00:00</span> UEB   fk1towb0  h1       <span style='color: #BB0000;'>NA</span>      1.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> 2010-01-01 <span style='color: #949494;'>05:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 2017-12-31 <span style='color: #949494;'>01:00:00</span> RHW   wkcap1d0  d1       <span style='color: #BB0000;'>NA</span>      2  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 2017-12-31 <span style='color: #949494;'>01:00:00</span> RHW   wkcap2d0  d1       <span style='color: #BB0000;'>NA</span>     11  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> 2017-12-31 <span style='color: #949494;'>01:00:00</span> RHW   wkcap3d0  d1       <span style='color: #BB0000;'>NA</span>     21  </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># pluck_year supports vector</span></span>
+<span class='r-in'><span class='fu'>pluck_year</span><span class='op'>(</span><span class='va'>data</span>, <span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2012</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 42 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   dkl010b0  h1       <span style='color: #BB0000;'>NA</span>    319  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   fkl010b0  h1       <span style='color: #BB0000;'>NA</span>      1.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   gre000b0  h1       <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> KLO   tre200b0  h1       <span style='color: #BB0000;'>NA</span>      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   dk1towb0  h1       <span style='color: #BB0000;'>NA</span>    249  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   fk1towb0  h1       <span style='color: #BB0000;'>NA</span>      1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2010-01-01 <span style='color: #949494;'>00:00:00</span> UEB   ta1towb0  h1       <span style='color: #BB0000;'>NA</span>      3.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   dkl010b0  h1       <span style='color: #BB0000;'>NA</span>    317  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   fkl010b0  h1       <span style='color: #BB0000;'>NA</span>      1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2010-01-01 <span style='color: #949494;'>01:00:00</span> KLO   gre000b0  h1       <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 32 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># NAs in data aren't a problem</span></span>
+<span class='r-in'><span class='fu'>pluck_unit</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"hPa"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 2019-01-31 <span style='color: #949494;'>00:50:00</span> TAE   prestas0  min10    hPa    936.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> 2019-01-31 <span style='color: #949494;'>01:00:00</span> TAE   prestas0  min10    hPa    936 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> 2019-01-31 <span style='color: #949494;'>01:10:00</span> TAE   prestas0  min10    hPa    936.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 2019-01-31 <span style='color: #949494;'>01:20:00</span> TAE   prestas0  min10    hPa    936.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 2019-01-31 <span style='color: #949494;'>01:30:00</span> TAE   prestas0  min10    hPa    936.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> 2019-01-31 <span style='color: #949494;'>01:40:00</span> TAE   prestas0  min10    hPa    936.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># pipe friendly</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>pluck_site</span><span class='op'>(</span><span class='st'>"KLO"</span>, <span class='st'>"UEB"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>pluck_parameter</span><span class='op'>(</span><span class='st'>"gre000z0"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>pluck_year</span><span class='op'>(</span><span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2018</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 12 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>01:00:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>01:00:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>01:10:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>01:10:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>01:20:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>01:20:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>01:30:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>01:30:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>11</span> 2018-01-01 <span style='color: #949494;'>01:40:00</span> KLO   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>12</span> 2018-01-01 <span style='color: #949494;'>01:40:00</span> UEB   gre000z0  min10    <span style='color: #BB0000;'>NA</span>        2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

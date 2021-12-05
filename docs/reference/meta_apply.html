@@ -90,7 +90,7 @@ The function is quiet chatty and reports which values are dropped, kept or repla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -173,16 +173,16 @@ renaming/recoding of the input data based on a second table. In short following 
 <p>The function is quiet chatty and reports which values are dropped, kept or replaced.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>meta_apply</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>meta</span>,
-  <span class='kw'>data_src</span>,
-  <span class='kw'>data_dest</span>,
-  <span class='kw'>meta_key</span>,
-  <span class='kw'>meta_val</span>,
-  mode = <span class='st'>"strict"</span>,
-  replacements = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>meta_apply</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>meta</span>,
+  <span class='va'>data_src</span>,
+  <span class='va'>data_dest</span>,
+  <span class='va'>meta_key</span>,
+  <span class='va'>meta_val</span>,
+  mode <span class='op'>=</span> <span class='st'>"strict"</span>,
+  replacements <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -233,128 +233,137 @@ renaming/recoding of the input data based on a second table. In short following 
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>meta_fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"meta_smn.rds"</span>,
-                       package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
-<span class='kw'>meta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='kw'>meta_fn</span>)
-<span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='kw'>meta</span>)
-</div><div class='output co'>#&gt; Rows: 214
-#&gt; Columns: 15
-#&gt; $ site_short         <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "TAE", "TAE", "TAE", "TAE", "TAE", "TAE", "TAE",...
-#&gt; $ site               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Aadorf/Tänikon", "Aadorf/Tänikon", "Aadorf/Täni...
-#&gt; $ Länge              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "8°54'", "8°54'", "8°54'", "8°54'", "8°54'", "8°...
-#&gt; $ Breite             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "47°29'", "47°29'", "47°29'", "47°29'", "47°29'"...
-#&gt; $ x                  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 2710517, 2710517, 2710517, 2710517, 2710517, 271...
-#&gt; $ y                  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 1259824, 1259824, 1259824, 1259824, 1259824, 125...
-#&gt; $ masl               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 539, 539, 539, 539, 539, 539, 539, 539, 539, 539...
-#&gt; $ parameter_original </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "tre200s0", "ure200s0", "prestas0", "prestas0", ...
-#&gt; $ source             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "MeteoSchweiz", "MeteoSchweiz", "MeteoSchweiz", ...
-#&gt; $ unit               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "°C", "%", "hPa", "hPa", "m/s", "m/s", "°", "min...
-#&gt; $ Beschreibung       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Lufttemperatur", "Relative", "Luftdruck", "Luft...
-#&gt; $ timezone_original  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "UTC", "UTC", "UTC", "UTC", "UTC", "UTC", "UTC",...
-#&gt; $ site_long          </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
-#&gt; $ interval           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "min10", "min10", "min10", "min10", "min10", "mi...
-#&gt; $ parameter          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "T", "Hr", "p", "p", "WVs_max", "WVs", "WD", "Su...</div><div class='input'>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"smn.txt"</span>, package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_smn.html'>read_smn</a></span>(<span class='kw'>fn</span>, na.rm = <span class='fl'>FALSE</span>)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='kw'>data</span>, <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>starttime</span>)
-<span class='kw'>data</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 60 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   dkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>    216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   fkl010z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      1.7
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   fkl010z1  min10    </span><span style='color: #BB0000;'>NA</span><span>      3  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   gre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      5  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   hto000s0  min10    </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   prestas0  min10    </span><span style='color: #BB0000;'>NA</span><span>    946. 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   rre150z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   sre000z0  min10    </span><span style='color: #BB0000;'>NA</span><span>      0  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   tre200s0  min10    </span><span style='color: #BB0000;'>NA</span><span>      2.3
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   ure200s0  min10    </span><span style='color: #BB0000;'>NA</span><span>     82.7
-#&gt; </span><span style='color: #555555;'># ... with 50 more rows</span><span></div><div class='input'>
-<span class='co'># data contains no units, cryptic SwissMetNet parameter names and abbreviations for site.</span>
-<span class='co'># And the meta data for parameter rre150z0 is missing. Perfect!</span>
-
-<span class='co'># too lazy to update meta, add unit mapping based on SwissMetNet parameter names</span>
-<span class='co'># and we want to overwrite the mapping for dkl010z0 anyway =&gt; use replace</span>
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span>(<span class='kw'>data</span>, <span class='kw'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"unit"</span>, <span class='st'>"parameter_original"</span>, <span class='st'>"unit"</span>,
-         mode = <span class='st'>"replace"</span>,replacements = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(rre150z0 = <span class='st'>"unit1"</span>, dkl010z0 = <span class='st'>"unit2"</span>))
-</div><div class='output co'>#&gt; <span class='message'>apply meta data$unit = meta[meta$parameter_original == data$parameter]$unit:</span>
-#&gt; <span class='message'>  missing keys in meta$parameter_original: rre150z0</span>
-#&gt; <span class='message'>  replacements used: dkl010z0, rre150z0</span></div><div class='input'><span class='kw'>res</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 60 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   dkl010z0  min10    unit2 216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   fkl010z0  min10    m/s     1.7
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   fkl010z1  min10    m/s     3  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   gre000z0  min10    W/m2    5  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   hto000s0  min10    cm     </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   prestas0  min10    hPa   946. 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   rre150z0  min10    unit1   0  
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   sre000z0  min10    min     0  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   tre200s0  min10    °C      2.3
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   ure200s0  min10    %      82.7
-#&gt; </span><span style='color: #555555;'># ... with 50 more rows</span><span></div><div class='input'>
-<span class='co'># rename the SwissMetNet Parameters, still no mapping for rre150z0, we aren't</span>
-<span class='co'># interested in the data and drop it</span>
-<span class='kw'>res2</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span>(<span class='kw'>res</span>, <span class='kw'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"parameter"</span>,
-         <span class='st'>"parameter_original"</span>, <span class='st'>"parameter"</span>, mode = <span class='st'>"drop"</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: apply meta data$parameter = meta[meta$parameter_original == data$parameter]$parameter:</span>
-#&gt; <span class='warning'>  missing keys in meta$parameter_original: rre150z0</span>
-#&gt; <span class='warning'>  dropping missing prameters</span></div><div class='input'><span class='kw'>res2</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 54 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WD        min10    unit2 216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WVs       min10    m/s     1.7
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WVs_max   min10    m/s     3  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   StrGlo    min10    W/m2    5  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   SnowDep   min10    cm     </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   p         min10    hPa   946. 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   SunDur    min10    min     0  
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   T         min10    °C      2.3
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   Hr        min10    %      82.7
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>01:00:00</span><span> CHU   WD        min10    unit2 209  
-#&gt; </span><span style='color: #555555;'># ... with 44 more rows</span><span></div><div class='input'>
-<span class='co'># or we keep it</span>
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span>(<span class='kw'>res</span>, <span class='kw'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"parameter"</span>,
-         <span class='st'>"parameter_original"</span>, <span class='st'>"parameter"</span>, mode = <span class='st'>"keep"</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: apply meta data$parameter = meta[meta$parameter_original == data$parameter]$parameter:</span>
-#&gt; <span class='warning'>  missing keys in meta$parameter_original: rre150z0</span>
-#&gt; <span class='warning'>  keeping values: rre150z0</span></div><div class='input'><span class='kw'>res</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 60 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WD        min10    unit2 216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WVs       min10    m/s     1.7
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   WVs_max   min10    m/s     3  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   StrGlo    min10    W/m2    5  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   SnowDep   min10    cm     </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   p         min10    hPa   946. 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   rre150z0  min10    unit1   0  
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   SunDur    min10    min     0  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   T         min10    °C      2.3
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> CHU   Hr        min10    %      82.7
-#&gt; </span><span style='color: #555555;'># ... with 50 more rows</span><span></div><div class='input'>
-<span class='co'># rename the site abbreviation to the site name, strict should work</span>
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span>(<span class='kw'>res</span>, <span class='kw'>meta</span>, <span class='st'>"site"</span>, <span class='st'>"site"</span>, <span class='st'>"site_short"</span>, <span class='st'>"site"</span>)
-<span class='kw'>res</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 60 x 6</span><span>
-#&gt;    starttime           site  parameter interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  WD        min10    unit2 216  
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  WVs       min10    m/s     1.7
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  WVs_max   min10    m/s     3  
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  StrGlo    min10    W/m2    5  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  SnowDep   min10    cm     </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  p         min10    hPa   946. 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  rre150z0  min10    unit1   0  
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  SunDur    min10    min     0  
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  T         min10    °C      2.3
-#&gt; </span><span style='color: #555555;'>10</span><span> 2018-01-01 </span><span style='color: #555555;'>00:50:00</span><span> Chur  Hr        min10    %      82.7
-#&gt; </span><span style='color: #555555;'># ... with 50 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>meta_fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"meta_smn.rds"</span>,</span>
+<span class='r-in'>                       package <span class='op'>=</span> <span class='st'>"rOstluft.data"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>meta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>meta_fn</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>meta</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Rows: 214</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Columns: 15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ site_short         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "TAE", "TAE", "TAE", "TAE", "TAE", "TAE", "TAE", "T~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ site               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "Aadorf/Tänikon", "Aadorf/Tänikon", "Aadorf/Tänikon~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ Länge              <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "8°54'", "8°54'", "8°54'", "8°54'", "8°54'", "8°54'~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ Breite             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "47°29'", "47°29'", "47°29'", "47°29'", "47°29'", "~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ x                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> 2710517, 2710517, 2710517, 2710517, 2710517, 271051~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ y                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> 1259824, 1259824, 1259824, 1259824, 1259824, 125982~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ masl               <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> 539, 539, 539, 539, 539, 539, 539, 539, 539, 539, 5~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ parameter_original <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "tre200s0", "ure200s0", "prestas0", "prestas0", "fk~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ source             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "MeteoSchweiz", "MeteoSchweiz", "MeteoSchweiz", "Me~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ unit               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "°C", "%", "hPa", "hPa", "m/s", "m/s", "°", "min", ~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ Beschreibung       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "Lufttemperatur", "Relative", "Luftdruck", "Luftdru~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ timezone_original  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "UTC", "UTC", "UTC", "UTC", "UTC", "UTC", "UTC", "U~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ site_long          <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ interval           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "min10", "min10", "min10", "min10", "min10", "min10~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ parameter          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> "T", "Hr", "p", "p", "WVs_max", "WVs", "WD", "SunDu~</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"smn.txt"</span>, package <span class='op'>=</span> <span class='st'>"rOstluft.data"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_smn.html'>read_smn</a></span><span class='op'>(</span><span class='va'>fn</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>.data</span><span class='op'>$</span><span class='va'>starttime</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 60 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   dkl010z0  min10    <span style='color: #BB0000;'>NA</span>    216  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   fkl010z0  min10    <span style='color: #BB0000;'>NA</span>      1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   fkl010z1  min10    <span style='color: #BB0000;'>NA</span>      3  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   gre000z0  min10    <span style='color: #BB0000;'>NA</span>      5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   hto000s0  min10    <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   prestas0  min10    <span style='color: #BB0000;'>NA</span>    946. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   rre150z0  min10    <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   sre000z0  min10    <span style='color: #BB0000;'>NA</span>      0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   tre200s0  min10    <span style='color: #BB0000;'>NA</span>      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   ure200s0  min10    <span style='color: #BB0000;'>NA</span>     82.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 50 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># data contains no units, cryptic SwissMetNet parameter names and abbreviations for site.</span></span>
+<span class='r-in'><span class='co'># And the meta data for parameter rre150z0 is missing. Perfect!</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># too lazy to update meta, add unit mapping based on SwissMetNet parameter names</span></span>
+<span class='r-in'><span class='co'># and we want to overwrite the mapping for dkl010z0 anyway =&gt; use replace</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"unit"</span>, <span class='st'>"parameter_original"</span>, <span class='st'>"unit"</span>,</span>
+<span class='r-in'>         mode <span class='op'>=</span> <span class='st'>"replace"</span>,replacements <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>rre150z0 <span class='op'>=</span> <span class='st'>"unit1"</span>, dkl010z0 <span class='op'>=</span> <span class='st'>"unit2"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> apply meta data$unit = meta[meta$parameter_original == data$parameter]$unit:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   missing keys in meta$parameter_original: rre150z0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   replacements used: dkl010z0, rre150z0</span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 60 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   dkl010z0  min10    unit2 216  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   fkl010z0  min10    m/s     1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   fkl010z1  min10    m/s     3  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   gre000z0  min10    W/m2    5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   hto000s0  min10    cm     <span style='color: #BB0000;'>NA</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   prestas0  min10    hPa   946. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   rre150z0  min10    unit1   0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   sre000z0  min10    min     0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   tre200s0  min10    °C      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   ure200s0  min10    %      82.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 50 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># rename the SwissMetNet Parameters, still no mapping for rre150z0, we aren't</span></span>
+<span class='r-in'><span class='co'># interested in the data and drop it</span></span>
+<span class='r-in'><span class='va'>res2</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"parameter"</span>,</span>
+<span class='r-in'>         <span class='st'>"parameter_original"</span>, <span class='st'>"parameter"</span>, mode <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>apply meta data$parameter = meta[meta$parameter_original == data$parameter]$parameter:</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>   missing keys in meta$parameter_original: rre150z0</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>   dropping missing prameters</span>
+<span class='r-in'><span class='va'>res2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 54 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WD        min10    unit2 216  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WVs       min10    m/s     1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WVs_max   min10    m/s     3  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   StrGlo    min10    W/m2    5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   SnowDep   min10    cm     <span style='color: #BB0000;'>NA</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   p         min10    hPa   946. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   SunDur    min10    min     0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   T         min10    °C      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   Hr        min10    %      82.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>01:00:00</span> CHU   WD        min10    unit2 209  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 44 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># or we keep it</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>meta</span>, <span class='st'>"parameter"</span>, <span class='st'>"parameter"</span>,</span>
+<span class='r-in'>         <span class='st'>"parameter_original"</span>, <span class='st'>"parameter"</span>, mode <span class='op'>=</span> <span class='st'>"keep"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>apply meta data$parameter = meta[meta$parameter_original == data$parameter]$parameter:</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>   missing keys in meta$parameter_original: rre150z0</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>   keeping values: rre150z0</span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 60 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WD        min10    unit2 216  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WVs       min10    m/s     1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   WVs_max   min10    m/s     3  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   StrGlo    min10    W/m2    5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   SnowDep   min10    cm     <span style='color: #BB0000;'>NA</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   p         min10    hPa   946. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   rre150z0  min10    unit1   0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   SunDur    min10    min     0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   T         min10    °C      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> CHU   Hr        min10    %      82.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 50 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># rename the site abbreviation to the site name, strict should work</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>meta_apply</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>meta</span>, <span class='st'>"site"</span>, <span class='st'>"site"</span>, <span class='st'>"site_short"</span>, <span class='st'>"site"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 60 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site  parameter interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  WD        min10    unit2 216  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  WVs       min10    m/s     1.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  WVs_max   min10    m/s     3  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  StrGlo    min10    W/m2    5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  SnowDep   min10    cm     <span style='color: #BB0000;'>NA</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  p         min10    hPa   946. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  rre150z0  min10    unit1   0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  SunDur    min10    min     0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  T         min10    °C      2.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2018-01-01 <span style='color: #949494;'>00:50:00</span> Chur  Hr        min10    %      82.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 50 more rows</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

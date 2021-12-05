@@ -96,7 +96,7 @@ calculate_stats <- function(data) {
   statstable <- statstable_default()
   data <- calculate_mass_concentrations(data)
   data <- calculate_statstable(data, statstable)
-  data <- bind_rows_with_factor_columns(!!!data)
+  data <- dplyr::bind_rows(!!!data)
 
   # rename days with hours > xxx
   mapping <- list(
@@ -156,5 +156,5 @@ calculate_O3_summer <- function(data, quiet = FALSE) {
   AOT40 <- dplyr::select(AOT40, "starttime", "site", "parameter", "interval", "unit", "value")
   AOT40 <- resample(AOT40, "AOT40k", "y1", skip_padding = TRUE)
 
-  bind_rows_with_factor_columns(mean_7h, AOT40)
+  dplyr::bind_rows(mean_7h, AOT40)
 }

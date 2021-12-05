@@ -1,5 +1,3 @@
-context("storage_s3_hysplit_rds")
-
 
 store_name <- "testthat_s3"
 bucket <- "rostluft"
@@ -20,27 +18,18 @@ destroy_s3_store <- function() {
 #TODO tests for meta data handling
 
 # just to be sure, there is nothing before and after the tests
-setup({
-  path <- rappdirs::user_data_dir(appname = store_name, appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-})
-
-teardown({
-  path <- rappdirs::user_data_dir(appname = store_name, appauthor = "rOstluft")
-  if (fs::dir_exists(path)) {
-    fs::dir_delete(path)
-  }
-  destroy_s3_store()
-})
+local_cleanup_storage(store_name)
 
 
 test_that("put into store", {
   testthat::skip_if_not(is_s3_admin(), "Skip Test: no administator rights")
-  store <- storage_s3_rds(store_name, format_hysplit(), bucket, prefix = store_name,  read.only = FALSE)
+  testthat::expect_message(
+    store <- storage_s3_rds(store_name, format_hysplit(), bucket, prefix = store_name,  read.only = FALSE)
+  )
   p <- system.file("extdata", package = "rOstluft.data", mustWork = TRUE)
-  import_directory(store, p, readRDS, glob = "*hysplit.rds")
+  suppressMessages(
+    import_directory(store, p, readRDS, glob = "*hysplit.rds")
+  )
 
   content <- store$get_content()
   testthat::expect_equal(nrow(content), 4)

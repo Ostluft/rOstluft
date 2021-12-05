@@ -1,5 +1,3 @@
-context("Transform between Coordinate Reference Systems")
-
 test_that("test transform_LV95_to_WSG84", {
   # berechnet mit navref https://www.swisstopo.admin.ch/de/karten-daten-online/calculation-services/navref.html
   navref <- tibble::tribble(
@@ -10,9 +8,11 @@ test_that("test transform_LV95_to_WSG84", {
 
   input <- dplyr::select(navref, x, y)
 
-  result <- transform_LV95_to_WSG84(input)
+  testthat::expect_warning(
+    result <- transform_LV95_to_WSG84(input)
+  )
 
-  testthat::expect_equivalent(navref, result)
+  testthat::expect_equal(navref, result, ignore_attr = TRUE)
 })
 
 
@@ -25,9 +25,10 @@ test_that("test transform_WSG84_to_LV95", {
   )
 
   input <- dplyr::select(navref, lon, lat)
-
-  result <- transform_WSG84_to_LV95(input)
+  testthat::expect_warning(
+    result <- transform_WSG84_to_LV95(input)
+  )
   result <- dplyr::select(result, x, y, lon, lat)
 
-  testthat::expect_equivalent(navref, result)
+  testthat::expect_equal(navref, result, ignore_attr = TRUE)
 })

@@ -1,5 +1,3 @@
-context("conversion")
-
 min30 <- system.file("extdata", "Zch_Stampfenbachstrasse_min30_2013_Jan.csv",
                      package = "rOstluft.data", mustWork = TRUE)
 

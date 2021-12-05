@@ -87,7 +87,6 @@ reference:
 - title: Utility functions
   desc: Some functions to make the life of a programmer easier
   contents:
-  - '`bind_rows_with_factor_columns`'
   - starts_with("pluck_")
   - starts_with("transform")
   - '`import_directory`'

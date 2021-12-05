@@ -1,5 +1,3 @@
-context("stats")
-
 
 write_missing_stats <- FALSE
 
@@ -57,7 +55,7 @@ test_that("a lot of stats", {
   }
 
   # prepate comparsion data
-  stats_airmo <- bind_rows_with_factor_columns(h1, d1, m1, y1)
+  stats_airmo <- dplyr::bind_rows(h1, d1, m1, y1)
   stats_airmo <- dplyr::group_by(stats_airmo, parameter, interval, unit) %>% dplyr::slice(1)
   stats_airmo <- dplyr::ungroup(stats_airmo)
   stats_airmo <- dplyr::mutate_if(stats_airmo, is.factor, as.character)
@@ -87,10 +85,11 @@ test_that("a lot of stats", {
   }
 
 
-  testthat::expect_equivalent(
+  testthat::expect_equal(
     res$value,
     res$value.AIRMO,
-    tolerance = 1e-6
+    tolerance = 1e-6,
+    ignore_attr = TRUE
   )
 
   if (isTRUE(write_missing_stats)) {

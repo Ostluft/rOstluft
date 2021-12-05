@@ -91,7 +91,7 @@ for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -175,17 +175,17 @@ customization of all used constants for the conversion. In the example is showed
 for the molar gas constant, 1013.25 hPA for the pressure and add Ammoniak (NH3) to the conversions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>convert_get_R</span>()
+    <pre class="usage"><span class='fu'>convert_get_R</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>convert_set_R</span>(<span class='kw'>R</span>)
+<span class='fu'>convert_set_R</span><span class='op'>(</span><span class='va'>R</span><span class='op'>)</span>
 
-<span class='fu'>convert_get_mol_masses</span>()
+<span class='fu'>convert_get_mol_masses</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>convert_set_mol_masses</span>(<span class='kw'>mol_masses</span>)
+<span class='fu'>convert_set_mol_masses</span><span class='op'>(</span><span class='va'>mol_masses</span><span class='op'>)</span>
 
-<span class='fu'>convert_get_conc_lookup</span>()
+<span class='fu'>convert_get_conc_lookup</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>convert_set_conc_lookup</span>(<span class='kw'>lookup</span>)</pre>
+<span class='fu'>convert_set_conc_lookup</span><span class='op'>(</span><span class='va'>lookup</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,39 +228,39 @@ arguments. This allows to change the default values of <code><a href='mass_to_pa
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Update molar mas constant R to CODATA 2014 value</span>
-<span class='fu'>convert_set_R</span>(<span class='fl'>8.3144598</span>)
-
-<span class='co'># add NH3 to the existing mol masses</span>
-<span class='kw'>mol_masses</span> <span class='op'>&lt;-</span> <span class='fu'>convert_get_mol_masses</span>()
-<span class='kw'>mol_masses</span> <span class='op'>&lt;-</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='kw'>mol_masses</span>, <span class='st'>"NH3"</span> = <span class='fl'>17.03</span>)
-<span class='fu'>convert_set_mol_masses</span>(<span class='kw'>mol_masses</span>)
-
-<span class='co'># to update the default pressure rebuild the lookup table</span>
-<span class='co'># with partial functions of mass_to_parts, parts_to_mass</span>
-<span class='co'># at the same time add mappings for NH3</span>
-<span class='kw'>mass_to_parts_partial</span> <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/partial.html'>partial</a></span>(<span class='kw'>mass_to_parts</span>, pressure = <span class='fl'>1013.25</span>)
-<span class='kw'>parts_to_mass_partial</span> <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/partial.html'>partial</a></span>(<span class='kw'>parts_to_mass</span>, pressure = <span class='fl'>1013.25</span>)
-
-<span class='kw'>lookup</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span>(
-  <span class='op'>~</span><span class='kw'>parameter</span>, <span class='op'>~</span><span class='kw'>from</span>, <span class='op'>~</span><span class='kw'>to</span>, <span class='op'>~</span><span class='kw'>FUN</span>,
-  <span class='st'>"CO"</span>, <span class='st'>"ppm"</span>, <span class='st'>"mg/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-  <span class='st'>"NO"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-  <span class='st'>"O3"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-  <span class='st'>"NO2"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-  <span class='st'>"SO2"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-  <span class='st'>"CO"</span>, <span class='st'>"mg/m3"</span>, <span class='st'>"ppm"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"NO"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"O3"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"NO2"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"SO2"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"NH3"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='kw'>mass_to_parts_partial</span>,
-  <span class='st'>"NH3"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='kw'>parts_to_mass_partial</span>,
-)
-
-<span class='fu'>convert_set_conc_lookup</span>(<span class='kw'>lookup</span>)
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Update molar mas constant R to CODATA 2014 value</span></span>
+<span class='r-in'><span class='fu'>convert_set_R</span><span class='op'>(</span><span class='fl'>8.3144598</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># add NH3 to the existing mol masses</span></span>
+<span class='r-in'><span class='va'>mol_masses</span> <span class='op'>&lt;-</span> <span class='fu'>convert_get_mol_masses</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mol_masses</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span><span class='op'>(</span><span class='va'>mol_masses</span>, <span class='st'>"NH3"</span> <span class='op'>=</span> <span class='fl'>17.03</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>convert_set_mol_masses</span><span class='op'>(</span><span class='va'>mol_masses</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># to update the default pressure rebuild the lookup table</span></span>
+<span class='r-in'><span class='co'># with partial functions of mass_to_parts, parts_to_mass</span></span>
+<span class='r-in'><span class='co'># at the same time add mappings for NH3</span></span>
+<span class='r-in'><span class='va'>mass_to_parts_partial</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/partial.html'>partial</a></span><span class='op'>(</span><span class='va'>mass_to_parts</span>, pressure <span class='op'>=</span> <span class='fl'>1013.25</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>parts_to_mass_partial</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/partial.html'>partial</a></span><span class='op'>(</span><span class='va'>parts_to_mass</span>, pressure <span class='op'>=</span> <span class='fl'>1013.25</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lookup</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='op'>~</span><span class='va'>parameter</span>, <span class='op'>~</span><span class='va'>from</span>, <span class='op'>~</span><span class='va'>to</span>, <span class='op'>~</span><span class='va'>FUN</span>,</span>
+<span class='r-in'>  <span class='st'>"CO"</span>, <span class='st'>"ppm"</span>, <span class='st'>"mg/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NO"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NO2"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"CO"</span>, <span class='st'>"mg/m3"</span>, <span class='st'>"ppm"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NO"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NO2"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NH3"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='st'>"ppb"</span>, <span class='va'>mass_to_parts_partial</span>,</span>
+<span class='r-in'>  <span class='st'>"NH3"</span>, <span class='st'>"ppb"</span>, <span class='st'>"\u00b5g/m3"</span>, <span class='va'>parts_to_mass_partial</span>,</span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>convert_set_conc_lookup</span><span class='op'>(</span><span class='va'>lookup</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

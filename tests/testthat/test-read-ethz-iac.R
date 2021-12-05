@@ -22,6 +22,6 @@ test_that("read files", {
 
   malformed <- system.file("extdata", "IAC-Met_2010-12-02.dat", package = "rOstluft.data", mustWork = TRUE)
   testthat::expect_error(
-    read_ethz_iac(malformed)
+    suppressWarnings(read_ethz_iac(malformed))
   )
 })

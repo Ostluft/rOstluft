@@ -47,8 +47,10 @@
 
 
 <meta property="og:title" content="bind rows of data frames with factors — bind_rows_with_factor_columns" />
-<meta property="og:description" content="dplyr::bind_rows() coerces factors to characters. This function use the forcats::fct_c()
-to combine the factor columns." />
+<meta property="og:description" content="
+Before dplyr 1.0.0 dplyr::bind_rows() coerced factors with different levels
+to characters. This is no longer the case and this function is deprecated
+Important: It is mandatory that all data frames have the same structure" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -81,7 +83,7 @@ to combine the factor columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -151,11 +153,13 @@ to combine the factor columns." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://dplyr.tidyverse.org/reference/bind.html'>dplyr::bind_rows()</a></code> coerces factors to characters. This function use the <code><a href='https://forcats.tidyverse.org/reference/fct_c.html'>forcats::fct_c()</a></code>
-to combine the factor columns.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a></p>
+<p>Before dplyr 1.0.0 <code><a href='https://dplyr.tidyverse.org/reference/bind.html'>dplyr::bind_rows()</a></code> coerced factors with different levels
+to characters. This is no longer the case and this function is deprecated</p>
+<p><em>Important</em>: It is mandatory that all data frames have the same structure</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bind_rows_with_factor_columns</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>bind_rows_with_factor_columns</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,9 +173,6 @@ to combine the factor columns.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>combined data frame</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><em>Important</em>: It is mandatory that all data frames have the same structure</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

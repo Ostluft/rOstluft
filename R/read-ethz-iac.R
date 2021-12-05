@@ -42,7 +42,7 @@ read_ethz_iac <- function(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE, encodi
   }
 
   # parameter + units are in the first two lines
-  pars <- readr::read_lines(txt[1, 2], n_max = 2, locale = locale)
+  pars <- readr::read_lines(I(txt[1, 2]), n_max = 2, locale = locale)
   parameters <- stringr::str_split(pars[1], "\\s+", simplify = TRUE)[1, -1]
 
   # replace brackets with space -> percent)(log10lux is a problem without the spaces and the reason we don't use
@@ -54,7 +54,7 @@ read_ethz_iac <- function(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE, encodi
   units <- units[2:( length(units) - 1)]  # replacing brackets with spaces adds one at the end too
 
   # skip 2 lines, the rest is numeric data
-  data <- readr::read_table(txt[1, 2], col_names = FALSE, skip = 2, skip_empty_rows = TRUE, locale = locale,
+  data <- readr::read_table(I(txt[1, 2]), col_names = FALSE, skip = 2, skip_empty_rows = TRUE, locale = locale,
                             col_types = readr::cols(.default = readr::col_number()),
                             na = c("99999", "99999.0", "9999.0", "99999.00", "9999.00", "-320", "-320.0", "-320.00"))
 

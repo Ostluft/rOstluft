@@ -1,3 +1,20 @@
+# rOstluft 1.4.4
+
+* Updated readr dependency to 2.0. This caused some minor changes to various reading functions.  
+
+
+# rOstluft 1.4.3
+
+* Added a check if a list item exists in `resample()`
+
+
+# rOstluft 1.4.2
+
+* Migrated to testthat 3rd edition
+* `bind_rows_with_factor_columns()` is obsolete (`dplyr::bind_rows()` no longer converts factors with different levels to characters)
+* Fixed deprecated usage of .dots argument in `dplyr::count()` calls
+
+
 # rOstluft 1.4.0
 
 Some minor changes because of updated dependencies.

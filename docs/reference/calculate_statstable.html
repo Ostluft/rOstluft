@@ -95,7 +95,7 @@ will be expanded and a row added. See statstable_expand()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rOstluft</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -183,15 +183,15 @@ The statstable can be written in a compact form with comma seperated values in e
 will be expanded and a row added. See <code><a href='statstable_expand.html'>statstable_expand()</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_statstable</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>statstable</span>,
-  sep = <span class='st'>"\\s*,\\s*"</span>,
-  keep_input = <span class='fl'>FALSE</span>,
-  data_thresh = <span class='fl'>0.8</span>,
-  max_gap = <span class='fl'>10</span>,
-  order = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>calculate_statstable</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>statstable</span>,
+  sep <span class='op'>=</span> <span class='st'>"\\s*,\\s*"</span>,
+  keep_input <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  data_thresh <span class='op'>=</span> <span class='fl'>0.8</span>,
+  max_gap <span class='op'>=</span> <span class='fl'>10</span>,
+  order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"input"</span>, <span class='st'>"h1"</span>, <span class='st'>"h8gl"</span>, <span class='st'>"d1"</span>, <span class='st'>"m1"</span>, <span class='st'>"y1"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -231,49 +231,50 @@ will be expanded and a row added. See <code><a href='statstable_expand.html'>sta
     <p>list with one item for every to interval</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># calculate LRV statisitcs</span>
-<span class='kw'>lrv_table</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span>(
-  <span class='op'>~</span><span class='kw'>parameter</span>, <span class='op'>~</span><span class='kw'>statistic</span>, <span class='op'>~</span><span class='kw'>from</span>, <span class='op'>~</span><span class='kw'>to</span>,
-  <span class='st'>"SO2, NO2, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"SO2, NO2"</span>, <span class='st'>"perc95"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"O3"</span>, <span class='st'>"perc98"</span>, <span class='st'>"input"</span>, <span class='st'>"m1"</span>,
-  <span class='st'>"O3"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"h1"</span>,
-  <span class='st'>"O3"</span>, <span class='st'>"n&gt;120"</span>, <span class='st'>"h1"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"SO2, NO2, CO, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"d1"</span>,
-  <span class='st'>"SO2"</span>, <span class='st'>"n&gt;100"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"NO2"</span>, <span class='st'>"n&gt;80"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"CO"</span>, <span class='st'>"n&gt;8"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,
-  <span class='st'>"PM10"</span>, <span class='st'>"n&gt;50"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>
-)
-
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,
-                   package = <span class='st'>"rOstluft.data"</span>, mustWork = <span class='fl'>TRUE</span>)
-
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span>(<span class='kw'>fn</span>)
-
-<span class='co'># convert volume concentrations to mass concentrations</span>
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_mass_concentrations.html'>calculate_mass_concentrations</a></span>(<span class='kw'>data</span>)
-
-<span class='kw'>stats</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_statstable</span>(<span class='kw'>data</span>, <span class='kw'>lrv_table</span>)
-
-<span class='co'># we are only interested in the m1 and y1 results</span>
-<span class='kw'>stats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bind_rows_with_factor_columns.html'>bind_rows_with_factor_columns</a></span>(<span class='kw'>stats</span><span class='op'>$</span><span class='kw'>y1</span>, <span class='kw'>stats</span><span class='op'>$</span><span class='kw'>m1</span>)
-<span class='kw'>stats</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22 x 6</span><span>
-#&gt;    starttime           site                    parameter    interval unit  value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   
-#&gt; </span><span style='color: #555555;'>10</span><span> 2017-01-01 </span><span style='color: #555555;'>00:00:00</span><span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   
-#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># calculate LRV statisitcs</span></span>
+<span class='r-in'><span class='va'>lrv_table</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='op'>~</span><span class='va'>parameter</span>, <span class='op'>~</span><span class='va'>statistic</span>, <span class='op'>~</span><span class='va'>from</span>, <span class='op'>~</span><span class='va'>to</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2, NO2, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2, NO2"</span>, <span class='st'>"perc95"</span>, <span class='st'>"input"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span>, <span class='st'>"perc98"</span>, <span class='st'>"input"</span>, <span class='st'>"m1"</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"h1"</span>,</span>
+<span class='r-in'>  <span class='st'>"O3"</span>, <span class='st'>"n&gt;120"</span>, <span class='st'>"h1"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2, NO2, CO, PM10"</span>, <span class='st'>"mean"</span>, <span class='st'>"input"</span>, <span class='st'>"d1"</span>,</span>
+<span class='r-in'>  <span class='st'>"SO2"</span>, <span class='st'>"n&gt;100"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"NO2"</span>, <span class='st'>"n&gt;80"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"CO"</span>, <span class='st'>"n&gt;8"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span>,</span>
+<span class='r-in'>  <span class='st'>"PM10"</span>, <span class='st'>"n&gt;50"</span>, <span class='st'>"d1"</span>, <span class='st'>"y1"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,</span>
+<span class='r-in'>                   package <span class='op'>=</span> <span class='st'>"rOstluft.data"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_airmo_csv.html'>read_airmo_csv</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># convert volume concentrations to mass concentrations</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_mass_concentrations.html'>calculate_mass_concentrations</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_statstable</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>lrv_table</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># we are only interested in the m1 and y1 results</span></span>
+<span class='r-in'><span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>$</span><span class='va'>y1</span>, <span class='va'>stats</span><span class='op'>$</span><span class='va'>m1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>stats</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 22 x 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    starttime           site                    parameter    interval unit  value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> 2017-01-01 <span style='color: #949494;'>00:00:00</span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 12 more rows</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -78,7 +78,7 @@ data <- calculate_mass_concentrations(data)
 stats <- calculate_statstable(data, lrv_table)
 
 # we are only interested in the m1 and y1 results
-stats <- bind_rows_with_factor_columns(stats$y1, stats$m1)
+stats <- dplyr::bind_rows(stats$y1, stats$m1)
 stats
 
 }

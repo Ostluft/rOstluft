@@ -13,9 +13,11 @@ bind_rows_with_factor_columns(...)
 combined data frame
 }
 \description{
-\code{\link[dplyr:bind]{dplyr::bind_rows()}} coerces factors to characters. This function use the \code{\link[forcats:fct_c]{forcats::fct_c()}}
-to combine the factor columns.
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+Before dplyr 1.0.0 \code{\link[dplyr:bind]{dplyr::bind_rows()}} coerced factors with different levels
+to characters. This is no longer the case and this function is deprecated
+
 \emph{Important}: It is mandatory that all data frames have the same structure
 }
+\keyword{internal}

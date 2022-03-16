@@ -1,6 +1,8 @@
+url: https://ostluft.github.io/rOstluft/
+
 template:
-  params:
-    bootswatch: cosmo
+  bootstrap: 5
+#  bootswatch: lux
 
 navbar:
   structure:
@@ -18,7 +20,7 @@ navbar:
     tutorial:
       icon: fa-leanpub
       text: 'Tutorial'
-      href: articles/articles/tutorial.html
+      href: articles/tutorial.html
     reference:
       text: Reference
       href: reference/index.html
@@ -26,9 +28,7 @@ navbar:
       text: Articles
       menu:
       - text: '[GER] Tutorial'
-        href: articles/articles/tutorial.html
-      - text: '[GER] Resampling data'
-        href: articles/resample.html
+        href: articles/tutorial.html
       - text: '[GER] Technische Entscheidungen'
         href: articles/Technische_Entscheidungen.html
     github:

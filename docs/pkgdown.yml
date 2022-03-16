@@ -1,8 +1,11 @@
 pandoc: 2.11.4
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
-  articles/tutorial: tutorial.html
+  tutorial: tutorial.html
   Technische_Entscheidungen: Technische_Entscheidungen.html
-last_built: 2021-12-04T20:12Z
+last_built: 2022-03-15T09:44Z
+urls:
+  reference: https://ostluft.github.io/rOstluft/reference
+  article: https://ostluft.github.io/rOstluft/articles
 

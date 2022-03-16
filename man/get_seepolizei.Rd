@@ -2,9 +2,17 @@
 % Please edit documentation in R/read-seepolizei.R
 \name{get_seepolizei}
 \alias{get_seepolizei}
+\alias{read_seepolizei_json}
 \title{Returns data of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station.}
 \usage{
-get_seepolizei(start, end, site = c("tiefenbrunnen", "mythenquai"))
+get_seepolizei(
+  start,
+  end,
+  site = c("tiefenbrunnen", "mythenquai"),
+  tz = "Etc/GMT-1"
+)
+
+read_seepolizei_json(txt, tz = "Etc/GMT-1")
 }
 \arguments{
 \item{start}{The start date after which the measurements should be returned. As string in format yyyy-mm-dd
@@ -14,12 +22,17 @@ or as POSIXct, POSIXlt or Date}
 or as POSIXct, POSIXlt or Date}
 
 \item{site}{The site of which the values should be returned. Valid values are "mythenquai" and "tiefenbrunnen"}
+
+\item{tz}{Output time zone. The response content is in CET. Default "Etc/GMT-1"}
+
+\item{txt}{a JSON string, URL or file}
 }
 \value{
 tibble in rolf format
 }
 \description{
-Uses the \href{https://tecdottir.herokuapp.com/docs/}{Tecdottir API} from Stefan Oderholz.
+\code{get_seepolizei()} uses the \href{https://tecdottir.herokuapp.com/docs/}{Tecdottir API} from Stefan Oderholz.
+\code{read_seepolizei_json()} parses the response of the API.
 }
 \examples{
 get_seepolizei(as.Date("2020-03-01"), lubridate::dmy("02.03.2020"))

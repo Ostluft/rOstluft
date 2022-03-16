@@ -2,7 +2,7 @@
 #'
 #' @param fn file name containing historic data
 #' @param site measurement site of data. Should be "ZH_Mythenquai" or "ZH_Tiefenbrunnen"
-#' @param tz Output time zone. The file content is in CET. Detault "Etc/GMT-1"
+#' @param tz Output time zone. The file content is in CET. Default "Etc/GMT-1"
 #' @param time_shift a lubridate period to add to the time. Default NULL
 #' @param na.rm remove na (empty) values. Default TRUE
 #'
@@ -104,13 +104,17 @@ convert_date_seepolizei <- function(x) {
 
 #' Returns data of the Tecson meteo station placed at Tiefenbrunnen and Mythenquai water police station.
 #'
-#' Uses the [Tecdottir API](https://tecdottir.herokuapp.com/docs/) from Stefan Oderholz.
+#' `get_seepolizei()` uses the [Tecdottir API](https://tecdottir.herokuapp.com/docs/) from Stefan Oderholz.
+#' `read_seepolizei_json()` parses the response of the API.
+#'
 #'
 #' @param start The start date after which the measurements should be returned. As string in format yyyy-mm-dd
 #'   or as POSIXct, POSIXlt or Date
 #' @param end The end date before which the measurements should be returned. As string in format yyyy-mm-dd
 #'   or as POSIXct, POSIXlt or Date
 #' @param site The site of which the values should be returned. Valid values are "mythenquai" and "tiefenbrunnen"
+#' @param tz Output time zone. The response content is in CET. Default "Etc/GMT-1"
+#' @param txt a JSON string, URL or file
 #'
 #' @return tibble in rolf format
 #' @export
@@ -148,7 +152,7 @@ convert_date_seepolizei <- function(x) {
 #'
 #' # show normalized data
 #' data
-get_seepolizei <- function(start, end, site = c("tiefenbrunnen", "mythenquai")) {
+get_seepolizei <- function(start, end, site = c("tiefenbrunnen", "mythenquai"), tz = "Etc/GMT-1") {
   site <- rlang::arg_match(site, c("tiefenbrunnen", "mythenquai"))
   start <- convert_date_seepolizei(start)
   end <- convert_date_seepolizei(end)
@@ -171,7 +175,14 @@ get_seepolizei <- function(start, end, site = c("tiefenbrunnen", "mythenquai")) 
     )
   }
 
-  df <- jsonlite::fromJSON(httr::content(resp, as = "text"))
+  read_seepolizei_json(httr::content(resp, as = "text"))
+}
+
+
+#' @rdname get_seepolizei
+#' @export
+read_seepolizei_json <- function(txt, tz = "Etc/GMT-1") {
+  df <- jsonlite::fromJSON(txt)
   df <- jsonlite::flatten(df$result)
   df <- tibble::as_tibble(df)
 
@@ -197,6 +208,7 @@ get_seepolizei <- function(start, end, site = c("tiefenbrunnen", "mythenquai")) 
 
   # make rolf format
   values <- dplyr::mutate(values,
+    starttime = lubridate::with_tz(starttime, tz),
     interval = as.factor("min10"),
     site = as.factor(.data$site),
     unit = dplyr::recode(.data$parameter, !!!units),

@@ -17,7 +17,7 @@ read_seepolizei(
 
 \item{site}{measurement site of data. Should be "ZH_Mythenquai" or "ZH_Tiefenbrunnen"}
 
-\item{tz}{Output time zone. The file content is in CET. Detault "Etc/GMT-1"}
+\item{tz}{Output time zone. The file content is in CET. Default "Etc/GMT-1"}
 
 \item{time_shift}{a lubridate period to add to the time. Default NULL}
 

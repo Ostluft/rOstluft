@@ -52,7 +52,7 @@ pad_serie <- function(serie, start_date = NULL, end_date = NULL, drop_last = FAL
   # by joining the data we insert rows with NA values for site, parameter, interval, unit, value
   # we need to fill this with the values from the supplied df
   fill.values <- dplyr::slice(serie, 1)
-  fill.values <- as.list(dplyr::select(fill.values, -.data$starttime, -.data$value))
+  fill.values <- as.list(dplyr::select(fill.values, -"starttime", -"value"))
 
   interval <- convert_interval(fill.values$interval)
 

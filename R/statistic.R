@@ -220,7 +220,7 @@ get_statistic_percentile <- function(percentile) {
 
 #' @rdname statistic_fun
 #' @keywords internal
-get_statistic_limit <- function(limit) {
+get_statistic_limit_gt <- function(limit) {
   function(x) {
     if (all(is.na(x))) {
       NA
@@ -228,7 +228,42 @@ get_statistic_limit <- function(limit) {
       sum(x > limit, na.rm = TRUE)
     }
   }
+}
 
+#' @rdname statistic_fun
+#' @keywords internal
+get_statistic_limit_gte <- function(limit) {
+  function(x) {
+    if (all(is.na(x))) {
+      NA
+    } else {
+      sum(x >= limit, na.rm = TRUE)
+    }
+  }
+}
+
+#' @rdname statistic_fun
+#' @keywords internal
+get_statistic_limit_lt <- function(limit) {
+  function(x) {
+    if (all(is.na(x))) {
+      NA
+    } else {
+      sum(x < limit, na.rm = TRUE)
+    }
+  }
+}
+
+#' @rdname statistic_fun
+#' @keywords internal
+get_statistic_limit_lte <- function(limit) {
+  function(x) {
+    if (all(is.na(x))) {
+      NA
+    } else {
+      sum(x <= limit, na.rm = TRUE)
+    }
+  }
 }
 
 statistic_lookup <- tibble::tribble(
@@ -244,19 +279,30 @@ statistic_lookup <- tibble::tribble(
   "perc95",  get_statistic_percentile(0.95), "${parameter}_95%_${basis_interval}",  NULL,
   "perc98",  get_statistic_percentile(0.98), "${parameter}_98%_${basis_interval}", NULL,
   "perc02",  get_statistic_percentile(0.02), "${parameter}_02%_${basis_interval}", NULL,
-  "n>8", get_statistic_limit(8), "${parameter}_nb_${basis_interval}>8", "1",
-  "n>10", get_statistic_limit(10), "${parameter}_nb_${basis_interval}>10", "1",
-  "n>25", get_statistic_limit(25), "${parameter}_nb_${basis_interval}>25", "1",
-  "n>50", get_statistic_limit(50), "${parameter}_nb_${basis_interval}>50", "1",
-  "n>65", get_statistic_limit(65), "${parameter}_nb_${basis_interval}>65", "1",
-  "n>80", get_statistic_limit(80), "${parameter}_nb_${basis_interval}>80", "1",
-  "n>100", get_statistic_limit(100), "${parameter}_nb_${basis_interval}>100", "1",
-  "n>120", get_statistic_limit(120), "${parameter}_nb_${basis_interval}>120", "1",
-  "n>160", get_statistic_limit(160), "${parameter}_nb_${basis_interval}>160", "1",
-  "n>180", get_statistic_limit(180), "${parameter}_nb_${basis_interval}>180", "1",
-  "n>200", get_statistic_limit(200), "${parameter}_nb_${basis_interval}>200", "1",
-  "n>240", get_statistic_limit(240), "${parameter}_nb_${basis_interval}>240", "1",
-  "AOT40k", statistic_aot40k, "AOT40", "ppbh"
+  "n>5", get_statistic_limit_gt(5), "${parameter}_nb_${basis_interval}>5", "1",
+  "n>8", get_statistic_limit_gt(8), "${parameter}_nb_${basis_interval}>8", "1",
+  "n>10", get_statistic_limit_gt(10), "${parameter}_nb_${basis_interval}>10", "1",
+  "n>15", get_statistic_limit_gt(15), "${parameter}_nb_${basis_interval}>15", "1",
+  "n>25", get_statistic_limit_gt(25), "${parameter}_nb_${basis_interval}>25", "1",
+  "n>30", get_statistic_limit_gt(30), "${parameter}_nb_${basis_interval}>30", "1",
+  "n>40", get_statistic_limit_gt(40), "${parameter}_nb_${basis_interval}>40", "1",
+  "n>45", get_statistic_limit_gt(45), "${parameter}_nb_${basis_interval}>45", "1",
+  "n>50", get_statistic_limit_gt(50), "${parameter}_nb_${basis_interval}>50", "1",
+  "n>60", get_statistic_limit_gt(60), "${parameter}_nb_${basis_interval}>60", "1",
+  "n>65", get_statistic_limit_gt(65), "${parameter}_nb_${basis_interval}>65", "1",
+  "n>80", get_statistic_limit_gt(80), "${parameter}_nb_${basis_interval}>80", "1",
+  "n>100", get_statistic_limit_gt(100), "${parameter}_nb_${basis_interval}>100", "1",
+  "n>120", get_statistic_limit_gt(120), "${parameter}_nb_${basis_interval}>120", "1",
+  "n>160", get_statistic_limit_gt(160), "${parameter}_nb_${basis_interval}>160", "1",
+  "n>180", get_statistic_limit_gt(180), "${parameter}_nb_${basis_interval}>180", "1",
+  "n>200", get_statistic_limit_gt(200), "${parameter}_nb_${basis_interval}>200", "1",
+  "n>240", get_statistic_limit_gt(240), "${parameter}_nb_${basis_interval}>240", "1",
+  "AOT40k", statistic_aot40k, "AOT40", "ppbh",
+  "Sommertage", get_statistic_limit_gte(25), "Sommertage", "1",
+  "Hitzetage", get_statistic_limit_gte(30), "Hitzetage", "1",
+  "Tropenn\u00E4chte", get_statistic_limit_gte(20), "Tropenn\u00E4chte", "1",
+  "Frosttage", get_statistic_limit_lt(0), "Frosttage", "1",
+  "Eistage", get_statistic_limit_lt(0), "Eistage", "1"
 )
 
 statistic_lookup <- tibble::column_to_rownames(statistic_lookup, "statistic")

@@ -320,7 +320,7 @@ r6_storage_local <- R6::R6Class(
         store_columns <- input_columns
       }
 
-      msg <- dplyr::all_equal(store_columns, input_columns, ignore_col_order = FALSE, ignore_row_order = FALSE)
+      msg <- msg <- all.equal(store_columns, input_columns)
       if(!isTRUE(msg)) {
         stop(IncompatibleColumns(self$name, msg))
       }

@@ -35,12 +35,12 @@ When FALSE drops parameters with ppb/ppm units except NOx. Default FALSE}
 tibble in openair compatible format
 }
 \description{
-\link[openair:openair]{openair::openair} provides Tools for the analysis of air pollution data. rOstluft focus lies in providing data
+\link[openair:openair-package]{openair::openair} provides Tools for the analysis of air pollution data. rOstluft focus lies in providing data
 from different sources to the user. The openair data format is described in \link[openair:mydata]{openair::mydata}. Basically it is a
 wide format with a field "date" as POSIXct or Date and the parameters as columns. Another convention are the fields
 "ws" for wind speed and "wd" for wind direction. Although usually the functions allows passing of the names from the
 wind fields with the arguments wd and ws. One disadvantage of the wide format is the loss of unit information.
-Normally all parameters are in expressed in mass terms. See \code{\link[openair:importKCL]{openair::importKCL()}} and \code{\link[openair:importAURN]{openair::importAURN()}}.
+Normally all parameters are in expressed in mass terms. See \code{\link[openair:importKCL]{openair::importKCL()}} and \code{\link[openair:importUKAQ-wrapper]{openair::importAURN()}}.
 This functions saves the parameter <> unit information in the attribute "units". unfortunately attributes tend to be
 lost by data wrangling functions. But an avid user might save the information.
 }

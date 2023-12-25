@@ -57,7 +57,7 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
 
   # unite the date parts and convert it to a PosixCT
   data <- tidyr::unite(data, col = "starttime", sep = "",
-                       .data$Jahr, .data$Tag, .data$Monat, .data$Stunde, .data$Minute)
+                       "Jahr", "Tag", "Monat", "Stunde", "Minute")
   data <- dplyr::mutate(data, starttime = lubridate::ydm_hm(.data$starttime, tz = tz))
 
   # auto detect interval
@@ -85,7 +85,7 @@ read_nabel_txt <- function(fn, encoding = "latin1", tz = "Etc/GMT-1", interval =
   }
 
   # wrangle data
-  data <- tidyr::gather(data, "parameter", "value", -.data$starttime)
+  data <- tidyr::gather(data, "parameter", "value", -"starttime")
   data <- dplyr::mutate(data,
       site = factor(site),
       interval = factor(interval),

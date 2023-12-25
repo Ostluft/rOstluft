@@ -208,7 +208,7 @@ read_seepolizei_json <- function(txt, tz = "Etc/GMT-1") {
 
   # make rolf format
   values <- dplyr::mutate(values,
-    starttime = lubridate::with_tz(starttime, tz),
+    starttime = lubridate::with_tz(.data$starttime, tz),
     interval = as.factor("min10"),
     site = as.factor(.data$site),
     unit = dplyr::recode(.data$parameter, !!!units),

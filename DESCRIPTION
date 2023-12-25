@@ -1,6 +1,6 @@
 Package: rOstluft
 Title: Tools for handling air quality data by Ostluft
-Version: 1.4.5
+Version: 1.4.6
 Authors@R: c(
   person("Thomas", "von Allmen", email = "thomas.vonallmen@zuerich.ch", role = c("aut", "cre")),
   person("Jörg", "Sintermann",role = c("aut")),
@@ -25,11 +25,9 @@ Imports:
     purrr,
     readr (>= 2.0.0),
     stringr,
-    sp (>= 1.4.0),
+    sf,
     rlang (>= 0.4.0),
     magrittr,
-    rOstluft.data (>= 2.1.1),
-    rgdal (>= 1.5.6),
     httr,
     jsonlite
 Suggests:
@@ -41,12 +39,13 @@ Suggests:
     roxygen2,
     openair,
     withr,
-    lifecycle
+    lifecycle,
+    rOstluft.data (>= 2.1.1)
 Remotes:
     Ostluft/rOstluft.data
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 URL: https://github.com/Ostluft/rOstluft
 BugReports: https://github.com/Ostluft/rOstluft/issues
 Config/testthat/edition: 3

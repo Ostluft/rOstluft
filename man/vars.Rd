@@ -8,8 +8,8 @@ vars(...)
 }
 \arguments{
 \item{...}{Variables to group by. These arguments are automatically
-\link[rlang:nse-defuse]{quoted} and later \link[rlang:eval_tidy]{evaluated} in the
-context of the data frame. They support \link[rlang:nse-force]{unquoting}.}
+\link[rlang:defusing-advanced]{quoted} and later \link[rlang:eval_tidy]{evaluated} in the
+context of the data frame. They support \link[rlang:topic-inject]{unquoting}.}
 }
 \value{
 named list containing quosures or symbols

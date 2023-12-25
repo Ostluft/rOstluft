@@ -14,7 +14,7 @@ parameter. This list is compatible with resample(). If no default_statistic is d
 default_statistic = "drop" is added. Multi-step statistics are possible. _inputs_ can be used as substitute for
 default_statistic in multi-step calculation if the input in "from" already contains calculated statistics.
 The statstable can be written in a compact form with comma seperated values in each cells. For each value the table
-will be expanded and a row added. See statstable_expand()'><title>Calculates stats described in a table — calculate_statstable • rOstluft</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Calculates stats described in a table — calculate_statstable"><meta property="og:description" content='Calculate a lot of statistics defined in a table with various caveats:
+will be expanded and a row added. See statstable_expand()'><title>Calculates stats described in a table — calculate_statstable • rOstluft</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Calculates stats described in a table — calculate_statstable"><meta property="og:description" content='Calculate a lot of statistics defined in a table with various caveats:
 series always padded to complete years
 the same data threshold for all calculations
 to h8gl: only mean from h1
@@ -40,14 +40,14 @@ will be expanded and a row added. See statstable_expand()'><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">rOstluft</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../index.html">
     <span class="fa fa-home fa-lg"></span>
@@ -110,84 +110,117 @@ will be expanded and a row added. See <code><a href="statstable_expand.html">sta
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_statstable</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">statstable</span>,
-  sep <span class="op">=</span> <span class="st">"\\s*,\\s*"</span>,
-  keep_input <span class="op">=</span> <span class="cn">FALSE</span>,
-  data_thresh <span class="op">=</span> <span class="fl">0.8</span>,
-  max_gap <span class="op">=</span> <span class="fl">10</span>,
-  order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"input"</span>, <span class="st">"h1"</span>, <span class="st">"h8gl"</span>, <span class="st">"d1"</span>, <span class="st">"m1"</span>, <span class="st">"y1"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_statstable</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">statstable</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"\\s*,\\s*"</span>,</span>
+<span>  keep_input <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  data_thresh <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  max_gap <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"input"</span>, <span class="st">"h1"</span>, <span class="st">"h8gl"</span>, <span class="st">"d1"</span>, <span class="st">"m1"</span>, <span class="st">"y1"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>input data in rolf format</p></dd>
+
+
 <dt>statstable</dt>
 <dd><p>description of statistics to calculate in table form</p></dd>
+
+
 <dt>sep</dt>
 <dd><p>seperator for combined values in statstable</p></dd>
+
+
 <dt>keep_input</dt>
 <dd><p>should the input data be kept in return list as item input. Default FALSE</p></dd>
+
+
 <dt>data_thresh</dt>
 <dd><p>minimum data capture threshold 0 - 1.0 to use. Default 0.8</p></dd>
+
+
 <dt>max_gap</dt>
 <dd><p>in days. Only used in calculation to y1. Set to NULL to disable usage. Default 10 days</p></dd>
+
+
 <dt>order</dt>
 <dd><p>defines the order of calculation in the from column</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list with one item for every to interval</p>
+    
+
+<p>list with one item for every to interval</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># calculate LRV statisitcs</span></span>
-<span class="r-in"><span class="va">lrv_table</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="op">~</span><span class="va">parameter</span>, <span class="op">~</span><span class="va">statistic</span>, <span class="op">~</span><span class="va">from</span>, <span class="op">~</span><span class="va">to</span>,</span>
-<span class="r-in">  <span class="st">"SO2, NO2, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"SO2, NO2"</span>, <span class="st">"perc95"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"O3"</span>, <span class="st">"perc98"</span>, <span class="st">"input"</span>, <span class="st">"m1"</span>,</span>
-<span class="r-in">  <span class="st">"O3"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"h1"</span>,</span>
-<span class="r-in">  <span class="st">"O3"</span>, <span class="st">"n&gt;120"</span>, <span class="st">"h1"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"SO2, NO2, CO, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"d1"</span>,</span>
-<span class="r-in">  <span class="st">"SO2"</span>, <span class="st">"n&gt;100"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"NO2"</span>, <span class="st">"n&gt;80"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"CO"</span>, <span class="st">"n&gt;8"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span>
-<span class="r-in">  <span class="st">"PM10"</span>, <span class="st">"n&gt;50"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,</span>
-<span class="r-in">                   package <span class="op">=</span> <span class="st">"rOstluft.data"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_airmo_csv.html">read_airmo_csv</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># convert volume concentrations to mass concentrations</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_mass_concentrations.html">calculate_mass_concentrations</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">calculate_statstable</span><span class="op">(</span><span class="va">data</span>, <span class="va">lrv_table</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># we are only interested in the m1 and y1 results</span></span>
-<span class="r-in"><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="va">y1</span>, <span class="va">stats</span><span class="op">$</span><span class="va">m1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">stats</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 x 6</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># calculate LRV statisitcs</span></span></span>
+<span class="r-in"><span><span class="va">lrv_table</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="op">~</span><span class="va">parameter</span>, <span class="op">~</span><span class="va">statistic</span>, <span class="op">~</span><span class="va">from</span>, <span class="op">~</span><span class="va">to</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SO2, NO2, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SO2, NO2"</span>, <span class="st">"perc95"</span>, <span class="st">"input"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"O3"</span>, <span class="st">"perc98"</span>, <span class="st">"input"</span>, <span class="st">"m1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"O3"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"h1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"O3"</span>, <span class="st">"n&gt;120"</span>, <span class="st">"h1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SO2, NO2, CO, PM10"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"d1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SO2"</span>, <span class="st">"n&gt;100"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"NO2"</span>, <span class="st">"n&gt;80"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"CO"</span>, <span class="st">"n&gt;8"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"PM10"</span>, <span class="st">"n&gt;50"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Zch_Stampfenbachstrasse_min30_2017.csv"</span>,</span></span>
+<span class="r-in"><span>                   package <span class="op">=</span> <span class="st">"rOstluft.data"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_airmo_csv.html">read_airmo_csv</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># convert volume concentrations to mass concentrations</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_mass_concentrations.html">calculate_mass_concentrations</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">calculate_statstable</span><span class="op">(</span><span class="va">data</span>, <span class="va">lrv_table</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># we are only interested in the m1 and y1 results</span></span></span>
+<span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="va">y1</span>, <span class="va">stats</span><span class="op">$</span><span class="va">m1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stats</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    starttime           site                    parameter    interval unit  value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO2          y1       µg/m3 30.4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO2_95%_min~ y1       µg/m3 68.8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO2_95%_min… y1       µg/m3 68.8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse PM10         y1       µg/m3 15.9 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse SO2          y1       µg/m3  1.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse SO2_95%_min~ y1       µg/m3  2.17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse SO2_95%_min… y1       µg/m3  2.17</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse O3_nb_h1&gt;120 y1       1     81   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse CO_nb_d1&gt;8   y1       1      0   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO2_nb_d1&gt;80 y1       1      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;~ y1       1      8   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1~ y1       1      0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 12 more rows</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse PM10_nb_d1&gt;… y1       1      8   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse SO2_nb_d1&gt;1… y1       1      0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate clima indicators</span></span></span>
+<span class="r-in"><span><span class="va">clima_table</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="op">~</span><span class="va">parameter</span>, <span class="op">~</span><span class="va">statistic</span>, <span class="op">~</span><span class="va">from</span>, <span class="op">~</span><span class="va">to</span>,</span></span>
+<span class="r-in"><span>   <span class="st">"T"</span>, <span class="st">"mean"</span>, <span class="st">"input"</span>, <span class="st">"h1"</span>,</span></span>
+<span class="r-in"><span>   <span class="st">"T"</span>, <span class="st">"max, min"</span>, <span class="st">"h1"</span>, <span class="st">"d1"</span>,</span></span>
+<span class="r-in"><span>   <span class="st">"T_max_h1"</span>, <span class="st">"Sommertage, Hitzetage, Eistage"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span>   <span class="st">"T_min_h1"</span>, <span class="st">"Tropennächte, Frosttage"</span>, <span class="st">"d1"</span>, <span class="st">"y1"</span>,</span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">clima_stats</span> <span class="op">&lt;-</span> <span class="fu">calculate_statstable</span><span class="op">(</span><span class="va">data</span>, <span class="va">clima_table</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">clima_stats</span><span class="op">$</span><span class="va">y1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   starttime           site                    parameter    interval unit  value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Sommertage   y1       1        66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Hitzetage    y1       1        21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Eistage      y1       1        13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Tropennächte y1       1        14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2017-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Frosttage    y1       1        38</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -199,7 +232,7 @@ will be expanded and a row added. See <code><a href="statstable_expand.html">sta
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

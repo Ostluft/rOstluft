@@ -4,6 +4,7 @@
 #'
 #' @docType package
 #' @name rOstluft
+#' @keywords internal
 #'
 #' @importFrom tibble tibble
 #'

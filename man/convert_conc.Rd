@@ -31,7 +31,9 @@ converted data
 }
 \description{
 This function converts between volume and mass concentration by standard conditions. The constants used are
-equivalent to the one used in AIRMO for sites below 1500m a.s.l:\preformatted{R   = 8.314151     [kg * m2 / (s2 * mol * K)]
+equivalent to the one used in AIRMO for sites below 1500m a.s.l:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{R   = 8.314151     [kg * m2 / (s2 * mol * K)]
 T   = 20.00        [°C]
 p   = 1013.00      [hPa]
 
@@ -41,7 +43,7 @@ NO  = 30.01        [g / mol]
 NO2 = 46.01        [g / mol]
 O3  = 48.00        [g / mol]
 SO2 = 64.06        [g / mol]
-}
+}\if{html}{\out{</div>}}
 
 It is possible to change this constants via functions during run time for a session. See \code{\link[=convert_set_R]{convert_set_R()}},
 \code{\link[=convert_set_mol_masses]{convert_set_mol_masses()}}, \code{\link[=convert_set_conc_lookup]{convert_set_conc_lookup()}}

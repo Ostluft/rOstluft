@@ -12,7 +12,10 @@
 \alias{statistic_coverage}
 \alias{statistic_aot40k}
 \alias{get_statistic_percentile}
-\alias{get_statistic_limit}
+\alias{get_statistic_limit_gt}
+\alias{get_statistic_limit_gte}
+\alias{get_statistic_limit_lt}
+\alias{get_statistic_limit_lte}
 \title{Get the biggest number of consecutive NA Values}
 \usage{
 get_gap_in_vector(x)
@@ -37,7 +40,13 @@ statistic_aot40k(x)
 
 get_statistic_percentile(percentile)
 
-get_statistic_limit(limit)
+get_statistic_limit_gt(limit)
+
+get_statistic_limit_gte(limit)
+
+get_statistic_limit_lt(limit)
+
+get_statistic_limit_lte(limit)
 }
 \arguments{
 \item{x}{Vector}

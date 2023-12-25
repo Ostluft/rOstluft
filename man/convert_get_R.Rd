@@ -36,11 +36,13 @@ The constants for R, mol masses or the lookup table for conversions
 Converting between volume and mass concentrations isn't as straightforward as you may think. The molar gas constant
 is a natur constant. As such is subject to changes if more accurate measurements are avaible.
 \href{http://www.codata.org/committees-and-groups/fundamental-physical-constants}{CODATA} is a comittee appointed to
-frequently publish a collection of natur constants. For the molar gas constant for example:\preformatted{CODATA 1986  8.314510
+frequently publish a collection of natur constants. For the molar gas constant for example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{CODATA 1986  8.314510
 CODATA 1998  8.314472
 CODATA 2010  8.3144621
 CODATA 2014  8.3144598
-}
+}\if{html}{\out{</div>}}
 
 Other questions are the exact values for temperature, pressure and mol masses. This function set allows the
 customization of all used constants for the conversion. In the example is showed how to use the CODATA 2014 value

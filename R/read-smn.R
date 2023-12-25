@@ -121,7 +121,7 @@ read_smn <- function(fn, tz = "Etc/GMT-1", encoding = "UTF-8", time_shift = NULL
     stop("time_shift has to be a lubridate::period or NULL")
   }
 
-  data <- tidyr::gather(data, "parameter", "value", -.data$time, -.data$stn, na.rm = na.rm)
+  data <- tidyr::gather(data, "parameter", "value", -"time", -"stn", na.rm = na.rm)
   data <- dplyr::mutate(data,
     stn = forcats::as_factor(.data$stn),
     parameter = forcats::as_factor(.data$parameter),

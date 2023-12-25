@@ -81,4 +81,14 @@ stats <- calculate_statstable(data, lrv_table)
 stats <- dplyr::bind_rows(stats$y1, stats$m1)
 stats
 
+# calculate clima indicators
+clima_table <- tibble::tribble(
+   ~parameter, ~statistic, ~from, ~to,
+   "T", "mean", "input", "h1",
+   "T", "max, min", "h1", "d1",
+   "T_max_h1", "Sommertage, Hitzetage, Eistage", "d1", "y1",
+   "T_min_h1", "Tropennächte, Frosttage", "d1", "y1",
+)
+clima_stats <- calculate_statstable(data, clima_table)
+clima_stats$y1
 }

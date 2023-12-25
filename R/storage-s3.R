@@ -215,7 +215,7 @@ r6_storage_s3 <- R6::R6Class(
       purrr::map(files$chunk_name, self$download_chunk)
       files <- dplyr::filter(files, fs::file_exists(.data$chunk_path))
       chunks <- purrr::map(files$chunk_path, private$read_chunk, filter = filter)
-      purrr::invoke(dplyr::bind_rows, .x = chunks)
+      purrr::exec(dplyr::bind_rows, .x = chunks)
     },
     download = function(...) {
       self$get_content()
@@ -280,7 +280,7 @@ r6_storage_s3 <- R6::R6Class(
     list_chunks = function() {
       #TODO cache list_chunks?
       chunks_s3 <- s3_list_objects(self$bucket, self$data_s3, Inf, fixEtag = TRUE, remove_folders = TRUE)
-      chunks_s3 <- dplyr::rename_all(chunks_s3, ~ paste0("s3.", stringr::str_to_lower(., NULL)))
+      chunks_s3 <- dplyr::rename_all(chunks_s3, ~ paste0("s3.", stringr::str_to_lower(., "de_CH")))
       chunks_s3 <- dplyr::mutate(chunks_s3, chunk_name = fs::path_ext_remove(fs::path_rel(.data$s3.key, self$data_s3)),
                                  s3.size = fs::as_fs_bytes(.data$s3.size))
       chunks_s3 <- dplyr::select(chunks_s3, "chunk_name", "s3.key", "s3.lastmodified", "s3.etag", "s3.size")
@@ -390,7 +390,7 @@ r6_storage_s3 <- R6::R6Class(
         store_columns <- input_columns
       }
 
-      msg <- dplyr::all_equal(store_columns, input_columns, ignore_col_order = FALSE, ignore_row_order = FALSE)
+      msg <- all.equal(store_columns, input_columns)
       if(!isTRUE(msg)) {
         stop(IncompatibleColumns(self$name, msg))
       }

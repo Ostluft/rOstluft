@@ -78,7 +78,7 @@ read_ethz_iac <- function(x, tz = "Etc/GMT-1", site = NULL, na.rm = TRUE, encodi
   units <- rlang::set_names(units, parameters)
 
   # reform data. data is now time, starttime + one col per parameter
-  data <- tidyr::gather(data, "parameter", "value", -.data$time, -.data$starttime, na.rm = na.rm)
+  data <- tidyr::gather(data, "parameter", "value", -"time", -"starttime", na.rm = na.rm)
   data <- dplyr::mutate(data,
     site = as.factor(site),
     interval = as.factor("min10"),

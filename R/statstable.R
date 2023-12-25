@@ -18,10 +18,10 @@
 #' @return expanded statstable
 #' @export
 statstable_expand <- function(statstable, sep = "\\s*,\\s*") {
-  statstable <- tidyr::separate_rows(statstable, .data$parameter, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, .data$statistic, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, .data$from, sep = sep)
-  statstable <- tidyr::separate_rows(statstable, .data$to, sep  = sep)
+  statstable <- tidyr::separate_rows(statstable, "parameter", sep = sep)
+  statstable <- tidyr::separate_rows(statstable, "statistic", sep = sep)
+  statstable <- tidyr::separate_rows(statstable, "from", sep = sep)
+  statstable <- tidyr::separate_rows(statstable, "to", sep  = sep)
   statstable
 }
 
@@ -164,6 +164,16 @@ expand_inputs <- function(x, inputs) {
 #' stats <- dplyr::bind_rows(stats$y1, stats$m1)
 #' stats
 #'
+#' # calculate clima indicators
+#' clima_table <- tibble::tribble(
+#'    ~parameter, ~statistic, ~from, ~to,
+#'    "T", "mean", "input", "h1",
+#'    "T", "max, min", "h1", "d1",
+#'    "T_max_h1", "Sommertage, Hitzetage, Eistage", "d1", "y1",
+#'    "T_min_h1", "Tropennächte, Frosttage", "d1", "y1",
+#' )
+#' clima_stats <- calculate_statstable(data, clima_table)
+#' clima_stats$y1
 calculate_statstable <- function(data, statstable, sep = "\\s*,\\s*", keep_input = FALSE, data_thresh = 0.8,
                                  max_gap = 10, order = c("input", "h1", "h8gl", "d1", "m1", "y1")) {
 

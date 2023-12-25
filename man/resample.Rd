@@ -81,10 +81,16 @@ The statistical method is a function with a numeric vector as argument and retur
 \item \code{"percentile"} calculates the percentile. Use the argument percentile to specify the level, renames parameter
 \item \code{"perc95"} 95\% percentile, renames parameter
 \item \code{"perc98"} 98\% percentile, renames parameter
+\item \code{"n>5"} number of values > 5 (WHO PM2.5 y1 limit), renames parameter, changes unit
 \item \code{"n>8"} number of values > 8 (CO d1 limit), renames parameter, changes unit
 \item \code{"n>10"} number of values > 10 (PM2.5 y1 limit), renames parameter, changes unit
-\item \code{"n>25"} number of values > 25 (PM2.5 d1 limit), renames parameter, changes unit
+\item \code{"n>15"} number of values > 15 (WHO PM10 limit), renames parameter, changes unit
+\item \code{"n>25"} number of values > 25 (WHO NO2 d1 limit), renames parameter, changes unit
+\item \code{"n>30"} number of values > 30 (NO2, SO2 y1 limit), renames parameter, changes unit
+\item \code{"n>40"} number of values > 40 (WHO SO2 d1 limit), renames parameter, changes unit
+\item \code{"n>45"} number of values > 45 (WHO PM10 d1 limit), renames parameter, changes unit
 \item \code{"n>50"} number of values > 50 (PM10 d1 limit), renames parameter, changes unit
+\item \code{"n>60"} number of values > 60 (y1 limit), renames parameter, changes unit
 \item \code{"n>65"} number of values > 65 (O3 d1 indicator), renames parameter, changes unit
 \item \code{"n>80"} number of values > 80 (NO2 d1 limit), renames parameter, changes unit
 \item \code{"n>100"} number of values > 100 (SO2 d1 limit), renames parameter, changes unit

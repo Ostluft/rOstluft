@@ -10,7 +10,7 @@ combine resampled series
 
 It is possible to supply different methods for different parameters. The argument statistic can be named list. The
 name stands for the parameter. The value can be a function to apply, a name of method or a list of names. Some
-methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method."><title>Resampling data — resample • rOstluft</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Resampling data — resample"><meta property="og:description" content="Aggregate data by different time periods. Following this simple steps:
+methods renames the parameter and changes the unit. A list of method names can only contain one non renaming method."><title>Resampling data — resample • rOstluft</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Resampling data — resample"><meta property="og:description" content="Aggregate data by different time periods. Following this simple steps:
 split data in series
 pad data serie (needed for calculation of capture threshold, detection of gaps)
 group serie by new interval with lubridate::floor_date()
@@ -32,14 +32,14 @@ methods renames the parameter and changes the unit. A list of method names can o
     
     <a class="navbar-brand me-2" href="../index.html">rOstluft</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../index.html">
     <span class="fa fa-home fa-lg"></span>
@@ -97,25 +97,27 @@ methods renames the parameter and changes the unit. A list of method names can o
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">resample</span><span class="op">(</span>
-  <span class="va">data</span>,
-  statistic <span class="op">=</span> <span class="st">"mean"</span>,
-  <span class="va">new_interval</span>,
-  data_thresh <span class="op">=</span> <span class="cn">NULL</span>,
-  max_gap <span class="op">=</span> <span class="cn">NULL</span>,
-  rename_parameter <span class="op">=</span> <span class="cn">TRUE</span>,
-  percentile <span class="op">=</span> <span class="fl">0.95</span>,
-  skip_padding <span class="op">=</span> <span class="cn">FALSE</span>,
-  start_date <span class="op">=</span> <span class="cn">NULL</span>,
-  end_date <span class="op">=</span> <span class="cn">NULL</span>,
-  drop_last <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resample</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  statistic <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  <span class="va">new_interval</span>,</span>
+<span>  data_thresh <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_gap <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rename_parameter <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  percentile <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  skip_padding <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  start_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  drop_last <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>A tibble in rOstluft long format</p></dd>
+
+
 <dt>statistic</dt>
 <dd><p>Statistical method(s) to apply when aggregating the data.
 Can be a simple string with name of the method or a function with one argument.
@@ -123,29 +125,50 @@ Or a list with parameter as name and the statistical method as value (function o
 Or a list with parameter as and a list of statisticals methods. All methods must support renaming parameter.
 A default statistic for all parameters not in the list, can be defined with the name "default_statistic".
 See section Statistical methods and examples</p></dd>
+
+
 <dt>new_interval</dt>
 <dd><p>New interval. Must be longer than actual interval (not checked)</p></dd>
+
+
 <dt>data_thresh</dt>
 <dd><p>optional minimum data capture threshold in to use</p></dd>
+
+
 <dt>max_gap</dt>
 <dd><p>optional maxium Number of consecutive NA values</p></dd>
+
+
 <dt>rename_parameter</dt>
 <dd><p>optional rename parameter</p></dd>
+
+
 <dt>percentile</dt>
 <dd><p>The percentile level used when statistic = "percentile". The default is 0.95</p></dd>
+
+
 <dt>skip_padding</dt>
 <dd><p>don't pad the data before applying statistics. Default FALSE</p></dd>
+
+
 <dt>start_date</dt>
 <dd><p>optional start date for padding. Default min date in series floored to the new interval</p></dd>
+
+
 <dt>end_date</dt>
 <dd><p>optional end date for padding. Default max date in series ceiled to the new interval</p></dd>
+
+
 <dt>drop_last</dt>
 <dd><p>optional drop the last added time point by padding. Default False, true if no end_date
 provided and max date != ceiled max date.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>tibble with resampled data</p>
+    
+
+<p>tibble with resampled data</p>
     </div>
     <div class="section level2">
     <h2 id="statistical-methods">Statistical methods<a class="anchor" aria-label="anchor" href="#statistical-methods"></a></h2>
@@ -162,10 +185,16 @@ provided and max date != ceiled max date.</p></dd>
 <li><p><code>"percentile"</code> calculates the percentile. Use the argument percentile to specify the level, renames parameter</p></li>
 <li><p><code>"perc95"</code> 95% percentile, renames parameter</p></li>
 <li><p><code>"perc98"</code> 98% percentile, renames parameter</p></li>
+<li><p><code>"n&gt;5"</code> number of values &gt; 5 (WHO PM2.5 y1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;8"</code> number of values &gt; 8 (CO d1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;10"</code> number of values &gt; 10 (PM2.5 y1 limit), renames parameter, changes unit</p></li>
-<li><p><code>"n&gt;25"</code> number of values &gt; 25 (PM2.5 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;15"</code> number of values &gt; 15 (WHO PM10 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;25"</code> number of values &gt; 25 (WHO NO2 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;30"</code> number of values &gt; 30 (NO2, SO2 y1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;40"</code> number of values &gt; 40 (WHO SO2 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;45"</code> number of values &gt; 45 (WHO PM10 d1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;50"</code> number of values &gt; 50 (PM10 d1 limit), renames parameter, changes unit</p></li>
+<li><p><code>"n&gt;60"</code> number of values &gt; 60 (y1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;65"</code> number of values &gt; 65 (O3 d1 indicator), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;80"</code> number of values &gt; 80 (NO2 d1 limit), renames parameter, changes unit</p></li>
 <li><p><code>"n&gt;100"</code> number of values &gt; 100 (SO2 d1 limit), renames parameter, changes unit</p></li>
@@ -195,22 +224,22 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">min30</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,</span>
-<span class="r-in">                     package <span class="op">=</span> <span class="st">"rOstluft.data"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">airmo_min30</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_airmo_csv.html">read_airmo_csv</a></span><span class="op">(</span><span class="va">min30</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># filter volume concenctrations, only use mass concentrations</span></span>
-<span class="r-in"><span class="va">airmo_min30</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="op">!</span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">unit</span> <span class="op">==</span> <span class="st">"ppb"</span> <span class="op">|</span> <span class="va">.data</span><span class="op">$</span><span class="va">unit</span> <span class="op">==</span> <span class="st">"ppm"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">d1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span>
-<span class="r-in">  <span class="st">"Hr"</span> <span class="op">=</span> <span class="st">"mean"</span>,</span>
-<span class="r-in">  <span class="st">"RainDur"</span> <span class="op">=</span> <span class="st">"sum"</span>,</span>
-<span class="r-in">  <span class="st">"O3"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"max"</span>, <span class="st">"min"</span>, <span class="st">"n"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">d1_statistics</span>, <span class="st">"d1"</span>, data_thresh <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 186 x 6</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">min30</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Zch_Stampfenbachstrasse_min30_2013_Jan.csv"</span>,</span></span>
+<span class="r-in"><span>                     package <span class="op">=</span> <span class="st">"rOstluft.data"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">airmo_min30</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_airmo_csv.html">read_airmo_csv</a></span><span class="op">(</span><span class="va">min30</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># filter volume concenctrations, only use mass concentrations</span></span></span>
+<span class="r-in"><span><span class="va">airmo_min30</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="op">!</span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">unit</span> <span class="op">==</span> <span class="st">"ppb"</span> <span class="op">|</span> <span class="va">.data</span><span class="op">$</span><span class="va">unit</span> <span class="op">==</span> <span class="st">"ppm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">d1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"Hr"</span> <span class="op">=</span> <span class="st">"mean"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"RainDur"</span> <span class="op">=</span> <span class="st">"sum"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"O3"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"max"</span>, <span class="st">"min"</span>, <span class="st">"n"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">d1_statistics</span>, <span class="st">"d1"</span>, data_thresh <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 186 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    starttime           site                    parameter interval unit  value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    76.0</span>
@@ -223,40 +252,40 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2013-01-08 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    79.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2013-01-09 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2013-01-10 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse Hr        d1       %Hr    89.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 176 more rows</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note: wind parameters don't support multiple methods via list!</span></span>
-<span class="r-in"><span class="va">h1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span>
-<span class="r-in">  <span class="st">"WD"</span> <span class="op">=</span> <span class="st">"wind.direction"</span>,</span>
-<span class="r-in">  <span class="st">"WVs"</span> <span class="op">=</span> <span class="st">"wind.speed_scalar"</span>,</span>
-<span class="r-in">  <span class="st">"WVv"</span> <span class="op">=</span> <span class="st">"wind.speed_vector"</span>,</span>
-<span class="r-in">  <span class="st">"RainDur"</span> <span class="op">=</span> <span class="st">"sum"</span>,</span>
-<span class="r-in">  <span class="st">"NO"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"coverage"</span>, <span class="st">"mean"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">h1_statistics</span>, <span class="st">"h1"</span>, data_thresh <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4,464 x 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 176 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note: wind parameters don't support multiple methods via list!</span></span></span>
+<span class="r-in"><span><span class="va">h1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"WD"</span> <span class="op">=</span> <span class="st">"wind.direction"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"WVs"</span> <span class="op">=</span> <span class="st">"wind.speed_scalar"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"WVv"</span> <span class="op">=</span> <span class="st">"wind.speed_vector"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"RainDur"</span> <span class="op">=</span> <span class="st">"sum"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"NO"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"coverage"</span>, <span class="st">"mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">h1_statistics</span>, <span class="st">"h1"</span>, data_thresh <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4,464 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    starttime           site                    parameter    interval unit  value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2013-01-01 <span style="color: #949494;">01:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2013-01-01 <span style="color: #949494;">02:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2013-01-01 <span style="color: #949494;">03:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2013-01-01 <span style="color: #949494;">04:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2013-01-01 <span style="color: #949494;">05:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2013-01-01 <span style="color: #949494;">06:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2013-01-01 <span style="color: #949494;">07:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2013-01-01 <span style="color: #949494;">08:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2013-01-01 <span style="color: #949494;">09:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m~ h1       %       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 4,454 more rows</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note: all resulting values should be NA -&gt; gap is to big (480 * min30 = 10 days)</span></span>
-<span class="r-in"><span class="va">y1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span>
-<span class="r-in">  <span class="st">"O3"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"perc98"</span>, <span class="st">"n"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">y1_statistics</span>, <span class="st">"y1"</span>, max_gap <span class="op">=</span> <span class="fl">480</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 x 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2013-01-01 <span style="color: #949494;">01:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2013-01-01 <span style="color: #949494;">02:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2013-01-01 <span style="color: #949494;">03:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2013-01-01 <span style="color: #949494;">04:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2013-01-01 <span style="color: #949494;">05:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2013-01-01 <span style="color: #949494;">06:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2013-01-01 <span style="color: #949494;">07:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2013-01-01 <span style="color: #949494;">08:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2013-01-01 <span style="color: #949494;">09:00:00</span> Zch_Stampfenbachstrasse NO_valid%_m… h1       %       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4,454 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note: all resulting values should be NA -&gt; gap is to big (480 * min30 = 10 days)</span></span></span>
+<span class="r-in"><span><span class="va">y1_statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"default_statistic"</span> <span class="op">=</span> <span class="st">"drop"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"O3"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"perc98"</span>, <span class="st">"n"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">resample</span><span class="op">(</span><span class="va">airmo_min30</span>, <span class="va">y1_statistics</span>, <span class="st">"y1"</span>, max_gap <span class="op">=</span> <span class="fl">480</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   starttime           site                    parameter    interval unit  value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse O3           y1       µg/m3    <span style="color: #BB0000;">NA</span></span>
@@ -264,7 +293,7 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse O3_nb_min30  y1       1        <span style="color: #BB0000;">NA</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse O3_max_min30 y1       µg/m3    <span style="color: #BB0000;">NA</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2013-01-01 <span style="color: #949494;">00:00:00</span> Zch_Stampfenbachstrasse O3_min_min30 y1       µg/m3    <span style="color: #BB0000;">NA</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -276,7 +305,7 @@ data it is necessary to specify three parameters with the methods <code>"wind.di
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

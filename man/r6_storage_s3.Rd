@@ -112,10 +112,12 @@ confirmation
 
 See the documentation of \href{https://github.com/cloudyr/aws.signature/}{aws.signature} for ways to provide the
 necessary informations. The simplest way is to use environment variables defined in a \code{.Renviron} file in the
-root directory of a RStudio Project:\preformatted{AWS_ACCESS_KEY_ID = "xxxxxxxxxxxxxxxxxx"
+root directory of a RStudio Project:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{AWS_ACCESS_KEY_ID = "xxxxxxxxxxxxxxxxxx"
 AWS_SECRET_ACCESS_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 AWS_DEFAULT_REGION = "eu-central-1"
-}
+}\if{html}{\out{</div>}}
 }
 
 \examples{

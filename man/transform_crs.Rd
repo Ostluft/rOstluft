@@ -66,15 +66,15 @@ data <- dplyr::distinct(data, site, x, y)
 transform_crs(
   data = data,
   coord = c(lon = "x", lat = "y"),
-  in_crs = sp::CRS(SRS_string = "EPSG:2056"),
-  out_crs = sp::CRS(SRS_string = "EPSG:4326")
+  in_crs = sf::st_crs("EPSG:2056"),
+  out_crs = sf::st_crs("EPSG:4326")
 )
 
 transform_crs(
   data = data,
   coord = c(lon = "x", lat = "y"),
-  in_crs = sp::CRS(SRS_string = "EPSG:2056"),
-  out_crs = sp::CRS(SRS_string = "EPSG:4326"),
+  in_crs = sf::st_crs("EPSG:2056"),
+  out_crs = sf::st_crs("EPSG:4326"),
   append = FALSE
 )
 

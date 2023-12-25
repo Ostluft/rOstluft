@@ -43,15 +43,15 @@
 #' transform_crs(
 #'   data = data,
 #'   coord = c(lon = "x", lat = "y"),
-#'   in_crs = sp::CRS(SRS_string = "EPSG:2056"),
-#'   out_crs = sp::CRS(SRS_string = "EPSG:4326")
+#'   in_crs = sf::st_crs("EPSG:2056"),
+#'   out_crs = sf::st_crs("EPSG:4326")
 #' )
 #'
 #' transform_crs(
 #'   data = data,
 #'   coord = c(lon = "x", lat = "y"),
-#'   in_crs = sp::CRS(SRS_string = "EPSG:2056"),
-#'   out_crs = sp::CRS(SRS_string = "EPSG:4326"),
+#'   in_crs = sf::st_crs("EPSG:2056"),
+#'   out_crs = sf::st_crs("EPSG:4326"),
 #'   append = FALSE
 #' )
 #'
@@ -63,37 +63,40 @@ transform_crs <- function(data, coord, in_crs, out_crs, append = TRUE) {
     stop("coord must be a named character vector with 2 items")
   }
 
-  if (isTRUE(append)) {
-    data <- dplyr::bind_cols(data, dplyr::select(data, !!!coord))
-  } else {
-    data <- dplyr::rename(data, !!!coord)
-  }
-  sp::coordinates(data) <- out_cols
-  sp::proj4string(data) <- in_crs
-  data <- sp::spTransform(data, out_crs)
-  tibble::as_tibble(data)
+  # if (isTRUE(append)) {
+  #   data <- dplyr::bind_cols(data, dplyr::select(data, !!!coord))
+  # } else {
+  #   data <- dplyr::rename(data, !!!coord)
+  # }
+
+  data <- sf::st_as_sf(data, coords = coord, crs = in_crs, remove = !append)
+  data <- sf::st_transform(data, crs = out_crs)
+  cc <- sf::st_coordinates(data)
+  colnames(cc) <- out_cols
+  data <- dplyr::bind_cols(data, tibble::as_tibble(cc))
+  sf::st_drop_geometry(data)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_LV95_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:2056"), sp::CRS(SRS_string = "EPSG:4326"), append)
+  transform_crs(data, coord, sf::st_crs("EPSG:2056"), sf::st_crs("EPSG:4326"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_WSG84_to_LV95 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:4326"), sp::CRS(SRS_string = "EPSG:2056"), append)
+  transform_crs(data, coord, sf::st_crs("EPSG:4326"), sf::st_crs("EPSG:2056"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_LV03_to_WSG84 <- function(data, coord = c(lon = "x", lat = "y"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:21781"), sp::CRS(SRS_string = "EPSG:4326"), append)
+  transform_crs(data, coord, sf::st_crs("EPSG:21781"), sf::st_crs("EPSG:4326"), append)
 }
 
 #' @rdname transform_crs
 #' @export
 transform_WSG84_to_LV03 <- function(data, coord = c(x = "lon", y = "lat"), append = TRUE) {
-  transform_crs(data, coord, sp::CRS(SRS_string = "EPSG:4326"), sp::CRS(SRS_string = "EPSG:21781"), append)
+  transform_crs(data, coord, sf::st_crs("EPSG:4326"), sf::st_crs("EPSG:21781"), append)
 }
